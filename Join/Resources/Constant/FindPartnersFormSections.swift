@@ -12,6 +12,7 @@ struct FindPartnersFormSections {
 
     static let basicSection = SectionInfo(
         title: "專案資訊",
+        buttonTitle: "下一步",
         items: [
             ItemInfo(
                 name: "專案名稱", instruction: "至少5個字",
@@ -30,6 +31,7 @@ struct FindPartnersFormSections {
 
     static let groupSection = SectionInfo(
         title: "團隊與招募資訊",
+        buttonTitle: "下一步",
         items: [
             ItemInfo(
                 name: "團隊成員", instruction: nil,
@@ -44,6 +46,7 @@ struct FindPartnersFormSections {
 
     static let detailSection = SectionInfo(
         title: "最後一步了",
+        buttonTitle: "預覽",
         items: [
             ItemInfo(
                 name: "截止時間", instruction: nil,
@@ -67,6 +70,7 @@ struct FindPartnersFormSections {
 
 struct SectionInfo {
     let title: String
+    let buttonTitle: String
     let items: [ItemInfo]
 }
 

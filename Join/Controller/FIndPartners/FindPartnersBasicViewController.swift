@@ -9,6 +9,21 @@ import UIKit
 
 class FindPartnersBasicViewController: UIViewController {
 
+    lazy var bottomView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .yellow
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+
+    lazy var submitButton: UIButton = {
+        let button = UIButton()
+        button.backgroundColor = .gray
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(goNextPage), for: .touchUpInside)
+        return button
+    }()
+
     @IBOutlet weak var tableView: UITableView! {
         didSet {
             tableView.register(
@@ -27,6 +42,7 @@ class FindPartnersBasicViewController: UIViewController {
             tableView.dataSource = self
             tableView.separatorStyle = .none
             tableView.estimatedRowHeight = UITableView.automaticDimension
+            tableView.allowsSelection = false
         }
     }
 
@@ -34,6 +50,41 @@ class FindPartnersBasicViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        layoutView()
+    }
+
+    func layoutView() {
+        title = Tab.findPartners.title
+        submitButton.setTitle(formState.buttonTitle, for: .normal)
+        view.addSubview(submitButton)
+
+        NSLayoutConstraint.activate([
+            submitButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -100),
+            submitButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            submitButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
+        ])
+
+        // FIXME: - button 為何沒有正確排在tab bar上方
+//        if let tabBarView = tabBarController?.view {
+//            tabBarView.addSubview(bottomView)
+//            bottomView.addSubview(submitButton)
+//
+//            bottomView.translatesAutoresizingMaskIntoConstraints = false
+//            submitButton.translatesAutoresizingMaskIntoConstraints = false
+//            NSLayoutConstraint.activate([
+//                bottomView.heightAnchor.constraint(equalToConstant: -80),
+//                bottomView.bottomAnchor.constraint(equalTo: tabBarView.topAnchor),
+//                bottomView.leadingAnchor.constraint(equalTo: tabBarView.leadingAnchor),
+//                bottomView.trailingAnchor.constraint(equalTo: tabBarView.trailingAnchor),
+//                submitButton.leadingAnchor.constraint(equalTo: bottomView.leadingAnchor, constant: 20),
+//                submitButton.trailingAnchor.constraint(equalTo: bottomView.trailingAnchor, constant: -20),
+//                submitButton.topAnchor.constraint(equalTo: bottomView.topAnchor, constant: 20)
+//            ])
+//        }
+    }
+
+    @objc func goNextPage() {
+        print("go next page")
     }
 }
 
