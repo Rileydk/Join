@@ -9,6 +9,8 @@ import UIKit
 import TTGTags
 
 class GoNextPageCell: TableViewCell {
+    @IBOutlet weak var titleLable: UILabel!
+    @IBOutlet weak var mustFillSignLabel: UILabel!
     @IBOutlet weak var button: UIButton!
     @IBOutlet weak var chevronRightImageView: UIButton!
 
@@ -21,7 +23,9 @@ class GoNextPageCell: TableViewCell {
     }
 
     func layoutCell(info: ItemInfo, containsTags: Bool) {
-        button.setTitle(info.name, for: .normal)
+        titleLable.text = info.name
+        mustFillSignLabel.isHidden = !info.must
+
         if containsTags {
             addSubview(tagView)
             tagView.translatesAutoresizingMaskIntoConstraints = false

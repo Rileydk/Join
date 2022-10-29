@@ -5,6 +5,7 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -17,10 +18,12 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="66"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="k54-CI-UHK">
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="k54-CI-UHK">
                         <rect key="frame" x="20" y="16" width="280" height="31"/>
-                        <state key="normal" title="Button"/>
-                        <buttonConfiguration key="configuration" style="plain" title="Button"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="31" id="9ab-l8-hSI"/>
+                        </constraints>
+                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                     </button>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="chevron.right.circle" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="La2-33-idV">
                         <rect key="frame" x="276" y="22" width="20" height="19"/>
@@ -29,12 +32,31 @@
                             <constraint firstAttribute="height" constant="20" id="izj-cL-DLx"/>
                         </constraints>
                     </imageView>
+                    <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vTm-fj-SMZ">
+                        <rect key="frame" x="24" y="21.5" width="43" height="20.5"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="標題" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yqg-Ml-Vg5">
+                                <rect key="frame" x="0.0" y="0.0" width="35" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="*" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YcQ-lb-46V">
+                                <rect key="frame" x="35" y="0.0" width="8" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" systemColor="systemPinkColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                    </stackView>
                 </subviews>
                 <constraints>
                     <constraint firstItem="k54-CI-UHK" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" id="Dza-CG-3Xt"/>
                     <constraint firstAttribute="trailing" secondItem="k54-CI-UHK" secondAttribute="trailing" constant="20" id="MIa-8r-t4c"/>
+                    <constraint firstItem="vTm-fj-SMZ" firstAttribute="centerY" secondItem="k54-CI-UHK" secondAttribute="centerY" id="PzF-Uv-GJh"/>
                     <constraint firstItem="La2-33-idV" firstAttribute="centerY" secondItem="k54-CI-UHK" secondAttribute="centerY" id="QMf-1W-ZLs"/>
                     <constraint firstItem="k54-CI-UHK" firstAttribute="trailing" secondItem="La2-33-idV" secondAttribute="trailing" constant="4" id="Vtv-sx-7Sx"/>
+                    <constraint firstItem="vTm-fj-SMZ" firstAttribute="leading" secondItem="k54-CI-UHK" secondAttribute="leading" constant="4" id="YH5-Ap-NrK"/>
                     <constraint firstItem="k54-CI-UHK" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="16" id="oWE-um-DMk"/>
                 </constraints>
             </tableViewCellContentView>
@@ -42,11 +64,16 @@
             <connections>
                 <outlet property="button" destination="k54-CI-UHK" id="1Gy-xD-XeC"/>
                 <outlet property="chevronRightImageView" destination="k54-CI-UHK" id="bCH-Ni-8uf"/>
+                <outlet property="mustFillSignLabel" destination="YcQ-lb-46V" id="gCJ-Ks-3MG"/>
+                <outlet property="titleLable" destination="Yqg-Ml-Vg5" id="V7H-zy-96v"/>
             </connections>
             <point key="canvasLocation" x="137.68115942028987" y="68.303571428571431"/>
         </tableViewCell>
     </objects>
     <resources>
         <image name="chevron.right.circle" catalog="system" width="128" height="121"/>
+        <systemColor name="systemPinkColor">
+            <color red="1" green="0.17647058823529413" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
     </resources>
 </document>

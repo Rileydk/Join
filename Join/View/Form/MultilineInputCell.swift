@@ -10,7 +10,7 @@ import UIKit
 class MultilineInputCell: TableViewCell {
 
     @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var mustFillSignalLabel: UILabel!
+    @IBOutlet weak var mustFillSignLabel: UILabel!
     @IBOutlet weak var instructionLabel: UILabel!
     @IBOutlet weak var textView: UITextView!
 
@@ -21,7 +21,7 @@ class MultilineInputCell: TableViewCell {
 
     func layoutCell(info: ItemInfo) {
         titleLabel.text = info.name
-        mustFillSignalLabel.isHidden = !info.must
+        mustFillSignLabel.isHidden = !info.must
         instructionLabel.text = info.instruction
     }
 }

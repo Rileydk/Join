@@ -70,7 +70,7 @@
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
                 <outlet property="instructionLabel" destination="vlF-ZJ-Saf" id="ISZ-wY-lcc"/>
-                <outlet property="mustFillSignalLabel" destination="wrF-bv-8tR" id="tfD-bw-hBU"/>
+                <outlet property="mustFillSignLabel" destination="wrF-bv-8tR" id="tfD-bw-hBU"/>
                 <outlet property="textView" destination="nxb-2J-C3i" id="7bx-i4-dqE"/>
                 <outlet property="titleLabel" destination="84J-cY-C8E" id="RSf-zN-tcq"/>
             </connections>

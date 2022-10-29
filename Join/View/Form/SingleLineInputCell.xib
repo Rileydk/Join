@@ -65,7 +65,7 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
                 <outlet property="instructionLabel" destination="tqa-zW-utu" id="94I-or-nsm"/>
-                <outlet property="mustFillSignalLabel" destination="mbn-W0-Ibg" id="BXd-Cv-FkX"/>
+                <outlet property="mustFillSignLabel" destination="mbn-W0-Ibg" id="BXd-Cv-FkX"/>
                 <outlet property="textField" destination="9Ie-hB-XIW" id="cOx-f6-rur"/>
                 <outlet property="titleLabel" destination="zB2-jm-MxY" id="vO0-f1-tTI"/>
             </connections>
