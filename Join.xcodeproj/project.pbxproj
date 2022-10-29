@@ -15,6 +15,12 @@
 		BF42FA3E290BE2AC00501789 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BF42FA3D290BE2AC00501789 /* Assets.xcassets */; };
 		BF42FA41290BE2AC00501789 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BF42FA3F290BE2AC00501789 /* LaunchScreen.storyboard */; };
 		BF42FA4E290CE05800501789 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BF42FA4D290CE05800501789 /* GoogleService-Info.plist */; };
+		BF42FA56290CE89500501789 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FA55290CE89500501789 /* TabBarController.swift */; };
+		BF42FA58290CEA5900501789 /* FindIdeas.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BF42FA57290CEA5900501789 /* FindIdeas.storyboard */; };
+		BF42FA5C290CED6C00501789 /* FindPartners.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BF42FA59290CEA7F00501789 /* FindPartners.storyboard */; };
+		BF42FA5D290CED7100501789 /* Chat.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BF42FA5A290CEAB500501789 /* Chat.storyboard */; };
+		BF42FA5E290CED7400501789 /* Personal.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BF42FA5B290CEAD500501789 /* Personal.storyboard */; };
+		BF42FA61290CEF4700501789 /* UIStoryboard+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FA60290CEF4700501789 /* UIStoryboard+Ext.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +34,12 @@
 		BF42FA40290BE2AC00501789 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		BF42FA42290BE2AC00501789 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BF42FA4D290CE05800501789 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		BF42FA55290CE89500501789 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
+		BF42FA57290CEA5900501789 /* FindIdeas.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = FindIdeas.storyboard; sourceTree = "<group>"; };
+		BF42FA59290CEA7F00501789 /* FindPartners.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = FindPartners.storyboard; sourceTree = "<group>"; };
+		BF42FA5A290CEAB500501789 /* Chat.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Chat.storyboard; path = /Users/riley/Desktop/iOS/Courses/appworks/Join/Join/View/Chat.storyboard; sourceTree = "<absolute>"; };
+		BF42FA5B290CEAD500501789 /* Personal.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Personal.storyboard; sourceTree = "<group>"; };
+		BF42FA60290CEF4700501789 /* UIStoryboard+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStoryboard+Ext.swift"; sourceTree = "<group>"; };
 		E73F750E744AEAB2F0006E8B /* Pods-Join.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Join.debug.xcconfig"; path = "Target Support Files/Pods-Join/Pods-Join.debug.xcconfig"; sourceTree = "<group>"; };
 		F30624BA8F470C0A1492643F /* Pods-Join.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Join.release.xcconfig"; path = "Target Support Files/Pods-Join/Pods-Join.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -87,6 +99,7 @@
 				BF42FA53290CE64300501789 /* View */,
 				BF42FA34290BE2AA00501789 /* AppDelegate.swift */,
 				BF42FA36290BE2AA00501789 /* SceneDelegate.swift */,
+				BF42FA5F290CEF2C00501789 /* Extension */,
 				BF42FA51290CE5D400501789 /* Resources */,
 			);
 			path = Join;
@@ -95,6 +108,7 @@
 		BF42FA50290CE5C400501789 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				BF42FA54290CE86700501789 /* Base */,
 				BF42FA38290BE2AA00501789 /* ViewController.swift */,
 			);
 			path = Controller;
@@ -122,8 +136,28 @@
 			isa = PBXGroup;
 			children = (
 				BF42FA3A290BE2AA00501789 /* Main.storyboard */,
+				BF42FA57290CEA5900501789 /* FindIdeas.storyboard */,
+				BF42FA59290CEA7F00501789 /* FindPartners.storyboard */,
+				BF42FA5A290CEAB500501789 /* Chat.storyboard */,
+				BF42FA5B290CEAD500501789 /* Personal.storyboard */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		BF42FA54290CE86700501789 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				BF42FA55290CE89500501789 /* TabBarController.swift */,
+			);
+			path = Base;
+			sourceTree = "<group>";
+		};
+		BF42FA5F290CEF2C00501789 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				BF42FA60290CEF4700501789 /* UIStoryboard+Ext.swift */,
+			);
+			path = Extension;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -187,9 +221,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BF42FA5D290CED7100501789 /* Chat.storyboard in Resources */,
 				BF42FA41290BE2AC00501789 /* LaunchScreen.storyboard in Resources */,
+				BF42FA58290CEA5900501789 /* FindIdeas.storyboard in Resources */,
+				BF42FA5C290CED6C00501789 /* FindPartners.storyboard in Resources */,
 				BF42FA3E290BE2AC00501789 /* Assets.xcassets in Resources */,
 				BF42FA4E290CE05800501789 /* GoogleService-Info.plist in Resources */,
+				BF42FA5E290CED7400501789 /* Personal.storyboard in Resources */,
 				BF42FA3C290BE2AA00501789 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -260,9 +298,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BF42FA56290CE89500501789 /* TabBarController.swift in Sources */,
 				BF42FA39290BE2AA00501789 /* ViewController.swift in Sources */,
 				BF42FA35290BE2AA00501789 /* AppDelegate.swift in Sources */,
 				BF42FA37290BE2AA00501789 /* SceneDelegate.swift in Sources */,
+				BF42FA61290CEF4700501789 /* UIStoryboard+Ext.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
