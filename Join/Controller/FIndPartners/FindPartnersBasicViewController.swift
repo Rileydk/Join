@@ -15,6 +15,10 @@ class FindPartnersBasicViewController: UIViewController {
                 UINib(nibName: SingleLineInputCell.identifier, bundle: nil),
                 forCellReuseIdentifier: SingleLineInputCell.identifier
             )
+            tableView.register(
+                UINib(nibName: MultilineInputCell.identifier, bundle: nil),
+                forCellReuseIdentifier: MultilineInputCell.identifier
+            )
             tableView.delegate = self
             tableView.dataSource = self
             tableView.separatorStyle = .none
@@ -31,12 +35,15 @@ class FindPartnersBasicViewController: UIViewController {
 // MARK: - Table View Delegate
 extension FindPartnersBasicViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        120
-//        if indexPath.section == 0 {
-//            if indexPath.row == 0 {
-//
-//            }
-//        }
+        let inputType = formState.items[indexPath.row].type
+        if inputType == .goNextButton {
+            return 80
+        } else if inputType == .textField {
+            return 120
+        } else {
+            // if inputType == .textView
+            return 200
+        }
     }
 }
 
@@ -47,13 +54,25 @@ extension FindPartnersBasicViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.row == 
-        guard let cell = tableView.dequeueReusableCell(
-            withIdentifier: SingleLineInputCell.identifier,
-            for: indexPath) as? SingleLineInputCell else {
-            fatalError("Cannot create single line input cell")
+        let inputType = formState.items[indexPath.row].type
+        if inputType == .textField {
+            guard let cell = tableView.dequeueReusableCell(
+                withIdentifier: SingleLineInputCell.identifier,
+                for: indexPath) as? SingleLineInputCell else {
+                fatalError("Cannot create single line input cell")
+            }
+            cell.layoutCell(info: formState.items[indexPath.row])
+            return cell
+
+        } else {
+            //if inputType == .textView
+            guard let cell = tableView.dequeueReusableCell(
+                withIdentifier: MultilineInputCell.identifier,
+                for: indexPath) as? MultilineInputCell else {
+                fatalError("Cannot create single line input cell")
+            }
+            cell.layoutCell(info: formState.items[indexPath.row])
+            return cell
         }
-        cell.layoutCell(info: FindPartnersFormSections.sections[0].items[0])
-        return cell
     }
 }

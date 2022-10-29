@@ -8,7 +8,7 @@
 import Foundation
 
 struct FindPartnersFormSections {
-    static var sections = [basicSection, groupSection]
+    static var sections = [basicSection, groupSection, detailSection]
 
     static let basicSection = SectionInfo(
         title: "專案資訊",
