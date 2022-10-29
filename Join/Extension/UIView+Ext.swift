@@ -11,7 +11,7 @@ extension UIView {
     func addUnderline(color: UIColor = .black, width: CGFloat = 1) {
         let underline = UIView(
             frame: CGRect(
-                x: self.frame.minX, y: self.frame.minY,
+                x: self.frame.minX, y: self.frame.maxY,
                 width: self.frame.maxX - self.frame.minX, height: width
             )
         )

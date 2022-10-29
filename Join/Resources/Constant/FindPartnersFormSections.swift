@@ -7,10 +7,10 @@
 
 import Foundation
 
-struct FindPartnersFormTitles {
+struct FindPartnersFormSections {
     static var sections = [basicSection, groupSection]
 
-    private static let basicSection = SectionInfo(
+    static let basicSection = SectionInfo(
         title: "專案資訊",
         items: [
             ItemInfo(
@@ -28,7 +28,7 @@ struct FindPartnersFormTitles {
         ]
     )
 
-    private static let groupSection = SectionInfo(
+    static let groupSection = SectionInfo(
         title: "團隊與招募資訊",
         items: [
             ItemInfo(
@@ -42,7 +42,7 @@ struct FindPartnersFormTitles {
         ]
     )
 
-    private static let detailSection = SectionInfo(
+    static let detailSection = SectionInfo(
         title: "最後一步了",
         items: [
             ItemInfo(

@@ -8,5 +8,7 @@
 import UIKit
 
 class TableViewCell: UITableViewCell {
-    static let identifier = String(describing: TableViewCell.self)
+    static var identifier: String {
+        String(describing: self)
+    }
 }
