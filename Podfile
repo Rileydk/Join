@@ -8,5 +8,6 @@ target 'Join' do
   # Pods for Join
   pod 'FirebaseAuth'
   pod 'FirebaseFirestore'
+  pod "TTGTagCollectionView"
 
 end

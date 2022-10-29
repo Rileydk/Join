@@ -48,6 +48,7 @@ extension FindPartnersBasicViewController: UITableViewDelegate {
         } else if inputType == .textView {
             return 250
         } else {
+            // if inputType == .goNextPage
             return 100
         }
     }
@@ -78,6 +79,7 @@ extension FindPartnersBasicViewController: UITableViewDataSource {
             }
             cell.layoutCell(info: formState.items[indexPath.row])
             return cell
+
         } else {
             // if inputType == .goNextPage
             guard let cell = tableView.dequeueReusableCell(
@@ -85,7 +87,7 @@ extension FindPartnersBasicViewController: UITableViewDataSource {
                 for: indexPath) as? GoNextPageCell else {
                 fatalError("Cannot create single line input cell")
             }
-            cell.layoutCell(info: formState.items[indexPath.row])
+            cell.layoutCell(info: formState.items[indexPath.row], containsTags: true)
             return cell
         }
     }
