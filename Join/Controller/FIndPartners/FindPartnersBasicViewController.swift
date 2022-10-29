@@ -19,9 +19,14 @@ class FindPartnersBasicViewController: UIViewController {
                 UINib(nibName: MultilineInputCell.identifier, bundle: nil),
                 forCellReuseIdentifier: MultilineInputCell.identifier
             )
+            tableView.register(
+                UINib(nibName: GoNextPageCell.identifier, bundle: nil),
+                forCellReuseIdentifier: GoNextPageCell.identifier
+            )
             tableView.delegate = self
             tableView.dataSource = self
             tableView.separatorStyle = .none
+            tableView.estimatedRowHeight = UITableView.automaticDimension
         }
     }
 
@@ -37,12 +42,13 @@ extension FindPartnersBasicViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let inputType = formState.items[indexPath.row].type
         if inputType == .goNextButton {
-            return 80
+            return UITableView.automaticDimension
         } else if inputType == .textField {
             return 120
+        } else if inputType == .textView {
+            return 250
         } else {
-            // if inputType == .textView
-            return 200
+            return 100
         }
     }
 }
@@ -64,11 +70,19 @@ extension FindPartnersBasicViewController: UITableViewDataSource {
             cell.layoutCell(info: formState.items[indexPath.row])
             return cell
 
-        } else {
-            //if inputType == .textView
+        } else if inputType == .textView {
             guard let cell = tableView.dequeueReusableCell(
                 withIdentifier: MultilineInputCell.identifier,
                 for: indexPath) as? MultilineInputCell else {
+                fatalError("Cannot create single line input cell")
+            }
+            cell.layoutCell(info: formState.items[indexPath.row])
+            return cell
+        } else {
+            // if inputType == .goNextPage
+            guard let cell = tableView.dequeueReusableCell(
+                withIdentifier: GoNextPageCell.identifier,
+                for: indexPath) as? GoNextPageCell else {
                 fatalError("Cannot create single line input cell")
             }
             cell.layoutCell(info: formState.items[indexPath.row])
