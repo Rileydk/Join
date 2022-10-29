@@ -170,3 +170,13 @@ Dependencies/
 # End of https://www.toptal.com/developers/gitignore/api/swift,objective-c,macos,xcode
 weava logo
 Drop here!
+
+### Firebase ###
+.idea
+**/node_modules/*
+**/.firebaserc
+*/GoogleService-Info.plist
+
+### Firebase Patch ###
+.runtimeconfig.json
+.firebase/
