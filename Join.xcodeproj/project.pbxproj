@@ -50,7 +50,6 @@
 				E73F750E744AEAB2F0006E8B /* Pods-Join.debug.xcconfig */,
 				F30624BA8F470C0A1492643F /* Pods-Join.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -83,16 +82,48 @@
 		BF42FA33290BE2AA00501789 /* Join */ = {
 			isa = PBXGroup;
 			children = (
+				BF42FA52290CE63C00501789 /* Model */,
+				BF42FA50290CE5C400501789 /* Controller */,
+				BF42FA53290CE64300501789 /* View */,
 				BF42FA34290BE2AA00501789 /* AppDelegate.swift */,
 				BF42FA36290BE2AA00501789 /* SceneDelegate.swift */,
+				BF42FA51290CE5D400501789 /* Resources */,
+			);
+			path = Join;
+			sourceTree = "<group>";
+		};
+		BF42FA50290CE5C400501789 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
 				BF42FA38290BE2AA00501789 /* ViewController.swift */,
-				BF42FA3A290BE2AA00501789 /* Main.storyboard */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		BF42FA51290CE5D400501789 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
 				BF42FA3D290BE2AC00501789 /* Assets.xcassets */,
 				BF42FA3F290BE2AC00501789 /* LaunchScreen.storyboard */,
 				BF42FA42290BE2AC00501789 /* Info.plist */,
 				BF42FA4D290CE05800501789 /* GoogleService-Info.plist */,
 			);
-			path = Join;
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		BF42FA52290CE63C00501789 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		BF42FA53290CE64300501789 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				BF42FA3A290BE2AA00501789 /* Main.storyboard */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -381,7 +412,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = LC7DCZXZ89;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Join/Info.plist;
+				INFOPLIST_FILE = Join/Resources/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -410,7 +441,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = LC7DCZXZ89;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Join/Info.plist;
+				INFOPLIST_FILE = Join/Resources/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
