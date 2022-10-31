@@ -140,14 +140,16 @@ class FindPartnersBasicViewController: UIViewController {
 extension FindPartnersBasicViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let inputType = formState.items[indexPath.row].type
-        if inputType == .goNextButton || inputType == .addButton {
+        if inputType == .addButton {
             return UITableView.automaticDimension
         } else if inputType == .textField {
             return 120
         } else if inputType == .textView {
             return 250
+        } else if inputType == .goNextButton {
+            //使用 TTGTag 似乎無法用 automaticDimension 推開 cell
+            return 200
         } else {
-            // if inputType == .addButton
             return 100
         }
     }
