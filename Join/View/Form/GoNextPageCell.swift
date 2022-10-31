@@ -15,11 +15,17 @@ class GoNextPageCell: TableViewCell {
     @IBOutlet weak var chevronRightImageView: UIButton!
 
     let tagView = TTGTextTagCollectionView()
+    var tapHandler: (() -> ())?
 
     override func awakeFromNib() {
         super.awakeFromNib()
         button.backgroundColor = .gray
         button.setTitleColor(.white, for: .normal)
+    }
+
+    @IBAction func buttonTapped() {
+        print("button tapped")
+        tapHandler?()
     }
 
     func layoutCell(info: ItemInfo, containsTags: Bool) {
@@ -45,8 +51,6 @@ class GoNextPageCell: TableViewCell {
             TTGTextTag(content: TTGTextTagStringContent(text: $0), style: style)
         }
         tagView.add(tagTitles)
-//        let textTag = TTGTextTag(content: TTGTextTagStringContent(text: "xxx"), style: TTGTextTagStyle())
-//        tagView.addTag(textTag)
         tagView.reload()
     }
 }

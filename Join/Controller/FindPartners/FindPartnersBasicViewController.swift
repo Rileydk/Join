@@ -75,7 +75,7 @@ class FindPartnersBasicViewController: UIViewController {
     }
 
     @objc func goNextPage() {
-        print("go next page")
+        
     }
 }
 
@@ -130,6 +130,16 @@ extension FindPartnersBasicViewController: UITableViewDataSource {
                 fatalError("Cannot create single line input cell")
             }
             cell.layoutCell(info: formState.items[indexPath.row], containsTags: true)
+            cell.tapHandler = { [weak self] in
+                let selectCategoriesVC = SelectionCategoriesViewController()
+                selectCategoriesVC.view.backgroundColor = .white
+                selectCategoriesVC.modalPresentationStyle = .pageSheet
+                if #available(iOS 15.0, *) {
+                    selectCategoriesVC.sheetPresentationController?.detents = [.medium(), .large()]
+                    selectCategoriesVC.sheetPresentationController?.prefersGrabberVisible = true
+                }
+                self?.present(selectCategoriesVC, animated: true)
+            }
             return cell
         }
     }
