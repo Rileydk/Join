@@ -14,7 +14,6 @@
 		BF42FA3C290BE2AA00501789 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BF42FA3A290BE2AA00501789 /* Main.storyboard */; };
 		BF42FA3E290BE2AC00501789 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BF42FA3D290BE2AC00501789 /* Assets.xcassets */; };
 		BF42FA41290BE2AC00501789 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BF42FA3F290BE2AC00501789 /* LaunchScreen.storyboard */; };
-		BF42FA4E290CE05800501789 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BF42FA4D290CE05800501789 /* GoogleService-Info.plist */; };
 		BF42FA56290CE89500501789 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FA55290CE89500501789 /* TabBarController.swift */; };
 		BF42FA58290CEA5900501789 /* FindIdeas.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BF42FA57290CEA5900501789 /* FindIdeas.storyboard */; };
 		BF42FA5C290CED6C00501789 /* FindPartners.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BF42FA59290CEA7F00501789 /* FindPartners.storyboard */; };
@@ -43,7 +42,6 @@
 		BF42FA3D290BE2AC00501789 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BF42FA40290BE2AC00501789 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		BF42FA42290BE2AC00501789 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		BF42FA4D290CE05800501789 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		BF42FA55290CE89500501789 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		BF42FA57290CEA5900501789 /* FindIdeas.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = FindIdeas.storyboard; sourceTree = "<group>"; };
 		BF42FA59290CEA7F00501789 /* FindPartners.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = FindPartners.storyboard; sourceTree = "<group>"; };
@@ -142,7 +140,6 @@
 				BF42FA3D290BE2AC00501789 /* Assets.xcassets */,
 				BF42FA3F290BE2AC00501789 /* LaunchScreen.storyboard */,
 				BF42FA42290BE2AC00501789 /* Info.plist */,
-				BF42FA4D290CE05800501789 /* GoogleService-Info.plist */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -290,7 +287,6 @@
 				BF42FA58290CEA5900501789 /* FindIdeas.storyboard in Resources */,
 				BF42FA5C290CED6C00501789 /* FindPartners.storyboard in Resources */,
 				BF42FA3E290BE2AC00501789 /* Assets.xcassets in Resources */,
-				BF42FA4E290CE05800501789 /* GoogleService-Info.plist in Resources */,
 				BF42FA5E290CED7400501789 /* Personal.storyboard in Resources */,
 				BF42FA82290D31EF00501789 /* GoNextPageCell.xib in Resources */,
 				BF42FA3C290BE2AA00501789 /* Main.storyboard in Resources */,
