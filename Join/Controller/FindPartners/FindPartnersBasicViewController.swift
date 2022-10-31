@@ -40,8 +40,8 @@ class FindPartnersBasicViewController: UIViewController {
                 forCellReuseIdentifier: GoSelectionCell.identifier
             )
             tableView.register(
-                UINib(nibName: AddNewLineCell.identifier, bundle: nil),
-                forCellReuseIdentifier: AddNewLineCell.identifier
+                UINib(nibName: AddNewLineSectionCell.identifier, bundle: nil),
+                forCellReuseIdentifier: AddNewLineSectionCell.identifier
             )
             tableView.delegate = self
             tableView.dataSource = self
@@ -147,7 +147,7 @@ extension FindPartnersBasicViewController: UITableViewDelegate {
         } else if inputType == .textView {
             return 250
         } else if inputType == .goNextButton {
-            //使用 TTGTag 似乎無法用 automaticDimension 推開 cell
+            // 使用 TTGTag 似乎無法用 automaticDimension 推開 cell
             return 200
         } else {
             return 100
@@ -199,15 +199,44 @@ extension FindPartnersBasicViewController: UITableViewDataSource {
             }
             return cell
 
-        } else {
-            // if inputType == .addButton
+        } else if inputType == .addButton {
             guard let cell = tableView.dequeueReusableCell(
-                withIdentifier: AddNewLineCell.identifier,
-                for: indexPath) as? AddNewLineCell else {
+                withIdentifier: AddNewLineSectionCell.identifier,
+                for: indexPath) as? AddNewLineSectionCell else {
                 fatalError("Cannot create add new line cell")
             }
             cell.layoutCell(info: formState.items[indexPath.row])
+
+            let findPartnersStoryboard = UIStoryboard(
+                name: StoryboardCategory.findPartners.rawValue,
+                bundle: nil
+            )
+
+            let membersTitle = FindPartnersFormSections.groupSection.items[0].name
+            let recruitingTitle = FindPartnersFormSections.groupSection.items[1].name
+            let title = formState.items[indexPath.row].name
+
+            guard let memberVC = findPartnersStoryboard.instantiateViewController(
+                withIdentifier: MemberCardViewController.identifier
+            ) as? MemberCardViewController else {
+                fatalError("Cannot load member card VC from storyboard")
+            }
+
+            if title == membersTitle {
+                cell.tapHandler = { [weak self] in
+                    memberVC.type = .member
+                    self?.present(memberVC, animated: true)
+                }
+            } else if title == recruitingTitle {
+                cell.tapHandler = { [weak self] in
+                    memberVC.type = .recruiting
+                    self?.present(memberVC, animated: true)
+                }
+            }
+
             return cell
+        } else {
+            fatalError("Should not come here")
         }
     }
 

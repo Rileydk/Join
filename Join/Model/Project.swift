@@ -15,13 +15,20 @@ struct Project {
 //    let deadline: Date
 //    let location:
     var image: UIImage?
-    var members: [User]?
-    var recruiting = [Position]()
+    var members = [User]()
+    var recruiting = [OpenPosition]()
     var applicants = [User]()
 }
 
-struct Position {
-    var title: String
-    var skill: String
+struct Member {
+    let id: String
+    var role: String
+    var skills: [String]
+}
+
+struct OpenPosition {
+    var role: String
+    var skill: [String]
     var description: String
+    var number: Int
 }

@@ -7,10 +7,12 @@
 
 import UIKit
 
-class AddNewLineCell: TableViewCell {
+class AddNewLineSectionCell: TableViewCell {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var mustFillSignLabel: UILabel!
     @IBOutlet weak var addNewButton: UIButton!
+
+    var tapHandler: (() -> Void)?
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -18,6 +20,7 @@ class AddNewLineCell: TableViewCell {
     }
 
     @IBAction func addNewColumn() {
+        tapHandler?()
     }
 
     func layoutCell(info: ItemInfo) {

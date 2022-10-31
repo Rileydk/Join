@@ -66,6 +66,8 @@ struct FindPartnersFormSections {
             )
         ]
     )
+
+    static let memberBranchButtonTitle = "完成"
 }
 
 struct SectionInfo: Equatable {
