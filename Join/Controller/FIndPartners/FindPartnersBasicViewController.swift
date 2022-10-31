@@ -111,7 +111,6 @@ extension FindPartnersBasicViewController: UITableViewDataSource {
                 fatalError("Cannot create single line input cell")
             }
             cell.layoutCell(info: formState.items[indexPath.row])
-            cell.textField.delegate = self
             return cell
 
         } else if inputType == .textView {
@@ -133,19 +132,5 @@ extension FindPartnersBasicViewController: UITableViewDataSource {
             cell.layoutCell(info: formState.items[indexPath.row], containsTags: true)
             return cell
         }
-    }
-}
-
-// MARK: - Text Field Delegate
-extension FindPartnersBasicViewController: UITextFieldDelegate {
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-    }
-}
-
-// MARK: - Text View Delegate
-extension FindPartnersBasicViewController {
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        
     }
 }

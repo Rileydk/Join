@@ -9,5 +9,6 @@ target 'Join' do
   pod 'FirebaseAuth'
   pod 'FirebaseFirestore'
   pod "TTGTagCollectionView"
+  pod 'IQKeyboardManagerSwift'
 
 end
