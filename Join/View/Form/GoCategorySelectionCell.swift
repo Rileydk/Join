@@ -8,14 +8,14 @@
 import UIKit
 import TTGTags
 
-class GoNextPageCell: TableViewCell {
+class GoCategorySelectionCell: TableViewCell {
     @IBOutlet weak var titleLable: UILabel!
     @IBOutlet weak var mustFillSignLabel: UILabel!
     @IBOutlet weak var button: UIButton!
     @IBOutlet weak var chevronRightImageView: UIButton!
 
     let tagView = TTGTextTagCollectionView()
-    var tapHandler: (() -> ())?
+    var tapHandler: (() -> Void)?
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -24,15 +24,19 @@ class GoNextPageCell: TableViewCell {
     }
 
     @IBAction func buttonTapped() {
-        print("button tapped")
         tapHandler?()
     }
 
-    func layoutCell(info: ItemInfo, containsTags: Bool) {
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        tagView.removeAllTags()
+    }
+
+    func layoutCell(info: ItemInfo, tags: [String]? = nil) {
         titleLable.text = info.name
         mustFillSignLabel.isHidden = !info.must
 
-        if containsTags {
+        if let tags = tags {
             addSubview(tagView)
             tagView.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activate([
@@ -41,16 +45,17 @@ class GoNextPageCell: TableViewCell {
                 tagView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
                 tagView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 16)
             ])
-        }
 
-        tagView.alignment = .left
-        let style = TTGTextTagStyle()
-        style.backgroundColor = .yellow
-        style.cornerRadius = 10
-        let tagTitles = ["a", "b", "c", "d"].map {
-            TTGTextTag(content: TTGTextTagStringContent(text: $0), style: style)
+            tagView.alignment = .left
+            let style = TTGTextTagStyle()
+            style.backgroundColor = .yellow
+            style.cornerRadius = 10
+            let tagTitles = tags.map {
+                TTGTextTag(content: TTGTextTagStringContent(text: $0), style: style)
+            }
+
+            tagView.add(tagTitles)
+            tagView.reload()
         }
-        tagView.add(tagTitles)
-        tagView.reload()
     }
 }

@@ -10,11 +10,27 @@ import TTGTags
 
 class SelectionCategoriesViewController: UIViewController {
     let tagView = TTGTextTagCollectionView()
-    var selectedCategories = [String]()
+    var allCategories = ["Software", "Social Networking", "Workshop", "Music", "+"]
+    var selectedCategories: [String]
+    var passingHandler: (([String]) -> Void)?
+
+    init(selectedCategories: [String]) {
+        self.selectedCategories = selectedCategories
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         layoutViews()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        passingHandler?(selectedCategories)
     }
 
     func layoutViews() {
@@ -33,15 +49,20 @@ class SelectionCategoriesViewController: UIViewController {
         style.cornerRadius = 10
         let selectedStyle = TTGTextTagStyle()
         selectedStyle.backgroundColor = .green
-        let tagTitles = ["Software", "Social Networking", "Workshop", "Music", "+"].map {
-            TTGTextTag(
+
+        let tags: [TTGTextTag] = allCategories.map {
+            let tag = TTGTextTag(
                 content: TTGTextTagStringContent(text: $0),
                 style: style,
                 selectedContent: TTGTextTagStringContent(text: $0),
                 selectedStyle: selectedStyle
             )
+            tag.selected = selectedCategories.contains($0)
+            return tag
         }
-        tagView.add(tagTitles)
+        tags.last!.selectedStyle = style
+
+        tagView.add(tags)
         tagView.reload()
     }
 }
@@ -50,14 +71,18 @@ class SelectionCategoriesViewController: UIViewController {
 extension SelectionCategoriesViewController: TTGTextTagCollectionViewDelegate {
     // swiftlint:disable line_length
     func textTagCollectionView(_ textTagCollectionView: TTGTextTagCollectionView!, didTap tag: TTGTextTag!, at index: UInt) {
+        if tag == textTagCollectionView.allTags().last! {
+            tag.selected = false
+            return
+        }
+
         if let selectedCategory = (tag.content as? TTGTextTagStringContent)?.text {
             if selectedCategories.contains(selectedCategory) {
                 let index = selectedCategories.firstIndex(of: selectedCategory)!
-                selectedCategories.remove(at: index)
+                self.selectedCategories.remove(at: index)
             } else {
-                selectedCategories.append(selectedCategory)
+                self.selectedCategories.append(selectedCategory)
             }
         }
-        print(selectedCategories)
     }
 }
