@@ -12,7 +12,7 @@ class GoSelectionCell: TableViewCell {
     @IBOutlet weak var titleLable: UILabel!
     @IBOutlet weak var mustFillSignLabel: UILabel!
     @IBOutlet weak var button: UIButton!
-    @IBOutlet weak var chevronRightImageView: UIButton!
+    @IBOutlet weak var chevronDownImageView: UIButton!
 
     let tagView = TTGTextTagCollectionView()
     var tapHandler: (() -> Void)?

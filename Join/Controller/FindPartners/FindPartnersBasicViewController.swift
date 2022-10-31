@@ -55,6 +55,7 @@ class FindPartnersBasicViewController: UIViewController {
     var formState = FindPartnersFormSections.basicSection
     var selectedCategories = [String]() {
         didSet {
+            print("categories", selectedCategories)
             tableView.reloadRows(at: [IndexPath(row: 2, section: 0)], with: .none)
         }
     }
@@ -161,7 +162,6 @@ extension FindPartnersBasicViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // TODO: - 有沒有辦法用 Protocol 簡化 cell 的 deque 過程？
         let inputType = formState.items[indexPath.row].type
-        print("items", formState.items)
         if inputType == .textField {
             guard let cell = tableView.dequeueReusableCell(
                 withIdentifier: SingleLineInputCell.identifier,
@@ -199,7 +199,9 @@ extension FindPartnersBasicViewController: UITableViewDataSource {
 
         } else {
             // if inputType == .addButton
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: AddNewLineCell.identifier, for: indexPath) as? AddNewLineCell else {
+            guard let cell = tableView.dequeueReusableCell(
+                withIdentifier: AddNewLineCell.identifier,
+                for: indexPath) as? AddNewLineCell else {
                 fatalError("Cannot create add new line cell")
             }
             cell.layoutCell(info: formState.items[indexPath.row])
