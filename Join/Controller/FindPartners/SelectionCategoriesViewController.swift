@@ -10,6 +10,7 @@ import TTGTags
 
 class SelectionCategoriesViewController: UIViewController {
     let tagView = TTGTextTagCollectionView()
+    var selectedCategories = [String]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,14 +26,38 @@ class SelectionCategoriesViewController: UIViewController {
             tagView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
         ])
 
+        tagView.delegate = self
         tagView.alignment = .left
         let style = TTGTextTagStyle()
         style.backgroundColor = .yellow
         style.cornerRadius = 10
-        let tagTitles = ["Software", "Social Networking", "Workshop", "Music"].map {
-            TTGTextTag(content: TTGTextTagStringContent(text: $0), style: style)
+        let selectedStyle = TTGTextTagStyle()
+        selectedStyle.backgroundColor = .green
+        let tagTitles = ["Software", "Social Networking", "Workshop", "Music", "+"].map {
+            TTGTextTag(
+                content: TTGTextTagStringContent(text: $0),
+                style: style,
+                selectedContent: TTGTextTagStringContent(text: $0),
+                selectedStyle: selectedStyle
+            )
         }
         tagView.add(tagTitles)
         tagView.reload()
+    }
+}
+
+// MARK: - TTG Delegate
+extension SelectionCategoriesViewController: TTGTextTagCollectionViewDelegate {
+    // swiftlint:disable line_length
+    func textTagCollectionView(_ textTagCollectionView: TTGTextTagCollectionView!, didTap tag: TTGTextTag!, at index: UInt) {
+        if let selectedCategory = (tag.content as? TTGTextTagStringContent)?.text {
+            if selectedCategories.contains(selectedCategory) {
+                let index = selectedCategories.firstIndex(of: selectedCategory)!
+                selectedCategories.remove(at: index)
+            } else {
+                selectedCategories.append(selectedCategory)
+            }
+        }
+        print(selectedCategories)
     }
 }
