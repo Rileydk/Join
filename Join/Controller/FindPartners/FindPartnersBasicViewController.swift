@@ -8,6 +8,7 @@
 import UIKit
 
 class FindPartnersBasicViewController: UIViewController {
+    static let identifier = String(describing: FindPartnersBasicViewController.self)
 
     lazy var bottomView: UIView = {
         let view = UIView()
@@ -35,8 +36,12 @@ class FindPartnersBasicViewController: UIViewController {
                 forCellReuseIdentifier: MultilineInputCell.identifier
             )
             tableView.register(
-                UINib(nibName: GoCategorySelectionCell.identifier, bundle: nil),
-                forCellReuseIdentifier: GoCategorySelectionCell.identifier
+                UINib(nibName: GoSelectionCell.identifier, bundle: nil),
+                forCellReuseIdentifier: GoSelectionCell.identifier
+            )
+            tableView.register(
+                UINib(nibName: AddNewLineCell.identifier, bundle: nil),
+                forCellReuseIdentifier: AddNewLineCell.identifier
             )
             tableView.delegate = self
             tableView.dataSource = self
@@ -46,6 +51,7 @@ class FindPartnersBasicViewController: UIViewController {
         }
     }
 
+    var project = Project()
     var formState = FindPartnersFormSections.basicSection
     var selectedCategories = [String]() {
         didSet {
@@ -80,7 +86,33 @@ class FindPartnersBasicViewController: UIViewController {
     }
 
     @objc func goNextPage() {
+        project.categories = selectedCategories
+        if formState == FindPartnersFormSections.basicSection {
+            if !(project.name.isEmpty || project.description.isEmpty || project.categories.isEmpty) {
+                let findPartnersStoryboard = UIStoryboard(
+                    name: StoryboardCategory.findPartners.rawValue, bundle: nil
+                )
+                guard let nextVC = findPartnersStoryboard.instantiateViewController(
+                    identifier: FindPartnersBasicViewController.identifier
+                    ) as? FindPartnersBasicViewController else {
+                    fatalError("Cannot load FindPartnersBasicVC from storyboard.")
+                }
+                nextVC.project = project
+                nextVC.formState = FindPartnersFormSections.groupSection
+                nextVC.view.backgroundColor = .white
+                navigationController?.pushViewController(nextVC, animated: true)
 
+            } else {
+                alertUserToFillColumns()
+            }
+        }
+    }
+
+    func alertUserToFillColumns() {
+        let alert = UIAlertController(title: "所有必填欄位都要填喔", message: nil, preferredStyle: .alert)
+        let action = UIAlertAction(title: "OK", style: .default)
+        alert.addAction(action)
+        present(alert, animated: true)
     }
 
     func goSelectCategories() {
@@ -107,14 +139,14 @@ class FindPartnersBasicViewController: UIViewController {
 extension FindPartnersBasicViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let inputType = formState.items[indexPath.row].type
-        if inputType == .goNextButton {
+        if inputType == .goNextButton || inputType == .addButton {
             return UITableView.automaticDimension
         } else if inputType == .textField {
             return 120
         } else if inputType == .textView {
             return 250
         } else {
-            // if inputType == .goNextPage
+            // if inputType == .addButton
             return 100
         }
     }
@@ -127,7 +159,9 @@ extension FindPartnersBasicViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        // TODO: - 有沒有辦法用 Protocol 簡化 cell 的 deque 過程？
         let inputType = formState.items[indexPath.row].type
+        print("items", formState.items)
         if inputType == .textField {
             guard let cell = tableView.dequeueReusableCell(
                 withIdentifier: SingleLineInputCell.identifier,
@@ -135,6 +169,7 @@ extension FindPartnersBasicViewController: UITableViewDataSource {
                 fatalError("Cannot create single line input cell")
             }
             cell.layoutCell(info: formState.items[indexPath.row])
+            cell.textField.delegate = self
             return cell
 
         } else if inputType == .textView {
@@ -144,13 +179,13 @@ extension FindPartnersBasicViewController: UITableViewDataSource {
                 fatalError("Cannot create single line input cell")
             }
             cell.layoutCell(info: formState.items[indexPath.row])
+            cell.textView.delegate = self
             return cell
 
-        } else {
-            // if inputType == .goNextPage
+        } else if inputType == .goNextButton {
             guard let cell = tableView.dequeueReusableCell(
-                withIdentifier: GoCategorySelectionCell.identifier,
-                for: indexPath) as? GoCategorySelectionCell else {
+                withIdentifier: GoSelectionCell.identifier,
+                for: indexPath) as? GoSelectionCell else {
                 fatalError("Cannot create single line input cell")
             }
             cell.layoutCell(
@@ -161,6 +196,32 @@ extension FindPartnersBasicViewController: UITableViewDataSource {
                 self?.goSelectCategories()
             }
             return cell
+
+        } else {
+            // if inputType == .addButton
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: AddNewLineCell.identifier, for: indexPath) as? AddNewLineCell else {
+                fatalError("Cannot create add new line cell")
+            }
+            cell.layoutCell(info: formState.items[indexPath.row])
+            return cell
         }
+    }
+
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        formState.title
+    }
+}
+
+// MARK: - Text Field Delegate
+extension FindPartnersBasicViewController: UITextFieldDelegate {
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        project.name = textField.text ?? ""
+    }
+}
+
+// MARK: - Text View Delegate
+extension FindPartnersBasicViewController: UITextViewDelegate {
+    func textViewDidEndEditing(_ textView: UITextView) {
+        project.description = textView.text
     }
 }

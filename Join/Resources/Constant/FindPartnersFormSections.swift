@@ -24,7 +24,7 @@ struct FindPartnersFormSections {
             ),
             ItemInfo(
                 name: "專案類別", instruction: nil,
-                must: true, type: .collapse
+                must: true, type: .goNextButton
             )
         ]
     )
@@ -68,10 +68,14 @@ struct FindPartnersFormSections {
     )
 }
 
-struct SectionInfo {
+struct SectionInfo: Equatable {
     let title: String
     let buttonTitle: String
     let items: [ItemInfo]
+
+    static func == (lhs: SectionInfo, rhs: SectionInfo) -> Bool {
+        lhs.title == rhs.title
+    }
 }
 
 struct ItemInfo {

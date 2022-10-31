@@ -8,7 +8,7 @@
 import UIKit
 import TTGTags
 
-class GoCategorySelectionCell: TableViewCell {
+class GoSelectionCell: TableViewCell {
     @IBOutlet weak var titleLable: UILabel!
     @IBOutlet weak var mustFillSignLabel: UILabel!
     @IBOutlet weak var button: UIButton!
