@@ -30,6 +30,7 @@
 		BF42FA7E290D2ADB00501789 /* MultilineInputCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF42FA7C290D2ADB00501789 /* MultilineInputCell.xib */; };
 		BF42FA81290D31EF00501789 /* GoNextPageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FA7F290D31EF00501789 /* GoNextPageCell.swift */; };
 		BF42FA82290D31EF00501789 /* GoNextPageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF42FA80290D31EF00501789 /* GoNextPageCell.xib */; };
+		BF42FAAE290F6B8000501789 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BF42FAAD290F6B7F00501789 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -58,6 +59,7 @@
 		BF42FA7C290D2ADB00501789 /* MultilineInputCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MultilineInputCell.xib; sourceTree = "<group>"; };
 		BF42FA7F290D31EF00501789 /* GoNextPageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoNextPageCell.swift; sourceTree = "<group>"; };
 		BF42FA80290D31EF00501789 /* GoNextPageCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GoNextPageCell.xib; sourceTree = "<group>"; };
+		BF42FAAD290F6B7F00501789 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		E73F750E744AEAB2F0006E8B /* Pods-Join.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Join.debug.xcconfig"; path = "Target Support Files/Pods-Join/Pods-Join.debug.xcconfig"; sourceTree = "<group>"; };
 		F30624BA8F470C0A1492643F /* Pods-Join.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Join.release.xcconfig"; path = "Target Support Files/Pods-Join/Pods-Join.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -140,6 +142,7 @@
 				BF42FA3D290BE2AC00501789 /* Assets.xcassets */,
 				BF42FA3F290BE2AC00501789 /* LaunchScreen.storyboard */,
 				BF42FA42290BE2AC00501789 /* Info.plist */,
+				BF42FAAD290F6B7F00501789 /* GoogleService-Info.plist */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -288,6 +291,7 @@
 				BF42FA5C290CED6C00501789 /* FindPartners.storyboard in Resources */,
 				BF42FA3E290BE2AC00501789 /* Assets.xcassets in Resources */,
 				BF42FA5E290CED7400501789 /* Personal.storyboard in Resources */,
+				BF42FAAE290F6B8000501789 /* GoogleService-Info.plist in Resources */,
 				BF42FA82290D31EF00501789 /* GoNextPageCell.xib in Resources */,
 				BF42FA3C290BE2AA00501789 /* Main.storyboard in Resources */,
 			);
