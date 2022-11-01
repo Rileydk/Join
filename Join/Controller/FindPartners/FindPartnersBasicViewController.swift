@@ -61,8 +61,8 @@ class FindPartnersBasicViewController: UIViewController {
 
     @objc func goNextPage() {
         project.categories = selectedCategories
-        if formState == FindPartnersFormSections.basicSection {
-            if !(project.name.isEmpty || project.description.isEmpty || project.categories.isEmpty) {
+        if formState == FindPartnersFormSections.basicSection,
+           !(project.name.isEmpty || project.description.isEmpty || project.categories.isEmpty) {
                 let findPartnersStoryboard = UIStoryboard(
                     name: StoryboardCategory.findPartners.rawValue, bundle: nil
                 )
@@ -76,11 +76,8 @@ class FindPartnersBasicViewController: UIViewController {
                 nextVC.view.backgroundColor = .white
                 navigationController?.pushViewController(nextVC, animated: true)
 
-            } else {
-                alertUserToFillColumns()
-            }
-        } else if formState == FindPartnersFormSections.groupSection {
-            if !project.recruiting.isEmpty {
+        } else if formState == FindPartnersFormSections.groupSection,
+                  !project.recruiting.isEmpty {
                 let findPartnersStoryboard = UIStoryboard(
                     name: StoryboardCategory.findPartners.rawValue, bundle: nil
                 )
@@ -94,9 +91,12 @@ class FindPartnersBasicViewController: UIViewController {
                 nextVC.view.backgroundColor = .white
                 navigationController?.pushViewController(nextVC, animated: true)
 
-            } else {
-                alertUserToFillColumns()
-            }
+        } else if formState == FindPartnersFormSections.detailSection,
+                  project.deadline != nil && !project.location.isEmpty {
+            post()
+
+        } else {
+            alertUserToFillColumns()
         }
     }
 
@@ -124,6 +124,10 @@ class FindPartnersBasicViewController: UIViewController {
         }
 
         self.present(selectCategoriesVC, animated: true)
+    }
+
+    func post() {
+        print(project)
     }
 }
 
@@ -209,6 +213,7 @@ extension FindPartnersBasicViewController: UITableViewDataSource {
                 fatalError("Cannot create single line input cell")
             }
             cell.layoutCellWithTextField(info: formState.items[indexPath.row])
+            cell.delegate = self
             return cell
 
         } else {
@@ -287,6 +292,10 @@ extension FindPartnersBasicViewController: MemberCardDelegate {
 extension FindPartnersBasicViewController: GoSelectionCellDelegate {
     func cell(_ cell: GoSelectionCell, didSetDate date: Date) {
         project.deadline = date
+    }
+
+    func cell(_ cell: GoSelectionCell, didSetLocation location: String) {
+        project.location = location
         print(project)
     }
 }

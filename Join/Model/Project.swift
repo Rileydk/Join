@@ -13,7 +13,7 @@ struct Project {
     var description: String = ""
     var categories = [String]()
     var deadline: Date?
-//    let location:
+    var location = ""
     var image: UIImage?
     var members = [Member]()
     var recruiting = [OpenPosition]()

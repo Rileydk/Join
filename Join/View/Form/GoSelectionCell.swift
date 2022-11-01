@@ -10,6 +10,7 @@ import TTGTags
 
 protocol GoSelectionCellDelegate: AnyObject {
     func cell(_ cell: GoSelectionCell, didSetDate date: Date)
+    func cell(_ cell: GoSelectionCell, didSetLocation location: String)
 }
 
 class GoSelectionCell: TableViewCell {
@@ -20,6 +21,7 @@ class GoSelectionCell: TableViewCell {
 
     let tagView = TTGTextTagCollectionView()
     let datePicker = UIDatePicker()
+    let textField = UITextField()
     var tapHandler: (() -> Void)?
     weak var delegate: GoSelectionCellDelegate?
 
@@ -67,6 +69,8 @@ class GoSelectionCell: TableViewCell {
     }
 
     func layoutCellWithDatePicker(info: ItemInfo) {
+        layoutCell(info: info)
+
         datePicker.preferredDatePickerStyle = .compact
         // 加上這個會crash
         // datePicker.locale = Locale(identifier: FindPartnersFormSections.datePickerLocale)
@@ -86,10 +90,26 @@ class GoSelectionCell: TableViewCell {
     }
 
     func layoutCellWithTextField(info: ItemInfo) {
+        layoutCell(info: info)
 
+        textField.layer.borderWidth = 1
+        textField.layer.borderColor = UIColor.lightGray.cgColor
+        textField.addTarget(self, action: #selector(updateLocation), for: .editingChanged)
+
+        addSubview(textField)
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            textField.topAnchor.constraint(equalTo: button.bottomAnchor, constant: 20),
+            textField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 40),
+            textField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -40)
+        ])
     }
 
     @objc func updateDate() {
         delegate?.cell(self, didSetDate: datePicker.date)
+    }
+
+    @objc func updateLocation() {
+        delegate?.cell(self, didSetLocation: textField.text ?? "")
     }
 }
