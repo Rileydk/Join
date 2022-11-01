@@ -28,6 +28,10 @@ class FindPartnersBasicViewController: UIViewController {
                 UINib(nibName: AddNewLineSectionCell.identifier, bundle: nil),
                 forCellReuseIdentifier: AddNewLineSectionCell.identifier
             )
+            tableView.register(
+                UINib(nibName: ImagePickerCell.identifier, bundle: nil),
+                forCellReuseIdentifier: ImagePickerCell.identifier
+            )
             tableView.delegate = self
             tableView.dataSource = self
             tableView.separatorStyle = .none
@@ -56,7 +60,10 @@ class FindPartnersBasicViewController: UIViewController {
 
     func layoutView() {
         title = Tab.findPartners.title
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: formState.buttonTitle, style: .done, target: self, action: #selector(goNextPage))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            title: formState.buttonTitle, style: .done,
+            target: self, action: #selector(goNextPage)
+        )
     }
 
     @objc func goNextPage() {
@@ -144,6 +151,8 @@ extension FindPartnersBasicViewController: UITableViewDelegate {
             return 120
         } else if inputType == .textView {
             return 250
+        } else if inputType == .uploadImage {
+            return 300
         } else {
             return 100
         }
@@ -216,8 +225,7 @@ extension FindPartnersBasicViewController: UITableViewDataSource {
             cell.delegate = self
             return cell
 
-        } else {
-            // if inputType == .addButton
+        } else if inputType == .addButton {
             guard let cell = tableView.dequeueReusableCell(
                 withIdentifier: AddNewLineSectionCell.identifier,
                 for: indexPath) as? AddNewLineSectionCell else {
@@ -257,6 +265,19 @@ extension FindPartnersBasicViewController: UITableViewDataSource {
 
             return cell
 
+        } else {
+            // if inputType == .uploadImage
+            guard let cell = tableView.dequeueReusableCell(
+                withIdentifier: ImagePickerCell.identifier,
+                for: indexPath) as? ImagePickerCell else {
+                fatalError("Cannot create add image picker cell")
+            }
+            cell.layoutCell(info: formState.items[indexPath.row])
+            cell.delegate = self
+            cell.presentHandler = { [weak self] picker in
+                self?.present(picker, animated: true)
+            }
+            return cell
         }
     }
 
@@ -297,5 +318,13 @@ extension FindPartnersBasicViewController: GoSelectionCellDelegate {
     func cell(_ cell: GoSelectionCell, didSetLocation location: String) {
         project.location = location
         print(project)
+    }
+}
+
+// MARK: - Image Picker Cell Delegate
+extension FindPartnersBasicViewController: ImagePickerCellDelegate {
+    func imagePickerCell(_ cell: ImagePickerCell, didSetImage image: UIImage) {
+        project.image = image
+        tableView.reloadData()
     }
 }
