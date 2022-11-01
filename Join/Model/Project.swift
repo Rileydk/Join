@@ -12,7 +12,7 @@ struct Project {
     var name: String = ""
     var description: String = ""
     var categories = [String]()
-//    let deadline: Date
+    var deadline: Date?
 //    let location:
     var image: UIImage?
     var members = [Member]()

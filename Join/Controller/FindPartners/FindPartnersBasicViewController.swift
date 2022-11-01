@@ -79,6 +79,24 @@ class FindPartnersBasicViewController: UIViewController {
             } else {
                 alertUserToFillColumns()
             }
+        } else if formState == FindPartnersFormSections.groupSection {
+            if !project.recruiting.isEmpty {
+                let findPartnersStoryboard = UIStoryboard(
+                    name: StoryboardCategory.findPartners.rawValue, bundle: nil
+                )
+                guard let nextVC = findPartnersStoryboard.instantiateViewController(
+                    identifier: FindPartnersBasicViewController.identifier
+                ) as? FindPartnersBasicViewController else {
+                    fatalError("Cannot load FindPartnersBasicVC from storyboard.")
+                }
+                nextVC.project = project
+                nextVC.formState = FindPartnersFormSections.detailSection
+                nextVC.view.backgroundColor = .white
+                navigationController?.pushViewController(nextVC, animated: true)
+
+            } else {
+                alertUserToFillColumns()
+            }
         }
     }
 
@@ -113,15 +131,15 @@ class FindPartnersBasicViewController: UIViewController {
 extension FindPartnersBasicViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let inputType = formState.items[indexPath.row].type
-        if inputType == .addButton {
+        if inputType == .goNextButton {
+            // 使用 TTGTag 似乎無法用 automaticDimension 推開 cell
+            return 200
+        } else if inputType == .addButton {
             return UITableView.automaticDimension
         } else if inputType == .textField {
             return 120
         } else if inputType == .textView {
             return 250
-        } else if inputType == .goNextButton {
-            // 使用 TTGTag 似乎無法用 automaticDimension 推開 cell
-            return 200
         } else {
             return 100
         }
@@ -157,7 +175,7 @@ extension FindPartnersBasicViewController: UITableViewDataSource {
             cell.textView.delegate = self
             return cell
 
-        } else if inputType == .goNextButton {
+        } else if inputType == .goNextButton && formState == FindPartnersFormSections.basicSection {
             guard let cell = tableView.dequeueReusableCell(
                 withIdentifier: GoSelectionCell.identifier,
                 for: indexPath) as? GoSelectionCell else {
@@ -172,7 +190,29 @@ extension FindPartnersBasicViewController: UITableViewDataSource {
             }
             return cell
 
-        } else if inputType == .addButton {
+        } else if inputType == .goNextButton &&
+            formState.items[indexPath.row].name == FindPartnersFormSections.detailSection.items[0].name {
+            guard let cell = tableView.dequeueReusableCell(
+                withIdentifier: GoSelectionCell.identifier,
+                for: indexPath) as? GoSelectionCell else {
+                fatalError("Cannot create single line input cell")
+            }
+            cell.layoutCellWithDatePicker(info: formState.items[indexPath.row])
+            cell.delegate = self
+            return cell
+
+        } else if inputType == .goNextButton &&
+            formState.items[indexPath.row].name == FindPartnersFormSections.detailSection.items[1].name {
+            guard let cell = tableView.dequeueReusableCell(
+                withIdentifier: GoSelectionCell.identifier,
+                for: indexPath) as? GoSelectionCell else {
+                fatalError("Cannot create single line input cell")
+            }
+            cell.layoutCellWithTextField(info: formState.items[indexPath.row])
+            return cell
+
+        } else {
+            // if inputType == .addButton
             guard let cell = tableView.dequeueReusableCell(
                 withIdentifier: AddNewLineSectionCell.identifier,
                 for: indexPath) as? AddNewLineSectionCell else {
@@ -212,8 +252,6 @@ extension FindPartnersBasicViewController: UITableViewDataSource {
 
             return cell
 
-        } else {
-            fatalError("Should not come here")
         }
     }
 
@@ -242,5 +280,13 @@ extension FindPartnersBasicViewController: MemberCardDelegate {
         _ controller: MemberCardViewController,
         didSetRecruiting recruiting: [OpenPosition]) {
         project.recruiting = recruiting
+    }
+}
+
+// MARK: - Go Selection Cell Delegate
+extension FindPartnersBasicViewController: GoSelectionCellDelegate {
+    func cell(_ cell: GoSelectionCell, didSetDate date: Date) {
+        project.deadline = date
+        print(project)
     }
 }

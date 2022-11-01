@@ -12,7 +12,7 @@ class AddNewLineSectionCell: TableViewCell {
     @IBOutlet weak var mustFillSignLabel: UILabel!
     @IBOutlet weak var addNewButton: UIButton!
     @IBOutlet weak var containerStackView: UIStackView!
-    
+
     var tapHandler: (() -> Void)?
 
     override func awakeFromNib() {
@@ -24,14 +24,17 @@ class AddNewLineSectionCell: TableViewCell {
         tapHandler?()
     }
 
-    func layoutCell(info: ItemInfo, members: [Member]) {
+    func layoutCell(info: ItemInfo) {
         titleLabel.text = info.name
         mustFillSignLabel.isHidden = !info.must
     }
 
+    func layoutCell(info: ItemInfo, members: [Member]) {
+        layoutCell(info: info)
+    }
+
     func layoutCell(info: ItemInfo, recruiting: [OpenPosition]) {
-        titleLabel.text = info.name
-        mustFillSignLabel.isHidden = !info.must
+        layoutCell(info: info)
 
         if !recruiting.isEmpty {
             recruiting.forEach {

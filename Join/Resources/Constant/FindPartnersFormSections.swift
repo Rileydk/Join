@@ -46,7 +46,8 @@ struct FindPartnersFormSections {
 
     static let detailSection = SectionInfo(
         title: "最後一步了",
-        buttonTitle: "預覽",
+        // TODO: - 未來改為"預覽"
+        buttonTitle: "發佈",
         items: [
             ItemInfo(
                 name: "截止時間", instruction: nil,
@@ -68,6 +69,8 @@ struct FindPartnersFormSections {
     )
 
     static let memberBranchButtonTitle = "完成"
+    // 這個似乎是錯誤的
+    // static let datePickerLocale = "zh_TW"
 }
 
 struct SectionInfo: Equatable {
