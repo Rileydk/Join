@@ -47,7 +47,7 @@ class RecruitingCell: TableViewCell {
     }
 
     @IBAction func deleteCard() {
-
+        deleteHandler?()
     }
 }
 //

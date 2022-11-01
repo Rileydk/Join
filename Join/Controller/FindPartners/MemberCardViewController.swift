@@ -7,35 +7,25 @@
 
 import UIKit
 
-class MemberCardViewController: UIViewController {
+protocol MemberCardDelegate: AnyObject {
+//    func memberCardViewController(_ controller: MemberCardViewController, didSetMembers members: [Member])
+    // swiftlint:disable line_length
+    func  memberCardViewController(_ controller: MemberCardViewController, didSetRecruiting recruiting: [OpenPosition])
+}
 
-    // TODO: - 控制鍵盤開啟狀態不能滑掉？
+class MemberCardViewController: UIViewController {
 
     enum `Type` {
         case member
         case recruiting
     }
     static let identifier = String(describing: MemberCardViewController.self)
+    weak var delegate: MemberCardDelegate?
 
     var type: `Type` = .member
     var members = [Member(id: "", role: "'", skills: "")]
     var recruiting = [OpenPosition(role: "", skills: "", number: "1")]
     var firstTimeLoad = true
-
-    lazy var bottomView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .white
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-
-    lazy var submitButton: UIButton = {
-        let button = UIButton()
-        button.backgroundColor = .gray
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.addTarget(self, action: #selector(backToPreviousPage), for: .touchUpInside)
-        return button
-    }()
 
     @IBOutlet weak var tableView: UITableView! {
         didSet {
@@ -54,31 +44,67 @@ class MemberCardViewController: UIViewController {
         layoutView()
     }
 
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        delegate?.memberCardViewController(self, didSetRecruiting: recruiting)
+    }
+
     func layoutView() {
-        submitButton.setTitle(
-            FindPartnersFormSections.memberBranchButtonTitle,
-            for: .normal
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            title: FindPartnersFormSections.memberBranchButtonTitle,
+            style: .done, target: self,
+            action: #selector(backToPreviousPage)
         )
-
-        if let tabBarView = tabBarController?.view,
-           let tabBar = tabBarController?.tabBar {
-            tabBarView.addSubview(bottomView)
-            bottomView.addSubview(submitButton)
-
-            NSLayoutConstraint.activate([
-                bottomView.heightAnchor.constraint(equalToConstant: 80),
-                bottomView.bottomAnchor.constraint(equalTo: tabBar.topAnchor),
-                bottomView.leadingAnchor.constraint(equalTo: tabBar.leadingAnchor),
-                bottomView.trailingAnchor.constraint(equalTo: tabBar.trailingAnchor),
-                submitButton.leadingAnchor.constraint(equalTo: bottomView.leadingAnchor, constant: 20),
-                submitButton.trailingAnchor.constraint(equalTo: bottomView.trailingAnchor, constant: -20),
-                submitButton.topAnchor.constraint(equalTo: bottomView.topAnchor, constant: 20)
-            ])
-        }
     }
 
     @objc func backToPreviousPage() {
-        print("back")
+        if type == .member {
+            for index in stride(from: members.count - 1, to: 0, by: -1) {
+                // 若有某些欄位沒填寫，但不是全部沒填寫（全部沒填寫者就幫 user 刪除）
+                // 但先不刪除，直到確定跳頁再刪除
+                let member = members[index]
+                if (member.id.isEmpty || member.role.isEmpty || member.skills.isEmpty) &&
+                    !(member.id.isEmpty && member.role.isEmpty && member.skills.isEmpty) {
+                    alertUserToFillColumns()
+                    return
+
+                } else {
+                    if (member.id.isEmpty && member.role.isEmpty && member.skills.isEmpty) {
+                        members.remove(at: index)
+                    }
+                }
+            }
+            // delegate?.memberCardViewController(self, didSetMembers: members)
+        } else if type == .recruiting {
+            for index in stride(from: recruiting.count - 1, through: 0, by: -1) {
+                // 若有某些欄位沒填寫，但不是全部沒填寫（全部沒填寫者就幫 user 刪除）(recruiting的人數預設為 1，因此略過不檢查)
+                // 但先不刪除，直到確定跳頁再刪除
+                let position = recruiting[index]
+
+                print("at least one empty", (position.role.isEmpty || position.number.isEmpty || position.skills.isEmpty))
+                print("all empty", !(position.role.isEmpty && position.skills.isEmpty))
+
+                if (position.role.isEmpty || position.number.isEmpty || position.skills.isEmpty) &&
+                    !(position.role.isEmpty && position.skills.isEmpty) {
+                    alertUserToFillColumns()
+                    return
+
+                } else {
+                    if (position.role.isEmpty && position.number.isEmpty && position.skills.isEmpty) {
+                        recruiting.remove(at: index)
+                    }
+                }
+            }
+            delegate?.memberCardViewController(self, didSetRecruiting: recruiting)
+        }
+        navigationController?.popViewController(animated: true)
+    }
+
+    func alertUserToFillColumns() {
+        let alert = UIAlertController(title: "所有必填欄位都要填喔", message: nil, preferredStyle: .alert)
+        let action = UIAlertAction(title: "OK", style: .default)
+        alert.addAction(action)
+        present(alert, animated: true)
     }
 }
 
@@ -125,6 +151,10 @@ extension MemberCardViewController: UITableViewDataSource {
             }
             cell.layoutCell(info: recruiting[indexPath.row])
             cell.delegate = self
+            cell.deleteHandler = { [weak self] in
+                self?.recruiting.remove(at: indexPath.row)
+                tableView.deleteRows(at: [indexPath], with: .left)
+            }
             return cell
 
         } else {

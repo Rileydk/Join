@@ -10,21 +10,6 @@ import UIKit
 class FindPartnersBasicViewController: UIViewController {
     static let identifier = String(describing: FindPartnersBasicViewController.self)
 
-    lazy var bottomView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .white
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-
-    lazy var submitButton: UIButton = {
-        let button = UIButton()
-        button.backgroundColor = .gray
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.addTarget(self, action: #selector(goNextPage), for: .touchUpInside)
-        return button
-    }()
-
     @IBOutlet weak var tableView: UITableView! {
         didSet {
             tableView.register(
@@ -66,23 +51,7 @@ class FindPartnersBasicViewController: UIViewController {
 
     func layoutView() {
         title = Tab.findPartners.title
-        submitButton.setTitle(formState.buttonTitle, for: .normal)
-
-        if let tabBarView = tabBarController?.view,
-           let tabBar = tabBarController?.tabBar {
-            tabBarView.addSubview(bottomView)
-            bottomView.addSubview(submitButton)
-
-            NSLayoutConstraint.activate([
-                bottomView.heightAnchor.constraint(equalToConstant: 80),
-                bottomView.bottomAnchor.constraint(equalTo: tabBar.topAnchor),
-                bottomView.leadingAnchor.constraint(equalTo: tabBar.leadingAnchor),
-                bottomView.trailingAnchor.constraint(equalTo: tabBar.trailingAnchor),
-                submitButton.leadingAnchor.constraint(equalTo: bottomView.leadingAnchor, constant: 20),
-                submitButton.trailingAnchor.constraint(equalTo: bottomView.trailingAnchor, constant: -20),
-                submitButton.topAnchor.constraint(equalTo: bottomView.topAnchor, constant: 20)
-            ])
-        }
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: formState.buttonTitle, style: .done, target: self, action: #selector(goNextPage))
     }
 
     @objc func goNextPage() {
@@ -220,20 +189,23 @@ extension FindPartnersBasicViewController: UITableViewDataSource {
             ) as? MemberCardViewController else {
                 fatalError("Cannot load member card VC from storyboard")
             }
+            memberVC.title = title
+            memberVC.delegate = self
 
             if title == membersTitle {
                 cell.tapHandler = { [weak self] in
                     memberVC.type = .member
-                    self?.present(memberVC, animated: true)
+                    self?.navigationController?.pushViewController(memberVC, animated: true)
                 }
             } else if title == recruitingTitle {
                 cell.tapHandler = { [weak self] in
                     memberVC.type = .recruiting
-                    self?.present(memberVC, animated: true)
+                    self?.navigationController?.pushViewController(memberVC, animated: true)
                 }
             }
 
             return cell
+
         } else {
             fatalError("Should not come here")
         }
@@ -255,5 +227,14 @@ extension FindPartnersBasicViewController: UITextFieldDelegate {
 extension FindPartnersBasicViewController: UITextViewDelegate {
     func textViewDidEndEditing(_ textView: UITextView) {
         project.description = textView.text
+    }
+}
+
+// MARK: - Member Card Delegate
+extension FindPartnersBasicViewController: MemberCardDelegate {
+    func memberCardViewController(
+        _ controller: MemberCardViewController,
+        didSetRecruiting recruiting: [OpenPosition]) {
+        project.recruiting = recruiting
     }
 }
