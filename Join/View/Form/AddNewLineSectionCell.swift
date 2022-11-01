@@ -11,7 +11,8 @@ class AddNewLineSectionCell: TableViewCell {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var mustFillSignLabel: UILabel!
     @IBOutlet weak var addNewButton: UIButton!
-
+    @IBOutlet weak var containerStackView: UIStackView!
+    
     var tapHandler: (() -> Void)?
 
     override func awakeFromNib() {
@@ -23,8 +24,23 @@ class AddNewLineSectionCell: TableViewCell {
         tapHandler?()
     }
 
-    func layoutCell(info: ItemInfo) {
+    func layoutCell(info: ItemInfo, members: [Member]) {
         titleLabel.text = info.name
         mustFillSignLabel.isHidden = !info.must
+    }
+
+    func layoutCell(info: ItemInfo, recruiting: [OpenPosition]) {
+        titleLabel.text = info.name
+        mustFillSignLabel.isHidden = !info.must
+
+        if !recruiting.isEmpty {
+            recruiting.forEach {
+                let positionLabel = UILabel()
+                positionLabel.textColor = .black
+                positionLabel.font = UIFont.systemFont(ofSize: 16)
+                positionLabel.text = "\($0.role) \($0.number) 人"
+                containerStackView.insertArrangedSubview(positionLabel, at: 0)
+            }
+        }
     }
 }

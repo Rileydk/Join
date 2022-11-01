@@ -49,6 +49,11 @@ class FindPartnersBasicViewController: UIViewController {
         layoutView()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tableView.reloadData()
+    }
+
     func layoutView() {
         title = Tab.findPartners.title
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: formState.buttonTitle, style: .done, target: self, action: #selector(goNextPage))
@@ -173,7 +178,6 @@ extension FindPartnersBasicViewController: UITableViewDataSource {
                 for: indexPath) as? AddNewLineSectionCell else {
                 fatalError("Cannot create add new line cell")
             }
-            cell.layoutCell(info: formState.items[indexPath.row])
 
             let findPartnersStoryboard = UIStoryboard(
                 name: StoryboardCategory.findPartners.rawValue,
@@ -193,11 +197,13 @@ extension FindPartnersBasicViewController: UITableViewDataSource {
             memberVC.delegate = self
 
             if title == membersTitle {
+                cell.layoutCell(info: formState.items[indexPath.row], members: project.members)
                 cell.tapHandler = { [weak self] in
                     memberVC.type = .member
                     self?.navigationController?.pushViewController(memberVC, animated: true)
                 }
             } else if title == recruitingTitle {
+                cell.layoutCell(info: formState.items[indexPath.row], recruiting: project.recruiting)
                 cell.tapHandler = { [weak self] in
                     memberVC.type = .recruiting
                     self?.navigationController?.pushViewController(memberVC, animated: true)

@@ -80,17 +80,13 @@ class MemberCardViewController: UIViewController {
                 // 若有某些欄位沒填寫，但不是全部沒填寫（全部沒填寫者就幫 user 刪除）(recruiting的人數預設為 1，因此略過不檢查)
                 // 但先不刪除，直到確定跳頁再刪除
                 let position = recruiting[index]
-
-                print("at least one empty", (position.role.isEmpty || position.number.isEmpty || position.skills.isEmpty))
-                print("all empty", !(position.role.isEmpty && position.skills.isEmpty))
-
                 if (position.role.isEmpty || position.number.isEmpty || position.skills.isEmpty) &&
                     !(position.role.isEmpty && position.skills.isEmpty) {
                     alertUserToFillColumns()
                     return
 
                 } else {
-                    if (position.role.isEmpty && position.number.isEmpty && position.skills.isEmpty) {
+                    if (position.role.isEmpty && position.skills.isEmpty) {
                         recruiting.remove(at: index)
                     }
                 }
@@ -101,7 +97,7 @@ class MemberCardViewController: UIViewController {
     }
 
     func alertUserToFillColumns() {
-        let alert = UIAlertController(title: "所有必填欄位都要填喔", message: nil, preferredStyle: .alert)
+        let alert = UIAlertController(title: "所有欄位都要填喔", message: nil, preferredStyle: .alert)
         let action = UIAlertAction(title: "OK", style: .default)
         alert.addAction(action)
         present(alert, animated: true)

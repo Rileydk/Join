@@ -15,7 +15,7 @@ struct Project {
 //    let deadline: Date
 //    let location:
     var image: UIImage?
-    var members = [User]()
+    var members = [Member]()
     var recruiting = [OpenPosition]()
     var applicants = [User]()
 }

@@ -21,9 +21,6 @@ class RecruitingCell: TableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-//        roleTextField.delegate = self
-//        numberTextField.delegate = self
-//        skillTextField.delegate = self
         roleTextField.addTarget(self, action: #selector(textFieldDidChanged), for: .editingChanged)
         numberTextField.addTarget(self, action: #selector(textFieldDidChanged), for: .editingChanged)
         skillTextField.addTarget(self, action: #selector(textFieldDidChanged), for: .editingChanged)
@@ -50,12 +47,3 @@ class RecruitingCell: TableViewCell {
         deleteHandler?()
     }
 }
-//
-// MARK: - Text Field Delegate
-// extension RecruitingCell: UITextFieldDelegate {
-//    func textFieldDidEndEditing(_ textField: UITextField, reason: UITextField.DidEndEditingReason) {
-//        print("did end")
-//    }
-//
-//    textfield
-// }

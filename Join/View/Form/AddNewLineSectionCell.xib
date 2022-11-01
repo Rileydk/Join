@@ -71,6 +71,7 @@
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
                 <outlet property="addNewButton" destination="Ita-Xr-kSw" id="xH3-j9-pK0"/>
+                <outlet property="containerStackView" destination="bbL-vr-Owy" id="2tq-zY-k1E"/>
                 <outlet property="mustFillSignLabel" destination="lv8-lg-73X" id="dkD-LU-hmk"/>
                 <outlet property="titleLabel" destination="vWi-rX-xoO" id="X64-VB-daV"/>
             </connections>
