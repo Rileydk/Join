@@ -9,6 +9,14 @@ import UIKit
 
 class FindPartnersBasicViewController: UIViewController {
     static let identifier = String(describing: FindPartnersBasicViewController.self)
+    let firebaseManager = FirebaseManager()
+    var project = Project()
+    var formState = FindPartnersFormSections.basicSection
+    var selectedCategories = [String]() {
+        didSet {
+            tableView.reloadRows(at: [IndexPath(row: 2, section: 0)], with: .none)
+        }
+    }
 
     @IBOutlet weak var tableView: UITableView! {
         didSet {
@@ -37,14 +45,6 @@ class FindPartnersBasicViewController: UIViewController {
             tableView.separatorStyle = .none
             tableView.estimatedRowHeight = UITableView.automaticDimension
             tableView.allowsSelection = false
-        }
-    }
-
-    var project = Project()
-    var formState = FindPartnersFormSections.basicSection
-    var selectedCategories = [String]() {
-        didSet {
-            tableView.reloadRows(at: [IndexPath(row: 2, section: 0)], with: .none)
         }
     }
 
@@ -134,7 +134,7 @@ class FindPartnersBasicViewController: UIViewController {
     }
 
     func post() {
-        print(project)
+        firebaseManager.postNewProject(project: project)
     }
 }
 
@@ -312,19 +312,18 @@ extension FindPartnersBasicViewController: MemberCardDelegate {
 // MARK: - Go Selection Cell Delegate
 extension FindPartnersBasicViewController: GoSelectionCellDelegate {
     func cell(_ cell: GoSelectionCell, didSetDate date: Date) {
-        project.deadline = date
+        project.deadline = date.millisecondsSince1970
     }
 
     func cell(_ cell: GoSelectionCell, didSetLocation location: String) {
         project.location = location
-        print(project)
     }
 }
 
 // MARK: - Image Picker Cell Delegate
 extension FindPartnersBasicViewController: ImagePickerCellDelegate {
     func imagePickerCell(_ cell: ImagePickerCell, didSetImage image: UIImage) {
-        project.image = image
-        tableView.reloadData()
+//        project.image = image
+//        tableView.reloadData()
     }
 }

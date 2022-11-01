@@ -12,22 +12,55 @@ struct Project {
     var name: String = ""
     var description: String = ""
     var categories = [String]()
-    var deadline: Date?
+    var deadline: Int64?
     var location = ""
-    var image: UIImage?
+//    var image: UIImage?
     var members = [Member]()
     var recruiting = [OpenPosition]()
     var applicants = [User]()
+
+    var toDict: [String: Any] {
+        let membersDict = members.map { $0.toDict }
+        let recruitingDict = recruiting.map { $0.toDict }
+        let applicantsDict = applicants.map { $0.toDict }
+
+        return [
+            "name": name as Any,
+            "description": description as Any,
+            "categories": categories as Any,
+            "deadline": deadline as Any,
+            "location": location as Any,
+            "members": membersDict as Any,
+            "recruiting": recruitingDict as Any,
+            "applicants": applicantsDict as Any
+        ]
+    }
 }
 
 struct Member {
     let id: String
     var role: String
     var skills: String
+
+    var toDict: [String: Any] {
+        return [
+            "id": id as Any,
+            "role": role as Any,
+            "skills": skills as Any
+        ]
+    }
 }
 
 struct OpenPosition {
     var role: String
     var skills: String
     var number: String
+
+    var toDict: [String: Any] {
+        return [
+            "role": role as Any,
+            "skills": skills as Any,
+            "number": number as Any
+        ]
+    }
 }

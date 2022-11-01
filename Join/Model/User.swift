@@ -9,4 +9,10 @@ import Foundation
 
 struct User {
     let id: String
+
+    var toDict: [String: Any] {
+        return [
+            "id": id as Any
+        ]
+    }
 }
