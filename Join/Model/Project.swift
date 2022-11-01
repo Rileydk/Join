@@ -23,12 +23,11 @@ struct Project {
 struct Member {
     let id: String
     var role: String
-    var skills: [String]
+    var skills: String
 }
 
 struct OpenPosition {
     var role: String
-    var skill: [String]
-    var description: String
-    var number: Int
+    var skills: String
+    var number: String
 }

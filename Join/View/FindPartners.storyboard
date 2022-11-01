@@ -49,7 +49,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="Tkg-Ph-gdv">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <rect key="frame" x="0.0" y="94" width="414" height="802"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="MemberCell" rowHeight="200" id="flp-X7-Fcl" customClass="MemberCell" customModule="Join" customModuleProvider="target">
@@ -85,18 +85,23 @@
                                                         </textField>
                                                     </subviews>
                                                 </stackView>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="trash" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="wAc-sD-KIP">
-                                                    <rect key="frame" x="360" y="148.5" width="34" height="35"/>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3GR-mo-lSg">
+                                                    <rect key="frame" x="368.5" y="156" width="25.5" height="28"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="34.5" id="RlS-NL-Ncm"/>
-                                                        <constraint firstAttribute="width" constant="34" id="Zvv-p5-a4I"/>
+                                                        <constraint firstAttribute="height" constant="28" id="GmO-Oi-5SS"/>
+                                                        <constraint firstAttribute="width" secondItem="3GR-mo-lSg" secondAttribute="height" multiplier="10:11" id="hXp-Mo-GNA"/>
                                                     </constraints>
-                                                </imageView>
+                                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                    <state key="normal" image="trash" catalog="system"/>
+                                                    <connections>
+                                                        <action selector="deleteCard" destination="flp-X7-Fcl" eventType="touchUpInside" id="Voq-yk-GLo"/>
+                                                    </connections>
+                                                </button>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="bottom" secondItem="wAc-sD-KIP" secondAttribute="bottom" constant="16" id="FaF-RD-xbW"/>
+                                                <constraint firstAttribute="bottom" secondItem="3GR-mo-lSg" secondAttribute="bottom" constant="16" id="Nqa-eS-vhu"/>
                                                 <constraint firstItem="O1A-Er-oWD" firstAttribute="leading" secondItem="Rxv-vp-TF4" secondAttribute="leading" constant="20" id="Vqg-VE-7Zm"/>
-                                                <constraint firstAttribute="trailing" secondItem="wAc-sD-KIP" secondAttribute="trailing" constant="20" id="dlZ-d4-5UZ"/>
+                                                <constraint firstAttribute="trailing" secondItem="3GR-mo-lSg" secondAttribute="trailing" constant="20" id="aQl-Co-Egz"/>
                                                 <constraint firstAttribute="trailing" secondItem="O1A-Er-oWD" secondAttribute="trailing" constant="20" id="mGs-Ku-yvn"/>
                                                 <constraint firstItem="O1A-Er-oWD" firstAttribute="top" secondItem="Rxv-vp-TF4" secondAttribute="top" constant="16" id="oip-on-f0P"/>
                                                 <constraint firstAttribute="bottom" secondItem="O1A-Er-oWD" secondAttribute="bottom" constant="62" id="wA2-Ok-R5R"/>
@@ -135,7 +140,7 @@
                                                                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="EYg-ua-zi4">
                                                                     <rect key="frame" x="47" y="0.0" width="73.5" height="34"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                                    <textInputTraits key="textInputTraits"/>
+                                                                    <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                                                 </textField>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="人" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Uxh-zN-wQQ">
                                                                     <rect key="frame" x="132.5" y="0.0" width="17.5" height="34"/>
@@ -161,21 +166,27 @@
                                                         <constraint firstAttribute="trailing" secondItem="DCq-gK-GRa" secondAttribute="trailing" id="sIE-KS-BuZ"/>
                                                     </constraints>
                                                 </stackView>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="trash" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="XlL-ac-zyf">
-                                                    <rect key="frame" x="360" y="148.5" width="34" height="35"/>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Cc-tI-cdi">
+                                                    <rect key="frame" x="368.5" y="156" width="25.5" height="28"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="34" id="W57-sM-1r6"/>
-                                                        <constraint firstAttribute="height" constant="34.5" id="gBF-rr-6BZ"/>
+                                                        <constraint firstAttribute="width" secondItem="5Cc-tI-cdi" secondAttribute="height" multiplier="10:11" id="Z9q-Qo-zgk"/>
+                                                        <constraint firstAttribute="height" constant="28" id="Zhg-86-0wA"/>
                                                     </constraints>
-                                                </imageView>
+                                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                    <state key="normal" image="trash" catalog="system"/>
+                                                    <connections>
+                                                        <action selector="deleteCard" destination="s4s-bU-z8z" eventType="touchUpInside" id="lYJ-Pl-u7H"/>
+                                                    </connections>
+                                                </button>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="trailing" secondItem="XlL-ac-zyf" secondAttribute="trailing" constant="20" id="C69-AX-RNF"/>
+                                                <constraint firstAttribute="bottom" secondItem="5Cc-tI-cdi" secondAttribute="bottom" constant="16" id="2SQ-50-f9K"/>
+                                                <constraint firstAttribute="trailing" secondItem="5Cc-tI-cdi" secondAttribute="trailing" constant="20" id="E8z-J3-UlU"/>
+                                                <constraint firstItem="5Cc-tI-cdi" firstAttribute="width" secondItem="5Cc-tI-cdi" secondAttribute="height" multiplier="10:11" id="JCi-FF-PAH"/>
                                                 <constraint firstItem="8NT-aX-XIZ" firstAttribute="leading" secondItem="nb4-kq-cH4" secondAttribute="leading" constant="20" id="M6s-7D-6dn"/>
                                                 <constraint firstItem="8NT-aX-XIZ" firstAttribute="top" secondItem="nb4-kq-cH4" secondAttribute="top" constant="16" id="X8O-57-g3g"/>
                                                 <constraint firstAttribute="bottom" secondItem="8NT-aX-XIZ" secondAttribute="bottom" constant="62" id="Yu6-JA-SHi"/>
                                                 <constraint firstAttribute="trailing" secondItem="8NT-aX-XIZ" secondAttribute="trailing" constant="20" id="n6g-IR-mM5"/>
-                                                <constraint firstAttribute="bottom" secondItem="XlL-ac-zyf" secondAttribute="bottom" constant="16" id="ujb-Xc-aQY"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
@@ -191,7 +202,7 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="Tkg-Ph-gdv" secondAttribute="trailing" id="M3T-Af-JhJ"/>
-                            <constraint firstItem="Tkg-Ph-gdv" firstAttribute="top" secondItem="Iqr-gX-krh" secondAttribute="top" id="Mlh-gy-eqo"/>
+                            <constraint firstItem="Tkg-Ph-gdv" firstAttribute="top" secondItem="BhJ-BU-isl" secondAttribute="top" constant="50" id="Mlh-gy-eqo"/>
                             <constraint firstItem="Tkg-Ph-gdv" firstAttribute="leading" secondItem="Iqr-gX-krh" secondAttribute="leading" id="R9d-ol-X8M"/>
                             <constraint firstAttribute="bottom" secondItem="Tkg-Ph-gdv" secondAttribute="bottom" id="UAd-SB-R9O"/>
                         </constraints>

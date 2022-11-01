@@ -18,21 +18,26 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AXL-AD-pql">
-                        <rect key="frame" x="147" y="9" width="26" height="26"/>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4xu-1m-qQE">
+                        <rect key="frame" x="20" y="4" width="280" height="36"/>
                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                         <state key="normal">
                             <imageReference key="image" image="plus.circle" catalog="system" symbolScale="large"/>
                         </state>
+                        <connections>
+                            <action selector="addButton" destination="KGk-i7-Jjw" eventType="touchUpInside" id="hTg-O0-Pqc"/>
+                        </connections>
                     </button>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="AXL-AD-pql" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="O71-h1-Dhg"/>
-                    <constraint firstItem="AXL-AD-pql" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="jiL-c0-Mj7"/>
+                    <constraint firstItem="4xu-1m-qQE" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" id="601-TE-yaj"/>
+                    <constraint firstItem="4xu-1m-qQE" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="4" id="JrI-OZ-mWE"/>
+                    <constraint firstAttribute="bottom" secondItem="4xu-1m-qQE" secondAttribute="bottom" constant="4" id="m3c-LJ-FKk"/>
+                    <constraint firstAttribute="trailing" secondItem="4xu-1m-qQE" secondAttribute="trailing" constant="20" id="oeD-80-hbD"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
-            <point key="canvasLocation" x="139" y="87"/>
+            <point key="canvasLocation" x="137.68115942028987" y="86.383928571428569"/>
         </tableViewCell>
     </objects>
     <resources>

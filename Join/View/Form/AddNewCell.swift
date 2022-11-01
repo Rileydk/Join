@@ -8,4 +8,10 @@
 import UIKit
 
 class AddNewCell: TableViewCell {
+    var tapHandler: (() -> Void)?
+
+    @IBAction func addButton() {
+        tapHandler?()
+    }
+
 }

@@ -55,7 +55,6 @@ class FindPartnersBasicViewController: UIViewController {
     var formState = FindPartnersFormSections.basicSection
     var selectedCategories = [String]() {
         didSet {
-            print("categories", selectedCategories)
             tableView.reloadRows(at: [IndexPath(row: 2, section: 0)], with: .none)
         }
     }

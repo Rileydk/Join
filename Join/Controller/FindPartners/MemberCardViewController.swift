@@ -8,6 +8,9 @@
 import UIKit
 
 class MemberCardViewController: UIViewController {
+
+    // TODO: - 控制鍵盤開啟狀態不能滑掉？
+
     enum `Type` {
         case member
         case recruiting
@@ -15,10 +18,9 @@ class MemberCardViewController: UIViewController {
     static let identifier = String(describing: MemberCardViewController.self)
 
     var type: `Type` = .member
-    var members = [Member]()
-    var recruiting = [OpenPosition]()
+    var members = [Member(id: "", role: "'", skills: "")]
+    var recruiting = [OpenPosition(role: "", skills: "", number: "1")]
     var firstTimeLoad = true
-    var cardAmount = 1
 
     lazy var bottomView: UIView = {
         let view = UIView()
@@ -43,6 +45,7 @@ class MemberCardViewController: UIViewController {
             )
             tableView.delegate = self
             tableView.dataSource = self
+            tableView.separatorStyle = .none
         }
     }
 
@@ -82,14 +85,10 @@ class MemberCardViewController: UIViewController {
 // MARK: - Table View Delegate
 extension MemberCardViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.row <= cardAmount - 1 {
-            if type == .member {
-                return 200
-            } else if type == .recruiting {
-                return 200
-            } else {
-                fatalError("No this type")
-            }
+        if type == .member && indexPath.row <= members.count - 1 {
+            return 200
+        } else if type == .recruiting && indexPath.row <= recruiting.count - 1 {
+            return 200
         } else {
             return 45
         }
@@ -99,24 +98,33 @@ extension MemberCardViewController: UITableViewDelegate {
 // MARK: - Table View Data Source
 extension MemberCardViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        cardAmount + 1
+        if type == .member {
+            return members.count + 1
+        } else if type == .recruiting {
+            return recruiting.count + 1
+        } else {
+            return 1
+        }
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if type == .member && indexPath.row <= cardAmount - 1 {
+        if type == .member && indexPath.row <= members.count - 1 {
             guard let cell = tableView.dequeueReusableCell(
                 withIdentifier: MemberCell.identifier,
                 for: indexPath) as? MemberCell else {
                 fatalError("Cannot create MemberCell")
             }
+            cell.layoutCell(info: members[indexPath.row])
             return cell
 
-        } else if type == .recruiting && indexPath.row <= cardAmount - 1 {
+        } else if type == .recruiting && indexPath.row <= recruiting.count - 1 {
             guard let cell = tableView.dequeueReusableCell(
                 withIdentifier: RecruitingCell.identifier,
                 for: indexPath) as? RecruitingCell else {
                 fatalError("Cannot create Recruiting Cell")
             }
+            cell.layoutCell(info: recruiting[indexPath.row])
+            cell.delegate = self
             return cell
 
         } else {
@@ -125,7 +133,28 @@ extension MemberCardViewController: UITableViewDataSource {
                 for: indexPath) as? AddNewCell else {
                 fatalError("Cannot create Add New Cell")
             }
+            cell.tapHandler = { [weak self] in
+                guard let strongSelf = self else { return }
+                if strongSelf.type == .member {
+                    strongSelf.members.append(
+                        Member(id: "", role: "", skills: "")
+                    )
+                } else if strongSelf.type == .recruiting {
+                    strongSelf.recruiting.append(
+                        OpenPosition(role: "", skills: "", number: "1")
+                    )
+                }
+                tableView.reloadData()
+            }
             return cell
         }
+    }
+}
+
+// MARK: - Recruiting Cell Delegate
+extension MemberCardViewController: RecruitingCellDelegate {
+    func cell(_ recruitingCell: RecruitingCell, didSet newRecruit: OpenPosition) {
+        let index = tableView.indexPath(for: recruitingCell)!.row
+        recruiting[index] = newRecruit
     }
 }
