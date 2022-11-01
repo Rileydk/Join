@@ -312,7 +312,8 @@ extension FindPartnersBasicViewController: MemberCardDelegate {
 // MARK: - Go Selection Cell Delegate
 extension FindPartnersBasicViewController: GoSelectionCellDelegate {
     func cell(_ cell: GoSelectionCell, didSetDate date: Date) {
-        project.deadline = date.millisecondsSince1970
+        // project.deadline = date.millisecondsSince1970
+        project.deadline = date
     }
 
     func cell(_ cell: GoSelectionCell, didSetLocation location: String) {

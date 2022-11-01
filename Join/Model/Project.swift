@@ -12,9 +12,10 @@ struct Project {
     var name: String = ""
     var description: String = ""
     var categories = [String]()
-    var deadline: Int64?
+    // var deadline: Int64?
+    var deadline: Date?
     var location = ""
-//    var image: UIImage?
+    // var image: UIImage?
     var members = [Member]()
     var recruiting = [OpenPosition]()
     var applicants = [User]()

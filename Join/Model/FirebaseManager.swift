@@ -31,4 +31,7 @@ struct FirebaseManager {
             }
         }
     }
+
+    func getAllProjects() {
+    }
 }
