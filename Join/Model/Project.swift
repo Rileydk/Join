@@ -15,7 +15,7 @@ struct Project {
     // var deadline: Int64?
     var deadline: Date?
     var location = ""
-    // var image: UIImage?
+    var image: Data?
     var members = [Member]()
     var recruiting = [OpenPosition]()
     var applicants = [User]()

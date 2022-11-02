@@ -9,7 +9,7 @@ import UIKit
 import PhotosUI
 
 protocol ImagePickerCellDelegate: AnyObject {
-    func imagePickerCell(_ cell: ImagePickerCell, didSetImage image: UIImage)
+    func imagePickerCell(_ cell: ImagePickerCell, didSetImage image: Data?)
 }
 
 class ImagePickerCell: TableViewCell {
@@ -60,8 +60,13 @@ extension ImagePickerCell: PHPickerViewControllerDelegate {
                             let image = image as? UIImage,
                             strongSelf.imagePickerView.image == previousImage else { return }
 
-                        strongSelf.imagePickerView.image = image
-                        strongSelf.delegate?.imagePickerCell(strongSelf, didSetImage: image)
+                        let imageData = image.jpeg(.lowest)
+                        strongSelf.imagePickerView.image = UIImage(data: imageData!)
+                        strongSelf.delegate?.imagePickerCell(strongSelf, didSetImage: imageData)
+
+                        let imgData = NSData(data: imageData!)
+                        var imageSize: Int = imgData.count
+                        print("actual size of image in KB: %f ", Double(imageSize) / 1000.0)
                     }
                 }
         }

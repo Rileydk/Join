@@ -323,8 +323,10 @@ extension FindPartnersBasicViewController: GoSelectionCellDelegate {
 
 // MARK: - Image Picker Cell Delegate
 extension FindPartnersBasicViewController: ImagePickerCellDelegate {
-    func imagePickerCell(_ cell: ImagePickerCell, didSetImage image: UIImage) {
-//        project.image = image
-//        tableView.reloadData()
+    func imagePickerCell(_ cell: ImagePickerCell, didSetImage image: Data?) {
+        if let image = image {
+            project.image = image
+            tableView.reloadData()
+        }
     }
 }

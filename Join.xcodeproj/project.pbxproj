@@ -45,6 +45,7 @@
 		BF42FAC929111FD400501789 /* ImagePickerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF42FAC729111FD400501789 /* ImagePickerCell.xib */; };
 		BF42FACB2911473A00501789 /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FACA2911473A00501789 /* FirebaseManager.swift */; };
 		BF42FACD291154B500501789 /* Date+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FACC291154B500501789 /* Date+Ext.swift */; };
+		BF42FACF2912557500501789 /* UIImage+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FACE2912557500501789 /* UIImage+Ext.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -88,6 +89,7 @@
 		BF42FAC729111FD400501789 /* ImagePickerCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ImagePickerCell.xib; sourceTree = "<group>"; };
 		BF42FACA2911473A00501789 /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
 		BF42FACC291154B500501789 /* Date+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Ext.swift"; sourceTree = "<group>"; };
+		BF42FACE2912557500501789 /* UIImage+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Ext.swift"; sourceTree = "<group>"; };
 		E73F750E744AEAB2F0006E8B /* Pods-Join.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Join.debug.xcconfig"; path = "Target Support Files/Pods-Join/Pods-Join.debug.xcconfig"; sourceTree = "<group>"; };
 		F30624BA8F470C0A1492643F /* Pods-Join.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Join.release.xcconfig"; path = "Target Support Files/Pods-Join/Pods-Join.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -214,6 +216,7 @@
 				BF42FA60290CEF4700501789 /* UIStoryboard+Ext.swift */,
 				BF42FA6D290D178400501789 /* UIView+Ext.swift */,
 				BF42FACC291154B500501789 /* Date+Ext.swift */,
+				BF42FACE2912557500501789 /* UIImage+Ext.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -425,6 +428,7 @@
 				BF42FA7D290D2ADB00501789 /* MultilineInputCell.swift in Sources */,
 				BF42FA39290BE2AA00501789 /* FindIdeasViewController.swift in Sources */,
 				BF42FABC290FF32300501789 /* MemberCardViewController.swift in Sources */,
+				BF42FACF2912557500501789 /* UIImage+Ext.swift in Sources */,
 				BF42FAB2290FAC2000501789 /* Project.swift in Sources */,
 				BF42FA73290D197000501789 /* TableViewCell.swift in Sources */,
 				BF42FA81290D31EF00501789 /* GoSelectionCell.swift in Sources */,

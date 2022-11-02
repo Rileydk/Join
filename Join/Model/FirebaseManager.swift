@@ -8,6 +8,7 @@
 import Foundation
 import FirebaseCore
 import FirebaseFirestore
+import FirebaseAuth
 
 enum FirebaseEndpoint {
     case project
@@ -21,6 +22,10 @@ enum FirebaseEndpoint {
 }
 
 struct FirebaseManager {
+    func uploadImage(image: Data) {
+//        let storage = Storage.storage()
+    }
+
     func postNewProject(project: Project) {
         let ref = FirebaseEndpoint.project.ref
         ref.addDocument(data: project.toDict) { error in
