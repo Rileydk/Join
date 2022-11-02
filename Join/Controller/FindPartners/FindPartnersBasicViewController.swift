@@ -134,7 +134,10 @@ class FindPartnersBasicViewController: UIViewController {
     }
 
     func post() {
-        firebaseManager.postNewProject(project: project)
+        // firebaseManager.postNewProject(project: project)
+        if let image = project.image {
+            firebaseManager.uploadImage(image: image)
+        }
     }
 }
 

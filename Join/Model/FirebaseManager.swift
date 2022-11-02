@@ -1,3 +1,4 @@
+
 //
 //  FirestoreManager.swift
 //  Join
@@ -6,11 +7,10 @@
 //
 
 import Foundation
-import FirebaseCore
 import FirebaseFirestore
-import FirebaseAuth
+import FirebaseStorage
 
-enum FirebaseEndpoint {
+enum FirestoreEndpoint {
     case project
 
     var ref: CollectionReference {
@@ -23,11 +23,25 @@ enum FirebaseEndpoint {
 
 struct FirebaseManager {
     func uploadImage(image: Data) {
-//        let storage = Storage.storage()
+        let ref = Storage.storage().reference()
+        let imageRef = ref.child("image1")
+        imageRef.putData(image) { (metadata, error) in
+            guard let metadata = metadata else {
+                print("Metadata is nil")
+                return
+            }
+            imageRef.downloadURL { (url, error) in
+                guard let downloadURL = url else {
+                    print("No valid image download URL")
+                    return
+                }
+                print("successfully upload, url is: ", downloadURL)
+            }
+        }
     }
 
     func postNewProject(project: Project) {
-        let ref = FirebaseEndpoint.project.ref
+        let ref = FirestoreEndpoint.project.ref
         ref.addDocument(data: project.toDict) { error in
             if let error = error {
                 print(error)
@@ -37,6 +51,18 @@ struct FirebaseManager {
         }
     }
 
-    func getAllProjects() {
+    func downloadImage(urlString: String) {
+        let httpsRef = Storage.storage().reference(forURL: urlString)
+
+        httpsRef.getData(maxSize: 1 * 1024 * 1024) { (data, error) in
+            if let error = error {
+                print(error)
+            }
+
+            if let data = data {
+                let image = UIImage(data: data)
+                print("downloaded", image)
+            }
+        }
     }
 }
