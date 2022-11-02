@@ -21,40 +21,69 @@ enum FirestoreEndpoint {
     }
 }
 
-struct FirebaseManager {
-    func uploadImage(image: Data) {
+class FirebaseManager {
+    let firebaseQueue = DispatchQueue(label: "firebaseQueue", attributes: .concurrent)
+    static let shared = FirebaseManager()
+
+    func uploadImage(image: Data, completion: @escaping (String) -> Void) {
         let ref = Storage.storage().reference()
-        let imageRef = ref.child("image1")
-        imageRef.putData(image) { (metadata, error) in
-            guard let metadata = metadata else {
-                print("Metadata is nil")
-                return
-            }
-            imageRef.downloadURL { (url, error) in
-                guard let downloadURL = url else {
-                    print("No valid image download URL")
+        let uuid = UUID()
+        let imageRef = ref.child("\(uuid)")
+
+        firebaseQueue.async {
+            imageRef.putData(image) { (metadata, error) in
+                print("current thread", Thread.current)
+                guard let metadata = metadata else {
+                    print("Metadata is nil")
                     return
                 }
-                print("successfully upload, url is: ", downloadURL)
+                imageRef.downloadURL { (url, error) in
+                    guard let downloadURL = url else {
+                        print("No valid image download URL")
+                        return
+                    }
+                    print("successfully upload, url is: ", downloadURL)
+                    let urlString = "\(downloadURL)"
+                    completion(urlString)
+                }
             }
         }
     }
 
-    func postNewProject(project: Project) {
+    func postNewProject(project: Project, image: UIImage?) {
         let ref = FirestoreEndpoint.project.ref
-        ref.addDocument(data: project.toDict) { error in
-            if let error = error {
-                print(error)
-            } else {
-                print("success")
+        var project = project
+
+        if let image = image,
+           let imageData = image.jpeg(.lowest) {
+            print("including image")
+            uploadImage(image: imageData) { urlString in
+                project.imageURL = urlString
+
+                ref.addDocument(data: project.toDict) { error in
+                    if let error = error {
+                        print(error)
+                    } else {
+                        print("success")
+                    }
+                }
+            }
+        } else {
+            print("without image")
+            ref.addDocument(data: project.toDict) { error in
+                if let error = error {
+                    print(error)
+                } else {
+                    print("success")
+                }
             }
         }
     }
 
     func downloadImage(urlString: String) {
-        let httpsRef = Storage.storage().reference(forURL: urlString)
+        let imageURLRef = Storage.storage().reference(forURL: urlString)
 
-        httpsRef.getData(maxSize: 1 * 1024 * 1024) { (data, error) in
+        imageURLRef.getData(maxSize: 1 * 1024 * 1024) { (data, error) in
             if let error = error {
                 print(error)
             }

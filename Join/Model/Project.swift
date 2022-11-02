@@ -15,7 +15,7 @@ struct Project {
     // var deadline: Int64?
     var deadline: Date?
     var location = ""
-    var image: Data?
+    var imageURL: String?
     var members = [Member]()
     var recruiting = [OpenPosition]()
     var applicants = [User]()
@@ -31,6 +31,7 @@ struct Project {
             "categories": categories as Any,
             "deadline": deadline as Any,
             "location": location as Any,
+            "imageURL": imageURL as Any,
             "members": membersDict as Any,
             "recruiting": recruitingDict as Any,
             "applicants": applicantsDict as Any

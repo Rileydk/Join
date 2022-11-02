@@ -11,6 +11,7 @@ class FindPartnersBasicViewController: UIViewController {
     static let identifier = String(describing: FindPartnersBasicViewController.self)
     let firebaseManager = FirebaseManager()
     var project = Project()
+    var image: UIImage?
     var formState = FindPartnersFormSections.basicSection
     var selectedCategories = [String]() {
         didSet {
@@ -135,9 +136,7 @@ class FindPartnersBasicViewController: UIViewController {
 
     func post() {
         // firebaseManager.postNewProject(project: project)
-        if let image = project.image {
-            firebaseManager.uploadImage(image: image)
-        }
+        firebaseManager.postNewProject(project: project, image: image)
     }
 }
 
@@ -326,10 +325,8 @@ extension FindPartnersBasicViewController: GoSelectionCellDelegate {
 
 // MARK: - Image Picker Cell Delegate
 extension FindPartnersBasicViewController: ImagePickerCellDelegate {
-    func imagePickerCell(_ cell: ImagePickerCell, didSetImage image: Data?) {
-        if let image = image {
-            project.image = image
-            tableView.reloadData()
-        }
+    func imagePickerCell(_ cell: ImagePickerCell, didSetImage image: UIImage) {
+        self.image = image
+        tableView.reloadData()
     }
 }
