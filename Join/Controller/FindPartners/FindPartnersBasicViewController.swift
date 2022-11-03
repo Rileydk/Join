@@ -142,7 +142,7 @@ class FindPartnersBasicViewController: UIViewController {
         firebaseManager.postNewProject(project: project, image: image) { [weak self] result in
             ProgressHUD.dismiss()
             switch result {
-            case .success(_):
+            case .success:
                 // FIXME: - 順序不對，應該要在showSucceed結束後再跳轉
                 // FIXME: - 頁面沒有被清空
                 ProgressHUD.showSucceed()

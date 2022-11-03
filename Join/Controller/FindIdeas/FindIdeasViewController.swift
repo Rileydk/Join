@@ -8,7 +8,7 @@
 import UIKit
 
 class FindIdeasViewController: UIViewController {
-    enum Section: Hashable {
+    enum Section: CaseIterable {
         case recommendations
         case newIdeas
     }
@@ -19,6 +19,7 @@ class FindIdeasViewController: UIViewController {
     }
 
     typealias IdeasDatasource = UICollectionViewDiffableDataSource<Section, Item>
+    private var datasource: IdeasDatasource!
     let firebaseManager = FirebaseManager.shared
     var projects = [Project]()
 
@@ -32,10 +33,11 @@ class FindIdeasViewController: UIViewController {
                 UINib(nibName: IdeaCell.identifier, bundle: nil),
                 forCellWithReuseIdentifier: IdeaCell.identifier
             )
+            collectionView.setCollectionViewLayout(createLayout(), animated: true)
+            collectionView.delegate = self
+            configureDataSource()
         }
     }
-
-    private var datasource: IdeasDatasource!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,10 +57,18 @@ class FindIdeasViewController: UIViewController {
         }
     }
 
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == SegueIdentifier.GoProjectDetailPage {
+            guard let detailVC = segue.destination as? ProjectDetailsViewController,
+                  let project = sender as? Project else {
+                fatalError("Cannot create ProjectDetailsVC")
+            }
+            detailVC.project = project
+        }
+    }
+
     func layoutViews() {
-        title = StoryboardCategory.findIdeas.rawValue
-        collectionView.setCollectionViewLayout(createLayout(), animated: true)
-        configureDataSource()
+        title = Tab.findIdeas.title
     }
 }
 
@@ -152,10 +162,17 @@ extension FindIdeasViewController {
 
     func updateDatasource() {
         var snapshot = NSDiffableDataSourceSnapshot<Section, Item>()
-        snapshot.appendSections([.recommendations, .newIdeas])
+        snapshot.appendSections(Section.allCases)
         snapshot.appendItems(projects.map { .recommendation($0) }, toSection: .recommendations)
         snapshot.appendItems(projects.map { .newIdeas($0) }, toSection: .newIdeas)
 
         datasource.apply(snapshot, animatingDifferences: false)
+    }
+}
+
+// MARK: - Collection View Delegate
+extension FindIdeasViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        performSegue(withIdentifier: SegueIdentifier.GoProjectDetailPage, sender: projects[indexPath.row])
     }
 }

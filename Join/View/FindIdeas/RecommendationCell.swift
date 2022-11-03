@@ -13,6 +13,11 @@ class RecommendationCell: CollectionViewCell {
 
     let firebaseManager = FirebaseManager.shared
 
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        imageView.image = nil
+    }
+
     override func awakeFromNib() {
         super.awakeFromNib()
         titleLabel.backgroundColor = UIColor.gray.withAlphaComponent(0.6)

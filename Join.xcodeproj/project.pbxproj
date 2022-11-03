@@ -51,6 +51,15 @@
 		BF42FAD92912960D00501789 /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FAD82912960D00501789 /* CollectionViewCell.swift */; };
 		BF42FADC2912967900501789 /* IdeaCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FADA2912967900501789 /* IdeaCell.swift */; };
 		BF42FADD2912967900501789 /* IdeaCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF42FADB2912967900501789 /* IdeaCell.xib */; };
+		BFF8A4AE2913A92300ADC950 /* ProjectDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF8A4AD2913A92300ADC950 /* ProjectDetailsViewController.swift */; };
+		BFF8A4B32913AD3000ADC950 /* BigImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF8A4B12913AD3000ADC950 /* BigImageCell.swift */; };
+		BFF8A4B42913AD3000ADC950 /* BigImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BFF8A4B22913AD3000ADC950 /* BigImageCell.xib */; };
+		BFF8A4B82913AE8400ADC950 /* DetailTitleHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF8A4B72913AE8400ADC950 /* DetailTitleHeaderView.swift */; };
+		BFF8A4BA2913AE9D00ADC950 /* DetailTitleHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BFF8A4B92913AE9D00ADC950 /* DetailTitleHeaderView.xib */; };
+		BFF8A4BC2913B39900ADC950 /* TableViewHeaderFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF8A4BB2913B39900ADC950 /* TableViewHeaderFooterView.swift */; };
+		BFF8A4BF2913B46600ADC950 /* JoinButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF8A4BD2913B46600ADC950 /* JoinButtonCell.swift */; };
+		BFF8A4C02913B46600ADC950 /* JoinButtonCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BFF8A4BE2913B46600ADC950 /* JoinButtonCell.xib */; };
+		BFF8A4C22913C6F700ADC950 /* SegueIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF8A4C12913C6F700ADC950 /* SegueIdentifier.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -100,6 +109,15 @@
 		BF42FAD82912960D00501789 /* CollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewCell.swift; sourceTree = "<group>"; };
 		BF42FADA2912967900501789 /* IdeaCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdeaCell.swift; sourceTree = "<group>"; };
 		BF42FADB2912967900501789 /* IdeaCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = IdeaCell.xib; sourceTree = "<group>"; };
+		BFF8A4AD2913A92300ADC950 /* ProjectDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectDetailsViewController.swift; sourceTree = "<group>"; };
+		BFF8A4B12913AD3000ADC950 /* BigImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigImageCell.swift; sourceTree = "<group>"; };
+		BFF8A4B22913AD3000ADC950 /* BigImageCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BigImageCell.xib; sourceTree = "<group>"; };
+		BFF8A4B72913AE8400ADC950 /* DetailTitleHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTitleHeaderView.swift; sourceTree = "<group>"; };
+		BFF8A4B92913AE9D00ADC950 /* DetailTitleHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DetailTitleHeaderView.xib; sourceTree = "<group>"; };
+		BFF8A4BB2913B39900ADC950 /* TableViewHeaderFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewHeaderFooterView.swift; sourceTree = "<group>"; };
+		BFF8A4BD2913B46600ADC950 /* JoinButtonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinButtonCell.swift; sourceTree = "<group>"; };
+		BFF8A4BE2913B46600ADC950 /* JoinButtonCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = JoinButtonCell.xib; sourceTree = "<group>"; };
+		BFF8A4C12913C6F700ADC950 /* SegueIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegueIdentifier.swift; sourceTree = "<group>"; };
 		E73F750E744AEAB2F0006E8B /* Pods-Join.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Join.debug.xcconfig"; path = "Target Support Files/Pods-Join/Pods-Join.debug.xcconfig"; sourceTree = "<group>"; };
 		F30624BA8F470C0A1492643F /* Pods-Join.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Join.release.xcconfig"; path = "Target Support Files/Pods-Join/Pods-Join.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -236,6 +254,7 @@
 			isa = PBXGroup;
 			children = (
 				BF42FA66290D04EF00501789 /* FindPartnersFormSections.swift */,
+				BFF8A4C12913C6F700ADC950 /* SegueIdentifier.swift */,
 			);
 			path = Constant;
 			sourceTree = "<group>";
@@ -274,6 +293,7 @@
 			children = (
 				BF42FA72290D197000501789 /* TableViewCell.swift */,
 				BF42FAD82912960D00501789 /* CollectionViewCell.swift */,
+				BFF8A4BB2913B39900ADC950 /* TableViewHeaderFooterView.swift */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -291,6 +311,7 @@
 			isa = PBXGroup;
 			children = (
 				BF42FA38290BE2AA00501789 /* FindIdeasViewController.swift */,
+				BFF8A4AD2913A92300ADC950 /* ProjectDetailsViewController.swift */,
 			);
 			path = FindIdeas;
 			sourceTree = "<group>";
@@ -302,6 +323,12 @@
 				BF42FAD52912945F00501789 /* RecommendationCell.xib */,
 				BF42FADA2912967900501789 /* IdeaCell.swift */,
 				BF42FADB2912967900501789 /* IdeaCell.xib */,
+				BFF8A4B12913AD3000ADC950 /* BigImageCell.swift */,
+				BFF8A4B22913AD3000ADC950 /* BigImageCell.xib */,
+				BFF8A4B72913AE8400ADC950 /* DetailTitleHeaderView.swift */,
+				BFF8A4B92913AE9D00ADC950 /* DetailTitleHeaderView.xib */,
+				BFF8A4BD2913B46600ADC950 /* JoinButtonCell.swift */,
+				BFF8A4BE2913B46600ADC950 /* JoinButtonCell.xib */,
 			);
 			path = FindIdeas;
 			sourceTree = "<group>";
@@ -373,9 +400,12 @@
 				BF42FA79290D264100501789 /* SingleLineInputCell.xib in Resources */,
 				BF42FA5D290CED7100501789 /* Chat.storyboard in Resources */,
 				BF42FAD72912945F00501789 /* RecommendationCell.xib in Resources */,
+				BFF8A4C02913B46600ADC950 /* JoinButtonCell.xib in Resources */,
 				BF42FA41290BE2AC00501789 /* LaunchScreen.storyboard in Resources */,
+				BFF8A4BA2913AE9D00ADC950 /* DetailTitleHeaderView.xib in Resources */,
 				BF42FA58290CEA5900501789 /* FindIdeas.storyboard in Resources */,
 				BF42FAC52910010000501789 /* AddNewCell.xib in Resources */,
+				BFF8A4B42913AD3000ADC950 /* BigImageCell.xib in Resources */,
 				BF42FA5C290CED6C00501789 /* FindPartners.storyboard in Resources */,
 				BF42FAB8290FBE2D00501789 /* AddNewLineSectionCell.xib in Resources */,
 				BF42FA3E290BE2AC00501789 /* Assets.xcassets in Resources */,
@@ -461,6 +491,7 @@
 				BF42FA56290CE89500501789 /* TabBarController.swift in Sources */,
 				BF42FA7D290D2ADB00501789 /* MultilineInputCell.swift in Sources */,
 				BF42FA39290BE2AA00501789 /* FindIdeasViewController.swift in Sources */,
+				BFF8A4B32913AD3000ADC950 /* BigImageCell.swift in Sources */,
 				BF42FAD92912960D00501789 /* CollectionViewCell.swift in Sources */,
 				BF42FABC290FF32300501789 /* MemberCardViewController.swift in Sources */,
 				BF42FACF2912557500501789 /* UIImage+Ext.swift in Sources */,
@@ -470,6 +501,8 @@
 				BF42FAB4290FAC5C00501789 /* User.swift in Sources */,
 				BF42FAC1290FF73B00501789 /* RecruitingCell.swift in Sources */,
 				BF42FA35290BE2AA00501789 /* AppDelegate.swift in Sources */,
+				BFF8A4C22913C6F700ADC950 /* SegueIdentifier.swift in Sources */,
+				BFF8A4BC2913B39900ADC950 /* TableViewHeaderFooterView.swift in Sources */,
 				BF42FAB7290FBE2D00501789 /* AddNewLineSectionCell.swift in Sources */,
 				BF42FA76290D1CD800501789 /* FindPartnersBasicViewController.swift in Sources */,
 				BF42FA6E290D178400501789 /* UIView+Ext.swift in Sources */,
@@ -477,8 +510,11 @@
 				BF42FA71290D196200501789 /* SingleLineInputCell.swift in Sources */,
 				BF42FAC829111FD400501789 /* ImagePickerCell.swift in Sources */,
 				BF42FA37290BE2AA00501789 /* SceneDelegate.swift in Sources */,
+				BFF8A4BF2913B46600ADC950 /* JoinButtonCell.swift in Sources */,
+				BFF8A4AE2913A92300ADC950 /* ProjectDetailsViewController.swift in Sources */,
 				BF42FA61290CEF4700501789 /* UIStoryboard+Ext.swift in Sources */,
 				BF42FACB2911473A00501789 /* FirebaseManager.swift in Sources */,
+				BFF8A4B82913AE8400ADC950 /* DetailTitleHeaderView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

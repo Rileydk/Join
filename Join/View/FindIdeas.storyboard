@@ -35,6 +35,9 @@
                                             <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </collectionViewCellContentView>
+                                        <connections>
+                                            <segue destination="KA7-7l-jFw" kind="show" identifier="GoProjectDetailPage" id="EBI-Vr-EHf"/>
+                                        </connections>
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
@@ -56,6 +59,37 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-342" y="889"/>
+        </scene>
+        <!--Project Details View Controller-->
+        <scene sceneID="WWk-6t-3yk">
+            <objects>
+                <viewController id="KA7-7l-jFw" customClass="ProjectDetailsViewController" customModule="Join" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="O0i-EN-eLU">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="khk-Dp-a5d">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </tableView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="988-Bi-c79"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="988-Bi-c79" firstAttribute="trailing" secondItem="khk-Dp-a5d" secondAttribute="trailing" id="SbW-sg-EVT"/>
+                            <constraint firstAttribute="bottom" secondItem="khk-Dp-a5d" secondAttribute="bottom" id="hQQ-bj-YEw"/>
+                            <constraint firstItem="khk-Dp-a5d" firstAttribute="top" secondItem="O0i-EN-eLU" secondAttribute="top" id="hmp-aT-znQ"/>
+                            <constraint firstItem="khk-Dp-a5d" firstAttribute="leading" secondItem="988-Bi-c79" secondAttribute="leading" id="tnJ-CG-WPO"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="dIZ-Ys-Xl6"/>
+                    <connections>
+                        <outlet property="tableView" destination="khk-Dp-a5d" id="uSU-Vi-D7D"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="iDk-g6-c3a" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="536" y="889"/>
         </scene>
         <!--Item-->
         <scene sceneID="sdM-tg-TIK">

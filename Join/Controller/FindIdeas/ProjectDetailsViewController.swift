@@ -1,0 +1,141 @@
+//
+//  ProjectDetailsViewController.swift
+//  Join
+//
+//  Created by Riley Lai on 2022/11/3.
+//
+
+import UIKit
+
+class ProjectDetailsViewController: UIViewController {
+    enum Section: CaseIterable {
+        case bigImage
+//        case categories
+//        case deadline
+//        case essentialLocation
+//        case description
+//        case group
+//        case contact
+//        case location
+        case joinButton
+    }
+
+    enum Item: Hashable {
+        case bigImage(URLString)
+//        case categories
+//        case deadline
+//        case essentialLocation
+//        case description
+//        case group
+//        case contact
+//        case location
+        case joinButton(Project)
+    }
+
+    typealias ProjectDetailsDatasource = UITableViewDiffableDataSource<Section, Item>
+    private var datasource: ProjectDetailsDatasource!
+    var project: Project?
+
+    @IBOutlet weak var tableView: UITableView! {
+        didSet {
+            tableView.register(
+                UINib(nibName: BigImageCell.identifier, bundle: nil),
+                forCellReuseIdentifier: BigImageCell.identifier
+            )
+            tableView.register(
+                UINib(nibName: JoinButtonCell.identifier, bundle: nil),
+                forCellReuseIdentifier: JoinButtonCell.identifier
+            )
+            tableView.register(
+                UINib(nibName: DetailTitleHeaderView.identifier, bundle: nil),
+                forHeaderFooterViewReuseIdentifier: DetailTitleHeaderView.identifier
+            )
+            tableView.sectionHeaderHeight = UITableView.automaticDimension
+            tableView.estimatedSectionHeaderHeight = 80
+            tableView.delegate = self
+            configureDatasource()
+        }
+    }
+//
+//    init(project: Project) {
+//        self.project = project
+//        super.init(nibName: nil, bundle: nil)
+//    }
+//
+//    required init?(coder: NSCoder) {
+//        fatalError("init(coder:) has not been implemented")
+//    }
+}
+
+// MARK: - Table View Delegate
+extension ProjectDetailsViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.section == 0 {
+            return 180
+        } else {
+            return 100
+        }
+    }
+
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        if section == 1 {
+            guard let headerView = tableView.dequeueReusableHeaderFooterView(
+                withIdentifier: DetailTitleHeaderView.identifier) as? DetailTitleHeaderView else {
+                return nil
+            }
+            if let project = project {
+                headerView.layoutHeaderView(project: project)
+                return headerView
+            } else {
+                return nil
+            }
+        } else {
+            return nil
+        }
+    }
+}
+
+// MARK: - Table View Datasource
+extension ProjectDetailsViewController {
+    func configureDatasource() {
+        // swiftlint:disable line_length
+        datasource = UITableViewDiffableDataSource(tableView: tableView) { [weak self] tableView, indexPath, item in
+            return self?.createCell(tableView: tableView, indexPath: indexPath, item: item)
+        }
+        updateDatasource()
+    }
+
+    func createCell(tableView: UITableView, indexPath: IndexPath, item: Item) -> UITableViewCell {
+        switch item {
+        case .bigImage(let imageURL):
+            guard let cell = tableView.dequeueReusableCell(
+                withIdentifier: BigImageCell.identifier,
+                for: indexPath) as? BigImageCell else {
+                fatalError("Cannot create big image cell")
+            }
+            cell.layoutCell(imageURL: imageURL)
+            return cell
+
+        case .joinButton:
+            guard let cell = tableView.dequeueReusableCell(
+                withIdentifier: JoinButtonCell.identifier,
+                for: indexPath) as? JoinButtonCell else {
+                fatalError("Cannot create join button cell")
+            }
+            return cell
+        }
+    }
+
+    func updateDatasource() {
+        var snapshot = NSDiffableDataSourceSnapshot<Section, Item>()
+        snapshot.appendSections(Section.allCases)
+        guard let project = project else {
+            fatalError("Didn't get project data")
+        }
+        if let urlString = project.imageURL {
+            snapshot.appendItems([.bigImage(urlString)], toSection: .bigImage)
+        }
+        snapshot.appendItems([.joinButton(Project.mockProject)], toSection: .joinButton)
+        datasource.apply(snapshot, animatingDifferences: false)
+    }
+}
