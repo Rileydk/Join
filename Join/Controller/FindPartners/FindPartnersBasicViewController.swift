@@ -71,7 +71,6 @@ class FindPartnersBasicViewController: UIViewController {
         if formState == FindPartnersFormSections.basicSection {
             project.categories = selectedCategories
             if !(project.name.isEmpty || project.description.isEmpty || project.categories.isEmpty) {
-                print("project categories at basic stage: ", project.categories)
                 let findPartnersStoryboard = UIStoryboard(
                     name: StoryboardCategory.findPartners.rawValue, bundle: nil
                 )
@@ -81,7 +80,6 @@ class FindPartnersBasicViewController: UIViewController {
                     fatalError("Cannot load FindPartnersBasicVC from storyboard.")
                 }
                 nextVC.project = project
-                print("basic to next", nextVC.project)
                 nextVC.formState = FindPartnersFormSections.groupSection
                 nextVC.view.backgroundColor = .white
                 navigationController?.pushViewController(nextVC, animated: true)
@@ -91,7 +89,6 @@ class FindPartnersBasicViewController: UIViewController {
 
         } else if formState == FindPartnersFormSections.groupSection,
                   !project.recruiting.isEmpty {
-            print("project categories at group stage: ", project.categories)
             let findPartnersStoryboard = UIStoryboard(
                 name: StoryboardCategory.findPartners.rawValue, bundle: nil
             )
@@ -107,7 +104,6 @@ class FindPartnersBasicViewController: UIViewController {
 
         } else if formState == FindPartnersFormSections.detailSection,
                   project.deadline != nil && !project.location.isEmpty {
-            print("project categories at detail stage: ", project.categories)
             post()
 
         } else {
@@ -116,8 +112,8 @@ class FindPartnersBasicViewController: UIViewController {
     }
 
     func alertUserToFillColumns() {
-        let alert = UIAlertController(title: "所有必填欄位都要填喔", message: nil, preferredStyle: .alert)
-        let action = UIAlertAction(title: "OK", style: .default)
+        let alert = UIAlertController(title: FindPartnersFormSections.findPartnersNotFilledAlertTitle, message: nil, preferredStyle: .alert)
+        let action = UIAlertAction(title: FindPartnersFormSections.alertActionTitle, style: .default)
         alert.addAction(action)
         present(alert, animated: true)
     }
@@ -136,14 +132,20 @@ class FindPartnersBasicViewController: UIViewController {
 
         selectCategoriesVC.passingHandler = { [weak self] newSelectCategories in
             self?.selectedCategories = newSelectCategories
-            print("in goSelectCategories: ", self?.selectedCategories)
         }
 
         self.present(selectCategoriesVC, animated: true)
     }
 
     func post() {
-        firebaseManager.postNewProject(project: project, image: image)
+        firebaseManager.postNewProject(project: project, image: image) { result in
+            switch result {
+            case .success(_):
+                print("Show finish")
+            case .failure(let error):
+                print(error)
+            }
+        }
     }
 }
 

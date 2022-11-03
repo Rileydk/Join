@@ -44,9 +44,14 @@ class FindIdeasViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        firebaseManager.getAllProjects { [weak self] projects in
-            self?.projects = projects
-            self?.updateDatasource()
+        firebaseManager.getAllProjects { [weak self] result in
+            switch result {
+            case .success(let projects):
+                self?.projects = projects
+                self?.updateDatasource()
+            case .failure(let error):
+                print(error)
+            }
         }
     }
 
@@ -152,7 +157,6 @@ extension FindIdeasViewController {
         snapshot.appendItems(projects.map { .recommendation($0) }, toSection: .recommendations)
         snapshot.appendItems(projects.map { .newIdeas($0) }, toSection: .newIdeas)
 
-        print(datasource)
         datasource.apply(snapshot, animatingDifferences: false)
     }
 }

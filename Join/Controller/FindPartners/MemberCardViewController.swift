@@ -97,8 +97,8 @@ class MemberCardViewController: UIViewController {
     }
 
     func alertUserToFillColumns() {
-        let alert = UIAlertController(title: "所有欄位都要填喔", message: nil, preferredStyle: .alert)
-        let action = UIAlertAction(title: "OK", style: .default)
+        let alert = UIAlertController(title: FindPartnersFormSections.memeberCardNotFilledAlertTitle, message: nil, preferredStyle: .alert)
+        let action = UIAlertAction(title: FindPartnersFormSections.alertActionTitle, style: .default)
         alert.addAction(action)
         present(alert, animated: true)
     }

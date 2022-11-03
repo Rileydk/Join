@@ -69,6 +69,11 @@ struct FindPartnersFormSections {
     )
 
     static let memberBranchButtonTitle = "完成"
+    static let findPartnersNotFilledAlertTitle = "所有必填欄位都要填喔"
+    static let memeberCardNotFilledAlertTitle = "所有欄位都要填喔"
+    static let alertActionTitle = "OK"
+    static let newProjectNoValidImageURLErrorDescription = "No valid image url"
+    static let getProjectErrorDescription = "No valid querysnapshot"
     // 這個似乎是錯誤的
     // static let datePickerLocale = "zh_TW"
 }
