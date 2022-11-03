@@ -8,5 +8,10 @@ target 'Join' do
   # Pods for Join
   pod 'FirebaseAuth'
   pod 'FirebaseFirestore'
+  pod 'FirebaseStorage'
+  pod 'FirebaseFirestoreSwift'
+  pod "TTGTagCollectionView"
+  pod 'IQKeyboardManagerSwift'
+  pod 'ProgressHUD'
 
 end

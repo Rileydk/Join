@@ -10,17 +10,47 @@
 		2585457536E3C3F568F3A4AC /* Pods_Join.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95A33A59C05820643F8B2FFB /* Pods_Join.framework */; };
 		BF42FA35290BE2AA00501789 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FA34290BE2AA00501789 /* AppDelegate.swift */; };
 		BF42FA37290BE2AA00501789 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FA36290BE2AA00501789 /* SceneDelegate.swift */; };
-		BF42FA39290BE2AA00501789 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FA38290BE2AA00501789 /* ViewController.swift */; };
+		BF42FA39290BE2AA00501789 /* FindIdeasViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FA38290BE2AA00501789 /* FindIdeasViewController.swift */; };
 		BF42FA3C290BE2AA00501789 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BF42FA3A290BE2AA00501789 /* Main.storyboard */; };
 		BF42FA3E290BE2AC00501789 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BF42FA3D290BE2AC00501789 /* Assets.xcassets */; };
 		BF42FA41290BE2AC00501789 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BF42FA3F290BE2AC00501789 /* LaunchScreen.storyboard */; };
-		BF42FA4E290CE05800501789 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BF42FA4D290CE05800501789 /* GoogleService-Info.plist */; };
 		BF42FA56290CE89500501789 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FA55290CE89500501789 /* TabBarController.swift */; };
 		BF42FA58290CEA5900501789 /* FindIdeas.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BF42FA57290CEA5900501789 /* FindIdeas.storyboard */; };
 		BF42FA5C290CED6C00501789 /* FindPartners.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BF42FA59290CEA7F00501789 /* FindPartners.storyboard */; };
 		BF42FA5D290CED7100501789 /* Chat.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BF42FA5A290CEAB500501789 /* Chat.storyboard */; };
 		BF42FA5E290CED7400501789 /* Personal.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BF42FA5B290CEAD500501789 /* Personal.storyboard */; };
 		BF42FA61290CEF4700501789 /* UIStoryboard+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FA60290CEF4700501789 /* UIStoryboard+Ext.swift */; };
+		BF42FA67290D04EF00501789 /* FindPartnersFormSections.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FA66290D04EF00501789 /* FindPartnersFormSections.swift */; };
+		BF42FA6E290D178400501789 /* UIView+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FA6D290D178400501789 /* UIView+Ext.swift */; };
+		BF42FA71290D196200501789 /* SingleLineInputCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FA70290D196200501789 /* SingleLineInputCell.swift */; };
+		BF42FA73290D197000501789 /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FA72290D197000501789 /* TableViewCell.swift */; };
+		BF42FA76290D1CD800501789 /* FindPartnersBasicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FA75290D1CD800501789 /* FindPartnersBasicViewController.swift */; };
+		BF42FA79290D264100501789 /* SingleLineInputCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF42FA6B290D160900501789 /* SingleLineInputCell.xib */; };
+		BF42FA7D290D2ADB00501789 /* MultilineInputCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FA7B290D2ADB00501789 /* MultilineInputCell.swift */; };
+		BF42FA7E290D2ADB00501789 /* MultilineInputCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF42FA7C290D2ADB00501789 /* MultilineInputCell.xib */; };
+		BF42FA81290D31EF00501789 /* GoSelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FA7F290D31EF00501789 /* GoSelectionCell.swift */; };
+		BF42FA82290D31EF00501789 /* GoSelectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF42FA80290D31EF00501789 /* GoSelectionCell.xib */; };
+		BF42FAAE290F6B8000501789 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BF42FAAD290F6B7F00501789 /* GoogleService-Info.plist */; };
+		BF42FAB0290F7E9000501789 /* SelectionCategoriesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FAAF290F7E9000501789 /* SelectionCategoriesViewController.swift */; };
+		BF42FAB2290FAC2000501789 /* Project.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FAB1290FAC2000501789 /* Project.swift */; };
+		BF42FAB4290FAC5C00501789 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FAB3290FAC5C00501789 /* User.swift */; };
+		BF42FAB7290FBE2D00501789 /* AddNewLineSectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FAB5290FBE2D00501789 /* AddNewLineSectionCell.swift */; };
+		BF42FAB8290FBE2D00501789 /* AddNewLineSectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF42FAB6290FBE2D00501789 /* AddNewLineSectionCell.xib */; };
+		BF42FABC290FF32300501789 /* MemberCardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FABB290FF32300501789 /* MemberCardViewController.swift */; };
+		BF42FABF290FF65300501789 /* MemberCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FABE290FF65300501789 /* MemberCell.swift */; };
+		BF42FAC1290FF73B00501789 /* RecruitingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FAC0290FF73B00501789 /* RecruitingCell.swift */; };
+		BF42FAC42910010000501789 /* AddNewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FAC22910010000501789 /* AddNewCell.swift */; };
+		BF42FAC52910010000501789 /* AddNewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF42FAC32910010000501789 /* AddNewCell.xib */; };
+		BF42FAC829111FD400501789 /* ImagePickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FAC629111FD400501789 /* ImagePickerCell.swift */; };
+		BF42FAC929111FD400501789 /* ImagePickerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF42FAC729111FD400501789 /* ImagePickerCell.xib */; };
+		BF42FACB2911473A00501789 /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FACA2911473A00501789 /* FirebaseManager.swift */; };
+		BF42FACD291154B500501789 /* Date+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FACC291154B500501789 /* Date+Ext.swift */; };
+		BF42FACF2912557500501789 /* UIImage+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FACE2912557500501789 /* UIImage+Ext.swift */; };
+		BF42FAD62912945F00501789 /* RecommendationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FAD42912945F00501789 /* RecommendationCell.swift */; };
+		BF42FAD72912945F00501789 /* RecommendationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF42FAD52912945F00501789 /* RecommendationCell.xib */; };
+		BF42FAD92912960D00501789 /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FAD82912960D00501789 /* CollectionViewCell.swift */; };
+		BF42FADC2912967900501789 /* IdeaCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FADA2912967900501789 /* IdeaCell.swift */; };
+		BF42FADD2912967900501789 /* IdeaCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF42FADB2912967900501789 /* IdeaCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,18 +58,48 @@
 		BF42FA31290BE2AA00501789 /* Join.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Join.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF42FA34290BE2AA00501789 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BF42FA36290BE2AA00501789 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		BF42FA38290BE2AA00501789 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		BF42FA38290BE2AA00501789 /* FindIdeasViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindIdeasViewController.swift; sourceTree = "<group>"; };
 		BF42FA3B290BE2AA00501789 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		BF42FA3D290BE2AC00501789 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BF42FA40290BE2AC00501789 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		BF42FA42290BE2AC00501789 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		BF42FA4D290CE05800501789 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		BF42FA55290CE89500501789 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		BF42FA57290CEA5900501789 /* FindIdeas.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = FindIdeas.storyboard; sourceTree = "<group>"; };
 		BF42FA59290CEA7F00501789 /* FindPartners.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = FindPartners.storyboard; sourceTree = "<group>"; };
 		BF42FA5A290CEAB500501789 /* Chat.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Chat.storyboard; path = /Users/riley/Desktop/iOS/Courses/appworks/Join/Join/View/Chat.storyboard; sourceTree = "<absolute>"; };
 		BF42FA5B290CEAD500501789 /* Personal.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Personal.storyboard; sourceTree = "<group>"; };
 		BF42FA60290CEF4700501789 /* UIStoryboard+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStoryboard+Ext.swift"; sourceTree = "<group>"; };
+		BF42FA66290D04EF00501789 /* FindPartnersFormSections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindPartnersFormSections.swift; sourceTree = "<group>"; };
+		BF42FA6B290D160900501789 /* SingleLineInputCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SingleLineInputCell.xib; sourceTree = "<group>"; };
+		BF42FA6D290D178400501789 /* UIView+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Ext.swift"; sourceTree = "<group>"; };
+		BF42FA70290D196200501789 /* SingleLineInputCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleLineInputCell.swift; sourceTree = "<group>"; };
+		BF42FA72290D197000501789 /* TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
+		BF42FA75290D1CD800501789 /* FindPartnersBasicViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindPartnersBasicViewController.swift; sourceTree = "<group>"; };
+		BF42FA7B290D2ADB00501789 /* MultilineInputCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultilineInputCell.swift; sourceTree = "<group>"; };
+		BF42FA7C290D2ADB00501789 /* MultilineInputCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MultilineInputCell.xib; sourceTree = "<group>"; };
+		BF42FA7F290D31EF00501789 /* GoSelectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoSelectionCell.swift; sourceTree = "<group>"; };
+		BF42FA80290D31EF00501789 /* GoSelectionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GoSelectionCell.xib; sourceTree = "<group>"; };
+		BF42FAAD290F6B7F00501789 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		BF42FAAF290F7E9000501789 /* SelectionCategoriesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionCategoriesViewController.swift; sourceTree = "<group>"; };
+		BF42FAB1290FAC2000501789 /* Project.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Project.swift; sourceTree = "<group>"; };
+		BF42FAB3290FAC5C00501789 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		BF42FAB5290FBE2D00501789 /* AddNewLineSectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewLineSectionCell.swift; sourceTree = "<group>"; };
+		BF42FAB6290FBE2D00501789 /* AddNewLineSectionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddNewLineSectionCell.xib; sourceTree = "<group>"; };
+		BF42FABB290FF32300501789 /* MemberCardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberCardViewController.swift; sourceTree = "<group>"; };
+		BF42FABE290FF65300501789 /* MemberCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberCell.swift; sourceTree = "<group>"; };
+		BF42FAC0290FF73B00501789 /* RecruitingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecruitingCell.swift; sourceTree = "<group>"; };
+		BF42FAC22910010000501789 /* AddNewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewCell.swift; sourceTree = "<group>"; };
+		BF42FAC32910010000501789 /* AddNewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddNewCell.xib; sourceTree = "<group>"; };
+		BF42FAC629111FD400501789 /* ImagePickerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerCell.swift; sourceTree = "<group>"; };
+		BF42FAC729111FD400501789 /* ImagePickerCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ImagePickerCell.xib; sourceTree = "<group>"; };
+		BF42FACA2911473A00501789 /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
+		BF42FACC291154B500501789 /* Date+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Ext.swift"; sourceTree = "<group>"; };
+		BF42FACE2912557500501789 /* UIImage+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Ext.swift"; sourceTree = "<group>"; };
+		BF42FAD42912945F00501789 /* RecommendationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendationCell.swift; sourceTree = "<group>"; };
+		BF42FAD52912945F00501789 /* RecommendationCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RecommendationCell.xib; sourceTree = "<group>"; };
+		BF42FAD82912960D00501789 /* CollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewCell.swift; sourceTree = "<group>"; };
+		BF42FADA2912967900501789 /* IdeaCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdeaCell.swift; sourceTree = "<group>"; };
+		BF42FADB2912967900501789 /* IdeaCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = IdeaCell.xib; sourceTree = "<group>"; };
 		E73F750E744AEAB2F0006E8B /* Pods-Join.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Join.debug.xcconfig"; path = "Target Support Files/Pods-Join/Pods-Join.debug.xcconfig"; sourceTree = "<group>"; };
 		F30624BA8F470C0A1492643F /* Pods-Join.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Join.release.xcconfig"; path = "Target Support Files/Pods-Join/Pods-Join.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -109,7 +169,8 @@
 			isa = PBXGroup;
 			children = (
 				BF42FA54290CE86700501789 /* Base */,
-				BF42FA38290BE2AA00501789 /* ViewController.swift */,
+				BF42FAD0291275BE00501789 /* FindIdeas */,
+				BF42FA74290D1C8500501789 /* FindPartners */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -117,10 +178,11 @@
 		BF42FA51290CE5D400501789 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				BF42FA65290D03BD00501789 /* Constant */,
 				BF42FA3D290BE2AC00501789 /* Assets.xcassets */,
 				BF42FA3F290BE2AC00501789 /* LaunchScreen.storyboard */,
 				BF42FA42290BE2AC00501789 /* Info.plist */,
-				BF42FA4D290CE05800501789 /* GoogleService-Info.plist */,
+				BF42FAAD290F6B7F00501789 /* GoogleService-Info.plist */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -128,6 +190,9 @@
 		BF42FA52290CE63C00501789 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				BF42FAB1290FAC2000501789 /* Project.swift */,
+				BF42FAB3290FAC5C00501789 /* User.swift */,
+				BF42FACA2911473A00501789 /* FirebaseManager.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -135,6 +200,10 @@
 		BF42FA53290CE64300501789 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				BF42FA7A290D268F00501789 /* Base */,
+				BF42FA6A290D14CC00501789 /* Form */,
+				BF42FABD290FF63A00501789 /* FindPartners */,
+				BF42FAD12912941C00501789 /* FindIdeas */,
 				BF42FA3A290BE2AA00501789 /* Main.storyboard */,
 				BF42FA57290CEA5900501789 /* FindIdeas.storyboard */,
 				BF42FA59290CEA7F00501789 /* FindPartners.storyboard */,
@@ -156,8 +225,85 @@
 			isa = PBXGroup;
 			children = (
 				BF42FA60290CEF4700501789 /* UIStoryboard+Ext.swift */,
+				BF42FA6D290D178400501789 /* UIView+Ext.swift */,
+				BF42FACC291154B500501789 /* Date+Ext.swift */,
+				BF42FACE2912557500501789 /* UIImage+Ext.swift */,
 			);
 			path = Extension;
+			sourceTree = "<group>";
+		};
+		BF42FA65290D03BD00501789 /* Constant */ = {
+			isa = PBXGroup;
+			children = (
+				BF42FA66290D04EF00501789 /* FindPartnersFormSections.swift */,
+			);
+			path = Constant;
+			sourceTree = "<group>";
+		};
+		BF42FA6A290D14CC00501789 /* Form */ = {
+			isa = PBXGroup;
+			children = (
+				BF42FA70290D196200501789 /* SingleLineInputCell.swift */,
+				BF42FA6B290D160900501789 /* SingleLineInputCell.xib */,
+				BF42FA7B290D2ADB00501789 /* MultilineInputCell.swift */,
+				BF42FA7C290D2ADB00501789 /* MultilineInputCell.xib */,
+				BF42FA7F290D31EF00501789 /* GoSelectionCell.swift */,
+				BF42FA80290D31EF00501789 /* GoSelectionCell.xib */,
+				BF42FAB5290FBE2D00501789 /* AddNewLineSectionCell.swift */,
+				BF42FAB6290FBE2D00501789 /* AddNewLineSectionCell.xib */,
+				BF42FAC22910010000501789 /* AddNewCell.swift */,
+				BF42FAC32910010000501789 /* AddNewCell.xib */,
+				BF42FAC629111FD400501789 /* ImagePickerCell.swift */,
+				BF42FAC729111FD400501789 /* ImagePickerCell.xib */,
+			);
+			path = Form;
+			sourceTree = "<group>";
+		};
+		BF42FA74290D1C8500501789 /* FindPartners */ = {
+			isa = PBXGroup;
+			children = (
+				BF42FA75290D1CD800501789 /* FindPartnersBasicViewController.swift */,
+				BF42FAAF290F7E9000501789 /* SelectionCategoriesViewController.swift */,
+				BF42FABB290FF32300501789 /* MemberCardViewController.swift */,
+			);
+			path = FindPartners;
+			sourceTree = "<group>";
+		};
+		BF42FA7A290D268F00501789 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				BF42FA72290D197000501789 /* TableViewCell.swift */,
+				BF42FAD82912960D00501789 /* CollectionViewCell.swift */,
+			);
+			path = Base;
+			sourceTree = "<group>";
+		};
+		BF42FABD290FF63A00501789 /* FindPartners */ = {
+			isa = PBXGroup;
+			children = (
+				BF42FABE290FF65300501789 /* MemberCell.swift */,
+				BF42FAC0290FF73B00501789 /* RecruitingCell.swift */,
+			);
+			path = FindPartners;
+			sourceTree = "<group>";
+		};
+		BF42FAD0291275BE00501789 /* FindIdeas */ = {
+			isa = PBXGroup;
+			children = (
+				BF42FA38290BE2AA00501789 /* FindIdeasViewController.swift */,
+			);
+			path = FindIdeas;
+			sourceTree = "<group>";
+		};
+		BF42FAD12912941C00501789 /* FindIdeas */ = {
+			isa = PBXGroup;
+			children = (
+				BF42FAD42912945F00501789 /* RecommendationCell.swift */,
+				BF42FAD52912945F00501789 /* RecommendationCell.xib */,
+				BF42FADA2912967900501789 /* IdeaCell.swift */,
+				BF42FADB2912967900501789 /* IdeaCell.xib */,
+			);
+			path = FindIdeas;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -221,13 +367,21 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BF42FADD2912967900501789 /* IdeaCell.xib in Resources */,
+				BF42FA7E290D2ADB00501789 /* MultilineInputCell.xib in Resources */,
+				BF42FAC929111FD400501789 /* ImagePickerCell.xib in Resources */,
+				BF42FA79290D264100501789 /* SingleLineInputCell.xib in Resources */,
 				BF42FA5D290CED7100501789 /* Chat.storyboard in Resources */,
+				BF42FAD72912945F00501789 /* RecommendationCell.xib in Resources */,
 				BF42FA41290BE2AC00501789 /* LaunchScreen.storyboard in Resources */,
 				BF42FA58290CEA5900501789 /* FindIdeas.storyboard in Resources */,
+				BF42FAC52910010000501789 /* AddNewCell.xib in Resources */,
 				BF42FA5C290CED6C00501789 /* FindPartners.storyboard in Resources */,
+				BF42FAB8290FBE2D00501789 /* AddNewLineSectionCell.xib in Resources */,
 				BF42FA3E290BE2AC00501789 /* Assets.xcassets in Resources */,
-				BF42FA4E290CE05800501789 /* GoogleService-Info.plist in Resources */,
 				BF42FA5E290CED7400501789 /* Personal.storyboard in Resources */,
+				BF42FAAE290F6B8000501789 /* GoogleService-Info.plist in Resources */,
+				BF42FA82290D31EF00501789 /* GoSelectionCell.xib in Resources */,
 				BF42FA3C290BE2AA00501789 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -298,11 +452,33 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BF42FAB0290F7E9000501789 /* SelectionCategoriesViewController.swift in Sources */,
+				BF42FABF290FF65300501789 /* MemberCell.swift in Sources */,
+				BF42FADC2912967900501789 /* IdeaCell.swift in Sources */,
+				BF42FAC42910010000501789 /* AddNewCell.swift in Sources */,
+				BF42FA67290D04EF00501789 /* FindPartnersFormSections.swift in Sources */,
+				BF42FACD291154B500501789 /* Date+Ext.swift in Sources */,
 				BF42FA56290CE89500501789 /* TabBarController.swift in Sources */,
-				BF42FA39290BE2AA00501789 /* ViewController.swift in Sources */,
+				BF42FA7D290D2ADB00501789 /* MultilineInputCell.swift in Sources */,
+				BF42FA39290BE2AA00501789 /* FindIdeasViewController.swift in Sources */,
+				BF42FAD92912960D00501789 /* CollectionViewCell.swift in Sources */,
+				BF42FABC290FF32300501789 /* MemberCardViewController.swift in Sources */,
+				BF42FACF2912557500501789 /* UIImage+Ext.swift in Sources */,
+				BF42FAB2290FAC2000501789 /* Project.swift in Sources */,
+				BF42FA73290D197000501789 /* TableViewCell.swift in Sources */,
+				BF42FA81290D31EF00501789 /* GoSelectionCell.swift in Sources */,
+				BF42FAB4290FAC5C00501789 /* User.swift in Sources */,
+				BF42FAC1290FF73B00501789 /* RecruitingCell.swift in Sources */,
 				BF42FA35290BE2AA00501789 /* AppDelegate.swift in Sources */,
+				BF42FAB7290FBE2D00501789 /* AddNewLineSectionCell.swift in Sources */,
+				BF42FA76290D1CD800501789 /* FindPartnersBasicViewController.swift in Sources */,
+				BF42FA6E290D178400501789 /* UIView+Ext.swift in Sources */,
+				BF42FAD62912945F00501789 /* RecommendationCell.swift in Sources */,
+				BF42FA71290D196200501789 /* SingleLineInputCell.swift in Sources */,
+				BF42FAC829111FD400501789 /* ImagePickerCell.swift in Sources */,
 				BF42FA37290BE2AA00501789 /* SceneDelegate.swift in Sources */,
 				BF42FA61290CEF4700501789 /* UIStoryboard+Ext.swift in Sources */,
+				BF42FACB2911473A00501789 /* FirebaseManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
