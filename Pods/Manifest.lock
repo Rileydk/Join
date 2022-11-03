@@ -731,6 +731,7 @@ PODS:
     - nanopb/encode (= 2.30909.0)
   - nanopb/decode (2.30909.0)
   - nanopb/encode (2.30909.0)
+  - ProgressHUD (13.6)
   - PromisesObjC (2.1.1)
   - TTGTagCollectionView (2.3.0)
 
@@ -740,6 +741,7 @@ DEPENDENCIES:
   - FirebaseFirestoreSwift
   - FirebaseStorage
   - IQKeyboardManagerSwift
+  - ProgressHUD
   - TTGTagCollectionView
 
 SPEC REPOS:
@@ -766,6 +768,7 @@ SPEC REPOS:
     - leveldb-library
     - Libuv-gRPC
     - nanopb
+    - ProgressHUD
     - PromisesObjC
     - TTGTagCollectionView
 
@@ -792,9 +795,10 @@ SPEC CHECKSUMS:
   leveldb-library: 50c7b45cbd7bf543c81a468fe557a16ae3db8729
   Libuv-gRPC: 55e51798e14ef436ad9bc45d12d43b77b49df378
   nanopb: b552cce312b6c8484180ef47159bc0f65a1f0431
+  ProgressHUD: 4bdaa0d2ddf676b23324b199f9facffb5c3a1620
   PromisesObjC: ab77feca74fa2823e7af4249b8326368e61014cb
   TTGTagCollectionView: 4104f93281097eae5adbf4444811e32f5e52dc95
 
-PODFILE CHECKSUM: 2d1cff363af152c767ba17ae0ba5c9fcaf3eb6df
+PODFILE CHECKSUM: ba69e47ad11de9e6840c7fccabb6ee398dc119fd
 
 COCOAPODS: 1.11.3

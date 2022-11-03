@@ -171,7 +171,6 @@
 				BF42FA54290CE86700501789 /* Base */,
 				BF42FAD0291275BE00501789 /* FindIdeas */,
 				BF42FA74290D1C8500501789 /* FindPartners */,
-				BF42FA38290BE2AA00501789 /* FindIdeasViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -291,6 +290,7 @@
 		BF42FAD0291275BE00501789 /* FindIdeas */ = {
 			isa = PBXGroup;
 			children = (
+				BF42FA38290BE2AA00501789 /* FindIdeasViewController.swift */,
 			);
 			path = FindIdeas;
 			sourceTree = "<group>";

@@ -12,5 +12,6 @@ target 'Join' do
   pod 'FirebaseFirestoreSwift'
   pod "TTGTagCollectionView"
   pod 'IQKeyboardManagerSwift'
+  pod 'ProgressHUD'
 
 end

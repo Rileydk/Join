@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import ProgressHUD
 
 class FindPartnersBasicViewController: UIViewController {
     static let identifier = String(describing: FindPartnersBasicViewController.self)
@@ -138,11 +139,16 @@ class FindPartnersBasicViewController: UIViewController {
     }
 
     func post() {
-        firebaseManager.postNewProject(project: project, image: image) { result in
+        firebaseManager.postNewProject(project: project, image: image) { [weak self] result in
+            ProgressHUD.dismiss()
             switch result {
             case .success(_):
-                print("Show finish")
+                // FIXME: - 順序不對，應該要在showSucceed結束後再跳轉
+                // FIXME: - 頁面沒有被清空
+                ProgressHUD.showSucceed()
+                self?.tabBarController?.selectedIndex = 0
             case .failure(let error):
+                ProgressHUD.showFailed()
                 print(error)
             }
         }

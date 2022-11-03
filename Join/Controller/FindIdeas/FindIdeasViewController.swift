@@ -153,7 +153,6 @@ extension FindIdeasViewController {
     func updateDatasource() {
         var snapshot = NSDiffableDataSourceSnapshot<Section, Item>()
         snapshot.appendSections([.recommendations, .newIdeas])
-        // TODO: - 取得資料 -> 改用 Result Type
         snapshot.appendItems(projects.map { .recommendation($0) }, toSection: .recommendations)
         snapshot.appendItems(projects.map { .newIdeas($0) }, toSection: .newIdeas)
 
