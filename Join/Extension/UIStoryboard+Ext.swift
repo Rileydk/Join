@@ -7,33 +7,33 @@
 
 import UIKit
 
-enum StoryboardCategory: String {
-    case main = "Main"
-    case findIdeas = "FindIdeas"
-    case findPartners = "FindPartners"
-    case chat = "Chat"
-    case personal = "Personal"
+private struct StoryboardCategory {
+    static let main = "Main"
+    static let findIdeas = "FindIdeas"
+    static let findPartners = "FindPartners"
+    static let chat = "Chat"
+    static let personal = "Personal"
 }
 
 extension UIStoryboard {
     static var main: UIStoryboard {
-        jStoryboard(name: StoryboardCategory.main.rawValue)
+        jStoryboard(name: StoryboardCategory.main)
     }
 
     static var findIdeas: UIStoryboard {
-        jStoryboard(name: StoryboardCategory.findIdeas.rawValue)
+        jStoryboard(name: StoryboardCategory.findIdeas)
     }
 
     static var findPartners: UIStoryboard {
-        jStoryboard(name: StoryboardCategory.findPartners.rawValue)
+        jStoryboard(name: StoryboardCategory.findPartners)
     }
 
     static var chat: UIStoryboard {
-        jStoryboard(name: StoryboardCategory.chat.rawValue)
+        jStoryboard(name: StoryboardCategory.chat)
     }
 
     static var personal: UIStoryboard {
-        jStoryboard(name: StoryboardCategory.personal.rawValue)
+        jStoryboard(name: StoryboardCategory.personal)
     }
 
     private static func jStoryboard(name: String) -> UIStoryboard {

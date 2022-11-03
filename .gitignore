@@ -175,7 +175,7 @@ Drop here!
 .idea
 **/node_modules/*
 **/.firebaserc
-**/GoogleService-Info.plist
+*/GoogleService-Info.plist
 
 ### Firebase Patch ###
 .runtimeconfig.json
