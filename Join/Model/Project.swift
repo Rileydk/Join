@@ -8,6 +8,8 @@
 import Foundation
 import UIKit
 
+typealias URLString = String
+
 struct Project: Hashable, Codable {
     var name: String = ""
     var description: String = ""
@@ -15,10 +17,12 @@ struct Project: Hashable, Codable {
     // var deadline: Int64?
     var deadline: Date?
     var location = ""
-    var imageURL: String?
+    var imageURL: URLString?
     var members = [Member]()
     var recruiting = [OpenPosition]()
     var applicants = [User]()
+
+    static let mockProject = Project()
 
     var toDict: [String: Any] {
         let membersDict = members.map { $0.toDict }

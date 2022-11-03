@@ -94,7 +94,7 @@ class FirebaseManager {
                     switch result {
                     case .success(let urlString):
                         project.imageURL = urlString
-
+                        
                         ref.addDocument(data: project.toDict) { error in
                             if let error = error {
                                 DispatchQueue.main.async {

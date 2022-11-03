@@ -18,8 +18,9 @@ class IdeaCell: CollectionViewCell {
 
     let firebaseManager = FirebaseManager.shared
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        imageView.image = nil
     }
 
     func layoutCell(project: Project) {
