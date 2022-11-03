@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-struct Project {
+struct Project: Hashable, Codable {
     var name: String = ""
     var description: String = ""
     var categories = [String]()
@@ -39,7 +39,7 @@ struct Project {
     }
 }
 
-struct Member {
+struct Member: Hashable, Codable {
     let id: String
     var role: String
     var skills: String
@@ -53,7 +53,7 @@ struct Member {
     }
 }
 
-struct OpenPosition {
+struct OpenPosition: Hashable, Codable {
     var role: String
     var skills: String
     var number: String

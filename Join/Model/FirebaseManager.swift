@@ -1,4 +1,3 @@
-
 //
 //  FirestoreManager.swift
 //  Join
@@ -9,6 +8,7 @@
 import Foundation
 import FirebaseFirestore
 import FirebaseStorage
+import FirebaseFirestoreSwift
 
 enum FirestoreEndpoint {
     case project
@@ -22,8 +22,8 @@ enum FirestoreEndpoint {
 }
 
 class FirebaseManager {
-    let firebaseQueue = DispatchQueue(label: "firebaseQueue", attributes: .concurrent)
     static let shared = FirebaseManager()
+    private let firebaseQueue = DispatchQueue(label: "firebaseQueue", attributes: .concurrent)
 
     func uploadImage(image: Data, completion: @escaping (String) -> Void) {
         let ref = Storage.storage().reference()
@@ -56,7 +56,6 @@ class FirebaseManager {
 
         if let image = image,
            let imageData = image.jpeg(.lowest) {
-            print("including image")
             uploadImage(image: imageData) { urlString in
                 project.imageURL = urlString
 
@@ -69,7 +68,6 @@ class FirebaseManager {
                 }
             }
         } else {
-            print("without image")
             ref.addDocument(data: project.toDict) { error in
                 if let error = error {
                     print(error)
@@ -80,7 +78,32 @@ class FirebaseManager {
         }
     }
 
-    func downloadImage(urlString: String) {
+    func getAllProjects(completion: @escaping ([Project]) -> Void) {
+        let ref = FirestoreEndpoint.project.ref
+        ref.getDocuments { querySnapshot, error in
+            if let error = error {
+                print(error)
+                return
+            }
+
+            var projects = [Project]()
+            if let querySnapshot = querySnapshot {
+                for document in querySnapshot.documents {
+                    do {
+                        let project = try document.data(as: Project.self, decoder: Firestore.Decoder())
+                        projects.append(project)
+                    } catch {
+                        print(error)
+                    }
+                }
+                completion(projects)
+            } else {
+                print("Not valid querysnapshot")
+            }
+        }
+    }
+
+    func downloadImage(urlString: String, completion: @escaping (UIImage) -> Void) {
         let imageURLRef = Storage.storage().reference(forURL: urlString)
 
         imageURLRef.getData(maxSize: 1 * 1024 * 1024) { (data, error) in
@@ -88,9 +111,9 @@ class FirebaseManager {
                 print(error)
             }
 
-            if let data = data {
-                let image = UIImage(data: data)
-                print("downloaded", image)
+            if let data = data,
+               let image = UIImage(data: data) {
+                completion(image)
             }
         }
     }

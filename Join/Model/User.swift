@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct User {
+struct User: Hashable, Codable {
     let id: String
 
     var toDict: [String: Any] {

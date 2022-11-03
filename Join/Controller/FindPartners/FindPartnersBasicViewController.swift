@@ -9,7 +9,7 @@ import UIKit
 
 class FindPartnersBasicViewController: UIViewController {
     static let identifier = String(describing: FindPartnersBasicViewController.self)
-    let firebaseManager = FirebaseManager()
+    let firebaseManager = FirebaseManager.shared
     var project = Project()
     var image: UIImage?
     var formState = FindPartnersFormSections.basicSection
@@ -68,24 +68,10 @@ class FindPartnersBasicViewController: UIViewController {
     }
 
     @objc func goNextPage() {
-        project.categories = selectedCategories
-        if formState == FindPartnersFormSections.basicSection,
-           !(project.name.isEmpty || project.description.isEmpty || project.categories.isEmpty) {
-                let findPartnersStoryboard = UIStoryboard(
-                    name: StoryboardCategory.findPartners.rawValue, bundle: nil
-                )
-                guard let nextVC = findPartnersStoryboard.instantiateViewController(
-                    identifier: FindPartnersBasicViewController.identifier
-                    ) as? FindPartnersBasicViewController else {
-                    fatalError("Cannot load FindPartnersBasicVC from storyboard.")
-                }
-                nextVC.project = project
-                nextVC.formState = FindPartnersFormSections.groupSection
-                nextVC.view.backgroundColor = .white
-                navigationController?.pushViewController(nextVC, animated: true)
-
-        } else if formState == FindPartnersFormSections.groupSection,
-                  !project.recruiting.isEmpty {
+        if formState == FindPartnersFormSections.basicSection {
+            project.categories = selectedCategories
+            if !(project.name.isEmpty || project.description.isEmpty || project.categories.isEmpty) {
+                print("project categories at basic stage: ", project.categories)
                 let findPartnersStoryboard = UIStoryboard(
                     name: StoryboardCategory.findPartners.rawValue, bundle: nil
                 )
@@ -95,12 +81,33 @@ class FindPartnersBasicViewController: UIViewController {
                     fatalError("Cannot load FindPartnersBasicVC from storyboard.")
                 }
                 nextVC.project = project
-                nextVC.formState = FindPartnersFormSections.detailSection
+                print("basic to next", nextVC.project)
+                nextVC.formState = FindPartnersFormSections.groupSection
                 nextVC.view.backgroundColor = .white
                 navigationController?.pushViewController(nextVC, animated: true)
+            } else {
+                alertUserToFillColumns()
+            }
+
+        } else if formState == FindPartnersFormSections.groupSection,
+                  !project.recruiting.isEmpty {
+            print("project categories at group stage: ", project.categories)
+            let findPartnersStoryboard = UIStoryboard(
+                name: StoryboardCategory.findPartners.rawValue, bundle: nil
+            )
+            guard let nextVC = findPartnersStoryboard.instantiateViewController(
+                identifier: FindPartnersBasicViewController.identifier
+            ) as? FindPartnersBasicViewController else {
+                fatalError("Cannot load FindPartnersBasicVC from storyboard.")
+            }
+            nextVC.project = project
+            nextVC.formState = FindPartnersFormSections.detailSection
+            nextVC.view.backgroundColor = .white
+            navigationController?.pushViewController(nextVC, animated: true)
 
         } else if formState == FindPartnersFormSections.detailSection,
                   project.deadline != nil && !project.location.isEmpty {
+            print("project categories at detail stage: ", project.categories)
             post()
 
         } else {
@@ -129,13 +136,13 @@ class FindPartnersBasicViewController: UIViewController {
 
         selectCategoriesVC.passingHandler = { [weak self] newSelectCategories in
             self?.selectedCategories = newSelectCategories
+            print("in goSelectCategories: ", self?.selectedCategories)
         }
 
         self.present(selectCategoriesVC, animated: true)
     }
 
     func post() {
-        // firebaseManager.postNewProject(project: project)
         firebaseManager.postNewProject(project: project, image: image)
     }
 }
