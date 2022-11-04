@@ -20,7 +20,7 @@ struct Project: Hashable, Codable {
     var imageURL: URLString?
     var members = [Member]()
     var recruiting = [OpenPosition]()
-    var applicants = [User]()
+    var applicants = [UserId]()
 
     static let mockProject = Project()
 
