@@ -74,6 +74,7 @@ struct FindPartnersFormSections {
     static let alertActionTitle = "OK"
     static let newProjectNoValidImageURLErrorDescription = "No valid image url"
     static let getProjectErrorDescription = "No valid querysnapshot"
+    static let getUserErrorDescription = "No valid querysnapshot"
     // 這個似乎是錯誤的
     // static let datePickerLocale = "zh_TW"
 }

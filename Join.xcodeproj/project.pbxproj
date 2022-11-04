@@ -68,6 +68,9 @@
 		BFF8A4D02914C2E300ADC950 /* PersonalProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF8A4CF2914C2E300ADC950 /* PersonalProfileViewController.swift */; };
 		BFF8A4D32914C79900ADC950 /* PersonBasicCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF8A4D12914C79900ADC950 /* PersonBasicCell.swift */; };
 		BFF8A4D42914C79900ADC950 /* PersonBasicCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BFF8A4D22914C79900ADC950 /* PersonBasicCell.xib */; };
+		BFF8A4D62915009B00ADC950 /* OthersProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF8A4D52915009B00ADC950 /* OthersProfileViewController.swift */; };
+		BFF8A4D92915036000ADC950 /* ProjectContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF8A4D72915036000ADC950 /* ProjectContactCell.swift */; };
+		BFF8A4DA2915036000ADC950 /* ProjectContactCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BFF8A4D82915036000ADC950 /* ProjectContactCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -134,6 +137,9 @@
 		BFF8A4CF2914C2E300ADC950 /* PersonalProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalProfileViewController.swift; sourceTree = "<group>"; };
 		BFF8A4D12914C79900ADC950 /* PersonBasicCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonBasicCell.swift; sourceTree = "<group>"; };
 		BFF8A4D22914C79900ADC950 /* PersonBasicCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PersonBasicCell.xib; sourceTree = "<group>"; };
+		BFF8A4D52915009B00ADC950 /* OthersProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OthersProfileViewController.swift; sourceTree = "<group>"; };
+		BFF8A4D72915036000ADC950 /* ProjectContactCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectContactCell.swift; sourceTree = "<group>"; };
+		BFF8A4D82915036000ADC950 /* ProjectContactCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProjectContactCell.xib; sourceTree = "<group>"; };
 		E73F750E744AEAB2F0006E8B /* Pods-Join.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Join.debug.xcconfig"; path = "Target Support Files/Pods-Join/Pods-Join.debug.xcconfig"; sourceTree = "<group>"; };
 		F30624BA8F470C0A1492643F /* Pods-Join.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Join.release.xcconfig"; path = "Target Support Files/Pods-Join/Pods-Join.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -347,6 +353,8 @@
 				BFF8A4B92913AE9D00ADC950 /* DetailTitleHeaderView.xib */,
 				BFF8A4BD2913B46600ADC950 /* JoinButtonCell.swift */,
 				BFF8A4BE2913B46600ADC950 /* JoinButtonCell.xib */,
+				BFF8A4D72915036000ADC950 /* ProjectContactCell.swift */,
+				BFF8A4D82915036000ADC950 /* ProjectContactCell.xib */,
 			);
 			path = FindIdeas;
 			sourceTree = "<group>";
@@ -356,6 +364,7 @@
 			children = (
 				BFF8A4C42913EDB800ADC950 /* PersonalEntryViewController.swift */,
 				BFF8A4CF2914C2E300ADC950 /* PersonalProfileViewController.swift */,
+				BFF8A4D52915009B00ADC950 /* OthersProfileViewController.swift */,
 			);
 			path = Personal;
 			sourceTree = "<group>";
@@ -444,6 +453,7 @@
 				BFF8A4CA2913EE4C00ADC950 /* PersonalMainThumbnailCell.xib in Resources */,
 				BF42FA41290BE2AC00501789 /* LaunchScreen.storyboard in Resources */,
 				BFF8A4BA2913AE9D00ADC950 /* DetailTitleHeaderView.xib in Resources */,
+				BFF8A4DA2915036000ADC950 /* ProjectContactCell.xib in Resources */,
 				BF42FA58290CEA5900501789 /* FindIdeas.storyboard in Resources */,
 				BFF8A4CE2913F32600ADC950 /* GoNextPageButtonCell.xib in Resources */,
 				BF42FAC52910010000501789 /* AddNewCell.xib in Resources */,
@@ -527,6 +537,7 @@
 			files = (
 				BF42FAB0290F7E9000501789 /* SelectionCategoriesViewController.swift in Sources */,
 				BF42FABF290FF65300501789 /* MemberCell.swift in Sources */,
+				BFF8A4D62915009B00ADC950 /* OthersProfileViewController.swift in Sources */,
 				BF42FADC2912967900501789 /* IdeaCell.swift in Sources */,
 				BF42FAC42910010000501789 /* AddNewCell.swift in Sources */,
 				BF42FA67290D04EF00501789 /* FindPartnersFormSections.swift in Sources */,
@@ -538,6 +549,7 @@
 				BFF8A4B32913AD3000ADC950 /* BigImageCell.swift in Sources */,
 				BF42FAD92912960D00501789 /* CollectionViewCell.swift in Sources */,
 				BF42FABC290FF32300501789 /* MemberCardViewController.swift in Sources */,
+				BFF8A4D92915036000ADC950 /* ProjectContactCell.swift in Sources */,
 				BFF8A4D32914C79900ADC950 /* PersonBasicCell.swift in Sources */,
 				BF42FACF2912557500501789 /* UIImage+Ext.swift in Sources */,
 				BF42FAB2290FAC2000501789 /* Project.swift in Sources */,

@@ -25,9 +25,8 @@ class PersonBasicCell: CollectionViewCell {
         thumbnailImageView.layer.cornerRadius = thumbnailImageView.frame.size.width / 2
     }
 
-    func layoutCell(user: User, isSelf: Bool) {
-        print("layout cell")
-        firebaseManager.downloadImage(urlString: user.thumbnailURL) { [weak self] result in
+    private func layoutCell(imageURLString: URLString, name: String) {
+        firebaseManager.downloadImage(urlString: imageURLString) { [weak self] result in
             switch result {
             case .success(let image):
                 self?.thumbnailImageView.image = image
@@ -35,14 +34,19 @@ class PersonBasicCell: CollectionViewCell {
                 print(error)
             }
         }
-        nameLabel.text = user.name
-        if isSelf {
-            relationshipButton.isHidden = true
-            sendMessageButton.isHidden = true
-        } else {
-            relationshipButton.isHidden = false
-            sendMessageButton.isHidden = false
-        }
+        nameLabel.text = name
+    }
+
+    func layoutCell(withSelf user: User) {
+        layoutCell(imageURLString: user.thumbnailURL, name: user.name)
+        relationshipButton.isHidden = true
+        sendMessageButton.isHidden = true
+    }
+
+    func layoutCell(withOther user: User) {
+        layoutCell(imageURLString: user.thumbnailURL, name: user.name)
+        relationshipButton.isHidden = false
+        sendMessageButton.isHidden = false
     }
 
     @IBAction func changeRelationship(_ sender: Any) {

@@ -77,6 +77,43 @@
             </objects>
             <point key="canvasLocation" x="2893" y="909"/>
         </scene>
+        <!--Others Profile View Controller-->
+        <scene sceneID="MqC-HL-7v4">
+            <objects>
+                <viewController storyboardIdentifier="OthersProfileViewController" id="nPk-UR-fxF" customClass="OthersProfileViewController" customModule="Join" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="4UF-0P-caw">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="R9T-gh-JyF">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Pl7-p1-Nbx">
+                                    <size key="itemSize" width="128" height="128"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells/>
+                            </collectionView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="ikM-q3-fAP"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="R9T-gh-JyF" firstAttribute="top" secondItem="4UF-0P-caw" secondAttribute="top" id="6vA-ew-UyE"/>
+                            <constraint firstItem="R9T-gh-JyF" firstAttribute="leading" secondItem="ikM-q3-fAP" secondAttribute="leading" id="8Mu-Xo-z0e"/>
+                            <constraint firstItem="ikM-q3-fAP" firstAttribute="trailing" secondItem="R9T-gh-JyF" secondAttribute="trailing" id="CkA-fR-EaP"/>
+                            <constraint firstAttribute="bottom" secondItem="R9T-gh-JyF" secondAttribute="bottom" id="d4x-kS-dWj"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="collectionView" destination="R9T-gh-JyF" id="Fyx-Ih-YHS"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="tjQ-7V-Okr" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3690" y="909"/>
+        </scene>
         <!--Item-->
         <scene sceneID="BFG-DT-NJj">
             <objects>

@@ -15,7 +15,7 @@ class ProjectDetailsViewController: UIViewController {
 //        case essentialLocation
 //        case description
 //        case group
-//        case contact
+        case contact
 //        case location
         case joinButton
     }
@@ -27,14 +27,16 @@ class ProjectDetailsViewController: UIViewController {
 //        case essentialLocation
 //        case description
 //        case group
-//        case contact
+        case contact(User)
 //        case location
         case joinButton(Project)
     }
 
     typealias ProjectDetailsDatasource = UITableViewDiffableDataSource<Section, Item>
     private var datasource: ProjectDetailsDatasource!
+    let firebaseManager = FirebaseManager.shared
     var project: Project?
+    var userData: User?
 
     @IBOutlet weak var tableView: UITableView! {
         didSet {
@@ -45,6 +47,10 @@ class ProjectDetailsViewController: UIViewController {
             tableView.register(
                 UINib(nibName: JoinButtonCell.identifier, bundle: nil),
                 forCellReuseIdentifier: JoinButtonCell.identifier
+            )
+            tableView.register(
+                UINib(nibName: ProjectContactCell.identifier, bundle: nil),
+                forCellReuseIdentifier: ProjectContactCell.identifier
             )
             tableView.register(
                 UINib(nibName: DetailTitleHeaderView.identifier, bundle: nil),
@@ -65,6 +71,21 @@ class ProjectDetailsViewController: UIViewController {
 //    required init?(coder: NSCoder) {
 //        fatalError("init(coder:) has not been implemented")
 //    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if let userID = project?.contact {
+            firebaseManager.getUserInfo(user: userID) { [weak self] result in
+                switch result {
+                case .success(let user):
+                    self?.userData = user
+                    self?.updateDatasource()
+                case .failure(let error):
+                    print(error)
+                }
+            }
+        }
+    }
 }
 
 // MARK: - Table View Delegate
@@ -116,6 +137,25 @@ extension ProjectDetailsViewController {
             cell.layoutCell(imageURL: imageURL)
             return cell
 
+        case .contact(let user):
+            guard let cell = tableView.dequeueReusableCell(
+                withIdentifier: ProjectContactCell.identifier,
+                for: indexPath) as? ProjectContactCell else {
+                fatalError("Cannot create project contact cell")
+            }
+            cell.layoutCell(user: user)
+            cell.tapHandler = { [weak self] in
+                let personalStoryboard = UIStoryboard(name: StoryboardCategory.personal.rawValue, bundle: nil)
+                guard let profileVC = personalStoryboard.instantiateViewController(
+                    withIdentifier: OthersProfileViewController.identifier
+                ) as? OthersProfileViewController else {
+                    fatalError("Cannot create others profile vc")
+                }
+                profileVC.userData = self?.userData
+                self?.navigationController?.pushViewController(profileVC, animated: true)
+            }
+            return cell
+
         case .joinButton:
             guard let cell = tableView.dequeueReusableCell(
                 withIdentifier: JoinButtonCell.identifier,
@@ -135,6 +175,10 @@ extension ProjectDetailsViewController {
         if let urlString = project.imageURL {
             snapshot.appendItems([.bigImage(urlString)], toSection: .bigImage)
         }
+        if let userData = userData {
+            snapshot.appendItems([.contact(userData)], toSection: .contact)
+        }
+
         snapshot.appendItems([.joinButton(Project.mockProject)], toSection: .joinButton)
         datasource.apply(snapshot, animatingDifferences: false)
     }

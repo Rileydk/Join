@@ -8,16 +8,16 @@
 import Foundation
 
 let myAccount = User(
-    id: "me", name: "Riley Lai",
+    id: "1qFVcUf1MZh90PDelqfU", name: "Riley Lai",
     email: "ddd@gmail.com",
-    thumbnailURL: "https://firebasestorage.googleapis.com:443/v0/b/join-82f54.appspot.com/o/5F193315-633D-48D3-A10D-0BC271F326D8?alt=media&token=04f47c5e-825f-4019-8995-305b528308ed",
+    thumbnailURL: "https://firebasestorage.googleapis.com:443/v0/b/join-82f54.appspot.com/o/DA32761A-2775-414C-95E8-F01DCB2CDD66?alt=media&token=c6ac5b7e-1e53-4d0b-813a-eb12c051bf6d",
     interest: nil,
     skills: nil,
     posts: nil,
     friends: nil
 )
 
-struct User: Hashable {
+struct User: Codable, Hashable {
     let id: String
     let name: String
     let email: String
@@ -36,8 +36,4 @@ struct UserId: Hashable, Codable {
             "id": id as Any
         ]
     }
-}
-
-struct Friend {
-    let id: String
 }
