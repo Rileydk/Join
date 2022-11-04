@@ -32,13 +32,27 @@ enum GetProject: Error, LocalizedError {
     }
 }
 
+enum GetUser: Error, LocalizedError {
+    case noValidQuerysnapshot
+
+    var errorDescription: String {
+        switch self {
+        case .noValidQuerysnapshot:
+            return FindPartnersFormSections.getUserErrorDescription
+        }
+    }
+}
+
 enum FirestoreEndpoint {
     case project
+    case user
 
     var ref: CollectionReference {
         switch self {
         case .project:
             return Firestore.firestore().collection("Project")
+        case .user:
+            return Firestore.firestore().collection("User")
         }
     }
 }
@@ -179,6 +193,37 @@ class FirebaseManager {
                    let image = UIImage(data: data) {
                     DispatchQueue.main.async {
                         completion(.success(image))
+                    }
+                }
+            }
+        }
+    }
+
+    func getUserInfo(user: UserId, completion: @escaping (Result<User, Error>) -> Void) {
+        let ref = FirestoreEndpoint.user.ref
+
+        firebaseQueue.async {
+            ref.whereField("id", isEqualTo: user.id).getDocuments { querySnapshot, error in
+                if let error = error {
+                    DispatchQueue.main.async {
+                        completion(.failure(error))
+                    }
+                    return
+                }
+                if let querySnapshot = querySnapshot {
+                    do {
+                        let user = try querySnapshot.documents.first!.data(as: User.self, decoder: Firestore.Decoder())
+                        DispatchQueue.main.async {
+                            completion(.success(user))
+                        }
+                    } catch {
+                        DispatchQueue.main.async {
+                            completion(.failure(error))
+                        }
+                    }
+                } else {
+                    DispatchQueue.main.async {
+                        completion(.failure(GetUser.noValidQuerysnapshot))
                     }
                 }
             }

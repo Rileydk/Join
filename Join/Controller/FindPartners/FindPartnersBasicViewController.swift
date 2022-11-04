@@ -11,7 +11,7 @@ import ProgressHUD
 class FindPartnersBasicViewController: UIViewController {
     static let identifier = String(describing: FindPartnersBasicViewController.self)
     let firebaseManager = FirebaseManager.shared
-    var project = Project()
+    var project = Project(contact: UserId(id: myAccount.id))
     var image: UIImage?
     var formState = FindPartnersFormSections.basicSection
     var selectedCategories = [String]() {
@@ -113,7 +113,10 @@ class FindPartnersBasicViewController: UIViewController {
     }
 
     func alertUserToFillColumns() {
-        let alert = UIAlertController(title: FindPartnersFormSections.findPartnersNotFilledAlertTitle, message: nil, preferredStyle: .alert)
+        let alert = UIAlertController(
+            title: FindPartnersFormSections.findPartnersNotFilledAlertTitle,
+            message: nil, preferredStyle: .alert
+        )
         let action = UIAlertAction(title: FindPartnersFormSections.alertActionTitle, style: .default)
         alert.addAction(action)
         present(alert, animated: true)

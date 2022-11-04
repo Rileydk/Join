@@ -1,5 +1,5 @@
 //
-//  PersonalProfileViewController.swift
+//  OthersProfileViewController.swift
 //  Join
 //
 //  Created by Riley Lai on 2022/11/4.
@@ -7,8 +7,8 @@
 
 import UIKit
 
-class PersonalProfileViewController: UIViewController {
-    static let identifier = String(describing: PersonalProfileViewController.self)
+class OthersProfileViewController: UIViewController {
+    static let identifier = String(describing: OthersProfileViewController.self)
 
     enum Section: CaseIterable {
         case person
@@ -20,6 +20,8 @@ class PersonalProfileViewController: UIViewController {
 
     typealias ProfileDatasource = UICollectionViewDiffableDataSource<Section, Item>
     private var datasource: ProfileDatasource!
+    let firebaseManager = FirebaseManager.shared
+//    var userID: UserId?
     var userData: User?
 
     @IBOutlet weak var collectionView: UICollectionView! {
@@ -35,18 +37,27 @@ class PersonalProfileViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-//        title = 
+        title = userData?.name
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        userData = myAccount
-        updateDatasource()
-    }
+//    override func viewWillAppear(_ animated: Bool) {
+//        super.viewWillAppear(animated)
+//        if let userID = userID {
+//            firebaseManager.getUserInfo(user: userID) { [weak self] result in
+//                switch result {
+//                case .success(let user):
+//                    self?.userData = user
+//                case .failure(let error):
+//                    print(error)
+//                }
+//            }
+//        }
+//        updateDatasource()
+//    }
 }
 
 // MARK: - Layout
-extension PersonalProfileViewController {
+extension OthersProfileViewController {
     func createPersonSection() -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1),
@@ -81,7 +92,7 @@ extension PersonalProfileViewController {
 }
 
 // MARK: - Datasource
-extension PersonalProfileViewController {
+extension OthersProfileViewController {
     func configureDatasource() {
         // swiftlint:disable line_length
         datasource = ProfileDatasource(collectionView: collectionView) { [weak self] (collectionView, indexPath, item) -> UICollectionViewCell? in
@@ -99,7 +110,7 @@ extension PersonalProfileViewController {
                 for: indexPath) as? PersonBasicCell else {
                 fatalError("Cannot create personal basic cell")
             }
-            cell.layoutCell(withSelf: user)
+            cell.layoutCell(withOther: user)
             return cell
         }
     }

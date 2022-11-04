@@ -19,7 +19,7 @@
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="11" translatesAutoresizingMaskIntoConstraints="NO" id="lbu-SR-9Ja">
-                        <rect key="frame" x="16" y="36" width="147.5" height="164"/>
+                        <rect key="frame" x="16" y="36" width="115.5" height="164"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="oZJ-0m-5DO">
                                 <rect key="frame" x="0.0" y="0.0" width="80" height="80"/>
@@ -35,11 +35,11 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="7" translatesAutoresizingMaskIntoConstraints="NO" id="Sbs-ZO-NxK">
-                                <rect key="frame" x="0.0" y="128.5" width="147.5" height="35.5"/>
+                                <rect key="frame" x="0.0" y="128.5" width="115.5" height="35.5"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Sa-np-X8h">
-                                        <rect key="frame" x="0.0" y="0.0" width="106" height="35.5"/>
-                                        <inset key="contentEdgeInsets" minX="16" minY="6" maxX="16" maxY="6"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="74" height="35.5"/>
+                                        <inset key="contentEdgeInsets" minX="0.0" minY="6" maxX="0.0" maxY="6"/>
                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                         <state key="normal" title="加為好友"/>
                                         <connections>
@@ -47,7 +47,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LkH-Wg-Yk5">
-                                        <rect key="frame" x="113" y="0.0" width="34.5" height="35.5"/>
+                                        <rect key="frame" x="81" y="0.0" width="34.5" height="35.5"/>
                                         <inset key="contentEdgeInsets" minX="4" minY="4" maxX="4" maxY="4"/>
                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                         <state key="normal">
