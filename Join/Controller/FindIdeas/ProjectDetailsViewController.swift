@@ -75,7 +75,7 @@ class ProjectDetailsViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         if let userID = project?.contact {
-            firebaseManager.getUserInfo(user: userID) { [weak self] result in
+            firebaseManager.getUserInfo(id: userID) { [weak self] result in
                 switch result {
                 case .success(let user):
                     self?.userData = user

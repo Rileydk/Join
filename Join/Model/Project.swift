@@ -20,16 +20,14 @@ struct Project: Hashable, Codable {
     var imageURL: URLString?
     var members = [Member]()
     var recruiting = [OpenPosition]()
-    var contact: UserId
-    var applicants = [UserId]()
+    var contact: UserID
+    var applicants = [UserID]()
 
-    static let mockProject = Project(contact: UserId(id: ""))
+    static let mockProject = Project(contact: "")
 
     var toDict: [String: Any] {
         let membersDict = members.map { $0.toDict }
         let recruitingDict = recruiting.map { $0.toDict }
-        let applicantsDict = applicants.map { $0.toDict }
-        let contactDict = contact.toDict
 
         return [
             "name": name as Any,
@@ -40,14 +38,14 @@ struct Project: Hashable, Codable {
             "imageURL": imageURL as Any,
             "members": membersDict as Any,
             "recruiting": recruitingDict as Any,
-            "contact": contactDict as Any,
-            "applicants": applicantsDict as Any
+            "contact": contact as Any,
+            "applicants": applicants as Any
         ]
     }
 }
 
 struct Member: Hashable, Codable {
-    let id: String
+    let id: UserID
     var role: String
     var skills: String
 

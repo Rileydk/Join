@@ -199,11 +199,11 @@ class FirebaseManager {
         }
     }
 
-    func getUserInfo(user: UserId, completion: @escaping (Result<User, Error>) -> Void) {
+    func getUserInfo(id: UserID, completion: @escaping (Result<User, Error>) -> Void) {
         let ref = FirestoreEndpoint.user.ref
 
         firebaseQueue.async {
-            ref.whereField("id", isEqualTo: user.id).getDocuments { querySnapshot, error in
+            ref.whereField("id", isEqualTo: id).getDocuments { querySnapshot, error in
                 if let error = error {
                     DispatchQueue.main.async {
                         completion(.failure(error))
