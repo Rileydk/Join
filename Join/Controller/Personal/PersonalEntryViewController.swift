@@ -33,6 +33,16 @@ class PersonalEntryViewController: UIViewController {
             tableView.dataSource = self
         }
     }
+
+    func goToNextPage(index: Int) {
+        if NextPage.allCases[index] == .profile {
+            let personalStoryboard = UIStoryboard(name: StoryboardCategory.personal.rawValue, bundle: nil)
+            let profileVC = personalStoryboard.instantiateViewController(
+                withIdentifier: PersonalProfileViewController.identifier
+            )
+            navigationController?.pushViewController(profileVC, animated: true)
+        }
+    }
 }
 
 // MARK: - Table View Delegate
@@ -77,6 +87,9 @@ extension PersonalEntryViewController: UITableViewDataSource {
                 fatalError("Cannot create go next page button cell")
             }
             cell.layoutCell(title: NextPage.allCases[indexPath.row].rawValue)
+            cell.tapHandler = { [weak self] in
+                self?.goToNextPage(index: indexPath.row)
+            }
             return cell
         }
     }

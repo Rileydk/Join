@@ -24,6 +24,9 @@
                         <state key="normal" title="下一頁的名稱">
                             <color key="titleColor" systemColor="labelColor"/>
                         </state>
+                        <connections>
+                            <action selector="goNextPage:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="znB-cJ-z1g"/>
+                        </connections>
                     </button>
                 </subviews>
                 <constraints>

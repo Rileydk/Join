@@ -17,7 +17,7 @@ let myAccount = User(
     friends: nil
 )
 
-struct User {
+struct User: Hashable {
     let id: String
     let name: String
     let email: String

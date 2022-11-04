@@ -65,6 +65,9 @@
 		BFF8A4CA2913EE4C00ADC950 /* PersonalMainThumbnailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BFF8A4C82913EE4C00ADC950 /* PersonalMainThumbnailCell.xib */; };
 		BFF8A4CD2913F32600ADC950 /* GoNextPageButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF8A4CB2913F32600ADC950 /* GoNextPageButtonCell.swift */; };
 		BFF8A4CE2913F32600ADC950 /* GoNextPageButtonCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BFF8A4CC2913F32600ADC950 /* GoNextPageButtonCell.xib */; };
+		BFF8A4D02914C2E300ADC950 /* PersonalProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF8A4CF2914C2E300ADC950 /* PersonalProfileViewController.swift */; };
+		BFF8A4D32914C79900ADC950 /* PersonBasicCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF8A4D12914C79900ADC950 /* PersonBasicCell.swift */; };
+		BFF8A4D42914C79900ADC950 /* PersonBasicCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BFF8A4D22914C79900ADC950 /* PersonBasicCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -128,6 +131,9 @@
 		BFF8A4C82913EE4C00ADC950 /* PersonalMainThumbnailCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PersonalMainThumbnailCell.xib; sourceTree = "<group>"; };
 		BFF8A4CB2913F32600ADC950 /* GoNextPageButtonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoNextPageButtonCell.swift; sourceTree = "<group>"; };
 		BFF8A4CC2913F32600ADC950 /* GoNextPageButtonCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GoNextPageButtonCell.xib; sourceTree = "<group>"; };
+		BFF8A4CF2914C2E300ADC950 /* PersonalProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalProfileViewController.swift; sourceTree = "<group>"; };
+		BFF8A4D12914C79900ADC950 /* PersonBasicCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonBasicCell.swift; sourceTree = "<group>"; };
+		BFF8A4D22914C79900ADC950 /* PersonBasicCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PersonBasicCell.xib; sourceTree = "<group>"; };
 		E73F750E744AEAB2F0006E8B /* Pods-Join.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Join.debug.xcconfig"; path = "Target Support Files/Pods-Join/Pods-Join.debug.xcconfig"; sourceTree = "<group>"; };
 		F30624BA8F470C0A1492643F /* Pods-Join.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Join.release.xcconfig"; path = "Target Support Files/Pods-Join/Pods-Join.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -349,6 +355,7 @@
 			isa = PBXGroup;
 			children = (
 				BFF8A4C42913EDB800ADC950 /* PersonalEntryViewController.swift */,
+				BFF8A4CF2914C2E300ADC950 /* PersonalProfileViewController.swift */,
 			);
 			path = Personal;
 			sourceTree = "<group>";
@@ -360,6 +367,8 @@
 				BFF8A4C82913EE4C00ADC950 /* PersonalMainThumbnailCell.xib */,
 				BFF8A4CB2913F32600ADC950 /* GoNextPageButtonCell.swift */,
 				BFF8A4CC2913F32600ADC950 /* GoNextPageButtonCell.xib */,
+				BFF8A4D12914C79900ADC950 /* PersonBasicCell.swift */,
+				BFF8A4D22914C79900ADC950 /* PersonBasicCell.xib */,
 			);
 			path = Personal;
 			sourceTree = "<group>";
@@ -438,6 +447,7 @@
 				BF42FA58290CEA5900501789 /* FindIdeas.storyboard in Resources */,
 				BFF8A4CE2913F32600ADC950 /* GoNextPageButtonCell.xib in Resources */,
 				BF42FAC52910010000501789 /* AddNewCell.xib in Resources */,
+				BFF8A4D42914C79900ADC950 /* PersonBasicCell.xib in Resources */,
 				BFF8A4B42913AD3000ADC950 /* BigImageCell.xib in Resources */,
 				BF42FA5C290CED6C00501789 /* FindPartners.storyboard in Resources */,
 				BF42FAB8290FBE2D00501789 /* AddNewLineSectionCell.xib in Resources */,
@@ -528,6 +538,7 @@
 				BFF8A4B32913AD3000ADC950 /* BigImageCell.swift in Sources */,
 				BF42FAD92912960D00501789 /* CollectionViewCell.swift in Sources */,
 				BF42FABC290FF32300501789 /* MemberCardViewController.swift in Sources */,
+				BFF8A4D32914C79900ADC950 /* PersonBasicCell.swift in Sources */,
 				BF42FACF2912557500501789 /* UIImage+Ext.swift in Sources */,
 				BF42FAB2290FAC2000501789 /* Project.swift in Sources */,
 				BF42FA73290D197000501789 /* TableViewCell.swift in Sources */,
@@ -539,6 +550,7 @@
 				BFF8A4C92913EE4C00ADC950 /* PersonalMainThumbnailCell.swift in Sources */,
 				BFF8A4BC2913B39900ADC950 /* TableViewHeaderFooterView.swift in Sources */,
 				BF42FAB7290FBE2D00501789 /* AddNewLineSectionCell.swift in Sources */,
+				BFF8A4D02914C2E300ADC950 /* PersonalProfileViewController.swift in Sources */,
 				BF42FA76290D1CD800501789 /* FindPartnersBasicViewController.swift in Sources */,
 				BF42FA6E290D178400501789 /* UIView+Ext.swift in Sources */,
 				BF42FAD62912945F00501789 /* RecommendationCell.swift in Sources */,

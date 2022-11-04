@@ -22,7 +22,7 @@ class JoinButtonCell: TableViewCell {
     }
 
     @IBAction func joinProject() {
-        
+
     }
 
 }
