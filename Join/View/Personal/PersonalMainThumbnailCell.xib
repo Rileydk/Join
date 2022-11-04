@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="KGk-i7-Jjw" customClass="PersonalMainThumbnailCell" customModule="Join" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="250"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="250"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="3kW-06-YJK">
+                        <rect key="frame" x="110" y="70" width="100" height="100"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="100" id="NbG-DW-diq"/>
+                            <constraint firstAttribute="width" secondItem="3kW-06-YJK" secondAttribute="height" multiplier="1:1" id="dUN-wb-Jwx"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bdE-35-KQi">
+                        <rect key="frame" x="131.5" y="194" width="57" height="29"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="bdE-35-KQi" firstAttribute="top" secondItem="3kW-06-YJK" secondAttribute="bottom" constant="24" id="IJ2-oM-HEv"/>
+                    <constraint firstItem="3kW-06-YJK" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="rMj-f7-ctw"/>
+                    <constraint firstItem="3kW-06-YJK" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="70" id="wUr-Mg-ha5"/>
+                    <constraint firstItem="bdE-35-KQi" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="zD0-Wh-eK9"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="nameLabel" destination="bdE-35-KQi" id="7tF-Gb-Mdl"/>
+                <outlet property="thumbnailImageView" destination="3kW-06-YJK" id="Wzd-Si-EDW"/>
+            </connections>
+            <point key="canvasLocation" x="139" y="83"/>
+        </tableViewCell>
+    </objects>
+</document>

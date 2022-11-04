@@ -132,11 +132,13 @@ extension FindIdeasViewController {
 // MARK: - Data Source
 extension FindIdeasViewController {
     func configureDataSource() {
+        print("find ideas: configure data source")
         // swiftlint:disable line_length
         datasource = IdeasDatasource(collectionView: collectionView) { [weak self] (collectionView, indexPath, idea) -> UICollectionViewCell? in
-
-            self?.createCell(collectionView: collectionView, indexPath: indexPath, item: idea)
+            print("find ideas: start create cell")
+            return self?.createCell(collectionView: collectionView, indexPath: indexPath, item: idea)
         }
+
         updateDatasource()
     }
 
