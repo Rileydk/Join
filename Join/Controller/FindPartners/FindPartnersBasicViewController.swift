@@ -11,7 +11,7 @@ import ProgressHUD
 class FindPartnersBasicViewController: UIViewController {
     static let identifier = String(describing: FindPartnersBasicViewController.self)
     let firebaseManager = FirebaseManager.shared
-    var project = Project(contact: UserId(id: myAccount.id))
+    var project = Project(contact: myAccount.id)
     var image: UIImage?
     var formState = FindPartnersFormSections.basicSection
     var selectedCategories = [String]() {
