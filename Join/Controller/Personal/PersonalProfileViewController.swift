@@ -7,9 +7,7 @@
 
 import UIKit
 
-class PersonalProfileViewController: UIViewController {
-    static let identifier = String(describing: PersonalProfileViewController.self)
-
+class PersonalProfileViewController: BaseViewController {
     enum Section: CaseIterable {
         case person
     }

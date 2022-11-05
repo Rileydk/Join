@@ -8,8 +8,7 @@
 import UIKit
 import ProgressHUD
 
-class FindPartnersBasicViewController: UIViewController {
-    static let identifier = String(describing: FindPartnersBasicViewController.self)
+class FindPartnersBasicViewController: BaseViewController {
     let firebaseManager = FirebaseManager.shared
     var project = Project(contact: myAccount.id)
     var image: UIImage?

@@ -13,13 +13,12 @@ protocol MemberCardDelegate: AnyObject {
     func  memberCardViewController(_ controller: MemberCardViewController, didSetRecruiting recruiting: [OpenPosition])
 }
 
-class MemberCardViewController: UIViewController {
+class MemberCardViewController: BaseViewController {
 
     enum `Type` {
         case member
         case recruiting
     }
-    static let identifier = String(describing: MemberCardViewController.self)
     weak var delegate: MemberCardDelegate?
 
     var type: `Type` = .member

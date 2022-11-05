@@ -11,6 +11,7 @@ class PersonBasicCell: CollectionViewCell {
     let firebaseManager = FirebaseManager.shared
     var sendFriendRequestHandler: (() -> Void)?
     var acceptFriendRequestHandler: (() -> Void)?
+    var goChatroomHandler: (() -> Void)?
 
     @IBOutlet weak var thumbnailImageView: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
@@ -82,6 +83,6 @@ class PersonBasicCell: CollectionViewCell {
     }
 
     @IBAction func sendMessage(_ sender: UIButton) {
-        
+        goChatroomHandler?()
     }
 }

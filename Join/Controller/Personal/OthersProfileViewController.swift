@@ -8,9 +8,7 @@
 import UIKit
 import ProgressHUD
 
-class OthersProfileViewController: UIViewController {
-    static let identifier = String(describing: OthersProfileViewController.self)
-
+class OthersProfileViewController: BaseViewController {
     enum Section: CaseIterable {
         case person
     }
@@ -115,6 +113,48 @@ class OthersProfileViewController: UIViewController {
             }
         }
     }
+
+    func sendFriendRequest(id: UserID) {
+        self.firebaseManager.sendFriendRequest(to: id) { [unowned self] result in
+            switch result {
+            case .success:
+                ProgressHUD.showSuccess()
+                self.updateData()
+            case .failure(let error):
+                ProgressHUD.showFailed()
+                print(error)
+            }
+        }
+    }
+
+    func acceptFriendRequest(id: UserID) {
+        self.firebaseManager.acceptFriendRequest(from: id) { [unowned self] result in
+            switch result {
+            case .success:
+                ProgressHUD.showSuccess()
+                self.updateData()
+            case .failure(let error):
+                ProgressHUD.showFailed()
+                print(error)
+            }
+        }
+    }
+
+    func goChatroom() {
+        let chatStoryboard = UIStoryboard(name: StoryboardCategory.chat.rawValue, bundle: nil)
+        guard let chatVC = chatStoryboard.instantiateViewController(
+            withIdentifier: ChatroomViewController.identifier
+            ) as? ChatroomViewController else {
+            fatalError("Cannot create chatroom vc")
+        }
+        chatVC.senderName = userData?.name
+        chatVC.senderThumbnail = userThumbnail
+        hidesBottomBarWhenPushed = true
+        DispatchQueue.main.async { [unowned self] in
+            self.hidesBottomBarWhenPushed = false
+        }
+        navigationController?.pushViewController(chatVC, animated: true)
+    }
 }
 
 // MARK: - Layout
@@ -173,28 +213,14 @@ extension OthersProfileViewController {
             }
             cell.layoutCell(withOther: user, thumbnail: image, relationship: relationship)
             cell.sendFriendRequestHandler = { [unowned self] in
-                self.firebaseManager.sendFriendRequest(to: user.id) { [unowned self] result in
-                    switch result {
-                    case .success:
-                        ProgressHUD.showSuccess()
-                        self.updateData()
-                    case .failure(let error):
-                        ProgressHUD.showFailed()
-                        print(error)
-                    }
-                }
+                self.sendFriendRequest(id: user.id)
             }
             cell.acceptFriendRequestHandler = { [unowned self] in
-                self.firebaseManager.acceptFriendRequest(from: user.id) { [unowned self] result in
-                    switch result {
-                    case .success:
-                        ProgressHUD.showSuccess()
-                        self.updateData()
-                    case .failure(let error):
-                        ProgressHUD.showFailed()
-                        print(error)
-                    }
-                }
+                self.acceptFriendRequest(id: user.id)
+            }
+            // FIXME: - 確認 unowned
+            cell.goChatroomHandler = { [unowned self] in
+                self.goChatroom()
             }
             return cell
         }
