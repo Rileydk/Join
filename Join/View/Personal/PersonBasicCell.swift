@@ -9,6 +9,8 @@ import UIKit
 
 class PersonBasicCell: CollectionViewCell {
     let firebaseManager = FirebaseManager.shared
+    var sendFriendRequestHandler: (() -> Void)?
+    var acceptFriendRequestHandler: (() -> Void)?
 
     @IBOutlet weak var thumbnailImageView: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
@@ -25,26 +27,19 @@ class PersonBasicCell: CollectionViewCell {
         thumbnailImageView.layer.cornerRadius = thumbnailImageView.frame.size.width / 2
     }
 
-    private func layoutCell(imageURLString: URLString, name: String) {
-        firebaseManager.downloadImage(urlString: imageURLString) { [weak self] result in
-            switch result {
-            case .success(let image):
-                self?.thumbnailImageView.image = image
-            case .failure(let error):
-                print(error)
-            }
-        }
+    private func layoutCell(image: UIImage, name: String) {
         nameLabel.text = name
+        thumbnailImageView.image = image
     }
 
-    func layoutCell(withSelf user: User) {
-        layoutCell(imageURLString: user.thumbnailURL, name: user.name)
+    func layoutCell(withSelf user: User, image: UIImage) {
+        layoutCell(image: image, name: user.name)
         relationshipButton.isHidden = true
         sendMessageButton.isHidden = true
     }
 
-    func layoutCell(withOther user: User) {
-        layoutCell(imageURLString: user.thumbnailURL, name: user.name)
+    func layoutCell(withOther user: User, thumbnail: UIImage, relationship: Relationship) {
+        layoutCell(image: thumbnail, name: user.name)
         if user.id == myAccount.id {
             relationshipButton.isHidden = true
             sendMessageButton.isHidden = true
@@ -52,32 +47,41 @@ class PersonBasicCell: CollectionViewCell {
             relationshipButton.isHidden = false
             sendMessageButton.isHidden = false
 
-            firebaseManager.getUserInfo(id: myAccount.id) { [unowned self] result in
-                switch result {
-                case .success(let myAccountInfo):
-                    if myAccountInfo.friends.contains(user.id) {
-                        self.relationshipButton.isEnabled = true
-                        self.relationshipButton.setTitle(Relationship.friend.title, for: .normal)
-                    } else if myAccountInfo.sentRequests.contains(user.id) {
-                        self.relationshipButton.isEnabled = false
-                        self.relationshipButton.setTitle(Relationship.sentRequest.title, for: .normal)
-                    } else if myAccountInfo.receivedRequests.contains(user.id) {
-                        self.relationshipButton.isEnabled = true
-                        self.relationshipButton.setTitle(Relationship.receivedRequest.title, for: .normal)
-                    } else {
-                        self.relationshipButton.isEnabled = true
-                        self.relationshipButton.setTitle(Relationship.unknown.title, for: .normal)
-                    }
-                case .failure(let error):
-                    print(error)
-                }
+            switch relationship {
+            case .friend:
+                self.relationshipButton.isEnabled = true
+                self.relationshipButton.setTitle(Relationship.friend.title, for: .normal)
+                self.tag = 0
+            case .sentRequest:
+                self.relationshipButton.isEnabled = false
+                self.relationshipButton.setTitle(Relationship.sentRequest.title, for: .normal)
+                self.relationshipButton.tag = 1
+            case .receivedRequest:
+                self.relationshipButton.isEnabled = true
+                self.relationshipButton.setTitle(Relationship.receivedRequest.title, for: .normal)
+                self.relationshipButton.tag = 2
+            case .unknown:
+                self.relationshipButton.isEnabled = true
+                self.relationshipButton.setTitle(Relationship.unknown.title, for: .normal)
+                self.relationshipButton.tag = 3
             }
         }
     }
 
     @IBAction func changeRelationship(_ sender: Any) {
-        print("change relationship")
+        if let button = sender as? UIButton {
+            let state = Relationship.allCases[button.tag]
+            switch state {
+            case .unknown:
+                sendFriendRequestHandler?()
+            case .receivedRequest:
+                acceptFriendRequestHandler?()
+            default: break
+            }
+        }
     }
+
     @IBAction func sendMessage(_ sender: UIButton) {
+        
     }
 }

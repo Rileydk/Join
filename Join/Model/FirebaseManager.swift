@@ -102,6 +102,7 @@ class FirebaseManager {
 
         if let image = image,
            let imageData = image.jpeg(.lowest) {
+
             firebaseQueue.async { [weak self] in
                 self?.uploadImage(image: imageData) { result in
 
@@ -143,8 +144,9 @@ class FirebaseManager {
     }
 
     func getAllProjects(completion: @escaping (Result<[Project], Error>) -> Void) {
-        let ref = FirestoreEndpoint.project.ref
         firebaseQueue.async {
+            let ref = FirestoreEndpoint.project.ref
+
             ref.getDocuments { querySnapshot, error in
                 if let error = error {
                     DispatchQueue.main.async {
@@ -178,9 +180,9 @@ class FirebaseManager {
     }
 
     func downloadImage(urlString: String, completion: @escaping (Result<UIImage, Error>) -> Void) {
-        let imageURLRef = Storage.storage().reference(forURL: urlString)
-
         firebaseQueue.async {
+            let imageURLRef = Storage.storage().reference(forURL: urlString)
+
             imageURLRef.getData(maxSize: 1 * 1024 * 1024) { (data, error) in
                 if let error = error {
                     DispatchQueue.main.async {
@@ -200,9 +202,9 @@ class FirebaseManager {
     }
 
     func getUserInfo(id: UserID, completion: @escaping (Result<User, Error>) -> Void) {
-        let ref = FirestoreEndpoint.user.ref
-
         firebaseQueue.async {
+            let ref = FirestoreEndpoint.user.ref
+
             ref.whereField("id", isEqualTo: id).getDocuments { querySnapshot, error in
                 if let error = error {
                     DispatchQueue.main.async {
@@ -226,6 +228,83 @@ class FirebaseManager {
                         completion(.failure(GetUser.noValidQuerysnapshot))
                     }
                 }
+            }
+        }
+    }
+
+    func sendFriendRequest(to id: UserID, completion: @escaping (Result<String, Error>) -> Void) {
+        firebaseQueue.async {
+            let ref = FirestoreEndpoint.user.ref
+            ref.document(id).updateData(["receivedRequests": [myAccount.id]]) { error in
+                if let error = error {
+                    completion(.failure(error))
+                    return
+                }
+                ref.document(myAccount.id).updateData(["sentRequests": [id]]) { error in
+                    if let error = error {
+                        completion(.failure(error))
+                        return
+                    }
+                    completion(.success("Success"))
+                }
+            }
+        }
+    }
+
+    func acceptFriendRequest(from id: UserID, completion: @escaping (Result<String, Error>) -> Void) {
+        firebaseQueue.async {
+            let ref = FirestoreEndpoint.user.ref
+            let group = DispatchGroup()
+            group.enter()
+            ref.document(myAccount.id).updateData(["friends": [id]]) { error in
+                if let error = error {
+                    group.leave()
+                    group.notify(queue: .main) {
+                        completion(.failure(error))
+                    }
+                    return
+                }
+                group.leave()
+            }
+
+            group.enter()
+            ref.document(myAccount.id).updateData(["receivedRequests": FieldValue.arrayRemove([id])]) { error in
+                if let error  = error {
+                    group.leave()
+                    group.notify(queue: .main) {
+                        completion(.failure(error))
+                    }
+                    return
+                }
+                group.leave()
+            }
+
+            group.enter()
+            ref.document(id).updateData(["friends": [myAccount.id]]) { error in
+                if let error  = error {
+                    group.leave()
+                    group.notify(queue: .main) {
+                        completion(.failure(error))
+                    }
+                    return
+                }
+                group.leave()
+            }
+
+            group.enter()
+            ref.document(id).updateData(["sentRequests": FieldValue.arrayRemove([myAccount.id])]) { error in
+                if let error  = error {
+                    group.leave()
+                    group.notify(queue: .main) {
+                        completion(.failure(error))
+                    }
+                    return
+                }
+                group.leave()
+            }
+
+            group.notify(queue: .main) {
+                completion(.success("Success"))
             }
         }
     }
