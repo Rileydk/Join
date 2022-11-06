@@ -344,6 +344,7 @@ extension FindPartnersBasicViewController: GoSelectionCellDelegate {
 extension FindPartnersBasicViewController: ImagePickerCellDelegate {
     func imagePickerCell(_ cell: ImagePickerCell, didSetImage image: UIImage) {
         self.image = image
-        tableView.reloadData()
+        // FIXME: - 為什麼 reload data 會框線重疊
+        tableView.rectForRow(at: IndexPath(row: 2, section: 0))
     }
 }
