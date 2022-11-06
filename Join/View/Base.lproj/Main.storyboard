@@ -18,17 +18,17 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gys-rA-fxC">
-                                <rect key="frame" x="117.5" y="490" width="179" height="39"/>
+                                <rect key="frame" x="85" y="494" width="244" height="39"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="22"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                <state key="normal" title="以怡萩的身份登入"/>
+                                <state key="normal" title="以 Some One 的身份登入"/>
                                 <connections>
-                                    <action selector="chooseYiChen:" destination="1NE-3J-0Fa" eventType="touchUpInside" id="LIx-cs-74I"/>
+                                    <action selector="chooseOther:" destination="1NE-3J-0Fa" eventType="touchUpInside" id="5it-md-XMt"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ckf-uB-PJB">
-                                <rect key="frame" x="117.5" y="370" width="179" height="39"/>
+                                <rect key="frame" x="117.5" y="374" width="179" height="39"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="22"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
@@ -41,7 +41,7 @@
                         <viewLayoutGuide key="safeArea" id="hFF-GX-KZx"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="Ckf-uB-PJB" firstAttribute="top" secondItem="hFF-GX-KZx" secondAttribute="top" constant="326" id="7Om-zh-yOO"/>
+                            <constraint firstItem="Ckf-uB-PJB" firstAttribute="top" secondItem="hFF-GX-KZx" secondAttribute="top" constant="330" id="7Om-zh-yOO"/>
                             <constraint firstItem="Gys-rA-fxC" firstAttribute="top" secondItem="Ckf-uB-PJB" secondAttribute="bottom" constant="81" id="ZgJ-j2-fab"/>
                             <constraint firstItem="Gys-rA-fxC" firstAttribute="centerX" secondItem="x7i-qJ-YkP" secondAttribute="centerX" id="qAq-y9-KV1"/>
                             <constraint firstItem="Ckf-uB-PJB" firstAttribute="centerX" secondItem="x7i-qJ-YkP" secondAttribute="centerX" id="wyv-Uo-KCn"/>
