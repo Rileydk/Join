@@ -15,6 +15,8 @@ class ChatListViewController: BaseViewController {
                 UINib(nibName: ChatListCell.identifier, bundle: nil),
                 forCellReuseIdentifier: ChatListCell.identifier
             )
+            tableView.delegate = self
+            tableView.dataSource = self
             tableView.separatorStyle = .none
         }
     }
@@ -32,6 +34,11 @@ class ChatListViewController: BaseViewController {
         }
     }
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        tabSegmentedControl.selectedSegmentIndex = 1
+    }
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         getMessageList()
@@ -46,5 +53,37 @@ class ChatListViewController: BaseViewController {
                 print(error)
             }
         }
+    }
+
+    @IBAction func changeTab(_ sender: UISegmentedControl) {
+
+    }
+}
+
+// MARK: - Table View Delegate
+extension ChatListViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        90
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print("tapped")
+    }
+}
+
+// MARK: - Table View Datasource
+extension ChatListViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        messageList.count
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(
+            withIdentifier: ChatListCell.identifier,
+            for: indexPath) as? ChatListCell else {
+            fatalError("Cannot create chat list cell")
+        }
+        cell.layoutCell(messageItem: messageList[indexPath.row])
+        return cell
     }
 }

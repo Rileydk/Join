@@ -22,14 +22,18 @@
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </tableView>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="NwU-Lx-6XG">
-                                <rect key="frame" x="132" y="108" width="150" height="32"/>
+                                <rect key="frame" x="107" y="108" width="200" height="32"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="150" id="NbL-xJ-BkN"/>
+                                    <constraint firstAttribute="width" constant="200" id="NbL-xJ-BkN"/>
                                 </constraints>
                                 <segments>
                                     <segment title="陌生訊息"/>
                                     <segment title="好友訊息"/>
+                                    <segment title="群組訊息"/>
                                 </segments>
+                                <connections>
+                                    <action selector="changeTab:" destination="xzF-Dt-Vic" eventType="valueChanged" id="6o1-Vj-124"/>
+                                </connections>
                             </segmentedControl>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="uyr-5O-0eY"/>

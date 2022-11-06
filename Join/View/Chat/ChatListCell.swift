@@ -8,21 +8,37 @@
 import UIKit
 
 class ChatListCell: TableViewCell {
+    let firebaseManager = FirebaseManager.shared
 
-    @IBOutlet weak var userThumbnail: UIImageView!
+    @IBOutlet weak var userThumbnailImageView: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var latestMessageLabel: UILabel!
-    
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        userThumbnailImageView.layer.cornerRadius = userThumbnailImageView.frame.size.width / 2
     }
 
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
+    func layoutCell(messageItem: MessageListItem) {
+        firebaseManager.getUserInfo(id: messageItem.userID) { [weak self] result in
+            switch result {
+            case .success(let user):
+                self?.firebaseManager.downloadImage(urlString: user.thumbnailURL) { [weak self] result in
+                    switch result {
+                    case .success(let image):
+                        self?.userThumbnailImageView.image = image
+                        self?.nameLabel.text = user.name
+                        self?.latestMessageLabel.text = messageItem.latestMessage.content
+                    case .failure(let error):
+                        print(error)
+                    }
+                }
+            case .failure(let error):
+                print(error)
+            }
+        }
 
-        // Configure the view for the selected state
+
     }
     
 }
