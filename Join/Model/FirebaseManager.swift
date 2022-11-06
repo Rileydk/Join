@@ -401,6 +401,26 @@ class FirebaseManager {
                 group.leave()
             }
 
+            group.enter()
+            self.checkUnknownChatroom(id: id) { [unowned self] result in
+                switch result {
+                case .success(let chatroom):
+                    self.move(unknownChat: chatroom, to: id) {
+                        group.leave()
+                    }
+                case .failure(let error):
+                    if error as? UnknownChatroomError == UnknownChatroomError.noExistChatroom {
+                        group.leave()
+                    } else {
+                        group.leave()
+                        group.notify(queue: .main) {
+                            completion(.failure(error))
+                        }
+                        return
+                    }
+                }
+            }
+
             group.notify(queue: .main) {
                 completion(.success("Success"))
             }
@@ -539,6 +559,38 @@ class FirebaseManager {
         }
         group.notify(queue: .main) {
             completion(.success("Success"))
+        }
+    }
+
+    func removeUnknownChat(of friend: UserID) {
+        firebaseQueue.async {
+            let ref = FirestoreEndpoint.user.ref
+            let myUnknownChatDocRef = ref.document(myAccount.id).collection(ChatroomType.unknown.collectionName).document(friend)
+            let friendUnknownChatDocRef = ref.document(friend).collection(ChatroomType.unknown.collectionName).document(myAccount.id)
+            myUnknownChatDocRef.delete { error in
+                if let error = error {
+                    print(error)
+                }
+            }
+            friendUnknownChatDocRef.delete { error in
+                if let error = error {
+                    print(error)
+                }
+            }
+        }
+    }
+
+    func move(unknownChat: ChatroomID, to friend: UserID, completion: @escaping () -> Void) {
+        firebaseQueue.async { [unowned self] in
+            self.saveChatroomID(to: .friend, id: friend, chatroomID: unknownChat) { [unowned self] result in
+                switch result {
+                case .success:
+                    removeUnknownChat(of: friend)
+                case .failure(let error):
+                    print(error)
+                }
+                completion()
+            }
         }
     }
 
