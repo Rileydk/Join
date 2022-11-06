@@ -39,7 +39,11 @@ class AddNewLineSectionCell: TableViewCell {
         if !recruiting.isEmpty {
             recruiting.forEach {
                 let positionLabel = UILabel()
-                positionLabel.textColor = .black
+                if traitCollection.userInterfaceStyle == .dark {
+                    positionLabel.textColor = .white
+                } else {
+                    positionLabel.textColor = .black
+                }
                 positionLabel.font = UIFont.systemFont(ofSize: 16)
                 positionLabel.text = "\($0.role) \($0.number) 人"
                 containerStackView.insertArrangedSubview(positionLabel, at: 0)
