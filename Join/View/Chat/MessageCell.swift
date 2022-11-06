@@ -21,7 +21,10 @@ class MessageCell: TableViewCell {
         super.awakeFromNib()
         backgroundColor = .clear
         let inset: CGFloat = 8
-        messageTextView.textContainerInset = UIEdgeInsets(top: inset, left: inset, bottom: inset, right: inset)
+        messageTextView.textContainerInset = UIEdgeInsets(
+            top: inset, left: inset,
+            bottom: inset, right: inset
+        )
         messageTextView.layer.cornerRadius = 12
         messageTextView.isUserInteractionEnabled = false
         messageTextView.isScrollEnabled = false

@@ -47,7 +47,11 @@ struct User: Codable, Hashable {
     var interest = [String]()
     var skills = [String]()
     var posts = [String]()
-    var friends = [UserID]()
     var sentRequests = [UserID]()
     var receivedRequests = [UserID]()
+}
+
+struct Friend: Codable {
+    let id: UserID
+    var chatroomID: ChatroomID?
 }

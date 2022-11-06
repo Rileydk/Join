@@ -58,6 +58,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="messageTypingSuperview" destination="5i9-X7-Cya" id="fdm-FY-745"/>
                         <outlet property="tableView" destination="Emp-Ci-dnp" id="nSP-Ju-VQb"/>
                     </connections>
                 </viewController>

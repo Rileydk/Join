@@ -80,17 +80,23 @@ class OthersProfileViewController: BaseViewController {
 
     func updateRelationship(completion: @escaping () -> Void) {
         firebaseManager.getUserInfo(id: myAccount.id) { [unowned self] result in
-            guard let user = userData?.id else { return }
+            guard let id = userData?.id else { return }
             switch result {
             case .success(let myInfo):
-                if myInfo.friends.contains(user) {
-                    self.relationship = .friend
-                } else if myInfo.sentRequests.contains(user) {
-                    self.relationship = .sentRequest
-                } else if myInfo.receivedRequests.contains(user) {
-                    self.relationship = .receivedRequest
-                } else {
-                    self.relationship = .unknown
+                firebaseManager.checkIsFriend(id: id) { result in
+                    switch result {
+                    case .success:
+                        self.relationship = .friend
+                    case .failure(let error):
+                        print(error)
+                        if myInfo.sentRequests.contains(id) {
+                            self.relationship = .sentRequest
+                        } else if myInfo.receivedRequests.contains(id) {
+                            self.relationship = .receivedRequest
+                        } else {
+                            self.relationship = .unknown
+                        }
+                    }
                 }
                 completion()
             case .failure(let error):
@@ -141,19 +147,34 @@ class OthersProfileViewController: BaseViewController {
     }
 
     func goChatroom() {
-        let chatStoryboard = UIStoryboard(name: StoryboardCategory.chat.rawValue, bundle: nil)
-        guard let chatVC = chatStoryboard.instantiateViewController(
-            withIdentifier: ChatroomViewController.identifier
-            ) as? ChatroomViewController else {
-            fatalError("Cannot create chatroom vc")
+        guard let id = userData?.id else { return }
+        firebaseManager.getChatroom(id: id) { [unowned self] result in
+            switch result {
+            case .success(let chatroomID):
+                self.firebaseManager.getAllMessages(chatroomID: chatroomID) { [unowned self] result in
+                    switch result {
+                    case .success(let messages):
+                        let chatStoryboard = UIStoryboard(name: StoryboardCategory.chat.rawValue, bundle: nil)
+                        guard let chatVC = chatStoryboard.instantiateViewController(
+                            withIdentifier: ChatroomViewController.identifier
+                        ) as? ChatroomViewController else {
+                            fatalError("Cannot create chatroom vc")
+                        }
+                        chatVC.userData = self.userData
+                        chatVC.messages = messages
+                        self.hidesBottomBarWhenPushed = true
+                        DispatchQueue.main.async { [unowned self] in
+                            self.hidesBottomBarWhenPushed = false
+                        }
+                        navigationController?.pushViewController(chatVC, animated: true)
+                    case .failure(let error):
+                        print(error)
+                    }
+                }
+            case .failure(let error):
+                print(error)
+            }
         }
-        chatVC.senderName = userData?.name
-        chatVC.senderThumbnail = userThumbnail
-        hidesBottomBarWhenPushed = true
-        DispatchQueue.main.async { [unowned self] in
-            self.hidesBottomBarWhenPushed = false
-        }
-        navigationController?.pushViewController(chatVC, animated: true)
     }
 }
 
@@ -199,7 +220,6 @@ extension OthersProfileViewController {
         datasource = ProfileDatasource(collectionView: collectionView) { [weak self] (collectionView, indexPath, item) -> UICollectionViewCell? in
             return self?.createCell(collectionView: collectionView, indexPath: indexPath, item: item)
         }
-//        updateDatasource()
     }
 
     // swiftlint:disable line_length

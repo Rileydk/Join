@@ -7,10 +7,15 @@
 
 import UIKit
 
+protocol MessageDelegate: AnyObject {
+    func view(_ messageTypingView: MessageTypingView, didSend message: String)
+}
+
 class MessageTypingView: UIView {
     static var identifier: String {
         String(describing: self)
     }
+    weak var delegate: MessageDelegate?
 
     @IBOutlet var textField: UITextField!
     @IBOutlet var sendingButton: UIButton!
@@ -21,6 +26,9 @@ class MessageTypingView: UIView {
     }
 
     @IBAction func sendMessage() {
-
+        if !(textField.text ?? "").isEmpty {
+            delegate?.view(self, didSend: textField.text!)
+            textField.text = ""
+        }
     }
 }

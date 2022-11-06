@@ -10,7 +10,7 @@ import FirebaseFirestore
 import FirebaseStorage
 import FirebaseFirestoreSwift
 
-enum NewProject: Error, LocalizedError {
+enum NewProjectError: Error, LocalizedError {
     case noValidImageURLError
 
     var errorDescription: String {
@@ -21,7 +21,7 @@ enum NewProject: Error, LocalizedError {
     }
 }
 
-enum GetProject: Error, LocalizedError {
+enum GetProjectError: Error, LocalizedError {
     case noValidQuerysnapshot
 
     var errorDescription: String {
@@ -32,7 +32,7 @@ enum GetProject: Error, LocalizedError {
     }
 }
 
-enum GetUser: Error, LocalizedError {
+enum GetUserError: Error, LocalizedError {
     case noValidQuerysnapshot
 
     var errorDescription: String {
@@ -43,9 +43,63 @@ enum GetUser: Error, LocalizedError {
     }
 }
 
+enum GetFriendError: Error, LocalizedError {
+    case noValidQuerysnapshot
+    case notFriendYet
+
+    var errorDescription: String {
+        switch self {
+        case .noValidQuerysnapshot:
+            return FindPartnersFormSections.getUserErrorDescription
+        case .notFriendYet:
+            return FindPartnersFormSections.notFriendErrorDescription
+        }
+    }
+}
+
+enum GetMessageError: Error, LocalizedError {
+    case noValidQuerysnapshot
+
+    var errorDescription: String {
+        switch self {
+        case .noValidQuerysnapshot:
+            return FindPartnersFormSections.getMessageErrorDescription
+        }
+    }
+}
+
+enum FriendChatroomError: Error, LocalizedError {
+    case noValidQuerysnapshot
+    case noExistChatroom
+
+    var errorDescription: String {
+        switch self {
+        case .noValidQuerysnapshot:
+            return FindPartnersFormSections.getFriendChatroomErrorDescription
+        case .noExistChatroom:
+            return FindPartnersFormSections.noFriendChatroomErrorDescription
+        }
+    }
+}
+
+enum UnknownChatroomError: Error, LocalizedError {
+    case noValidQuerysnapshot
+    case noExistChatroom
+
+    var errorDescription: String {
+        switch self {
+        case .noValidQuerysnapshot:
+            return FindPartnersFormSections.getUnknownChatroomErrorDescription
+        case .noExistChatroom:
+            return FindPartnersFormSections.noUnknownChatroomErrorDescription
+        }
+    }
+}
+
 enum FirestoreEndpoint {
     case project
     case user
+    case chatroom
 
     var ref: CollectionReference {
         switch self {
@@ -53,6 +107,8 @@ enum FirestoreEndpoint {
             return Firestore.firestore().collection("Project")
         case .user:
             return Firestore.firestore().collection("User")
+        case .chatroom:
+            return Firestore.firestore().collection("Chatroom")
         }
     }
 }
@@ -82,7 +138,7 @@ class FirebaseManager {
                     }
                     guard let downloadURL = url else {
                         DispatchQueue.main.async {
-                            completion(.failure(NewProject.noValidImageURLError))
+                            completion(.failure(NewProjectError.noValidImageURLError))
                         }
                         return
                     }
@@ -172,7 +228,7 @@ class FirebaseManager {
                     }
                 } else {
                     DispatchQueue.main.async {
-                        completion(.failure(GetProject.noValidQuerysnapshot))
+                        completion(.failure(GetProjectError.noValidQuerysnapshot))
                     }
                 }
             }
@@ -225,7 +281,40 @@ class FirebaseManager {
                     }
                 } else {
                     DispatchQueue.main.async {
-                        completion(.failure(GetUser.noValidQuerysnapshot))
+                        completion(.failure(GetUserError.noValidQuerysnapshot))
+                    }
+                }
+            }
+        }
+    }
+
+    func checkIsFriend(id: UserID, completion: @escaping (Result<Friend, Error>) -> Void) {
+        firebaseQueue.async {
+            let ref = FirestoreEndpoint.user.ref
+            ref.document(myAccount.id).collection("Friends").whereField("id", isEqualTo: id).getDocuments { (querySnapshot, error) in
+                if let error = error {
+                    DispatchQueue.main.async {
+                        completion(.failure(error))
+                        return
+                    }
+                }
+                if querySnapshot != nil {
+                    do {
+                        if let friend = try querySnapshot?.documents.first?.data(as: Friend.self, decoder: Firestore.Decoder()) {
+                            DispatchQueue.main.async {
+                                completion(.success(friend))
+                            }
+                        } else {
+                            DispatchQueue.main.async {
+                                completion(.failure(GetFriendError.notFriendYet))
+                            }
+                        }
+                    } catch {
+                        completion(.failure(error))
+                    }
+                } else {
+                    DispatchQueue.main.async {
+                        completion(.failure(GetFriendError.noValidQuerysnapshot))
                     }
                 }
             }
@@ -237,15 +326,22 @@ class FirebaseManager {
             let ref = FirestoreEndpoint.user.ref
             ref.document(id).updateData(["receivedRequests": [myAccount.id]]) { error in
                 if let error = error {
-                    completion(.failure(error))
+                    DispatchQueue.main.async {
+                        completion(.failure(error))
+                    }
                     return
                 }
                 ref.document(myAccount.id).updateData(["sentRequests": [id]]) { error in
                     if let error = error {
-                        completion(.failure(error))
+                        DispatchQueue.main.async {
+                            completion(.failure(error))
+                            return
+                        }
+                    }
+                    DispatchQueue.main.async {
+                        completion(.success("Success"))
                         return
                     }
-                    completion(.success("Success"))
                 }
             }
         }
@@ -256,7 +352,7 @@ class FirebaseManager {
             let ref = FirestoreEndpoint.user.ref
             let group = DispatchGroup()
             group.enter()
-            ref.document(myAccount.id).updateData(["friends": [id]]) { error in
+            ref.document(myAccount.id).collection("Friends").document(id).setData(["id": id]) { error in
                 if let error = error {
                     group.leave()
                     group.notify(queue: .main) {
@@ -280,7 +376,7 @@ class FirebaseManager {
             }
 
             group.enter()
-            ref.document(id).updateData(["friends": [myAccount.id]]) { error in
+            ref.document(id).collection("Friends").document(myAccount.id).setData(["id": myAccount.id]) { error in
                 if let error  = error {
                     group.leave()
                     group.notify(queue: .main) {
@@ -307,5 +403,174 @@ class FirebaseManager {
                 completion(.success("Success"))
             }
         }
+    }
+
+    func getChatroom(id: UserID, completion: @escaping (Result<ChatroomID, Error>) -> Void) {
+        // 是否是朋友
+        checkIsFriend(id: id) { [unowned self] result in
+            switch result {
+            // 若是朋友，確認是否有既存的 chatroom
+            case .success(let friend):
+                if let chatroomID = friend.chatroomID {
+                    completion(.success(chatroomID))
+                    return
+                } else {
+                    // 若沒有既存的 chatroom，開一個新的
+                    self.createChatroom(id: id, type: .friend) { result in
+                        switch result {
+                        case .success(let chatroomID):
+                            completion(.success(chatroomID))
+                        case .failure(let error):
+                            completion(.failure(error))
+                        }
+                    }
+                }
+            case .failure(let error):
+                // 若不是朋友，確認過去是否有陌生訊息
+                if error as? GetFriendError == GetFriendError.notFriendYet {
+                    self.checkUnknownChatroom(id: id) { [unowned self] result in
+                        switch result {
+                        case .success(let chatroomID):
+                            completion(.success(chatroomID))
+                        case .failure(let error):
+                            if error as? UnknownChatroomError == UnknownChatroomError.noExistChatroom {
+                                self.createChatroom(id: id, type: .unknown) { result in
+                                    switch result {
+                                    case .success(let chatroomID):
+                                        completion(.success(chatroomID))
+                                    case .failure(let error):
+                                        completion(.failure(error))
+                                    }
+                                }
+                            } else {
+                                completion(.failure(error))
+                            }
+                        }
+                    }
+                } else {
+                    completion(.failure(error))
+                    return
+                }
+            }
+        }
+    }
+
+    func checkUnknownChatroom(id: UserID, completion: @escaping (Result<ChatroomID, Error>) -> Void) {
+        firebaseQueue.async {
+            let ref = FirestoreEndpoint.user.ref
+            ref.document(myAccount.id).collection("UnknownChat").document(id).getDocument { (documentSnapshot, error) in
+                if let error = error {
+                    completion(.failure(error))
+                    return
+                }
+                if let snapshot = documentSnapshot {
+                    do {
+                        let document = try snapshot.data(as: UnknownChat.self, decoder: Firestore.Decoder())
+                        completion(.success(document.chatroomID))
+                    } catch {
+                        completion(.failure(UnknownChatroomError.noExistChatroom))
+                    }
+                } else {
+                    completion(.failure(UnknownChatroomError.noValidQuerysnapshot))
+                    return
+                }
+            }
+        }
+
+    }
+
+    func createChatroom(id: UserID, type: ChatroomType, completion: @escaping (Result<ChatroomID, Error>) -> Void) {
+        firebaseQueue.async {
+            let chatroomRef = FirestoreEndpoint.chatroom.ref
+            let documentID = chatroomRef.document().documentID
+            let chatroom = Chatroom(id: documentID, member: [myAccount.id, id], messages: [])
+
+            // 建立新的 chatroom
+            chatroomRef.document(documentID).setData(chatroom.toInitDict) { [unowned self] error in
+                if let error = error {
+                    DispatchQueue.main.async {
+                        completion(.failure(error))
+                    }
+                    return
+                }
+                // 分別存入 friend 或 unknownchatroom 中
+                self.saveChatroomID(to: type, id: id, chatroomID: documentID) { result in
+                    switch result {
+                    case .success:
+                        completion(.success(documentID))
+                    case .failure(let error):
+                        completion(.failure(error))
+                    }
+                }
+            }
+        }
+    }
+
+    func saveChatroomID(to type: ChatroomType, id: UserID, chatroomID: ChatroomID, completion: @escaping (Result<String, Error>) -> Void ) {
+        let userRef = FirestoreEndpoint.user.ref
+        let collectionName = type.collectionName
+
+        let group = DispatchGroup()
+        group.enter()
+        userRef.document(myAccount.id).collection(collectionName).document(id)
+            .setData(["id": id, "chatroomID": chatroomID]) { error in
+            if let error = error {
+                DispatchQueue.main.async {
+                    completion(.failure(error))
+                }
+                group.leave()
+                return
+            }
+            group.leave()
+        }
+        group.enter()
+        userRef.document(id).collection(collectionName).document(myAccount.id)
+            .setData(["id": myAccount.id, "chatroomID": chatroomID]) { error in
+            if let error = error {
+                DispatchQueue.main.async {
+                    completion(.failure(error))
+                }
+                group.leave()
+                return
+            }
+            group.leave()
+        }
+        group.notify(queue: .main) {
+            completion(.success("Success"))
+        }
+    }
+
+    func getAllMessages(chatroomID: ChatroomID, completion: @escaping (Result<[Message], Error>) -> Void) {
+        firebaseQueue.async {
+            let ref = FirestoreEndpoint.chatroom.ref
+            ref.document(chatroomID).collection("Messages").order(by: "time").getDocuments { (querySnapshot, error) in
+                if let error = error {
+                    completion(.failure(error))
+                    return
+                }
+                if let querySnapshot = querySnapshot {
+                    let messages: [Message] = querySnapshot.documents.compactMap {
+                        do {
+                            return try $0.data(as: Message.self, decoder: Firestore.Decoder())
+                        } catch {
+                            completion(.failure(error))
+                            return nil
+                        }
+                    }
+                    completion(.success(messages))
+                } else {
+                    completion(.failure(GetMessageError.noValidQuerysnapshot))
+                }
+            }
+        }
+    }
+
+    func addNewMessage() {
+
+    }
+
+
+    func getNewMessages() {
+
     }
 }

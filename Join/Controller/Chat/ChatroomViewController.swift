@@ -6,9 +6,13 @@
 //
 
 import UIKit
-import SwiftUI
 
 class ChatroomViewController: BaseViewController {
+    @IBOutlet var messageTypingSuperview: MessageTypingSuperview! {
+        didSet {
+            messageTypingSuperview.delegate = self
+        }
+    }
     @IBOutlet var tableView: UITableView! {
         didSet {
             tableView.register(
@@ -35,22 +39,44 @@ class ChatroomViewController: BaseViewController {
         Message(sender: riley.id, type: .text, content: "你吃不膩嗎你吃不膩嗎你吃不膩嗎你吃不膩嗎你吃不膩嗎你吃不膩嗎你吃不膩嗎你吃不膩嗎你吃不膩嗎你吃不膩嗎你吃不膩嗎你吃不膩嗎你吃不膩嗎", time: Date()),
         Message(sender: yichen.id, type: .text, content: "哈哈哈哈哈哈哈哈哈哈\n你什麼時候看我吃膩過 😊", time: Date())
     ]
-    var senderName: String?
-    var senderThumbnail: UIImage?
+    var userData: User? {
+        didSet {
+            firebaseManager.downloadImage(urlString: userData!.thumbnailURL) { [unowned self] result in
+                switch result {
+                case .success(let image):
+                    self.userThumbnail = image
+                case .failure(let error):
+                    print(error)
+                }
+            }
+        }
+    }
+    var userThumbnail: UIImage?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        if senderName == nil {
-
-        }
-        title = senderName
     }
 
-    func getSenderName(completion: @escaping (Result<String, Error>) -> Void) {
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        updateUserData()
+        updateMessages()
+    }
 
+    func updateUserData() {
+        guard let id = userData?.id else { return }
+        firebaseManager.getUserInfo(id: id) { [unowned self] result in
+            switch result {
+            case .success(let user):
+                self.userData = user
+            case .failure(let error):
+                print(error)
+            }
+        }
     }
 
     func updateMessages() {
+        guard let id = userData?.id else { return }
 
     }
 }
@@ -78,8 +104,15 @@ extension ChatroomViewController: UITableViewDataSource {
                 ) as? MessageCell else {
                 fatalError("Cannot create message cell")
             }
-            cell.layoutCell(image: senderThumbnail, message: message.content)
+            cell.layoutCell(image: userThumbnail, message: message.content)
             return cell
         }
+    }
+}
+
+// MARK: - Message Superview Delegate
+extension ChatroomViewController: MessageSuperviewDelegate {
+    func view(_ messageTypingSuperview: MessageTypingSuperview, didSend message: String) {
+        print(message)
     }
 }

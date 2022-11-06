@@ -7,8 +7,14 @@
 
 import UIKit
 
+protocol MessageSuperviewDelegate: AnyObject {
+    func view(_ messageTypingSuperview: MessageTypingSuperview, didSend message: String)
+}
+
 @IBDesignable
 class MessageTypingSuperview: UIView {
+    weak var delegate: MessageSuperviewDelegate?
+
     override func prepareForInterfaceBuilder() {
         super.prepareForInterfaceBuilder()
         addMessageTypingView()
@@ -23,9 +29,17 @@ class MessageTypingSuperview: UIView {
         if let messageTypingView =
             Bundle(for: MessageTypingView.self)
             .loadNibNamed(MessageTypingView.identifier, owner: nil)?
-            .first as? UIView {
+            .first as? MessageTypingView {
             addSubview(messageTypingView)
             messageTypingView.frame = bounds
+            messageTypingView.delegate = self
         }
+    }
+}
+
+// MARK: - Message Delegate
+extension MessageTypingSuperview: MessageDelegate {
+    func view(_ messageTypingView: MessageTypingView, didSend message: String) {
+        delegate?.view(self, didSend: message)
     }
 }
