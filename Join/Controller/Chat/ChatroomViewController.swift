@@ -8,6 +8,10 @@
 import UIKit
 
 class ChatroomViewController: BaseViewController {
+    deinit {
+        firebaseManager.detachNewMessageListener()
+    }
+
     @IBOutlet var messageTypingSuperview: MessageTypingSuperview! {
         didSet {
             messageTypingSuperview.delegate = self
@@ -28,17 +32,17 @@ class ChatroomViewController: BaseViewController {
             tableView.estimatedRowHeight = 60
             tableView.backgroundColor = .yellow
             tableView.separatorStyle = .none
+            tableView.allowsSelection = false
         }
     }
 
     let firebaseManager = FirebaseManager.shared
-    var messages: [Message] = [
-        Message(sender: yichen.id, type: .text, content: "今晚吃什麼？", time: Date()),
-        Message(sender: riley.id, type: .text, content: "不知道耶，你說呢？", time: Date()),
-        Message(sender: yichen.id, type: .text, content: "麥當勞", time: Date()),
-        Message(sender: riley.id, type: .text, content: "你吃不膩嗎你吃不膩嗎你吃不膩嗎你吃不膩嗎你吃不膩嗎你吃不膩嗎你吃不膩嗎你吃不膩嗎你吃不膩嗎你吃不膩嗎你吃不膩嗎你吃不膩嗎你吃不膩嗎", time: Date()),
-        Message(sender: yichen.id, type: .text, content: "哈哈哈哈哈哈哈哈哈哈\n你什麼時候看我吃膩過 😊", time: Date())
-    ]
+    var chatroomID: ChatroomID?
+    var messages = [Message]() {
+        didSet {
+            tableView.reloadData()
+        }
+    }
     var userData: User? {
         didSet {
             firebaseManager.downloadImage(urlString: userData!.thumbnailURL) { [unowned self] result in
@@ -51,21 +55,35 @@ class ChatroomViewController: BaseViewController {
             }
         }
     }
-    var userThumbnail: UIImage?
+    var userThumbnail: UIImage? {
+        didSet {
+            tableView.reloadData()
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        guard let chatroomID = chatroomID else { return }
+        firebaseManager.listenToNewMessages(chatroomID: chatroomID) { [weak self] result in
+            switch result {
+            case .success(let messages):
+                self?.messages += messages
+            case .failure(let error):
+                print(error)
+            }
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         updateUserData()
-        updateMessages()
+        guard let chatroomID = chatroomID else { return }
+        updateAllMessages(chatroomID: chatroomID)
     }
 
     func updateUserData() {
-        guard let id = userData?.id else { return }
-        firebaseManager.getUserInfo(id: id) { [unowned self] result in
+        guard let chattingObject = userData else { return }
+        firebaseManager.getUserInfo(id: chattingObject.id) { [unowned self] result in
             switch result {
             case .success(let user):
                 self.userData = user
@@ -75,9 +93,27 @@ class ChatroomViewController: BaseViewController {
         }
     }
 
-    func updateMessages() {
-        guard let id = userData?.id else { return }
+    func saveMessages(message: Message) {
+        guard let chatroomID = chatroomID else { return }
+        firebaseManager.addNewMessage(message: message, chatroomID: chatroomID) { result in
+            switch result {
+            case .success:
+                print("success")
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
 
+    func updateAllMessages(chatroomID: ChatroomID) {
+        firebaseManager.getAllMessages(chatroomID: chatroomID) { [unowned self] result in
+            switch result {
+            case .success(let messages):
+                self.messages = messages
+            case .failure(let error):
+                print(error)
+            }
+        }
     }
 }
 
@@ -113,6 +149,12 @@ extension ChatroomViewController: UITableViewDataSource {
 // MARK: - Message Superview Delegate
 extension ChatroomViewController: MessageSuperviewDelegate {
     func view(_ messageTypingSuperview: MessageTypingSuperview, didSend message: String) {
-        print(message)
+        let newMessage = Message(
+            messageID: "",
+            sender: myAccount.id,
+            type: .text,
+            content: message, time: Date()
+        )
+        saveMessages(message: newMessage)
     }
 }

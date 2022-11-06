@@ -8,8 +8,9 @@
 import Foundation
 
 typealias ChatroomID = String
+typealias MessageID = String
 
-enum MessageType: CaseIterable, Codable {
+enum MessageType: String, CaseIterable, Codable {
     case text
 }
 
@@ -39,10 +40,21 @@ struct Chatroom {
 }
 
 struct Message: Codable {
+    var messageID: MessageID
     let sender: UserID
     let type: MessageType
     let content: String
     let time: Date
+
+    var toDict: [String: Any] {
+        return [
+            "messageID": messageID as Any,
+            "sender": sender as Any,
+            "type": type.rawValue as Any,
+            "content": content as Any,
+            "time": time as Any
+        ]
+    }
 }
 
 struct UnknownChat: Codable {

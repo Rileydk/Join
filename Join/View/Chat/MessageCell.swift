@@ -38,6 +38,8 @@ class MessageCell: TableViewCell {
     func layoutCell(image: UIImage?, message: String) {
         if let image = image {
             thumbnailImageView.image = image
+        } else {
+            print("image is nil")
         }
         messageTextView.text = message
     }

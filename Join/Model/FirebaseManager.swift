@@ -116,6 +116,8 @@ enum FirestoreEndpoint {
 class FirebaseManager {
     static let shared = FirebaseManager()
     private let firebaseQueue = DispatchQueue(label: "firebaseQueue", attributes: .concurrent)
+    static let decoder = Firestore.Decoder()
+    var newMessageListener: ListenerRegistration?
 
     func uploadImage(image: Data, completion: @escaping (Result<String, Error>) -> Void) {
         let ref = Storage.storage().reference()
@@ -215,7 +217,7 @@ class FirebaseManager {
                 if let querySnapshot = querySnapshot {
                     for document in querySnapshot.documents {
                         do {
-                            let project = try document.data(as: Project.self, decoder: Firestore.Decoder())
+                            let project = try document.data(as: Project.self, decoder: FirebaseManager.decoder)
                             projects.append(project)
                         } catch {
                             DispatchQueue.main.async {
@@ -270,7 +272,7 @@ class FirebaseManager {
                 }
                 if let querySnapshot = querySnapshot {
                     do {
-                        let user = try querySnapshot.documents.first!.data(as: User.self, decoder: Firestore.Decoder())
+                        let user = try querySnapshot.documents.first!.data(as: User.self, decoder: FirebaseManager.decoder)
                         DispatchQueue.main.async {
                             completion(.success(user))
                         }
@@ -300,7 +302,7 @@ class FirebaseManager {
                 }
                 if querySnapshot != nil {
                     do {
-                        if let friend = try querySnapshot?.documents.first?.data(as: Friend.self, decoder: Firestore.Decoder()) {
+                        if let friend = try querySnapshot?.documents.first?.data(as: Friend.self, decoder: FirebaseManager.decoder) {
                             DispatchQueue.main.async {
                                 completion(.success(friend))
                             }
@@ -465,7 +467,7 @@ class FirebaseManager {
                 }
                 if let snapshot = documentSnapshot {
                     do {
-                        let document = try snapshot.data(as: UnknownChat.self, decoder: Firestore.Decoder())
+                        let document = try snapshot.data(as: UnknownChat.self, decoder: FirebaseManager.decoder)
                         completion(.success(document.chatroomID))
                     } catch {
                         completion(.failure(UnknownChatroomError.noExistChatroom))
@@ -551,7 +553,7 @@ class FirebaseManager {
                 if let querySnapshot = querySnapshot {
                     let messages: [Message] = querySnapshot.documents.compactMap {
                         do {
-                            return try $0.data(as: Message.self, decoder: Firestore.Decoder())
+                            return try $0.data(as: Message.self, decoder: FirebaseManager.decoder)
                         } catch {
                             completion(.failure(error))
                             return nil
@@ -565,12 +567,52 @@ class FirebaseManager {
         }
     }
 
-    func addNewMessage() {
+    func addNewMessage(message: Message, chatroomID: ChatroomID, completion: @escaping (Result<String, Error>) -> Void) {
+        firebaseQueue.async {
+            let ref = FirestoreEndpoint.chatroom.ref.document(chatroomID).collection("Messages")
+            let documentID = ref.document().documentID
+            var message = message
+            message.messageID = documentID
 
+            ref.document(documentID).setData(message.toDict) { error in
+                if let error = error {
+                    completion(.failure(error))
+                    return
+                }
+                completion(.success("Success"))
+            }
+        }
     }
 
+    func listenToNewMessages(chatroomID: ChatroomID, completion: @escaping (Result<[Message], Error>) -> Void) {
+        firebaseQueue.async { [weak self] in
+            let ref = FirestoreEndpoint.chatroom.ref
+            self?.newMessageListener = ref.document(chatroomID).collection("Messages").addSnapshotListener { (querySnapshot, error) in
+                if let error = error {
+                    completion(.failure(error))
+                    return
+                }
+                if let querySnapshot = querySnapshot {
+                    let messages: [Message] = querySnapshot.documentChanges.compactMap {
+                        do {
+                            return try $0.document.data(as: Message.self, decoder: FirebaseManager.decoder)
+                        } catch {
+                            completion(.failure(error))
+                            return nil
+                        }
+                    }
+                    if !querySnapshot.metadata.hasPendingWrites {
+                        completion(.success(messages))
+                    }
 
-    func getNewMessages() {
+                } else {
+                    completion(.failure(GetMessageError.noValidQuerysnapshot))
+                }
+            }
+        }
+    }
 
+    func detachNewMessageListener() {
+        newMessageListener?.remove()
     }
 }

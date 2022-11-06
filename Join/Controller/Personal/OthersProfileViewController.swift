@@ -151,26 +151,19 @@ class OthersProfileViewController: BaseViewController {
         firebaseManager.getChatroom(id: id) { [unowned self] result in
             switch result {
             case .success(let chatroomID):
-                self.firebaseManager.getAllMessages(chatroomID: chatroomID) { [unowned self] result in
-                    switch result {
-                    case .success(let messages):
-                        let chatStoryboard = UIStoryboard(name: StoryboardCategory.chat.rawValue, bundle: nil)
-                        guard let chatVC = chatStoryboard.instantiateViewController(
-                            withIdentifier: ChatroomViewController.identifier
-                        ) as? ChatroomViewController else {
-                            fatalError("Cannot create chatroom vc")
-                        }
-                        chatVC.userData = self.userData
-                        chatVC.messages = messages
-                        self.hidesBottomBarWhenPushed = true
-                        DispatchQueue.main.async { [unowned self] in
-                            self.hidesBottomBarWhenPushed = false
-                        }
-                        navigationController?.pushViewController(chatVC, animated: true)
-                    case .failure(let error):
-                        print(error)
-                    }
+                let chatStoryboard = UIStoryboard(name: StoryboardCategory.chat.rawValue, bundle: nil)
+                guard let chatVC = chatStoryboard.instantiateViewController(
+                    withIdentifier: ChatroomViewController.identifier
+                ) as? ChatroomViewController else {
+                    fatalError("Cannot create chatroom vc")
                 }
+                chatVC.userData = self.userData
+                chatVC.chatroomID = chatroomID
+                self.hidesBottomBarWhenPushed = true
+                DispatchQueue.main.async { [unowned self] in
+                    self.hidesBottomBarWhenPushed = false
+                }
+                navigationController?.pushViewController(chatVC, animated: true)
             case .failure(let error):
                 print(error)
             }
