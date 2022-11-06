@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 typealias ChatroomID = String
 typealias MessageID = String
@@ -14,9 +15,16 @@ enum MessageType: String, CaseIterable, Codable {
     case text
 }
 
-enum ChatroomType {
+enum ChatroomType: CaseIterable {
     case friend
     case unknown
+
+    var buttonTitle: String {
+        switch self {
+        case .friend: return "好友訊息"
+        case .unknown: return "陌生訊息"
+        }
+    }
 
     var collectionName: String {
         switch self {
@@ -26,10 +34,10 @@ enum ChatroomType {
     }
 }
 
-struct Chatroom {
+struct Chatroom: Codable {
     let id: ChatroomID
     let member: [UserID]
-    var messages: [Message]
+    var messages: [Message]?
 
     var toInitDict: [String: Any] {
         return [
@@ -57,7 +65,12 @@ struct Message: Codable {
     }
 }
 
-struct UnknownChat: Codable {
+struct SavedChat: Codable {
     let id: UserID
     var chatroomID: ChatroomID
+}
+
+struct MessageListItem: Codable {
+    let userID: UserID
+    let latestMessage: Message
 }

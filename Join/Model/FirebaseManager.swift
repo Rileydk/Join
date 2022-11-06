@@ -59,11 +59,14 @@ enum GetFriendError: Error, LocalizedError {
 
 enum GetMessageError: Error, LocalizedError {
     case noValidQuerysnapshot
+    case countIncorrect
 
     var errorDescription: String {
         switch self {
         case .noValidQuerysnapshot:
             return FindPartnersFormSections.getMessageErrorDescription
+        case .countIncorrect:
+            return FindPartnersFormSections.getMessageCountErrorDescription
         }
     }
 }
@@ -113,6 +116,7 @@ enum FirestoreEndpoint {
     }
 }
 
+// swiftlint:disable type_body_length
 class FirebaseManager {
     static let shared = FirebaseManager()
     private let firebaseQueue = DispatchQueue(label: "firebaseQueue", attributes: .concurrent)
@@ -487,13 +491,19 @@ class FirebaseManager {
                 }
                 if let snapshot = documentSnapshot {
                     do {
-                        let document = try snapshot.data(as: UnknownChat.self, decoder: FirebaseManager.decoder)
-                        completion(.success(document.chatroomID))
+                        let document = try snapshot.data(as: SavedChat.self, decoder: FirebaseManager.decoder)
+                        DispatchQueue.main.async {
+                            completion(.success(document.chatroomID))
+                        }
                     } catch {
-                        completion(.failure(UnknownChatroomError.noExistChatroom))
+                        DispatchQueue.main.async {
+                            completion(.failure(UnknownChatroomError.noExistChatroom))
+                        }
                     }
                 } else {
-                    completion(.failure(UnknownChatroomError.noValidQuerysnapshot))
+                    DispatchQueue.main.async {
+                        completion(.failure(UnknownChatroomError.noValidQuerysnapshot))
+                    }
                     return
                 }
             }
@@ -519,9 +529,13 @@ class FirebaseManager {
                 self.saveChatroomID(to: type, id: id, chatroomID: documentID) { result in
                     switch result {
                     case .success:
-                        completion(.success(documentID))
+                        DispatchQueue.main.async {
+                            completion(.success(documentID))
+                        }
                     case .failure(let error):
-                        completion(.failure(error))
+                        DispatchQueue.main.async {
+                            completion(.failure(error))
+                        }
                     }
                 }
             }
@@ -589,7 +603,9 @@ class FirebaseManager {
                 case .failure(let error):
                     print(error)
                 }
-                completion()
+                DispatchQueue.main.async {
+                    completion()
+                }
             }
         }
     }
@@ -599,7 +615,9 @@ class FirebaseManager {
             let ref = FirestoreEndpoint.chatroom.ref
             ref.document(chatroomID).collection("Messages").order(by: "time").getDocuments { (querySnapshot, error) in
                 if let error = error {
-                    completion(.failure(error))
+                    DispatchQueue.main.async {
+                        completion(.failure(error))
+                    }
                     return
                 }
                 if let querySnapshot = querySnapshot {
@@ -607,13 +625,19 @@ class FirebaseManager {
                         do {
                             return try $0.data(as: Message.self, decoder: FirebaseManager.decoder)
                         } catch {
-                            completion(.failure(error))
+                            DispatchQueue.main.async {
+                                completion(.failure(error))
+                            }
                             return nil
                         }
                     }
-                    completion(.success(messages))
+                    DispatchQueue.main.async {
+                        completion(.success(messages))
+                    }
                 } else {
-                    completion(.failure(GetMessageError.noValidQuerysnapshot))
+                    DispatchQueue.main.async {
+                        completion(.failure(GetMessageError.noValidQuerysnapshot))
+                    }
                 }
             }
         }
@@ -628,10 +652,14 @@ class FirebaseManager {
 
             ref.document(documentID).setData(message.toDict) { error in
                 if let error = error {
-                    completion(.failure(error))
+                    DispatchQueue.main.async {
+                        completion(.failure(error))
+                    }
                     return
                 }
-                completion(.success("Success"))
+                DispatchQueue.main.async {
+                    completion(.success("Success"))
+                }
             }
         }
     }
@@ -641,7 +669,9 @@ class FirebaseManager {
             let ref = FirestoreEndpoint.chatroom.ref
             self?.newMessageListener = ref.document(chatroomID).collection("Messages").addSnapshotListener { (querySnapshot, error) in
                 if let error = error {
-                    completion(.failure(error))
+                    DispatchQueue.main.async {
+                        completion(.failure(error))
+                    }
                     return
                 }
                 if let querySnapshot = querySnapshot {
@@ -649,22 +679,187 @@ class FirebaseManager {
                         do {
                             return try $0.document.data(as: Message.self, decoder: FirebaseManager.decoder)
                         } catch {
-                            completion(.failure(error))
+                            DispatchQueue.main.async {
+                                completion(.failure(error))
+                            }
                             return nil
                         }
                     }
                     if !querySnapshot.metadata.hasPendingWrites {
-                        completion(.success(messages))
+                        DispatchQueue.main.async {
+                            completion(.success(messages))
+                        }
                     }
 
                 } else {
-                    completion(.failure(GetMessageError.noValidQuerysnapshot))
+                    DispatchQueue.main.async {
+                        completion(.failure(GetMessageError.noValidQuerysnapshot))
+                    }
                 }
             }
         }
     }
 
     func detachNewMessageListener() {
-        newMessageListener?.remove()
+        firebaseQueue.async { [weak self] in
+            self?.newMessageListener?.remove()
+        }
+    }
+
+    func getAllChatroomsInfo(type: ChatroomType, completion: @escaping (Result<[SavedChat], Error>) -> Void) {
+        firebaseQueue.async {
+            let ref = FirestoreEndpoint.user.ref.document(myAccount.id).collection(type.collectionName)
+            ref.getDocuments { (snapshot, error) in
+                if let error = error {
+                    DispatchQueue.main.async {
+                        completion(.failure(error))
+                    }
+                    return
+                }
+                if let snapshot = snapshot {
+                    // 過濾尚未建立 chatroom 者
+                    let chatroomsInfo: [SavedChat] = snapshot.documents.compactMap {
+                        do {
+                            return try $0.data(as: SavedChat.self, decoder: FirebaseManager.decoder)
+                        } catch {
+                            DispatchQueue.main.async {
+                                completion(.failure(error))
+                            }
+                            return nil
+                        }
+                    }
+                    DispatchQueue.main.async {
+                        completion(.success(chatroomsInfo))
+                    }
+
+                } else {
+                    DispatchQueue.main.async {
+                        completion(.failure(GetMessageError.noValidQuerysnapshot))
+                    }
+                }
+            }
+        }
+    }
+
+    func getAllMatchedChatroomMessages(chatrooms: [ChatroomID], completion: @escaping (Result<[Message], Error>) -> Void) {
+        firebaseQueue.async {
+            let chatroomRef = FirestoreEndpoint.chatroom.ref
+            var messages = [Message]()
+
+            for i in 0 ..< chatrooms.count {
+                chatroomRef.document(chatrooms[i]).collection("Messages").order(by: "time", descending: true).limit(to: 1).getDocuments { (snapshot, error) in
+                    if let error = error {
+                        DispatchQueue.main.async {
+                            completion(.failure(error))
+                        }
+                        return
+                    }
+
+                    if let snapshot = snapshot {
+                        do {
+                            let message = try snapshot.documents.first!.data(as: Message.self, decoder: FirebaseManager.decoder)
+                            print("decoded message: ", message)
+                            messages.append(message)
+
+                            // FIXME: - 如何用 GCD 處理？
+                            if i == chatrooms.count - 1 {
+                                DispatchQueue.main.async {
+                                    completion(.success(messages))
+                                }
+                            }
+                        } catch {
+                            DispatchQueue.main.async {
+                                completion(.failure(error))
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    func getAllMatchedUserThumbnail(users: [UserID], completion: @escaping (Result<[User], Error>) -> Void) {
+        firebaseQueue.async {
+            let userRef = FirestoreEndpoint.user.ref
+            userRef.whereField("id", in: users).getDocuments { (snapshot, error) in
+                if let error = error {
+                    DispatchQueue.main.async {
+                        completion(.failure(error))
+                    }
+                    return
+                }
+                if let snapshot = snapshot {
+                    let usersInfo: [User] = snapshot.documents.compactMap {
+                        do {
+                            return try $0.data(as: User.self, decoder: FirebaseManager.decoder)
+                        } catch {
+                            DispatchQueue.main.async {
+                                completion(.failure(error))
+                            }
+                            return nil
+                        }
+                    }
+                    DispatchQueue.main.async {
+                        completion(.success(usersInfo))
+                    }
+                } else {
+                    DispatchQueue.main.async {
+                        completion(.failure(GetUserError.noValidQuerysnapshot))
+                    }
+                }
+            }
+        }
+    }
+
+    func getAllLatestMessages(type: ChatroomType, completion: @escaping (Result<[MessageListItem], Error>) -> Void) {
+        getAllChatroomsInfo(type: type) { [weak self] result in
+            switch result {
+            // 取得所有存放在 user 下符合類別的 chatroom
+            case .success(let savedChat):
+                let chatroomsID = savedChat.map { $0.chatroomID }
+                let usersID = savedChat.map { $0.id }
+                var messages = [Message]()
+                var users = [User]()
+
+                let group = DispatchGroup()
+                group.enter()
+                self?.getAllMatchedChatroomMessages(chatrooms: chatroomsID) { result in
+                    switch result {
+                    case .success(let latestMessages):
+                        messages = latestMessages
+                    case .failure(let error):
+                        completion(.failure(error))
+                    }
+                    group.leave()
+                }
+                group.enter()
+                self?.getAllMatchedUserThumbnail(users: usersID) { result in
+                    switch result {
+                    case .success(let usersDetail):
+                        users = usersDetail
+                    case .failure(let error):
+                        print(error)
+                    }
+                    group.leave()
+                }
+                group.notify(queue: .main) {
+                    if messages.count != users.count {
+                        completion(.failure(GetMessageError.countIncorrect))
+                    } else {
+                        var latestMessageList = [MessageListItem]()
+                        for i in 0 ..< messages.count {
+                            latestMessageList += [MessageListItem(
+                                userID: users[i].id,
+                                latestMessage: messages[i]
+                            )]
+                        }
+                        completion(.success(latestMessageList))
+                    }
+                }
+
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
     }
 }

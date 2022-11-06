@@ -82,6 +82,7 @@ struct FindPartnersFormSections {
     static let getUnknownChatroomErrorDescription = "No valid querysnapshot"
     static let noUnknownChatroomErrorDescription = "No exist chatroom"
     static let getMessageErrorDescription = "No valid querysnapshot"
+    static let getMessageCountErrorDescription = "Messages count not match with users"
     // 這個似乎是錯誤的
     // static let datePickerLocale = "zh_TW"
 }

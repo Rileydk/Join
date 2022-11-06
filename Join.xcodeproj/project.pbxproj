@@ -81,6 +81,9 @@
 		BFF8A4EE29164DCB00ADC950 /* MyMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF8A4EC29164DCB00ADC950 /* MyMessageCell.swift */; };
 		BFF8A4EF29164DCB00ADC950 /* MyMessageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BFF8A4ED29164DCB00ADC950 /* MyMessageCell.xib */; };
 		BFF8A4F129164FA200ADC950 /* Chat.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF8A4F029164FA200ADC950 /* Chat.swift */; };
+		BFF8A4F32917982B00ADC950 /* ChatListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF8A4F22917982B00ADC950 /* ChatListViewController.swift */; };
+		BFF8A4F62917992000ADC950 /* ChatListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF8A4F42917992000ADC950 /* ChatListCell.swift */; };
+		BFF8A4F72917992000ADC950 /* ChatListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BFF8A4F52917992000ADC950 /* ChatListCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -160,6 +163,9 @@
 		BFF8A4EC29164DCB00ADC950 /* MyMessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyMessageCell.swift; sourceTree = "<group>"; };
 		BFF8A4ED29164DCB00ADC950 /* MyMessageCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MyMessageCell.xib; sourceTree = "<group>"; };
 		BFF8A4F029164FA200ADC950 /* Chat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chat.swift; sourceTree = "<group>"; };
+		BFF8A4F22917982B00ADC950 /* ChatListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatListViewController.swift; sourceTree = "<group>"; };
+		BFF8A4F42917992000ADC950 /* ChatListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatListCell.swift; sourceTree = "<group>"; };
+		BFF8A4F52917992000ADC950 /* ChatListCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChatListCell.xib; sourceTree = "<group>"; };
 		E73F750E744AEAB2F0006E8B /* Pods-Join.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Join.debug.xcconfig"; path = "Target Support Files/Pods-Join/Pods-Join.debug.xcconfig"; sourceTree = "<group>"; };
 		F30624BA8F470C0A1492643F /* Pods-Join.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Join.release.xcconfig"; path = "Target Support Files/Pods-Join/Pods-Join.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -231,8 +237,8 @@
 				BF42FA54290CE86700501789 /* Base */,
 				BF42FAD0291275BE00501789 /* FindIdeas */,
 				BF42FA74290D1C8500501789 /* FindPartners */,
-				BFF8A4C32913EC6000ADC950 /* Personal */,
 				BFF8A4DB291633EE00ADC950 /* Chat */,
+				BFF8A4C32913EC6000ADC950 /* Personal */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -409,6 +415,7 @@
 		BFF8A4DB291633EE00ADC950 /* Chat */ = {
 			isa = PBXGroup;
 			children = (
+				BFF8A4F22917982B00ADC950 /* ChatListViewController.swift */,
 				BFF8A4DC2916341D00ADC950 /* ChatroomViewController.swift */,
 			);
 			path = Chat;
@@ -424,6 +431,8 @@
 				BFF8A4E929164BF500ADC950 /* MessageCell.xib */,
 				BFF8A4EC29164DCB00ADC950 /* MyMessageCell.swift */,
 				BFF8A4ED29164DCB00ADC950 /* MyMessageCell.xib */,
+				BFF8A4F42917992000ADC950 /* ChatListCell.swift */,
+				BFF8A4F52917992000ADC950 /* ChatListCell.xib */,
 			);
 			path = Chat;
 			sourceTree = "<group>";
@@ -503,6 +512,7 @@
 				BFF8A4BA2913AE9D00ADC950 /* DetailTitleHeaderView.xib in Resources */,
 				BFF8A4DA2915036000ADC950 /* ProjectContactCell.xib in Resources */,
 				BF42FA58290CEA5900501789 /* FindIdeas.storyboard in Resources */,
+				BFF8A4F72917992000ADC950 /* ChatListCell.xib in Resources */,
 				BFF8A4CE2913F32600ADC950 /* GoNextPageButtonCell.xib in Resources */,
 				BFF8A4EF29164DCB00ADC950 /* MyMessageCell.xib in Resources */,
 				BF42FAC52910010000501789 /* AddNewCell.xib in Resources */,
@@ -602,11 +612,13 @@
 				BF42FAD92912960D00501789 /* CollectionViewCell.swift in Sources */,
 				BF42FABC290FF32300501789 /* MemberCardViewController.swift in Sources */,
 				BFF8A4D92915036000ADC950 /* ProjectContactCell.swift in Sources */,
+				BFF8A4F32917982B00ADC950 /* ChatListViewController.swift in Sources */,
 				BFF8A4D32914C79900ADC950 /* PersonBasicCell.swift in Sources */,
 				BF42FACF2912557500501789 /* UIImage+Ext.swift in Sources */,
 				BF42FAB2290FAC2000501789 /* Project.swift in Sources */,
 				BF42FA73290D197000501789 /* TableViewCell.swift in Sources */,
 				BFF8A4E729163D8200ADC950 /* MessageTypingSuperview.swift in Sources */,
+				BFF8A4F62917992000ADC950 /* ChatListCell.swift in Sources */,
 				BF42FA81290D31EF00501789 /* GoSelectionCell.swift in Sources */,
 				BF42FAB4290FAC5C00501789 /* User.swift in Sources */,
 				BF42FAC1290FF73B00501789 /* RecruitingCell.swift in Sources */,

@@ -9,21 +9,49 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Chat List View Controller-->
         <scene sceneID="TNE-iG-QSU">
             <objects>
-                <viewController id="xzF-Dt-Vic" sceneMemberID="viewController">
+                <viewController id="xzF-Dt-Vic" customClass="ChatListViewController" customModule="Join" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="nia-Tp-On7">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="tsz-g0-cUG">
+                                <rect key="frame" x="0.0" y="159" width="414" height="737"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </tableView>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="NwU-Lx-6XG">
+                                <rect key="frame" x="132" y="108" width="150" height="32"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="150" id="NbL-xJ-BkN"/>
+                                </constraints>
+                                <segments>
+                                    <segment title="陌生訊息"/>
+                                    <segment title="好友訊息"/>
+                                </segments>
+                            </segmentedControl>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="uyr-5O-0eY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="NwU-Lx-6XG" firstAttribute="top" secondItem="uyr-5O-0eY" secondAttribute="top" constant="20" id="48l-7j-1dI"/>
+                            <constraint firstItem="NwU-Lx-6XG" firstAttribute="centerX" secondItem="nia-Tp-On7" secondAttribute="centerX" id="5TP-ye-NgA"/>
+                            <constraint firstItem="tsz-g0-cUG" firstAttribute="leading" secondItem="uyr-5O-0eY" secondAttribute="leading" id="ZuD-hk-bph"/>
+                            <constraint firstItem="tsz-g0-cUG" firstAttribute="top" secondItem="NwU-Lx-6XG" secondAttribute="bottom" constant="20" id="ko7-20-6XL"/>
+                            <constraint firstAttribute="bottom" secondItem="tsz-g0-cUG" secondAttribute="bottom" id="oME-ha-QDN"/>
+                            <constraint firstItem="tsz-g0-cUG" firstAttribute="trailing" secondItem="uyr-5O-0eY" secondAttribute="trailing" id="rMk-Wz-bfJ"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="DAu-Py-tgo"/>
+                    <connections>
+                        <outlet property="tabSegmentedControl" destination="NwU-Lx-6XG" id="EFg-zQ-eoX"/>
+                        <outlet property="tableView" destination="tsz-g0-cUG" id="P1f-KQ-FGD"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lHN-Zr-q45" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1229" y="909"/>
+            <point key="canvasLocation" x="1228.985507246377" y="908.70535714285711"/>
         </scene>
         <!--Chatroom View Controller-->
         <scene sceneID="Lvr-VK-4cv">
