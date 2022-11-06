@@ -14,6 +14,7 @@ class ProjectContactCell: TableViewCell {
     @IBOutlet weak var nameButton: UIButton!
 
     var tapHandler: (() -> Void)?
+    var messageHandler: (() -> Void)?
 
     override func prepareForReuse() {
         super.prepareForReuse()
@@ -49,5 +50,6 @@ class ProjectContactCell: TableViewCell {
     }
 
     @IBAction func sendMessage(_ sender: UIButton) {
+        messageHandler?()
     }
 }

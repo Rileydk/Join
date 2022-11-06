@@ -8,9 +8,7 @@
 import UIKit
 import ProgressHUD
 
-class OthersProfileViewController: UIViewController {
-    static let identifier = String(describing: OthersProfileViewController.self)
-
+class OthersProfileViewController: BaseViewController {
     enum Section: CaseIterable {
         case person
     }
@@ -82,17 +80,23 @@ class OthersProfileViewController: UIViewController {
 
     func updateRelationship(completion: @escaping () -> Void) {
         firebaseManager.getUserInfo(id: myAccount.id) { [unowned self] result in
-            guard let user = userData?.id else { return }
+            guard let id = userData?.id else { return }
             switch result {
             case .success(let myInfo):
-                if myInfo.friends.contains(user) {
-                    self.relationship = .friend
-                } else if myInfo.sentRequests.contains(user) {
-                    self.relationship = .sentRequest
-                } else if myInfo.receivedRequests.contains(user) {
-                    self.relationship = .receivedRequest
-                } else {
-                    self.relationship = .unknown
+                firebaseManager.checkIsFriend(id: id) { result in
+                    switch result {
+                    case .success:
+                        self.relationship = .friend
+                    case .failure(let error):
+                        print(error)
+                        if myInfo.sentRequests.contains(id) {
+                            self.relationship = .sentRequest
+                        } else if myInfo.receivedRequests.contains(id) {
+                            self.relationship = .receivedRequest
+                        } else {
+                            self.relationship = .unknown
+                        }
+                    }
                 }
                 completion()
             case .failure(let error):
@@ -112,6 +116,56 @@ class OthersProfileViewController: UIViewController {
             case .failure(let error):
                 print(error)
                 completion()
+            }
+        }
+    }
+
+    func sendFriendRequest(id: UserID) {
+        self.firebaseManager.sendFriendRequest(to: id) { [unowned self] result in
+            switch result {
+            case .success:
+                ProgressHUD.showSuccess()
+                self.updateData()
+            case .failure(let error):
+                ProgressHUD.showFailed()
+                print(error)
+            }
+        }
+    }
+
+    func acceptFriendRequest(id: UserID) {
+        self.firebaseManager.acceptFriendRequest(from: id) { [unowned self] result in
+            switch result {
+            case .success:
+                ProgressHUD.showSuccess()
+                self.updateData()
+            case .failure(let error):
+                ProgressHUD.showFailed()
+                print(error)
+            }
+        }
+    }
+
+    func goChatroom() {
+        guard let id = userData?.id else { return }
+        firebaseManager.getChatroom(id: id) { [unowned self] result in
+            switch result {
+            case .success(let chatroomID):
+                let chatStoryboard = UIStoryboard(name: StoryboardCategory.chat.rawValue, bundle: nil)
+                guard let chatVC = chatStoryboard.instantiateViewController(
+                    withIdentifier: ChatroomViewController.identifier
+                ) as? ChatroomViewController else {
+                    fatalError("Cannot create chatroom vc")
+                }
+                chatVC.userData = self.userData
+                chatVC.chatroomID = chatroomID
+                self.hidesBottomBarWhenPushed = true
+                DispatchQueue.main.async { [unowned self] in
+                    self.hidesBottomBarWhenPushed = false
+                }
+                navigationController?.pushViewController(chatVC, animated: true)
+            case .failure(let error):
+                print(error)
             }
         }
     }
@@ -159,7 +213,6 @@ extension OthersProfileViewController {
         datasource = ProfileDatasource(collectionView: collectionView) { [weak self] (collectionView, indexPath, item) -> UICollectionViewCell? in
             return self?.createCell(collectionView: collectionView, indexPath: indexPath, item: item)
         }
-//        updateDatasource()
     }
 
     // swiftlint:disable line_length
@@ -173,28 +226,14 @@ extension OthersProfileViewController {
             }
             cell.layoutCell(withOther: user, thumbnail: image, relationship: relationship)
             cell.sendFriendRequestHandler = { [unowned self] in
-                self.firebaseManager.sendFriendRequest(to: user.id) { [unowned self] result in
-                    switch result {
-                    case .success:
-                        ProgressHUD.showSuccess()
-                        self.updateData()
-                    case .failure(let error):
-                        ProgressHUD.showFailed()
-                        print(error)
-                    }
-                }
+                self.sendFriendRequest(id: user.id)
             }
             cell.acceptFriendRequestHandler = { [unowned self] in
-                self.firebaseManager.acceptFriendRequest(from: user.id) { [unowned self] result in
-                    switch result {
-                    case .success:
-                        ProgressHUD.showSuccess()
-                        self.updateData()
-                    case .failure(let error):
-                        ProgressHUD.showFailed()
-                        print(error)
-                    }
-                }
+                self.acceptFriendRequest(id: user.id)
+            }
+            // FIXME: - 確認 unowned
+            cell.goChatroomHandler = { [unowned self] in
+                self.goChatroom()
             }
             return cell
         }

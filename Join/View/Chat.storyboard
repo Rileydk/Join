@@ -9,21 +9,94 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Chat List View Controller-->
         <scene sceneID="TNE-iG-QSU">
             <objects>
-                <viewController id="xzF-Dt-Vic" sceneMemberID="viewController">
+                <viewController id="xzF-Dt-Vic" customClass="ChatListViewController" customModule="Join" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="nia-Tp-On7">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="tsz-g0-cUG">
+                                <rect key="frame" x="0.0" y="159" width="414" height="737"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </tableView>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="NwU-Lx-6XG">
+                                <rect key="frame" x="107" y="108" width="200" height="32"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="200" id="NbL-xJ-BkN"/>
+                                </constraints>
+                                <segments>
+                                    <segment title="陌生訊息"/>
+                                    <segment title="好友訊息"/>
+                                    <segment title="群組訊息"/>
+                                </segments>
+                                <connections>
+                                    <action selector="changeTab:" destination="xzF-Dt-Vic" eventType="valueChanged" id="6o1-Vj-124"/>
+                                </connections>
+                            </segmentedControl>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="uyr-5O-0eY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="NwU-Lx-6XG" firstAttribute="top" secondItem="uyr-5O-0eY" secondAttribute="top" constant="20" id="48l-7j-1dI"/>
+                            <constraint firstItem="NwU-Lx-6XG" firstAttribute="centerX" secondItem="nia-Tp-On7" secondAttribute="centerX" id="5TP-ye-NgA"/>
+                            <constraint firstItem="tsz-g0-cUG" firstAttribute="leading" secondItem="uyr-5O-0eY" secondAttribute="leading" id="ZuD-hk-bph"/>
+                            <constraint firstItem="tsz-g0-cUG" firstAttribute="top" secondItem="NwU-Lx-6XG" secondAttribute="bottom" constant="20" id="ko7-20-6XL"/>
+                            <constraint firstAttribute="bottom" secondItem="tsz-g0-cUG" secondAttribute="bottom" id="oME-ha-QDN"/>
+                            <constraint firstItem="tsz-g0-cUG" firstAttribute="trailing" secondItem="uyr-5O-0eY" secondAttribute="trailing" id="rMk-Wz-bfJ"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="DAu-Py-tgo"/>
+                    <connections>
+                        <outlet property="tabSegmentedControl" destination="NwU-Lx-6XG" id="EFg-zQ-eoX"/>
+                        <outlet property="tableView" destination="tsz-g0-cUG" id="P1f-KQ-FGD"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lHN-Zr-q45" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1229" y="909"/>
+            <point key="canvasLocation" x="1228.985507246377" y="908.70535714285711"/>
+        </scene>
+        <!--Chatroom View Controller-->
+        <scene sceneID="Lvr-VK-4cv">
+            <objects>
+                <viewController storyboardIdentifier="ChatroomViewController" id="0fi-i8-UF1" customClass="ChatroomViewController" customModule="Join" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="pCQ-Y8-CIi">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="Emp-Ci-dnp">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="806"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </tableView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5i9-X7-Cya" customClass="MessageTypingSuperview" customModule="Join" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="806" width="414" height="90"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="90" id="DxK-z1-xbo"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="f9r-D5-fSc"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="5i9-X7-Cya" firstAttribute="top" secondItem="Emp-Ci-dnp" secondAttribute="bottom" id="4P4-oU-is3"/>
+                            <constraint firstItem="Emp-Ci-dnp" firstAttribute="leading" secondItem="f9r-D5-fSc" secondAttribute="leading" id="4te-DO-5Xl"/>
+                            <constraint firstItem="f9r-D5-fSc" firstAttribute="trailing" secondItem="Emp-Ci-dnp" secondAttribute="trailing" id="B2G-FY-GI7"/>
+                            <constraint firstItem="5i9-X7-Cya" firstAttribute="leading" secondItem="f9r-D5-fSc" secondAttribute="leading" id="Crt-c6-2Cp"/>
+                            <constraint firstAttribute="bottom" secondItem="5i9-X7-Cya" secondAttribute="bottom" id="gS7-rk-Jde"/>
+                            <constraint firstItem="Emp-Ci-dnp" firstAttribute="top" secondItem="pCQ-Y8-CIi" secondAttribute="top" id="l81-E8-8QV"/>
+                            <constraint firstItem="5i9-X7-Cya" firstAttribute="trailing" secondItem="f9r-D5-fSc" secondAttribute="trailing" id="lWP-CN-KF5"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="messageTypingSuperview" destination="5i9-X7-Cya" id="fdm-FY-745"/>
+                        <outlet property="tableView" destination="Emp-Ci-dnp" id="nSP-Ju-VQb"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="bLx-R3-CqK" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2031.8840579710147" y="908.70535714285711"/>
         </scene>
         <!--Item-->
         <scene sceneID="XYW-fG-2wx">

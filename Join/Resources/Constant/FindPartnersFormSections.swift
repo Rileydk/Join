@@ -75,6 +75,14 @@ struct FindPartnersFormSections {
     static let newProjectNoValidImageURLErrorDescription = "No valid image url"
     static let getProjectErrorDescription = "No valid querysnapshot"
     static let getUserErrorDescription = "No valid querysnapshot"
+    static let getFriendErrorDescription = "No valid querysnapshot"
+    static let notFriendErrorDescription = "Not friend yet"
+    static let getFriendChatroomErrorDescription = "No valid querysnapshot"
+    static let noFriendChatroomErrorDescription = "No exist chatroom"
+    static let getUnknownChatroomErrorDescription = "No valid querysnapshot"
+    static let noUnknownChatroomErrorDescription = "No exist chatroom"
+    static let getMessageErrorDescription = "No valid querysnapshot"
+    static let getMessageCountErrorDescription = "Messages count not match with users"
     // 這個似乎是錯誤的
     // static let datePickerLocale = "zh_TW"
 }

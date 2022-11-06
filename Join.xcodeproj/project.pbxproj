@@ -71,6 +71,20 @@
 		BFF8A4D62915009B00ADC950 /* OthersProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF8A4D52915009B00ADC950 /* OthersProfileViewController.swift */; };
 		BFF8A4D92915036000ADC950 /* ProjectContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF8A4D72915036000ADC950 /* ProjectContactCell.swift */; };
 		BFF8A4DA2915036000ADC950 /* ProjectContactCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BFF8A4D82915036000ADC950 /* ProjectContactCell.xib */; };
+		BFF8A4DD2916341D00ADC950 /* ChatroomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF8A4DC2916341D00ADC950 /* ChatroomViewController.swift */; };
+		BFF8A4DF2916342E00ADC950 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF8A4DE2916342E00ADC950 /* BaseViewController.swift */; };
+		BFF8A4E2291636D800ADC950 /* MessageTypingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BFF8A4E1291636D800ADC950 /* MessageTypingView.xib */; };
+		BFF8A4E4291636EE00ADC950 /* MessageTypingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF8A4E3291636EE00ADC950 /* MessageTypingView.swift */; };
+		BFF8A4E729163D8200ADC950 /* MessageTypingSuperview.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF8A4E629163D8200ADC950 /* MessageTypingSuperview.swift */; };
+		BFF8A4EA29164BF500ADC950 /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF8A4E829164BF500ADC950 /* MessageCell.swift */; };
+		BFF8A4EB29164BF500ADC950 /* MessageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BFF8A4E929164BF500ADC950 /* MessageCell.xib */; };
+		BFF8A4EE29164DCB00ADC950 /* MyMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF8A4EC29164DCB00ADC950 /* MyMessageCell.swift */; };
+		BFF8A4EF29164DCB00ADC950 /* MyMessageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BFF8A4ED29164DCB00ADC950 /* MyMessageCell.xib */; };
+		BFF8A4F129164FA200ADC950 /* Chat.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF8A4F029164FA200ADC950 /* Chat.swift */; };
+		BFF8A4F32917982B00ADC950 /* ChatListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF8A4F22917982B00ADC950 /* ChatListViewController.swift */; };
+		BFF8A4F62917992000ADC950 /* ChatListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF8A4F42917992000ADC950 /* ChatListCell.swift */; };
+		BFF8A4F72917992000ADC950 /* ChatListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BFF8A4F52917992000ADC950 /* ChatListCell.xib */; };
+		BFF8A4FB2917FBF100ADC950 /* MockLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF8A4FA2917FBF100ADC950 /* MockLoginViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -140,6 +154,20 @@
 		BFF8A4D52915009B00ADC950 /* OthersProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OthersProfileViewController.swift; sourceTree = "<group>"; };
 		BFF8A4D72915036000ADC950 /* ProjectContactCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectContactCell.swift; sourceTree = "<group>"; };
 		BFF8A4D82915036000ADC950 /* ProjectContactCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProjectContactCell.xib; sourceTree = "<group>"; };
+		BFF8A4DC2916341D00ADC950 /* ChatroomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatroomViewController.swift; sourceTree = "<group>"; };
+		BFF8A4DE2916342E00ADC950 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
+		BFF8A4E1291636D800ADC950 /* MessageTypingView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MessageTypingView.xib; sourceTree = "<group>"; };
+		BFF8A4E3291636EE00ADC950 /* MessageTypingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageTypingView.swift; sourceTree = "<group>"; };
+		BFF8A4E629163D8200ADC950 /* MessageTypingSuperview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageTypingSuperview.swift; sourceTree = "<group>"; };
+		BFF8A4E829164BF500ADC950 /* MessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCell.swift; sourceTree = "<group>"; };
+		BFF8A4E929164BF500ADC950 /* MessageCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MessageCell.xib; sourceTree = "<group>"; };
+		BFF8A4EC29164DCB00ADC950 /* MyMessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyMessageCell.swift; sourceTree = "<group>"; };
+		BFF8A4ED29164DCB00ADC950 /* MyMessageCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MyMessageCell.xib; sourceTree = "<group>"; };
+		BFF8A4F029164FA200ADC950 /* Chat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chat.swift; sourceTree = "<group>"; };
+		BFF8A4F22917982B00ADC950 /* ChatListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatListViewController.swift; sourceTree = "<group>"; };
+		BFF8A4F42917992000ADC950 /* ChatListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatListCell.swift; sourceTree = "<group>"; };
+		BFF8A4F52917992000ADC950 /* ChatListCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChatListCell.xib; sourceTree = "<group>"; };
+		BFF8A4FA2917FBF100ADC950 /* MockLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockLoginViewController.swift; sourceTree = "<group>"; };
 		E73F750E744AEAB2F0006E8B /* Pods-Join.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Join.debug.xcconfig"; path = "Target Support Files/Pods-Join/Pods-Join.debug.xcconfig"; sourceTree = "<group>"; };
 		F30624BA8F470C0A1492643F /* Pods-Join.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Join.release.xcconfig"; path = "Target Support Files/Pods-Join/Pods-Join.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -211,7 +239,9 @@
 				BF42FA54290CE86700501789 /* Base */,
 				BF42FAD0291275BE00501789 /* FindIdeas */,
 				BF42FA74290D1C8500501789 /* FindPartners */,
+				BFF8A4DB291633EE00ADC950 /* Chat */,
 				BFF8A4C32913EC6000ADC950 /* Personal */,
+				BFF8A4FA2917FBF100ADC950 /* MockLoginViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -233,6 +263,7 @@
 			children = (
 				BF42FAB1290FAC2000501789 /* Project.swift */,
 				BF42FAB3290FAC5C00501789 /* User.swift */,
+				BFF8A4F029164FA200ADC950 /* Chat.swift */,
 				BF42FACA2911473A00501789 /* FirebaseManager.swift */,
 			);
 			path = Model;
@@ -245,6 +276,7 @@
 				BF42FA6A290D14CC00501789 /* Form */,
 				BF42FABD290FF63A00501789 /* FindPartners */,
 				BF42FAD12912941C00501789 /* FindIdeas */,
+				BFF8A4E02916364000ADC950 /* Chat */,
 				BFF8A4C62913EE1500ADC950 /* Personal */,
 				BF42FA3A290BE2AA00501789 /* Main.storyboard */,
 				BF42FA57290CEA5900501789 /* FindIdeas.storyboard */,
@@ -259,6 +291,7 @@
 			isa = PBXGroup;
 			children = (
 				BF42FA55290CE89500501789 /* TabBarController.swift */,
+				BFF8A4DE2916342E00ADC950 /* BaseViewController.swift */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -382,6 +415,31 @@
 			path = Personal;
 			sourceTree = "<group>";
 		};
+		BFF8A4DB291633EE00ADC950 /* Chat */ = {
+			isa = PBXGroup;
+			children = (
+				BFF8A4F22917982B00ADC950 /* ChatListViewController.swift */,
+				BFF8A4DC2916341D00ADC950 /* ChatroomViewController.swift */,
+			);
+			path = Chat;
+			sourceTree = "<group>";
+		};
+		BFF8A4E02916364000ADC950 /* Chat */ = {
+			isa = PBXGroup;
+			children = (
+				BFF8A4E629163D8200ADC950 /* MessageTypingSuperview.swift */,
+				BFF8A4E1291636D800ADC950 /* MessageTypingView.xib */,
+				BFF8A4E3291636EE00ADC950 /* MessageTypingView.swift */,
+				BFF8A4E829164BF500ADC950 /* MessageCell.swift */,
+				BFF8A4E929164BF500ADC950 /* MessageCell.xib */,
+				BFF8A4EC29164DCB00ADC950 /* MyMessageCell.swift */,
+				BFF8A4ED29164DCB00ADC950 /* MyMessageCell.xib */,
+				BFF8A4F42917992000ADC950 /* ChatListCell.swift */,
+				BFF8A4F52917992000ADC950 /* ChatListCell.xib */,
+			);
+			path = Chat;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -444,6 +502,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BF42FADD2912967900501789 /* IdeaCell.xib in Resources */,
+				BFF8A4E2291636D800ADC950 /* MessageTypingView.xib in Resources */,
 				BF42FA7E290D2ADB00501789 /* MultilineInputCell.xib in Resources */,
 				BF42FAC929111FD400501789 /* ImagePickerCell.xib in Resources */,
 				BF42FA79290D264100501789 /* SingleLineInputCell.xib in Resources */,
@@ -452,10 +511,13 @@
 				BFF8A4C02913B46600ADC950 /* JoinButtonCell.xib in Resources */,
 				BFF8A4CA2913EE4C00ADC950 /* PersonalMainThumbnailCell.xib in Resources */,
 				BF42FA41290BE2AC00501789 /* LaunchScreen.storyboard in Resources */,
+				BFF8A4EB29164BF500ADC950 /* MessageCell.xib in Resources */,
 				BFF8A4BA2913AE9D00ADC950 /* DetailTitleHeaderView.xib in Resources */,
 				BFF8A4DA2915036000ADC950 /* ProjectContactCell.xib in Resources */,
 				BF42FA58290CEA5900501789 /* FindIdeas.storyboard in Resources */,
+				BFF8A4F72917992000ADC950 /* ChatListCell.xib in Resources */,
 				BFF8A4CE2913F32600ADC950 /* GoNextPageButtonCell.xib in Resources */,
+				BFF8A4EF29164DCB00ADC950 /* MyMessageCell.xib in Resources */,
 				BF42FAC52910010000501789 /* AddNewCell.xib in Resources */,
 				BFF8A4D42914C79900ADC950 /* PersonBasicCell.xib in Resources */,
 				BFF8A4B42913AD3000ADC950 /* BigImageCell.xib in Resources */,
@@ -540,24 +602,32 @@
 				BFF8A4D62915009B00ADC950 /* OthersProfileViewController.swift in Sources */,
 				BF42FADC2912967900501789 /* IdeaCell.swift in Sources */,
 				BF42FAC42910010000501789 /* AddNewCell.swift in Sources */,
+				BFF8A4DF2916342E00ADC950 /* BaseViewController.swift in Sources */,
 				BF42FA67290D04EF00501789 /* FindPartnersFormSections.swift in Sources */,
 				BF42FACD291154B500501789 /* Date+Ext.swift in Sources */,
 				BF42FA56290CE89500501789 /* TabBarController.swift in Sources */,
 				BFF8A4CD2913F32600ADC950 /* GoNextPageButtonCell.swift in Sources */,
 				BF42FA7D290D2ADB00501789 /* MultilineInputCell.swift in Sources */,
+				BFF8A4EE29164DCB00ADC950 /* MyMessageCell.swift in Sources */,
 				BF42FA39290BE2AA00501789 /* FindIdeasViewController.swift in Sources */,
+				BFF8A4E4291636EE00ADC950 /* MessageTypingView.swift in Sources */,
 				BFF8A4B32913AD3000ADC950 /* BigImageCell.swift in Sources */,
 				BF42FAD92912960D00501789 /* CollectionViewCell.swift in Sources */,
 				BF42FABC290FF32300501789 /* MemberCardViewController.swift in Sources */,
 				BFF8A4D92915036000ADC950 /* ProjectContactCell.swift in Sources */,
+				BFF8A4F32917982B00ADC950 /* ChatListViewController.swift in Sources */,
 				BFF8A4D32914C79900ADC950 /* PersonBasicCell.swift in Sources */,
 				BF42FACF2912557500501789 /* UIImage+Ext.swift in Sources */,
 				BF42FAB2290FAC2000501789 /* Project.swift in Sources */,
+				BFF8A4FB2917FBF100ADC950 /* MockLoginViewController.swift in Sources */,
 				BF42FA73290D197000501789 /* TableViewCell.swift in Sources */,
+				BFF8A4E729163D8200ADC950 /* MessageTypingSuperview.swift in Sources */,
+				BFF8A4F62917992000ADC950 /* ChatListCell.swift in Sources */,
 				BF42FA81290D31EF00501789 /* GoSelectionCell.swift in Sources */,
 				BF42FAB4290FAC5C00501789 /* User.swift in Sources */,
 				BF42FAC1290FF73B00501789 /* RecruitingCell.swift in Sources */,
 				BF42FA35290BE2AA00501789 /* AppDelegate.swift in Sources */,
+				BFF8A4EA29164BF500ADC950 /* MessageCell.swift in Sources */,
 				BFF8A4C22913C6F700ADC950 /* SegueIdentifier.swift in Sources */,
 				BFF8A4C92913EE4C00ADC950 /* PersonalMainThumbnailCell.swift in Sources */,
 				BFF8A4BC2913B39900ADC950 /* TableViewHeaderFooterView.swift in Sources */,
@@ -567,12 +637,14 @@
 				BF42FA6E290D178400501789 /* UIView+Ext.swift in Sources */,
 				BF42FAD62912945F00501789 /* RecommendationCell.swift in Sources */,
 				BF42FA71290D196200501789 /* SingleLineInputCell.swift in Sources */,
+				BFF8A4DD2916341D00ADC950 /* ChatroomViewController.swift in Sources */,
 				BFF8A4C52913EDB800ADC950 /* PersonalEntryViewController.swift in Sources */,
 				BF42FAC829111FD400501789 /* ImagePickerCell.swift in Sources */,
 				BF42FA37290BE2AA00501789 /* SceneDelegate.swift in Sources */,
 				BFF8A4BF2913B46600ADC950 /* JoinButtonCell.swift in Sources */,
 				BFF8A4AE2913A92300ADC950 /* ProjectDetailsViewController.swift in Sources */,
 				BF42FA61290CEF4700501789 /* UIStoryboard+Ext.swift in Sources */,
+				BFF8A4F129164FA200ADC950 /* Chat.swift in Sources */,
 				BF42FACB2911473A00501789 /* FirebaseManager.swift in Sources */,
 				BFF8A4B82913AE8400ADC950 /* DetailTitleHeaderView.swift in Sources */,
 			);
