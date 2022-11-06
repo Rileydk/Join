@@ -75,7 +75,41 @@ extension ChatListViewController: UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("tapped")
+        let userID = messageList[indexPath.row].userID
+        let chatroomID = messageList[indexPath.row].chatroomID
+
+        firebaseManager.getUserInfo(id: userID) { result in
+            switch result {
+            case .success(let user):
+                let chatStoryboard = UIStoryboard(name: StoryboardCategory.chat.rawValue, bundle: nil)
+                guard let chatVC = chatStoryboard.instantiateViewController(
+                    withIdentifier: ChatroomViewController.identifier
+                ) as? ChatroomViewController else {
+                    fatalError("Cannot create chatroom vc")
+                }
+
+                chatVC.userData = user
+                chatVC.chatroomID = chatroomID
+                self.hidesBottomBarWhenPushed = true
+                DispatchQueue.main.async { [unowned self] in
+                    self.hidesBottomBarWhenPushed = false
+                }
+                self.navigationController?.pushViewController(chatVC, animated: true)
+            case .failure(let error):
+                print(error)
+            }
+        }
+
+//        firebaseManager.getChatroom(id: id) { [unowned self] result in
+//            switch result {
+//            case .success(let chatroomID):
+
+//
+//
+//            case .failure(let error):
+//                print(error)
+//            }
+//        }
     }
 }
 

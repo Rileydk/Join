@@ -853,9 +853,11 @@ class FirebaseManager {
                     } else {
                         var latestMessageList = [MessageListItem]()
                         for i in 0 ..< messages.count {
-                            latestMessageList += [MessageListItem(
-                                userID: users[i].id,
-                                latestMessage: messages[i]
+                            latestMessageList += [
+                                MessageListItem(
+                                    userID: users[i].id,
+                                    latestMessage: messages[i],
+                                    chatroomID: chatroomsID[i]
                             )]
                         }
                         completion(.success(latestMessageList))

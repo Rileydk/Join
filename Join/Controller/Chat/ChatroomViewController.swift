@@ -63,6 +63,8 @@ class ChatroomViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        title = userData?.name
+
         guard let chatroomID = chatroomID else { return }
         firebaseManager.listenToNewMessages(chatroomID: chatroomID) { [weak self] result in
             switch result {

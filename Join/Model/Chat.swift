@@ -76,4 +76,5 @@ struct SavedChat: Codable {
 struct MessageListItem: Codable {
     let userID: UserID
     let latestMessage: Message
+    let chatroomID: ChatroomID
 }
