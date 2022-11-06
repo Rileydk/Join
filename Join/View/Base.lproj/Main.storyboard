@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="1NE-3J-0Fa">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Mock Login View Controller-->
+        <scene sceneID="8MK-dM-aOd">
+            <objects>
+                <viewController id="1NE-3J-0Fa" customClass="MockLoginViewController" customModule="Join" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="x7i-qJ-YkP">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gys-rA-fxC">
+                                <rect key="frame" x="85" y="494" width="244" height="39"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" title="以 Some One 的身份登入"/>
+                                <connections>
+                                    <action selector="chooseOther:" destination="1NE-3J-0Fa" eventType="touchUpInside" id="5it-md-XMt"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ckf-uB-PJB">
+                                <rect key="frame" x="117.5" y="374" width="179" height="39"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" title="以大琪的身份登入"/>
+                                <connections>
+                                    <action selector="chooseRiley:" destination="1NE-3J-0Fa" eventType="touchUpInside" id="zYi-4v-V6f"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="hFF-GX-KZx"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="Ckf-uB-PJB" firstAttribute="top" secondItem="hFF-GX-KZx" secondAttribute="top" constant="330" id="7Om-zh-yOO"/>
+                            <constraint firstItem="Gys-rA-fxC" firstAttribute="top" secondItem="Ckf-uB-PJB" secondAttribute="bottom" constant="81" id="ZgJ-j2-fab"/>
+                            <constraint firstItem="Gys-rA-fxC" firstAttribute="centerX" secondItem="x7i-qJ-YkP" secondAttribute="centerX" id="qAq-y9-KV1"/>
+                            <constraint firstItem="Ckf-uB-PJB" firstAttribute="centerX" secondItem="x7i-qJ-YkP" secondAttribute="centerX" id="wyv-Uo-KCn"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <segue destination="AWW-iZ-ttW" kind="show" identifier="GoToMainPage" id="A9e-Bt-MQk"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="IuZ-Rg-EH1" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1219" y="92"/>
+        </scene>
+        <!--Tab Bar Controller-->
+        <scene sceneID="Vag-jx-ymv">
+            <objects>
+                <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="AWW-iZ-ttW" customClass="TabBarController" customModule="Join" customModuleProvider="target" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" id="4ik-Ag-gTO"/>
+                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="hxp-s9-uTD">
+                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </tabBar>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="hyt-t8-nz4" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-352" y="92"/>
+        </scene>
+    </scenes>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>
