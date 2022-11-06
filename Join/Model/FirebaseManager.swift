@@ -758,7 +758,6 @@ class FirebaseManager {
                     if let snapshot = snapshot {
                         do {
                             let message = try snapshot.documents.first!.data(as: Message.self, decoder: FirebaseManager.decoder)
-                            print("decoded message: ", message)
                             messages.append(message)
 
                             // FIXME: - 如何用 GCD 處理？

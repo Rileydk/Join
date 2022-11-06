@@ -12,6 +12,8 @@ class MessageCell: TableViewCell {
     @IBOutlet weak var thumbnailImageView: UIImageView!
     @IBOutlet weak var messageTextView: UITextView!
 
+    var tapHandler: (() -> Void)?
+
     override func prepareForReuse() {
         super.prepareForReuse()
         thumbnailImageView.image = nil
@@ -28,6 +30,10 @@ class MessageCell: TableViewCell {
         messageTextView.layer.cornerRadius = 12
         messageTextView.isUserInteractionEnabled = false
         messageTextView.isScrollEnabled = false
+
+        thumbnailImageView.isUserInteractionEnabled = true
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(thumbnailGetTapped))
+        thumbnailImageView.addGestureRecognizer(tapGestureRecognizer)
     }
 
     override func layoutSubviews() {
@@ -42,5 +48,9 @@ class MessageCell: TableViewCell {
             print("image is nil")
         }
         messageTextView.text = message
+    }
+
+    @objc func thumbnailGetTapped() {
+        tapHandler?()
     }
 }

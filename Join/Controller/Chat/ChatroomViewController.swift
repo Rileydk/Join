@@ -143,6 +143,16 @@ extension ChatroomViewController: UITableViewDataSource {
                 fatalError("Cannot create message cell")
             }
             cell.layoutCell(image: userThumbnail, message: message.content)
+            cell.tapHandler = { [weak self] in
+                let personalStoryboard = UIStoryboard(name: StoryboardCategory.personal.rawValue, bundle: nil)
+                guard let profileVC = personalStoryboard.instantiateViewController(
+                    withIdentifier: OthersProfileViewController.identifier
+                ) as? OthersProfileViewController else {
+                    fatalError("Cannot create others profile vc")
+                }
+                profileVC.userData = self?.userData
+                self?.navigationController?.pushViewController(profileVC, animated: true)
+            }
             return cell
         }
     }
