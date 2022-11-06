@@ -12,8 +12,9 @@ class MockLoginViewController: UIViewController {
         myAccount = riley
         goToMainPage()
     }
-    @IBAction func chooseYiChen(_ sender: UIButton) {
-        myAccount = yichen
+
+    @IBAction func chooseOther(_ sender: UIButton) {
+        myAccount = someOne
         goToMainPage()
     }
 
