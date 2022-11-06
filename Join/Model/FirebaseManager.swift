@@ -778,7 +778,7 @@ class FirebaseManager {
         }
     }
 
-    func getAllMatchedUserThumbnail(users: [UserID], completion: @escaping (Result<[User], Error>) -> Void) {
+    func getAllMatchedUsersDetail(users: [UserID], completion: @escaping (Result<[User], Error>) -> Void) {
         firebaseQueue.async {
             let userRef = FirestoreEndpoint.user.ref
             userRef.whereField("id", in: users).getDocuments { (snapshot, error) in
@@ -821,6 +821,11 @@ class FirebaseManager {
                 var messages = [Message]()
                 var users = [User]()
 
+                guard !chatroomsID.isEmpty else {
+                    completion(.success([]))
+                    return
+                }
+
                 let group = DispatchGroup()
                 group.enter()
                 self?.getAllMatchedChatroomMessages(chatrooms: chatroomsID) { result in
@@ -833,7 +838,7 @@ class FirebaseManager {
                     group.leave()
                 }
                 group.enter()
-                self?.getAllMatchedUserThumbnail(users: usersID) { result in
+                self?.getAllMatchedUsersDetail(users: usersID) { result in
                     switch result {
                     case .success(let usersDetail):
                         users = usersDetail

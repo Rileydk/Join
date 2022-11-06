@@ -36,12 +36,20 @@ class ChatListViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        tabSegmentedControl.selectedSegmentIndex = 1
+        layoutViews()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         getMessageList()
+    }
+
+    func layoutViews() {
+        let types = ChatroomType.allCases
+        for i in 0 ..< types.count {
+            tabSegmentedControl.setTitle(types[i].buttonTitle, forSegmentAt: i)
+        }
+        tabSegmentedControl.selectedSegmentIndex = types.firstIndex(of: .friend)!
     }
 
     func getMessageList() {
@@ -56,7 +64,7 @@ class ChatListViewController: BaseViewController {
     }
 
     @IBAction func changeTab(_ sender: UISegmentedControl) {
-
+        type = ChatroomType.allCases[sender.selectedSegmentIndex]
     }
 }
 

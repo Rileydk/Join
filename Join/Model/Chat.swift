@@ -16,20 +16,23 @@ enum MessageType: String, CaseIterable, Codable {
 }
 
 enum ChatroomType: CaseIterable {
-    case friend
     case unknown
+    case friend
+    case group
 
     var buttonTitle: String {
         switch self {
-        case .friend: return "好友訊息"
         case .unknown: return "陌生訊息"
+        case .friend: return "好友訊息"
+        case .group: return "群組訊息"
         }
     }
 
     var collectionName: String {
         switch self {
-        case .friend: return "Friends"
         case .unknown: return "UnknownChat"
+        case .friend: return "Friends"
+        case .group: return "GroupChat"
         }
     }
 }
