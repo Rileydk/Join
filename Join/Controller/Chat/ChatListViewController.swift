@@ -99,17 +99,6 @@ extension ChatListViewController: UITableViewDelegate {
                 print(error)
             }
         }
-
-//        firebaseManager.getChatroom(id: id) { [unowned self] result in
-//            switch result {
-//            case .success(let chatroomID):
-
-//
-//
-//            case .failure(let error):
-//                print(error)
-//            }
-//        }
     }
 }
 
