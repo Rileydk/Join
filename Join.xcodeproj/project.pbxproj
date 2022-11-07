@@ -51,6 +51,9 @@
 		BF42FAD92912960D00501789 /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FAD82912960D00501789 /* CollectionViewCell.swift */; };
 		BF42FADC2912967900501789 /* IdeaCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FADA2912967900501789 /* IdeaCell.swift */; };
 		BF42FADD2912967900501789 /* IdeaCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF42FADB2912967900501789 /* IdeaCell.xib */; };
+		BF9A86742918FA3500BF934D /* FriendsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9A86732918FA3500BF934D /* FriendsListViewController.swift */; };
+		BF9A867D2918FB1800BF934D /* FriendCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9A867B2918FB1800BF934D /* FriendCell.swift */; };
+		BF9A867E2918FB1800BF934D /* FriendCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF9A867C2918FB1800BF934D /* FriendCell.xib */; };
 		BFF8A4AE2913A92300ADC950 /* ProjectDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF8A4AD2913A92300ADC950 /* ProjectDetailsViewController.swift */; };
 		BFF8A4B32913AD3000ADC950 /* BigImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF8A4B12913AD3000ADC950 /* BigImageCell.swift */; };
 		BFF8A4B42913AD3000ADC950 /* BigImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BFF8A4B22913AD3000ADC950 /* BigImageCell.xib */; };
@@ -134,6 +137,9 @@
 		BF42FAD82912960D00501789 /* CollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewCell.swift; sourceTree = "<group>"; };
 		BF42FADA2912967900501789 /* IdeaCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdeaCell.swift; sourceTree = "<group>"; };
 		BF42FADB2912967900501789 /* IdeaCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = IdeaCell.xib; sourceTree = "<group>"; };
+		BF9A86732918FA3500BF934D /* FriendsListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsListViewController.swift; sourceTree = "<group>"; };
+		BF9A867B2918FB1800BF934D /* FriendCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendCell.swift; sourceTree = "<group>"; };
+		BF9A867C2918FB1800BF934D /* FriendCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FriendCell.xib; sourceTree = "<group>"; };
 		BFF8A4AD2913A92300ADC950 /* ProjectDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectDetailsViewController.swift; sourceTree = "<group>"; };
 		BFF8A4B12913AD3000ADC950 /* BigImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigImageCell.swift; sourceTree = "<group>"; };
 		BFF8A4B22913AD3000ADC950 /* BigImageCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BigImageCell.xib; sourceTree = "<group>"; };
@@ -392,12 +398,22 @@
 			path = FindIdeas;
 			sourceTree = "<group>";
 		};
+		BF9A86752918FA7100BF934D /* FriendsList */ = {
+			isa = PBXGroup;
+			children = (
+				BF9A867B2918FB1800BF934D /* FriendCell.swift */,
+				BF9A867C2918FB1800BF934D /* FriendCell.xib */,
+			);
+			path = FriendsList;
+			sourceTree = "<group>";
+		};
 		BFF8A4C32913EC6000ADC950 /* Personal */ = {
 			isa = PBXGroup;
 			children = (
 				BFF8A4C42913EDB800ADC950 /* PersonalEntryViewController.swift */,
 				BFF8A4CF2914C2E300ADC950 /* PersonalProfileViewController.swift */,
 				BFF8A4D52915009B00ADC950 /* OthersProfileViewController.swift */,
+				BF9A86732918FA3500BF934D /* FriendsListViewController.swift */,
 			);
 			path = Personal;
 			sourceTree = "<group>";
@@ -405,6 +421,7 @@
 		BFF8A4C62913EE1500ADC950 /* Personal */ = {
 			isa = PBXGroup;
 			children = (
+				BF9A86752918FA7100BF934D /* FriendsList */,
 				BFF8A4C72913EE4C00ADC950 /* PersonalMainThumbnailCell.swift */,
 				BFF8A4C82913EE4C00ADC950 /* PersonalMainThumbnailCell.xib */,
 				BFF8A4CB2913F32600ADC950 /* GoNextPageButtonCell.swift */,
@@ -503,6 +520,7 @@
 			files = (
 				BF42FADD2912967900501789 /* IdeaCell.xib in Resources */,
 				BFF8A4E2291636D800ADC950 /* MessageTypingView.xib in Resources */,
+				BF9A867E2918FB1800BF934D /* FriendCell.xib in Resources */,
 				BF42FA7E290D2ADB00501789 /* MultilineInputCell.xib in Resources */,
 				BF42FAC929111FD400501789 /* ImagePickerCell.xib in Resources */,
 				BF42FA79290D264100501789 /* SingleLineInputCell.xib in Resources */,
@@ -617,8 +635,10 @@
 				BFF8A4D92915036000ADC950 /* ProjectContactCell.swift in Sources */,
 				BFF8A4F32917982B00ADC950 /* ChatListViewController.swift in Sources */,
 				BFF8A4D32914C79900ADC950 /* PersonBasicCell.swift in Sources */,
+				BF9A867D2918FB1800BF934D /* FriendCell.swift in Sources */,
 				BF42FACF2912557500501789 /* UIImage+Ext.swift in Sources */,
 				BF42FAB2290FAC2000501789 /* Project.swift in Sources */,
+				BF9A86742918FA3500BF934D /* FriendsListViewController.swift in Sources */,
 				BFF8A4FB2917FBF100ADC950 /* MockLoginViewController.swift in Sources */,
 				BF42FA73290D197000501789 /* TableViewCell.swift in Sources */,
 				BFF8A4E729163D8200ADC950 /* MessageTypingSuperview.swift in Sources */,

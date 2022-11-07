@@ -77,6 +77,36 @@
             </objects>
             <point key="canvasLocation" x="2893" y="909"/>
         </scene>
+        <!--Friends List View Controller-->
+        <scene sceneID="i6H-hP-t3b">
+            <objects>
+                <viewController id="5pq-2e-eka" customClass="FriendsListViewController" customModule="Join" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="NW0-9R-BlT">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="QFX-1Q-qMm">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </tableView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="ldk-Ks-Ypg"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="QFX-1Q-qMm" firstAttribute="leading" secondItem="ldk-Ks-Ypg" secondAttribute="leading" id="84D-0K-W1Z"/>
+                            <constraint firstItem="QFX-1Q-qMm" firstAttribute="top" secondItem="NW0-9R-BlT" secondAttribute="top" id="YnD-df-N0c"/>
+                            <constraint firstItem="ldk-Ks-Ypg" firstAttribute="trailing" secondItem="QFX-1Q-qMm" secondAttribute="trailing" id="jsS-M8-QR7"/>
+                            <constraint firstAttribute="bottom" secondItem="QFX-1Q-qMm" secondAttribute="bottom" id="oxC-mp-OH9"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="tableView" destination="QFX-1Q-qMm" id="h7T-Eu-7iR"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="X09-Pe-flI" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2893" y="1639"/>
+        </scene>
         <!--Others Profile View Controller-->
         <scene sceneID="MqC-HL-7v4">
             <objects>
