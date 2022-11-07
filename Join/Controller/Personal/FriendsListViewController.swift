@@ -10,7 +10,9 @@ import UIKit
 class FriendsListViewController: BaseViewController {
     let firebaseManager = FirebaseManager.shared
     var friends = [User]()
+    lazy var filteredFriends = [User]()
 
+    var searchController = UISearchController()
     @IBOutlet weak var tableView: UITableView! {
         didSet {
             tableView.register(
@@ -23,17 +25,29 @@ class FriendsListViewController: BaseViewController {
         }
     }
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        layoutViews()
+    }
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         firebaseManager.getAllFriendsInfo { [unowned self] result in
             switch result {
             case .success(let friends):
                 self.friends = friends
+                self.filteredFriends = friends
                 tableView.reloadData()
             case .failure(let error):
                 print(error)
             }
         }
+    }
+
+    func layoutViews() {
+        searchController.searchResultsUpdater = self
+        navigationItem.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = false
     }
 }
 
@@ -51,11 +65,11 @@ extension FriendsListViewController: UITableViewDelegate {
 // MARK: - Table View Datasource
 extension FriendsListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        friends.count
+        filteredFriends.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let friend = friends[indexPath.row]
+        let friend = filteredFriends[indexPath.row]
         guard let cell = tableView.dequeueReusableCell(
             withIdentifier: FriendCell.identifier, for: indexPath
             ) as? FriendCell else {
@@ -63,5 +77,19 @@ extension FriendsListViewController: UITableViewDataSource {
         }
         cell.layoutCell(friend: friend)
         return cell
+    }
+}
+
+// MARK: - Search Result Updating
+extension FriendsListViewController: UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+        print("search text")
+        if let searchText = searchController.searchBar.text,
+           searchText.isEmpty == false {
+            filteredFriends = friends.filter { $0.name.localizedStandardContains(searchText) }
+        } else {
+            filteredFriends = friends
+        }
+        tableView.reloadData()
     }
 }
