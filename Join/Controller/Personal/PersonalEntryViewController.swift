@@ -45,6 +45,16 @@ class PersonalEntryViewController: UIViewController {
             profileVC.userData = myAccount
             navigationController?.pushViewController(profileVC, animated: true)
         }
+
+        if NextPage.allCases[index] == .friends {
+            let personalStoryboard = UIStoryboard(name: StoryboardCategory.personal.rawValue, bundle: nil)
+            guard let friendsListVC = personalStoryboard.instantiateViewController(
+                withIdentifier: FriendsListViewController.identifier
+            ) as? FriendsListViewController else {
+                fatalError("Cannot create personal profile vc")
+            }
+            navigationController?.pushViewController(friendsListVC, animated: true)
+        }
     }
 }
 
