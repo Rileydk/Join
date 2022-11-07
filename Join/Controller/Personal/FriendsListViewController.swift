@@ -7,7 +7,7 @@
 
 import UIKit
 
-class FriendsListViewController: UIViewController {
+class FriendsListViewController: BaseViewController {
     let firebaseManager = FirebaseManager.shared
     var friends = [User]()
 
@@ -20,6 +20,19 @@ class FriendsListViewController: UIViewController {
             tableView.delegate = self
             tableView.dataSource = self
             tableView.separatorStyle = .none
+        }
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        firebaseManager.getAllFriendsInfo { [unowned self] result in
+            switch result {
+            case .success(let friends):
+                self.friends = friends
+                tableView.reloadData()
+            case .failure(let error):
+                print(error)
+            }
         }
     }
 }

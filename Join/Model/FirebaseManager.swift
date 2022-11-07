@@ -750,10 +750,27 @@ class FirebaseManager {
         }
     }
 
-//    func getDocumentsOfSubcol(collectionName: ) {
-//
-//    }
-    // get all documents of a specific subcollection under specific document
-    // convert friend userID to arr
-    // filer documents that match arr
+    func getAllFriendsInfo(completion: @escaping (Result<[User], Error>) -> Void) {
+        getAllChatroomsInfo(type: .friend) { [weak self] result in
+            switch result {
+            case .success(let friends):
+                let usersID = friends.map { $0.id }
+                guard !friends.isEmpty else {
+                    completion(.success([]))
+                    return
+                }
+                self?.getAllMatchedUsersDetail(users: usersID) { result in
+                    switch result {
+                    case .success(let usersDetail):
+                        completion(.success(usersDetail))
+                    case .failure(let error):
+                        completion(.failure(error))
+                    }
+                }
+
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
 }

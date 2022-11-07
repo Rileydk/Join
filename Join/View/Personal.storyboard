@@ -80,7 +80,7 @@
         <!--Friends List View Controller-->
         <scene sceneID="i6H-hP-t3b">
             <objects>
-                <viewController id="5pq-2e-eka" customClass="FriendsListViewController" customModule="Join" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="FriendsListViewController" id="5pq-2e-eka" customClass="FriendsListViewController" customModule="Join" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="NW0-9R-BlT">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
