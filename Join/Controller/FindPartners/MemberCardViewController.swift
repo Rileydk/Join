@@ -32,6 +32,7 @@ class MemberCardViewController: BaseViewController {
                 UINib(nibName: AddNewCell.identifier, bundle: nil),
                 forCellReuseIdentifier: AddNewCell.identifier
             )
+            tableView.register(DropdownEmptyAlertCell.self, forCellReuseIdentifier: DropdownEmptyAlertCell.identifier)
             tableView.delegate = self
             tableView.dataSource = self
             tableView.separatorStyle = .none
