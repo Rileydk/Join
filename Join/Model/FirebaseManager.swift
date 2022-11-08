@@ -10,91 +10,25 @@ import FirebaseFirestore
 import FirebaseStorage
 import FirebaseFirestoreSwift
 
-enum NewProjectError: Error, LocalizedError {
+enum CommonError: Error, LocalizedError {
     case noValidImageURLError
+    case noValidQuerysnapshot
+    case notFriendYet
+    case countIncorrect
+    case noExistChatroom
 
     var errorDescription: String {
         switch self {
         case .noValidImageURLError:
-            return FindPartnersFormSections.newProjectNoValidImageURLErrorDescription
-        }
-    }
-}
-
-enum GetProjectError: Error, LocalizedError {
-    case noValidQuerysnapshot
-
-    var errorDescription: String {
-        switch self {
+            return FindPartnersFormSections.noValidImageURLError
         case .noValidQuerysnapshot:
-            return FindPartnersFormSections.getProjectErrorDescription
-        }
-    }
-}
-
-enum GetUserError: Error, LocalizedError {
-    case noValidQuerysnapshot
-
-    var errorDescription: String {
-        switch self {
-        case .noValidQuerysnapshot:
-            return FindPartnersFormSections.getUserErrorDescription
-        }
-    }
-}
-
-enum GetFriendError: Error, LocalizedError {
-    case noValidQuerysnapshot
-    case notFriendYet
-
-    var errorDescription: String {
-        switch self {
-        case .noValidQuerysnapshot:
-            return FindPartnersFormSections.getUserErrorDescription
+            return FindPartnersFormSections.noValidQuerysnapshotError
         case .notFriendYet:
-            return FindPartnersFormSections.notFriendErrorDescription
-        }
-    }
-}
-
-enum GetMessageError: Error, LocalizedError {
-    case noValidQuerysnapshot
-    case countIncorrect
-
-    var errorDescription: String {
-        switch self {
-        case .noValidQuerysnapshot:
-            return FindPartnersFormSections.getMessageErrorDescription
+            return FindPartnersFormSections.notFriendError
         case .countIncorrect:
-            return FindPartnersFormSections.getMessageCountErrorDescription
-        }
-    }
-}
-
-enum FriendChatroomError: Error, LocalizedError {
-    case noValidQuerysnapshot
-    case noExistChatroom
-
-    var errorDescription: String {
-        switch self {
-        case .noValidQuerysnapshot:
-            return FindPartnersFormSections.getFriendChatroomErrorDescription
+            return FindPartnersFormSections.countIncorrectErrorDescription
         case .noExistChatroom:
-            return FindPartnersFormSections.noFriendChatroomErrorDescription
-        }
-    }
-}
-
-enum UnknownChatroomError: Error, LocalizedError {
-    case noValidQuerysnapshot
-    case noExistChatroom
-
-    var errorDescription: String {
-        switch self {
-        case .noValidQuerysnapshot:
-            return FindPartnersFormSections.getUnknownChatroomErrorDescription
-        case .noExistChatroom:
-            return FindPartnersFormSections.noUnknownChatroomErrorDescription
+            return FindPartnersFormSections.noExistChatroomErrorDescription
         }
     }
 }
@@ -167,7 +101,7 @@ class FirebaseManager {
                     completion(.failure(error))
                 }
                 guard let downloadURL = url else {
-                    completion(.failure(NewProjectError.noValidImageURLError))
+                    completion(.failure(CommonError.noValidImageURLError))
                     return
                 }
                 let urlString = "\(downloadURL)"
@@ -239,7 +173,7 @@ class FirebaseManager {
                 }
                 completion(.success(projects))
             } else {
-                completion(.failure(GetProjectError.noValidQuerysnapshot))
+                completion(.failure(CommonError.noValidQuerysnapshot))
             }
         }
     }
@@ -274,7 +208,7 @@ class FirebaseManager {
                     completion(.failure(error))
                 }
             } else {
-                completion(.failure(GetUserError.noValidQuerysnapshot))
+                completion(.failure(CommonError.noValidQuerysnapshot))
             }
         }
     }
@@ -291,13 +225,13 @@ class FirebaseManager {
                     if let friend = try querySnapshot?.documents.first?.data(as: Friend.self, decoder: FirebaseManager.decoder) {
                         completion(.success(friend))
                     } else {
-                        completion(.failure(GetFriendError.notFriendYet))
+                        completion(.failure(CommonError.notFriendYet))
                     }
                 } catch {
                     completion(.failure(error))
                 }
             } else {
-                completion(.failure(GetFriendError.noValidQuerysnapshot))
+                completion(.failure(CommonError.noValidQuerysnapshot))
             }
         }
     }
@@ -380,7 +314,7 @@ class FirebaseManager {
                     group.leave()
                 }
             case .failure(let error):
-                if error as? UnknownChatroomError == UnknownChatroomError.noExistChatroom {
+                if error as? CommonError == CommonError.noExistChatroom {
                     group.leave()
                 } else {
                     group.leave()
@@ -419,13 +353,13 @@ class FirebaseManager {
                 }
             case .failure(let error):
                 // 若不是朋友，確認過去是否有陌生訊息
-                if error as? GetFriendError == GetFriendError.notFriendYet {
+                if error as? CommonError == CommonError.notFriendYet {
                     self.checkUnknownChatroom(id: id) { [unowned self] result in
                         switch result {
                         case .success(let chatroomID):
                             completion(.success(chatroomID))
                         case .failure(let error):
-                            if error as? UnknownChatroomError == UnknownChatroomError.noExistChatroom {
+                            if error as? CommonError == CommonError.noExistChatroom {
                                 self.createChatroom(id: id, type: .unknown) { result in
                                     switch result {
                                     case .success(let chatroomID):
@@ -459,10 +393,10 @@ class FirebaseManager {
                     let document = try snapshot.data(as: SavedChat.self, decoder: FirebaseManager.decoder)
                     completion(.success(document.chatroomID))
                 } catch {
-                    completion(.failure(UnknownChatroomError.noExistChatroom))
+                    completion(.failure(CommonError.noExistChatroom))
                 }
             } else {
-                completion(.failure(UnknownChatroomError.noValidQuerysnapshot))
+                completion(.failure(CommonError.noValidQuerysnapshot))
                 return
             }
         }
@@ -568,7 +502,7 @@ class FirebaseManager {
                 }
                 completion(.success(messages))
             } else {
-                completion(.failure(GetMessageError.noValidQuerysnapshot))
+                completion(.failure(CommonError.noValidQuerysnapshot))
             }
         }
     }
@@ -609,7 +543,7 @@ class FirebaseManager {
                 }
 
             } else {
-                completion(.failure(GetMessageError.noValidQuerysnapshot))
+                completion(.failure(CommonError.noValidQuerysnapshot))
             }
         }
     }
@@ -618,7 +552,7 @@ class FirebaseManager {
         newMessageListener?.remove()
     }
 
-    func getAllChatroomsInfo(type: ChatroomType, completion: @escaping (Result<[SavedChat], Error>) -> Void) {
+    func getAllFriendsAndChatroomsInfo(type: ChatroomType, completion: @escaping (Result<[SavedChat], Error>) -> Void) {
         let ref = FirestoreEndpoint.users.ref.document(myAccount.id).collection(type.collectionName)
         ref.getDocuments { (snapshot, error) in
             if let error = error {
@@ -638,7 +572,7 @@ class FirebaseManager {
                 completion(.success(chatroomsInfo))
 
             } else {
-                completion(.failure(GetMessageError.noValidQuerysnapshot))
+                completion(.failure(CommonError.noValidQuerysnapshot))
             }
         }
     }
@@ -690,13 +624,13 @@ class FirebaseManager {
                 }
                 completion(.success(usersInfo))
             } else {
-                completion(.failure(GetUserError.noValidQuerysnapshot))
+                completion(.failure(CommonError.noValidQuerysnapshot))
             }
         }
     }
 
     func getAllLatestMessages(type: ChatroomType, completion: @escaping (Result<[MessageListItem], Error>) -> Void) {
-        getAllChatroomsInfo(type: type) { [weak self] result in
+        getAllFriendsAndChatroomsInfo(type: type) { [weak self] result in
             switch result {
             // 取得所有存放在 user 下符合類別的 chatroom
             case .success(let savedChat):
@@ -733,7 +667,7 @@ class FirebaseManager {
                 }
                 group.notify(queue: .main) {
                     if messages.count != users.count {
-                        completion(.failure(GetMessageError.countIncorrect))
+                        completion(.failure(CommonError.countIncorrect))
                     } else {
                         var latestMessageList = [MessageListItem]()
                         for i in 0 ..< messages.count {
@@ -755,7 +689,7 @@ class FirebaseManager {
     }
 
     func getAllFriendsInfo(completion: @escaping (Result<[User], Error>) -> Void) {
-        getAllChatroomsInfo(type: .friend) { [weak self] result in
+        getAllFriendsAndChatroomsInfo(type: .friend) { [weak self] result in
             switch result {
             case .success(let friends):
                 let usersID = friends.map { $0.id }
@@ -794,7 +728,7 @@ class FirebaseManager {
                     completion(.failure(error))
                 }
             } else {
-                completion(.failure(GetUserError.noValidQuerysnapshot))
+                completion(.failure(CommonError.noValidQuerysnapshot))
             }
         }
     }

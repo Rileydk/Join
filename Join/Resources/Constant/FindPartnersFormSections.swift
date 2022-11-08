@@ -73,17 +73,12 @@ struct FindPartnersFormSections {
     static let memeberCardNotFilledAlertTitle = "所有欄位都要填喔"
     static let friendColumnWrongAlertTitle = "好友名稱輸入錯誤"
     static let alertActionTitle = "OK"
-    static let newProjectNoValidImageURLErrorDescription = "No valid image url"
-    static let getProjectErrorDescription = "No valid querysnapshot"
-    static let getUserErrorDescription = "No valid querysnapshot"
-    static let getFriendErrorDescription = "No valid querysnapshot"
-    static let notFriendErrorDescription = "Not friend yet"
-    static let getFriendChatroomErrorDescription = "No valid querysnapshot"
-    static let noFriendChatroomErrorDescription = "No exist chatroom"
-    static let getUnknownChatroomErrorDescription = "No valid querysnapshot"
-    static let noUnknownChatroomErrorDescription = "No exist chatroom"
-    static let getMessageErrorDescription = "No valid querysnapshot"
-    static let getMessageCountErrorDescription = "Messages count not match with users"
+
+    static let noValidImageURLError = "No valid image url"
+    static let noValidQuerysnapshotError = "No valid querysnapshot"
+    static let notFriendError = "Not friend yet"
+    static let noExistChatroomErrorDescription = "No exist chatroom"
+    static let countIncorrectErrorDescription = "Messages count not match with users"
     // 這個似乎是錯誤的
     // static let datePickerLocale = "zh_TW"
 }

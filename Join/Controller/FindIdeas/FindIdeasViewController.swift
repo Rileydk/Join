@@ -22,6 +22,7 @@ class FindIdeasViewController: UIViewController {
     private var datasource: IdeasDatasource!
     let firebaseManager = FirebaseManager.shared
     var projects = [Project]()
+    var recommendedProjects = [Project]()
 
     @IBOutlet weak var collectionView: UICollectionView! {
         didSet {
@@ -46,15 +47,7 @@ class FindIdeasViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        firebaseManager.getAllProjects { [weak self] result in
-            switch result {
-            case .success(let projects):
-                self?.projects = projects
-                self?.updateDatasource()
-            case .failure(let error):
-                print(error)
-            }
-        }
+        getProjects()
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -69,6 +62,69 @@ class FindIdeasViewController: UIViewController {
 
     func layoutViews() {
         title = Tab.findIdeas.title
+    }
+
+    func getProjects() {
+        var friendsProjects = [Project]()
+        var interestProjects = [Project]()
+
+        DispatchQueue.global().async { [unowned self] in
+            let group = DispatchGroup()
+            group.enter()
+            self.firebaseManager.getAllProjects { [weak self] result in
+                switch result {
+                case .success(let projects):
+                    self?.projects = projects
+                case .failure(let error):
+                    print(error)
+                }
+                group.leave()
+            }
+
+            group.wait()
+            group.enter()
+            self.firebaseManager.getAllFriendsAndChatroomsInfo(type: .friend) { [unowned self] result in
+                switch result {
+                case .success(let friends):
+                    friendsProjects = self.projects.filter { project in
+                        friends.contains { friend in
+                            project.contact == friend.id
+                        }
+                    }
+                case .failure(let error):
+                    print(error)
+                }
+                group.leave()
+            }
+
+            // 取回所有興趣
+            group.enter()
+            self.firebaseManager.getAllInterests { result in
+                switch result {
+                case .success(let interests):
+                    interestProjects = self.projects.filter { project in
+                        interests.contains { interest in
+                            project.categories.contains { $0 == interest }
+                        }
+                    }
+
+                case .failure(let error):
+                    print(error)
+                }
+                group.leave()
+            }
+
+            group.notify(queue: .main) { [unowned self] in
+                let hots = friendsProjects + interestProjects
+                let overlap = Set(hots)
+                let whole = Set(self.projects)
+                let rest = whole.subtracting(overlap)
+                self.recommendedProjects = Array(overlap)
+                self.projects = Array(rest)
+
+                self.updateDatasource()
+            }
+        }
     }
 }
 
@@ -163,7 +219,7 @@ extension FindIdeasViewController {
     func updateDatasource() {
         var snapshot = NSDiffableDataSourceSnapshot<Section, Item>()
         snapshot.appendSections(Section.allCases)
-        snapshot.appendItems(projects.map { .recommendation($0) }, toSection: .recommendations)
+        snapshot.appendItems(recommendedProjects.map { .recommendation($0) }, toSection: .recommendations)
         snapshot.appendItems(projects.map { .newIdeas($0) }, toSection: .newIdeas)
 
         datasource.apply(snapshot, animatingDifferences: false)
