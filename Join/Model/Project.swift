@@ -45,7 +45,8 @@ struct Project: Hashable, Codable {
 }
 
 struct Member: Hashable, Codable {
-    let id: UserID
+    var id: UserID?
+    var name: String
     var role: String
     var skills: String
 

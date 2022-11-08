@@ -31,6 +31,20 @@ class AddNewLineSectionCell: TableViewCell {
 
     func layoutCell(info: ItemInfo, members: [Member]) {
         layoutCell(info: info)
+
+        if !members.isEmpty {
+            members.forEach {
+                let positionLabel = UILabel()
+                if traitCollection.userInterfaceStyle == .dark {
+                    positionLabel.textColor = .white
+                } else {
+                    positionLabel.textColor = .black
+                }
+                positionLabel.font = UIFont.systemFont(ofSize: 16)
+                positionLabel.text = "\($0.name) \($0.role)"
+                containerStackView.insertArrangedSubview(positionLabel, at: 0)
+            }
+        }
     }
 
     func layoutCell(info: ItemInfo, recruiting: [OpenPosition]) {

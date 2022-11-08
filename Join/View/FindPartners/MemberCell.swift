@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol MemberCellDelegate: AnyObject {
+    func cell(_ memberCell: MemberCell, didSet newMember: Member)
+}
+
 class MemberCell: TableViewCell {
     @IBOutlet var friendNameTextField: UITextField!
     @IBOutlet var roleTextField: UITextField!
@@ -18,9 +22,11 @@ class MemberCell: TableViewCell {
 
     let firebaseManager = FirebaseManager.shared
     var deleteHandler: (() -> Void)?
+    weak var delegate: MemberCellDelegate?
 
     var friends = [User]()
     var filteredFriends = [User]()
+    var member = Member(id: nil, name: "", role: "", skills: "")
 
     override func awakeFromNib() {
         dropDownTableView.register(
@@ -49,7 +55,12 @@ class MemberCell: TableViewCell {
     func layoutCell(info: Member) {
         friendNameTextField.text = info.id
         roleTextField.text = info.role
+        var skills = ""
         skillTextField.text = info.skills
+
+        friendNameTextField.addTarget(self, action: #selector(textFieldDidChanged), for: .editingChanged)
+        roleTextField.addTarget(self, action: #selector(textFieldDidChanged), for: .editingChanged)
+        skillTextField.addTarget(self, action: #selector(textFieldDidChanged), for: .editingChanged)
 
         firebaseManager.getAllFriendsInfo { [unowned self] result in
             switch result {
@@ -140,26 +151,32 @@ class MemberCell: TableViewCell {
         )
     }
 
-    @IBAction func editing(_ sender: UITextField) {
-        let searchText = sender.text?.trimmingCharacters(in: .whitespaces)
-        if let searchText = searchText, !searchText.isEmpty {
-            filteredFriends = friends.filter { $0.name.localizedStandardContains(searchText) }
-            if !filteredFriends.isEmpty {
-                removeDropDownAlert()
-                addDropDownTableView(frame: friendNameTextField.frame)
+    @objc func textFieldDidChanged(_ sender: UITextField) {
+        if sender == friendNameTextField {
+            let searchText = sender.text?.trimmingCharacters(in: .whitespaces)
+            if let searchText = searchText, !searchText.isEmpty {
+                filteredFriends = friends.filter { $0.name.localizedStandardContains(searchText) }
+                if !filteredFriends.isEmpty {
+                    removeDropDownAlert()
+                    addDropDownTableView(frame: friendNameTextField.frame)
+                } else {
+                    removeDropDownTableView()
+                    addDropDownAlert(frame: friendNameTextField.frame)
+                }
             } else {
                 removeDropDownTableView()
-                addDropDownAlert(frame: friendNameTextField.frame)
+                removeDropDownAlert()
+                filteredFriends = friends
             }
         } else {
-            removeDropDownTableView()
-            removeDropDownAlert()
-            filteredFriends = friends
+            member.role = roleTextField.text ?? ""
+            member.skills = skillTextField.text ?? ""
+            delegate?.cell(self, didSet: member)
         }
     }
 
     @IBAction func deleteCard() {
-
+        deleteHandler?()
     }
 }
 
@@ -172,7 +189,10 @@ extension MemberCell: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if !filteredFriends.isEmpty {
             friendNameTextField.text = filteredFriends[indexPath.row].name
+            member.id = filteredFriends[indexPath.row].id
+            member.name = filteredFriends[indexPath.row].name
             removeDropDownTableView()
+            delegate?.cell(self, didSet: member)
         }
     }
 }

@@ -8,7 +8,7 @@
 import UIKit
 
 protocol MemberCardDelegate: AnyObject {
-//    func memberCardViewController(_ controller: MemberCardViewController, didSetMembers members: [Member])
+    func memberCardViewController(_ controller: MemberCardViewController, didSetMembers members: [Member])
     // swiftlint:disable line_length
     func  memberCardViewController(_ controller: MemberCardViewController, didSetRecruiting recruiting: [OpenPosition])
 }
@@ -22,7 +22,7 @@ class MemberCardViewController: BaseViewController {
     weak var delegate: MemberCardDelegate?
 
     var type: `Type` = .member
-    var members = [Member(id: "", role: "'", skills: "")]
+    var members = [Member(id: "", name: "", role: "", skills: "")]
     var recruiting = [OpenPosition(role: "", skills: "", number: "1")]
     var firstTimeLoad = true
 
@@ -59,22 +59,27 @@ class MemberCardViewController: BaseViewController {
 
     @objc func backToPreviousPage() {
         if type == .member {
-            for index in stride(from: members.count - 1, to: 0, by: -1) {
+            for index in stride(from: members.count - 1, through: 0, by: -1) {
                 // 若有某些欄位沒填寫，但不是全部沒填寫（全部沒填寫者就幫 user 刪除）
                 // 但先不刪除，直到確定跳頁再刪除
                 let member = members[index]
-                if (member.id.isEmpty || member.role.isEmpty || member.skills.isEmpty) &&
-                    !(member.id.isEmpty && member.role.isEmpty && member.skills.isEmpty) {
-                    alertUserToFillColumns()
+                if (member.id == nil || member.role.isEmpty || member.skills.isEmpty) &&
+                    !(member.id == nil && member.role.isEmpty && member.skills.isEmpty) {
+                    if member.id == nil {
+                        alertUserFriendWrong()
+                    } else {
+                        alertUserToFillColumns()
+                    }
                     return
 
                 } else {
-                    if (member.id.isEmpty && member.role.isEmpty && member.skills.isEmpty) {
+                    if (member.id == nil && member.role.isEmpty && member.skills.isEmpty) {
                         members.remove(at: index)
                     }
                 }
             }
-            // delegate?.memberCardViewController(self, didSetMembers: members)
+            delegate?.memberCardViewController(self, didSetMembers: members)
+
         } else if type == .recruiting {
             for index in stride(from: recruiting.count - 1, through: 0, by: -1) {
                 // 若有某些欄位沒填寫，但不是全部沒填寫（全部沒填寫者就幫 user 刪除）(recruiting的人數預設為 1，因此略過不檢查)
@@ -98,6 +103,13 @@ class MemberCardViewController: BaseViewController {
 
     func alertUserToFillColumns() {
         let alert = UIAlertController(title: FindPartnersFormSections.memeberCardNotFilledAlertTitle, message: nil, preferredStyle: .alert)
+        let action = UIAlertAction(title: FindPartnersFormSections.alertActionTitle, style: .default)
+        alert.addAction(action)
+        present(alert, animated: true)
+    }
+
+    func alertUserFriendWrong() {
+        let alert = UIAlertController(title: FindPartnersFormSections.friendColumnWrongAlertTitle, message: nil, preferredStyle: .alert)
         let action = UIAlertAction(title: FindPartnersFormSections.alertActionTitle, style: .default)
         alert.addAction(action)
         present(alert, animated: true)
@@ -137,6 +149,11 @@ extension MemberCardViewController: UITableViewDataSource {
                 fatalError("Cannot create MemberCell")
             }
             cell.layoutCell(info: members[indexPath.row])
+            cell.delegate = self
+            cell.deleteHandler = { [weak self] in
+                self?.recruiting.remove(at: indexPath.row)
+                tableView.deleteRows(at: [indexPath], with: .left)
+            }
             return cell
 
         } else if type == .recruiting && indexPath.row <= recruiting.count - 1 {
@@ -163,7 +180,7 @@ extension MemberCardViewController: UITableViewDataSource {
                 guard let strongSelf = self else { return }
                 if strongSelf.type == .member {
                     strongSelf.members.append(
-                        Member(id: "", role: "", skills: "")
+                        Member(id: "", name: "", role: "", skills: "")
                     )
                 } else if strongSelf.type == .recruiting {
                     strongSelf.recruiting.append(
@@ -182,5 +199,13 @@ extension MemberCardViewController: RecruitingCellDelegate {
     func cell(_ recruitingCell: RecruitingCell, didSet newRecruit: OpenPosition) {
         let index = tableView.indexPath(for: recruitingCell)!.row
         recruiting[index] = newRecruit
+    }
+}
+
+// MARK: - Member Cell Delegate
+extension MemberCardViewController: MemberCellDelegate {
+    func cell(_ memberCell: MemberCell, didSet newMember: Member) {
+        let index = tableView.indexPath(for: memberCell)!.row
+        members[index] = newMember
     }
 }

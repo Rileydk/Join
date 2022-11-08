@@ -66,9 +66,6 @@
                                                             <rect key="frame" x="0.0" y="0.0" width="374" height="38"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                             <textInputTraits key="textInputTraits"/>
-                                                            <connections>
-                                                                <action selector="editing:" destination="flp-X7-Fcl" eventType="editingChanged" id="TzP-35-4bT"/>
-                                                            </connections>
                                                         </textField>
                                                         <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="在團隊中擔任..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="PUK-XI-bnv">
                                                             <rect key="frame" x="0.0" y="46" width="374" height="34"/>
