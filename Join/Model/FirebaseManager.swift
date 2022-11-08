@@ -155,7 +155,8 @@ class FirebaseManager {
     func getAllProjects(completion: @escaping (Result<[Project], Error>) -> Void) {
         let ref = FirestoreEndpoint.projects.ref
 
-        ref.getDocuments { querySnapshot, error in
+        let now = FirebaseFirestore.Timestamp(date: Date())
+        ref.whereField("deadline", isGreaterThan: now).order(by: "deadline", descending: true).getDocuments { querySnapshot, error in
             if let error = error {
                 completion(.failure(error))
                 return
