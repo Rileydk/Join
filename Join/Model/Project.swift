@@ -72,3 +72,7 @@ struct OpenPosition: Hashable, Codable {
         ]
     }
 }
+
+struct Interest: Codable {
+    var interests = [String]()
+}
