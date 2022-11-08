@@ -552,7 +552,7 @@ class FirebaseManager {
         newMessageListener?.remove()
     }
 
-    func getAllChatroomsInfo(type: ChatroomType, completion: @escaping (Result<[SavedChat], Error>) -> Void) {
+    func getAllFriendsAndChatroomsInfo(type: ChatroomType, completion: @escaping (Result<[SavedChat], Error>) -> Void) {
         let ref = FirestoreEndpoint.users.ref.document(myAccount.id).collection(type.collectionName)
         ref.getDocuments { (snapshot, error) in
             if let error = error {
@@ -630,7 +630,7 @@ class FirebaseManager {
     }
 
     func getAllLatestMessages(type: ChatroomType, completion: @escaping (Result<[MessageListItem], Error>) -> Void) {
-        getAllChatroomsInfo(type: type) { [weak self] result in
+        getAllFriendsAndChatroomsInfo(type: type) { [weak self] result in
             switch result {
             // 取得所有存放在 user 下符合類別的 chatroom
             case .success(let savedChat):
@@ -689,7 +689,7 @@ class FirebaseManager {
     }
 
     func getAllFriendsInfo(completion: @escaping (Result<[User], Error>) -> Void) {
-        getAllChatroomsInfo(type: .friend) { [weak self] result in
+        getAllFriendsAndChatroomsInfo(type: .friend) { [weak self] result in
             switch result {
             case .success(let friends):
                 let usersID = friends.map { $0.id }
