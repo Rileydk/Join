@@ -13,6 +13,7 @@ class SelectionCategoriesViewController: UIViewController {
     var allCategories = ["Software", "Social Networking", "Workshop", "Music", "+"]
     var selectedCategories: [String]
     var passingHandler: (([String]) -> Void)?
+    let firebaseManager = FirebaseManager.shared
 
     init(selectedCategories: [String]) {
         self.selectedCategories = selectedCategories
@@ -23,9 +24,17 @@ class SelectionCategoriesViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        layoutViews()
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        firebaseManager.getAllInterests { [weak self] result in
+            switch result {
+            case .success(let interests):
+                self?.allCategories = interests
+                self?.layoutViews()
+            case .failure(let error):
+                print(error)
+            }
+        }
     }
 
     override func viewWillDisappear(_ animated: Bool) {

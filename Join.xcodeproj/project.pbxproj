@@ -54,6 +54,8 @@
 		BF9A86742918FA3500BF934D /* FriendsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9A86732918FA3500BF934D /* FriendsListViewController.swift */; };
 		BF9A867D2918FB1800BF934D /* FriendCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9A867B2918FB1800BF934D /* FriendCell.swift */; };
 		BF9A867E2918FB1800BF934D /* FriendCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF9A867C2918FB1800BF934D /* FriendCell.xib */; };
+		BF9A8685291A020300BF934D /* DropdownEmptyAlertCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9A8683291A020300BF934D /* DropdownEmptyAlertCell.swift */; };
+		BF9A8686291A020300BF934D /* DropdownEmptyAlertCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF9A8684291A020300BF934D /* DropdownEmptyAlertCell.xib */; };
 		BFF8A4AE2913A92300ADC950 /* ProjectDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF8A4AD2913A92300ADC950 /* ProjectDetailsViewController.swift */; };
 		BFF8A4B32913AD3000ADC950 /* BigImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF8A4B12913AD3000ADC950 /* BigImageCell.swift */; };
 		BFF8A4B42913AD3000ADC950 /* BigImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BFF8A4B22913AD3000ADC950 /* BigImageCell.xib */; };
@@ -140,6 +142,8 @@
 		BF9A86732918FA3500BF934D /* FriendsListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsListViewController.swift; sourceTree = "<group>"; };
 		BF9A867B2918FB1800BF934D /* FriendCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendCell.swift; sourceTree = "<group>"; };
 		BF9A867C2918FB1800BF934D /* FriendCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FriendCell.xib; sourceTree = "<group>"; };
+		BF9A8683291A020300BF934D /* DropdownEmptyAlertCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropdownEmptyAlertCell.swift; sourceTree = "<group>"; };
+		BF9A8684291A020300BF934D /* DropdownEmptyAlertCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DropdownEmptyAlertCell.xib; sourceTree = "<group>"; };
 		BFF8A4AD2913A92300ADC950 /* ProjectDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectDetailsViewController.swift; sourceTree = "<group>"; };
 		BFF8A4B12913AD3000ADC950 /* BigImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigImageCell.swift; sourceTree = "<group>"; };
 		BFF8A4B22913AD3000ADC950 /* BigImageCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BigImageCell.xib; sourceTree = "<group>"; };
@@ -366,6 +370,8 @@
 			children = (
 				BF42FABE290FF65300501789 /* MemberCell.swift */,
 				BF42FAC0290FF73B00501789 /* RecruitingCell.swift */,
+				BF9A8683291A020300BF934D /* DropdownEmptyAlertCell.swift */,
+				BF9A8684291A020300BF934D /* DropdownEmptyAlertCell.xib */,
 			);
 			path = FindPartners;
 			sourceTree = "<group>";
@@ -534,6 +540,7 @@
 				BFF8A4DA2915036000ADC950 /* ProjectContactCell.xib in Resources */,
 				BF42FA58290CEA5900501789 /* FindIdeas.storyboard in Resources */,
 				BFF8A4F72917992000ADC950 /* ChatListCell.xib in Resources */,
+				BF9A8686291A020300BF934D /* DropdownEmptyAlertCell.xib in Resources */,
 				BFF8A4CE2913F32600ADC950 /* GoNextPageButtonCell.xib in Resources */,
 				BFF8A4EF29164DCB00ADC950 /* MyMessageCell.xib in Resources */,
 				BF42FAC52910010000501789 /* AddNewCell.xib in Resources */,
@@ -649,6 +656,7 @@
 				BF42FA35290BE2AA00501789 /* AppDelegate.swift in Sources */,
 				BFF8A4EA29164BF500ADC950 /* MessageCell.swift in Sources */,
 				BFF8A4C22913C6F700ADC950 /* SegueIdentifier.swift in Sources */,
+				BF9A8685291A020300BF934D /* DropdownEmptyAlertCell.swift in Sources */,
 				BFF8A4C92913EE4C00ADC950 /* PersonalMainThumbnailCell.swift in Sources */,
 				BFF8A4BC2913B39900ADC950 /* TableViewHeaderFooterView.swift in Sources */,
 				BF42FAB7290FBE2D00501789 /* AddNewLineSectionCell.swift in Sources */,

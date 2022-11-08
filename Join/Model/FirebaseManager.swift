@@ -108,6 +108,7 @@ enum FirestoreEndpoint {
     case otherFriends(UserID)
     case otherUnknownChat(UserID)
     case messages(ChatroomID)
+    case interests
 
     var ref: CollectionReference {
         let db = Firestore.firestore()
@@ -119,6 +120,7 @@ enum FirestoreEndpoint {
         let friends = "Friends"
         let unknownChat = "UnknownChat"
         let messages = "Messages"
+        let interests = "Categories"
 
         switch self {
         case .projects:
@@ -137,6 +139,8 @@ enum FirestoreEndpoint {
             return users.document(userID).collection(unknownChat)
         case .messages(let chatroomID):
             return db.collection(chatrooms).document(chatroomID).collection(messages)
+        case .interests:
+            return db.collection(interests)
         }
     }
 }
@@ -770,6 +774,27 @@ class FirebaseManager {
 
             case .failure(let error):
                 completion(.failure(error))
+            }
+        }
+    }
+
+    func getAllInterests(completion: @escaping (Result<[String], Error>) -> Void) {
+        let ref = FirestoreEndpoint.interests.ref
+        ref.document("interests").getDocument { (document, error) in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+
+            if let document = document {
+                do {
+                    let interestsContainer = try document.data(as: Interest.self, decoder: FirebaseManager.decoder)
+                    completion(.success(interestsContainer.interests))
+                } catch {
+                    completion(.failure(error))
+                }
+            } else {
+                completion(.failure(GetUserError.noValidQuerysnapshot))
             }
         }
     }

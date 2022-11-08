@@ -71,6 +71,7 @@ struct FindPartnersFormSections {
     static let memberBranchButtonTitle = "完成"
     static let findPartnersNotFilledAlertTitle = "所有必填欄位都要填喔"
     static let memeberCardNotFilledAlertTitle = "所有欄位都要填喔"
+    static let friendColumnWrongAlertTitle = "好友名稱輸入錯誤"
     static let alertActionTitle = "OK"
     static let newProjectNoValidImageURLErrorDescription = "No valid image url"
     static let getProjectErrorDescription = "No valid querysnapshot"

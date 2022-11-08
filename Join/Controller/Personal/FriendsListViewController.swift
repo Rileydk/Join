@@ -90,9 +90,7 @@ extension FriendsListViewController: UITableViewDataSource {
 // MARK: - Search Result Updating
 extension FriendsListViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
-        print("search text")
-        if let searchText = searchController.searchBar.text,
-           searchText.isEmpty == false {
+        if let searchText = searchController.searchBar.text, !searchText.isEmpty {
             filteredFriends = friends.filter { $0.name.localizedStandardContains(searchText) }
         } else {
             filteredFriends = friends
