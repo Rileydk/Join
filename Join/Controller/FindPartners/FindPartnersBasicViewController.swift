@@ -293,7 +293,13 @@ extension FindPartnersBasicViewController: UITableViewDataSource {
             }
             cell.layoutCell(info: formState.items[indexPath.row])
             cell.delegate = self
-            cell.presentHandler = { [weak self] picker in
+            cell.alertPresentHandler = { [weak self] alert in
+                self?.present(alert, animated: true)
+            }
+            cell.cameraPresentHandler = { [weak self] controller in
+                self?.present(controller, animated: true)
+            }
+            cell.libraryPresentHandler = { [weak self] picker in
                 self?.present(picker, animated: true)
             }
             return cell
@@ -325,6 +331,7 @@ extension FindPartnersBasicViewController: MemberCardDelegate {
         project.members = members
     }
 
+    // swiftlint:disable line_length
     func memberCardViewController(_ controller: MemberCardViewController, didSetRecruiting recruiting: [OpenPosition]) {
         project.recruiting = recruiting
     }
@@ -346,7 +353,5 @@ extension FindPartnersBasicViewController: GoSelectionCellDelegate {
 extension FindPartnersBasicViewController: ImagePickerCellDelegate {
     func imagePickerCell(_ cell: ImagePickerCell, didSetImage image: UIImage) {
         self.image = image
-        // FIXME: - 為什麼 reload data 會框線重疊
-        tableView.rectForRow(at: IndexPath(row: 2, section: 0))
     }
 }
