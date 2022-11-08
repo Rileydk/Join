@@ -826,6 +826,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Join/Resources/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Join: 找夥伴";
+				INFOPLIST_KEY_NSCameraUsageDescription = "需要您授權開啟相機以發佈找夥伴貼文";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "需要您授權使用相簿圖片以發佈找夥伴貼文";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -856,6 +858,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Join/Resources/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Join: 找夥伴";
+				INFOPLIST_KEY_NSCameraUsageDescription = "需要您授權開啟相機以發佈找夥伴貼文";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "需要您授權使用相簿圖片以發佈找夥伴貼文";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
