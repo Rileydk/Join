@@ -113,42 +113,79 @@ class FirebaseManager {
     // swiftlint:disable line_length
     func postNewProject(project: Project, image: UIImage?, completion: @escaping (Result<String, Error>) -> Void) {
         let ref = FirestoreEndpoint.projects.ref
+        let projectID = ref.document().documentID
         var project = project
+        project.projectID = projectID
 
-        if let image = image,
-           let imageData = image.jpeg(.lowest) {
+        firebaseQueue.async {
+            let group = DispatchGroup()
+            group.enter()
+            if let image = image,
+               let imageData = image.jpeg(.lowest) {
 
-            uploadImage(image: imageData) { result in
+                self.uploadImage(image: imageData) { result in
+                    switch result {
+                    case .success(let urlString):
+                        project.imageURL = urlString
 
-                switch result {
-                case .success(let urlString):
-                    project.imageURL = urlString
-
-                    ref.addDocument(data: project.toDict) { error in
-                        if let error = error {
-                            DispatchQueue.main.async {
-                                completion(.failure(error))
+                        ref.document(projectID).setData(project.toDict) { error in
+                            if let error = error {
+                                group.leave()
+                                group.notify(queue: .main) {
+                                    completion(.failure(error))
+                                }
+                                return
                             }
-                        } else {
-                            DispatchQueue.main.async {
-                                completion(.success("Success"))
-                            }
+                            group.leave()
                         }
+                    case .failure(let error):
+                        group.leave()
+                        group.notify(queue: .main) {
+                            completion(.failure(error))
+                        }
+                        return
                     }
-                case .failure(let error):
-                    DispatchQueue.main.async {
-                        completion(.failure(error))
+                }
+            } else {
+                ref.document(projectID).setData(project.toDict) { error in
+                    if let error = error {
+                        group.leave()
+                        group.notify(queue: .main) {
+                            completion(.failure(error))
+                        }
+                        return
+                    }
+                    group.leave()
+                }
+            }
+
+            group.wait()
+            group.enter()
+            self.saveProjectIDToContact(projectID: projectID) { result in
+                switch result {
+                case .success:
+                    group.leave()
+                case .failure(let err):
+                    group.leave()
+                    group.notify(queue: .main) {
+                        completion(.failure(err))
                     }
                 }
             }
-        } else {
-            ref.addDocument(data: project.toDict) { error in
-                if let error = error {
-                    completion(.failure(error))
-                } else {
-                    completion(.success("Success"))
-                }
+            group.notify(queue: .main) {
+                completion(.success("Success"))
             }
+        }
+    }
+
+    func saveProjectIDToContact(projectID: ProjectID, completion: @escaping (Result<String, Error>) -> Void) {
+        let ref = FirestoreEndpoint.users.ref
+        ref.document(myAccount.id).updateData(["posts": FieldValue.arrayUnion([projectID])]) { err in
+            if let err = err {
+                completion(.failure(err))
+                return
+            }
+            completion(.success("Success"))
         }
     }
 
