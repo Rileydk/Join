@@ -176,6 +176,26 @@ extension ProjectDetailsViewController {
                 for: indexPath) as? JoinButtonCell else {
                 fatalError("Cannot create join button cell")
             }
+            cell.joinHandler = { [weak self] in
+                // TODO: - 新增假貼文，包含不是好友的，並比對興趣的正確性
+                // TODO: - recommendataion 點進去後資料錯誤（應該是資料源用到下面的）
+                // TODO: - 若只有一個選項，直接跳出 alert
+                // TODO: - 若不只一個選項，選中後，跳出 alert
+                // TODO: - 確認後，送出申請，儲存到 Applicant
+                guard let strongSelf = self else { return }
+                let positionPicker = UIPickerView()
+                positionPicker.translatesAutoresizingMaskIntoConstraints = false
+                positionPicker.delegate = self
+                positionPicker.dataSource = self
+                strongSelf.view.addSubview(positionPicker)
+
+                NSLayoutConstraint.activate([
+                    positionPicker.leadingAnchor.constraint(equalTo: strongSelf.view.leadingAnchor),
+                    positionPicker.trailingAnchor.constraint(equalTo: strongSelf.view.trailingAnchor),
+                    positionPicker.bottomAnchor.constraint(equalTo: strongSelf.view.bottomAnchor),
+                    positionPicker.heightAnchor.constraint(equalToConstant: 300)
+                ])
+            }
             return cell
         }
     }
@@ -195,5 +215,28 @@ extension ProjectDetailsViewController {
 
         snapshot.appendItems([.joinButton(Project.mockProject)], toSection: .joinButton)
         datasource.apply(snapshot, animatingDifferences: false)
+    }
+}
+
+// MARK: - Picker View Delegate
+extension ProjectDetailsViewController: UIPickerViewDelegate {
+
+}
+
+// MARK: - Picker View Datasource
+extension ProjectDetailsViewController: UIPickerViewDataSource {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        1
+    }
+
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        project?.recruiting.count ?? 0
+    }
+
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        guard let project = project else { return nil }
+        let item = project.recruiting[component]
+        print(item)
+        return item.role
     }
 }
