@@ -133,9 +133,11 @@ extension MemberCardViewController: UITableViewDelegate {
 extension MemberCardViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if type == .member {
-            return members.count + 1
+            return members.count
+            // + 1
         } else if type == .recruiting {
-            return recruiting.count + 1
+            return recruiting.count
+            // + 1
         } else {
             return 1
         }
@@ -156,7 +158,8 @@ extension MemberCardViewController: UITableViewDataSource {
             }
             return cell
 
-        } else if type == .recruiting && indexPath.row <= recruiting.count - 1 {
+        } else {
+            // if type == .recruiting && indexPath.row <= recruiting.count - 1
             guard let cell = tableView.dequeueReusableCell(
                 withIdentifier: RecruitingCell.identifier,
                 for: indexPath) as? RecruitingCell else {
@@ -170,27 +173,28 @@ extension MemberCardViewController: UITableViewDataSource {
             }
             return cell
 
-        } else {
-            guard let cell = tableView.dequeueReusableCell(
-                withIdentifier: AddNewCell.identifier,
-                for: indexPath) as? AddNewCell else {
-                fatalError("Cannot create Add New Cell")
-            }
-            cell.tapHandler = { [weak self] in
-                guard let strongSelf = self else { return }
-                if strongSelf.type == .member {
-                    strongSelf.members.append(
-                        Member(id: "", role: "", skills: "")
-                    )
-                } else if strongSelf.type == .recruiting {
-                    strongSelf.recruiting.append(
-                        OpenPosition(role: "", skills: "", number: "1")
-                    )
-                }
-                tableView.reloadData()
-            }
-            return cell
         }
+//        else {
+//            guard let cell = tableView.dequeueReusableCell(
+//                withIdentifier: AddNewCell.identifier,
+//                for: indexPath) as? AddNewCell else {
+//                fatalError("Cannot create Add New Cell")
+//            }
+//            cell.tapHandler = { [weak self] in
+//                guard let strongSelf = self else { return }
+//                if strongSelf.type == .member {
+//                    strongSelf.members.append(
+//                        Member(id: "", role: "", skills: "")
+//                    )
+//                } else if strongSelf.type == .recruiting {
+//                    strongSelf.recruiting.append(
+//                        OpenPosition(role: "", skills: "", number: "1")
+//                    )
+//                }
+//                tableView.reloadData()
+//            }
+//            return cell
+//        }
     }
 }
 
