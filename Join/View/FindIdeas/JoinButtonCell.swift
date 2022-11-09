@@ -9,6 +9,7 @@ import UIKit
 
 class JoinButtonCell: TableViewCell {
     @IBOutlet weak var joinButton: UIButton!
+    var joinHandler: (() -> Void)?
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -22,7 +23,7 @@ class JoinButtonCell: TableViewCell {
     }
 
     @IBAction func joinProject() {
-
+        joinHandler?()
     }
 
 }

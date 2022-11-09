@@ -13,6 +13,7 @@ class AddNewLineSectionCell: TableViewCell {
     @IBOutlet weak var addNewButton: UIButton!
     @IBOutlet weak var containerStackView: UIStackView!
 
+    let firebaseManager = FirebaseManager.shared
     var tapHandler: (() -> Void)?
 
     override func awakeFromNib() {
@@ -33,16 +34,27 @@ class AddNewLineSectionCell: TableViewCell {
         layoutCell(info: info)
 
         if !members.isEmpty {
-            members.forEach {
-                let positionLabel = UILabel()
-                if traitCollection.userInterfaceStyle == .dark {
-                    positionLabel.textColor = .white
-                } else {
-                    positionLabel.textColor = .black
+            var membersInfo = [User]()
+            let usersID = members.map { $0.id! }
+            firebaseManager.getAllMatchedUsersDetail(users: usersID) { [weak self] result in
+                switch result {
+                case .success(let users):
+                    membersInfo = users
+
+                    for i in 0 ..< members.count {
+                        let positionLabel = UILabel()
+                        if self?.traitCollection.userInterfaceStyle == .dark {
+                            positionLabel.textColor = .white
+                        } else {
+                            positionLabel.textColor = .black
+                        }
+                        positionLabel.font = UIFont.systemFont(ofSize: 16)
+                        positionLabel.text = "\(membersInfo[i].name) \(members[i].role)"
+                        self?.containerStackView.insertArrangedSubview(positionLabel, at: 0)
+                    }
+                case .failure(let error):
+                    print(error)
                 }
-                positionLabel.font = UIFont.systemFont(ofSize: 16)
-                positionLabel.text = "\($0.name) \($0.role)"
-                containerStackView.insertArrangedSubview(positionLabel, at: 0)
             }
         }
     }

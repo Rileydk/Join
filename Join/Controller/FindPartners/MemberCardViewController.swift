@@ -22,7 +22,7 @@ class MemberCardViewController: BaseViewController {
     weak var delegate: MemberCardDelegate?
 
     var type: `Type` = .member
-    var members = [Member(id: "", name: "", role: "", skills: "")]
+    var members = [Member(id: "", role: "", skills: "")]
     var recruiting = [OpenPosition(role: "", skills: "", number: "1")]
     var firstTimeLoad = true
 
@@ -180,7 +180,7 @@ extension MemberCardViewController: UITableViewDataSource {
                 guard let strongSelf = self else { return }
                 if strongSelf.type == .member {
                     strongSelf.members.append(
-                        Member(id: "", name: "", role: "", skills: "")
+                        Member(id: "", role: "", skills: "")
                     )
                 } else if strongSelf.type == .recruiting {
                     strongSelf.recruiting.append(
