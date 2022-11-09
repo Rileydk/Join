@@ -26,7 +26,7 @@ class MemberCell: TableViewCell {
 
     var friends = [User]()
     var filteredFriends = [User]()
-    var member = Member(id: nil, name: "", role: "", skills: "")
+    var member = Member(id: nil, role: "", skills: "")
 
     override func awakeFromNib() {
         dropDownTableView.register(
@@ -190,7 +190,6 @@ extension MemberCell: UITableViewDelegate {
         if !filteredFriends.isEmpty {
             friendNameTextField.text = filteredFriends[indexPath.row].name
             member.id = filteredFriends[indexPath.row].id
-            member.name = filteredFriends[indexPath.row].name
             removeDropDownTableView()
             delegate?.cell(self, didSet: member)
         }

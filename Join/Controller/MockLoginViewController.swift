@@ -13,11 +13,16 @@ class MockLoginViewController: UIViewController {
         goToMainPage()
     }
 
-    @IBAction func chooseOther(_ sender: UIButton) {
-        myAccount = someOne
+    @IBAction func choosePotentialFriend(_ sender: UIButton) {
+        myAccount = potentialFriend
         goToMainPage()
     }
 
+    @IBAction func choosePassenger(_ sender: Any) {
+        myAccount = passenger
+        goToMainPage()
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "GoToMainPage" {
             let mainVC = segue.destination

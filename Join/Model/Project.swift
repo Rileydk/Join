@@ -46,7 +46,6 @@ struct Project: Hashable, Codable {
 
 struct Member: Hashable, Codable {
     var id: UserID?
-    var name: String
     var role: String
     var skills: String
 
