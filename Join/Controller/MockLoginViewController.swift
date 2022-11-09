@@ -22,7 +22,7 @@ class MockLoginViewController: UIViewController {
         myAccount = passenger
         goToMainPage()
     }
-    
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "GoToMainPage" {
             let mainVC = segue.destination

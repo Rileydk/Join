@@ -13,6 +13,7 @@ import FirebaseFirestoreSwift
 enum CommonError: Error, LocalizedError {
     case noValidImageURLError
     case noValidQuerysnapshot
+    case decodeFailed
     case notFriendYet
     case countIncorrect
     case noExistChatroom
@@ -23,6 +24,8 @@ enum CommonError: Error, LocalizedError {
             return FindPartnersFormSections.noValidImageURLError
         case .noValidQuerysnapshot:
             return FindPartnersFormSections.noValidQuerysnapshotError
+        case .decodeFailed:
+            return FindPartnersFormSections.decodeFailedErrorDescription
         case .notFriendYet:
             return FindPartnersFormSections.notFriendError
         case .countIncorrect:
@@ -82,7 +85,7 @@ enum FirestoreEndpoint {
 // swiftlint:disable type_body_length
 class FirebaseManager {
     static let shared = FirebaseManager()
-    private let firebaseQueue = DispatchQueue(label: "firebaseQueue", attributes: .concurrent)
+    let firebaseQueue = DispatchQueue(label: "firebaseQueue", attributes: .concurrent)
     static let decoder = Firestore.Decoder()
     var newMessageListener: ListenerRegistration?
 
@@ -768,6 +771,37 @@ class FirebaseManager {
             } else {
                 completion(.failure(CommonError.noValidQuerysnapshot))
             }
+        }
+    }
+
+    func getAllApplicants(projectID: ProjectID, applicantID: UserID, completion: @escaping (Result<[UserID], Error>) -> Void) {
+        let ref = FirestoreEndpoint.projects.ref
+        ref.document(projectID).getDocument { (snapshot, err) in
+            if let err = err {
+                completion(.failure(err))
+                return
+            }
+            if let snapshot = snapshot {
+                do {
+                    let project = try snapshot.data(as: Project.self, decoder: FirebaseManager.decoder)
+                    completion(.success(project.applicants))
+                } catch {
+                    completion(.failure(error))
+                }
+            } else {
+                completion(.failure(CommonError.noValidQuerysnapshot))
+            }
+        }
+    }
+
+    func applyForProject(projectID: ProjectID, applicantID: UserID, completion: @escaping (Result<String, Error>) -> Void) {
+        let ref = FirestoreEndpoint.projects.ref
+        ref.document(projectID).updateData(["applicants": FieldValue.arrayUnion([applicantID])]) { err in
+            if let err = err {
+                completion(.failure(err))
+                return
+            }
+            completion(.success("Success"))
         }
     }
 }

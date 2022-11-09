@@ -79,6 +79,7 @@ struct FindPartnersFormSections {
     static let notFriendError = "Not friend yet"
     static let noExistChatroomErrorDescription = "No exist chatroom"
     static let countIncorrectErrorDescription = "Messages count not match with users"
+    static let decodeFailedErrorDescription = "Decode failed"
     // 這個似乎是錯誤的
     // static let datePickerLocale = "zh_TW"
 }

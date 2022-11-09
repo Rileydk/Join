@@ -37,8 +37,5 @@ class ChatListCell: TableViewCell {
                 print(error)
             }
         }
-
-
     }
-    
 }
