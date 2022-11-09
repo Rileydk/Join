@@ -47,6 +47,10 @@ struct Project: Hashable, Codable {
     }
 }
 
+struct ProjectItem: Codable {
+    let projectID: ProjectID
+}
+
 struct Member: Hashable, Codable {
     var id: UserID?
     var role: String
