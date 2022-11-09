@@ -9,8 +9,10 @@ import Foundation
 import UIKit
 
 typealias URLString = String
+typealias ProjectID = String
 
 struct Project: Hashable, Codable {
+    var projectID: ProjectID = ""
     var name: String = ""
     var description: String = ""
     var categories = [String]()
@@ -30,6 +32,7 @@ struct Project: Hashable, Codable {
         let recruitingDict = recruiting.map { $0.toDict }
 
         return [
+            "projectID": projectID as Any,
             "name": name as Any,
             "description": description as Any,
             "categories": categories as Any,

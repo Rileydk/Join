@@ -23,6 +23,7 @@ class FindIdeasViewController: UIViewController {
     let firebaseManager = FirebaseManager.shared
     var projects = [Project]()
     var recommendedProjects = [Project]()
+    var restProjects = [Project]()
 
     @IBOutlet weak var collectionView: UICollectionView! {
         didSet {
@@ -97,30 +98,35 @@ class FindIdeasViewController: UIViewController {
                 group.leave()
             }
 
-            // 取回所有興趣
             group.enter()
-            self.firebaseManager.getAllInterests { result in
+            self.firebaseManager.getUserInfo(id: myAccount.id) { result in
                 switch result {
-                case .success(let interests):
+                case .success(let user):
                     interestProjects = self.projects.filter { project in
-                        interests.contains { interest in
-                            project.categories.contains { $0 == interest }
+                        user.interests.contains { interest in
+                            project.categories.contains { category in
+                                interest == category
+                            }
                         }
                     }
-
-                case .failure(let error):
-                    print(error)
+                case .failure(let err):
+                    print(err)
                 }
                 group.leave()
             }
 
             group.notify(queue: .main) { [unowned self] in
-                let hots = friendsProjects + interestProjects
-                let overlap = Set(hots)
-                let whole = Set(self.projects)
-                let rest = whole.subtracting(overlap)
-                self.recommendedProjects = Array(overlap)
-                self.projects = Array(rest)
+                recommendedProjects = friendsProjects
+                recommendedProjects += interestProjects.filter { interestProject in
+                    !recommendedProjects.contains { recommendedProject in
+                        interestProject.projectID == recommendedProject.projectID
+                    }
+                }
+                restProjects = projects.filter { project in
+                    !recommendedProjects.contains { recommendedProject in
+                        project.projectID == recommendedProject.projectID
+                    }
+                }
 
                 self.updateDatasource()
             }
@@ -220,7 +226,7 @@ extension FindIdeasViewController {
         var snapshot = NSDiffableDataSourceSnapshot<Section, Item>()
         snapshot.appendSections(Section.allCases)
         snapshot.appendItems(recommendedProjects.map { .recommendation($0) }, toSection: .recommendations)
-        snapshot.appendItems(projects.map { .newIdeas($0) }, toSection: .newIdeas)
+        snapshot.appendItems(restProjects.map { .newIdeas($0) }, toSection: .newIdeas)
 
         datasource.apply(snapshot, animatingDifferences: false)
     }
@@ -229,6 +235,12 @@ extension FindIdeasViewController {
 // MARK: - Collection View Delegate
 extension FindIdeasViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        performSegue(withIdentifier: SegueIdentifier.GoProjectDetailPage, sender: projects[indexPath.row])
+        let section = Section.allCases[indexPath.section]
+        switch section {
+        case .recommendations:
+            performSegue(withIdentifier: SegueIdentifier.GoProjectDetailPage, sender: recommendedProjects[indexPath.row])
+        case .newIdeas:
+            performSegue(withIdentifier: SegueIdentifier.GoProjectDetailPage, sender: restProjects[indexPath.row])
+        }
     }
 }

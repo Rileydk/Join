@@ -77,6 +77,56 @@ class ProjectDetailsViewController: UIViewController {
             }
         }
     }
+
+    func checkAlreadyApplied(project: Project) {
+        firebaseManager.firebaseQueue.async { [weak self] in
+            self?.firebaseManager.getAllApplicants(
+                projectID: project.projectID, applicantID: myAccount.id, completion: { [weak self] result in
+                switch result {
+                case .success(let applicants):
+                    if applicants.contains(myAccount.id) {
+                        self?.alertAlreadyAppied()
+                    } else {
+                        self?.alertCheckApplication(project: project)
+                    }
+                case .failure(let err):
+                    print(err)
+                }
+            })
+        }
+    }
+
+    func applyForProject(projectID: ProjectID) {
+        firebaseManager.applyForProject(projectID: projectID, applicantID: myAccount.id) { result in
+            switch result {
+            case .success:
+                print("Success")
+            case .failure(let err):
+                print(err)
+            }
+        }
+    }
+
+    func alertCheckApplication(project: Project) {
+        let alert = UIAlertController(
+            title: "確定要應徵\n\"\(project.recruiting[0].role)\"嗎？",
+            message: "點擊確定將送出應徵申請", preferredStyle: .alert
+        )
+        let yesAction = UIAlertAction(title: "確定", style: .default) { [weak self] _ in
+            self?.applyForProject(projectID: project.projectID)
+        }
+        let cancelAction = UIAlertAction(title: "取消", style: .cancel)
+        alert.addAction(cancelAction)
+        alert.addAction(yesAction)
+        present(alert, animated: true)
+    }
+
+    func alertAlreadyAppied() {
+        let alert = UIAlertController(title: "已經應徵過了", message: "不能重複應徵喔！", preferredStyle: .alert)
+        let action = UIAlertAction(title: "OK", style: .default)
+        alert.addAction(action)
+        present(alert, animated: true)
+    }
 }
 
 // MARK: - Table View Delegate
@@ -177,24 +227,23 @@ extension ProjectDetailsViewController {
                 fatalError("Cannot create join button cell")
             }
             cell.joinHandler = { [weak self] in
-                // TODO: - 新增假貼文，包含不是好友的，並比對興趣的正確性
-                // TODO: - recommendataion 點進去後資料錯誤（應該是資料源用到下面的）
-                // TODO: - 若只有一個選項，直接跳出 alert
-                // TODO: - 若不只一個選項，選中後，跳出 alert
-                // TODO: - 確認後，送出申請，儲存到 Applicant
-                guard let strongSelf = self else { return }
-                let positionPicker = UIPickerView()
-                positionPicker.translatesAutoresizingMaskIntoConstraints = false
-                positionPicker.delegate = self
-                positionPicker.dataSource = self
-                strongSelf.view.addSubview(positionPicker)
+                guard let project = self?.project else { return }
+                self?.checkAlreadyApplied(project: project)
 
-                NSLayoutConstraint.activate([
-                    positionPicker.leadingAnchor.constraint(equalTo: strongSelf.view.leadingAnchor),
-                    positionPicker.trailingAnchor.constraint(equalTo: strongSelf.view.trailingAnchor),
-                    positionPicker.bottomAnchor.constraint(equalTo: strongSelf.view.bottomAnchor),
-                    positionPicker.heightAnchor.constraint(equalToConstant: 300)
-                ])
+                // 選項暫時只有一人，因此不需要 picker
+//                guard let strongSelf = self else { return }
+//                let positionPicker = UIPickerView()
+//                positionPicker.translatesAutoresizingMaskIntoConstraints = false
+//                positionPicker.delegate = self
+//                positionPicker.dataSource = self
+//                strongSelf.view.addSubview(positionPicker)
+//
+//                NSLayoutConstraint.activate([
+//                    positionPicker.leadingAnchor.constraint(equalTo: strongSelf.view.leadingAnchor),
+//                    positionPicker.trailingAnchor.constraint(equalTo: strongSelf.view.trailingAnchor),
+//                    positionPicker.bottomAnchor.constraint(equalTo: strongSelf.view.bottomAnchor),
+//                    positionPicker.heightAnchor.constraint(equalToConstant: 300)
+//                ])
             }
             return cell
         }
@@ -212,31 +261,31 @@ extension ProjectDetailsViewController {
         if let userData = userData {
             snapshot.appendItems([.contact(userData)], toSection: .contact)
         }
-
-        snapshot.appendItems([.joinButton(Project.mockProject)], toSection: .joinButton)
+        if project.contact != myAccount.id {
+            snapshot.appendItems([.joinButton(Project.mockProject)], toSection: .joinButton)
+        }
         datasource.apply(snapshot, animatingDifferences: false)
     }
 }
 
 // MARK: - Picker View Delegate
-extension ProjectDetailsViewController: UIPickerViewDelegate {
-
-}
+// extension ProjectDetailsViewController: UIPickerViewDelegate {
+//
+// }
 
 // MARK: - Picker View Datasource
-extension ProjectDetailsViewController: UIPickerViewDataSource {
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        1
-    }
-
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        project?.recruiting.count ?? 0
-    }
-
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        guard let project = project else { return nil }
-        let item = project.recruiting[component]
-        print(item)
-        return item.role
-    }
-}
+// extension ProjectDetailsViewController: UIPickerViewDataSource {
+//    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+//        1
+//    }
+//
+//    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+//        project?.recruiting.count ?? 0
+//    }
+//
+//    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+//        guard let project = project else { return nil }
+//        let item = project.recruiting[component]
+//        return item.role
+//    }
+// }
