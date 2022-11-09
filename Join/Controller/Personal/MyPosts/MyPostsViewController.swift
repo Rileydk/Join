@@ -61,6 +61,10 @@ class MyPostsViewController: BaseViewController {
             switch result {
             case .success(let postsItems):
                 let projectsID = postsItems.map { $0.projectID }
+                guard !projectsID.isEmpty else {
+                    print("No projects")
+                    return
+                }
                 self?.firebaseManager.getAllMyProjects(projectsID: projectsID) { [weak self] result in
                     switch result {
                     case .success(let posts):

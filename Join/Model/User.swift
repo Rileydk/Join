@@ -52,7 +52,6 @@ struct User: Codable, Hashable {
     var thumbnailURL: URLString
     var interests = [String]()
     var skills = [String]()
-    var posts = [ProjectID]()
     var sentRequests = [UserID]()
     var receivedRequests = [UserID]()
 }
