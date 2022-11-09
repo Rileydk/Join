@@ -40,6 +40,7 @@ enum FirestoreEndpoint {
     case projects
     case users
     case chatrooms
+    case myPosts
     case myFriends
     case myUnknownChat
     case otherFriends(UserID)
@@ -54,6 +55,7 @@ enum FirestoreEndpoint {
 
         let projects = "Project"
         let chatrooms = "Chatroom"
+        let posts = "Posts"
         let friends = "Friends"
         let unknownChat = "UnknownChat"
         let messages = "Messages"
@@ -66,6 +68,8 @@ enum FirestoreEndpoint {
             return users
         case .chatrooms:
             return db.collection(chatrooms)
+        case .myPosts:
+            return myDoc.collection(posts)
         case .myFriends:
             return myDoc.collection(friends)
         case .myUnknownChat:
@@ -182,8 +186,8 @@ class FirebaseManager {
     }
 
     func saveProjectIDToContact(projectID: ProjectID, completion: @escaping (Result<String, Error>) -> Void) {
-        let ref = FirestoreEndpoint.users.ref
-        ref.document(myAccount.id).updateData(["posts": FieldValue.arrayUnion([projectID])]) { err in
+        let ref = FirestoreEndpoint.myPosts.ref
+        ref.document(projectID).setData(["projectID": projectID]) { err in
             if let err = err {
                 completion(.failure(err))
                 return
@@ -191,6 +195,35 @@ class FirebaseManager {
             completion(.success("Success"))
         }
     }
+
+//    func getAllProjects(completion: @escaping (Result<[Project], Error>) -> Void) {
+//        let ref = FirestoreEndpoint.projects.ref
+//
+//        let now = FirebaseFirestore.Timestamp(date: Date())
+//        ref.whereField("deadline", isGreaterThan: now).order(by: "deadline", descending: true).getDocuments { querySnapshot, error in
+//            if let error = error {
+//                completion(.failure(error))
+//                return
+//            }
+//
+//            group.wait()
+//            group.enter()
+//            self.saveProjectIDToContact(projectID: projectID) { result in
+//                switch result {
+//                case .success:
+//                    group.leave()
+//                case .failure(let err):
+//                    group.leave()
+//                    group.notify(queue: .main) {
+//                        completion(.failure(err))
+//                    }
+//                }
+//            }
+//            group.notify(queue: .main) {
+//                completion(.success("Success"))
+//            }
+//        }
+//    }
 
     func getAllProjects(completion: @escaping (Result<[Project], Error>) -> Void) {
         let ref = FirestoreEndpoint.projects.ref
@@ -647,9 +680,66 @@ class FirebaseManager {
         }
     }
 
-    func getAllMatchedUsersDetail(users: [UserID], completion: @escaping (Result<[User], Error>) -> Void) {
+//    func getAllMatchedUsersDetail(users: [UserID], completion: @escaping (Result<[User], Error>) -> Void) {
+//        let userRef = FirestoreEndpoint.users.ref
+//        userRef.whereField("id", in: users).getDocuments { (snapshot, error) in
+//            if let error = error {
+//                completion(.failure(error))
+//                return
+//            }
+//            if let snapshot = snapshot {
+//                let usersInfo: [User] = snapshot.documents.compactMap {
+//                    do {
+//                        return try $0.data(as: User.self, decoder: FirebaseManager.decoder)
+//                    } catch {
+//                        completion(.failure(error))
+//                        return nil
+//                    }
+//                }
+//                completion(.success(usersInfo))
+//            } else {
+//                completion(.failure(CommonError.noValidQuerysnapshot))
+//            }
+//        }
+//    }
+
+//    func getAllLatestMessages(type: ChatroomType, completion: @escaping (Result<[MessageListItem], Error>) -> Void) {
+//        getAllFriendsAndChatroomsInfo(type: type) { [weak self] result in
+//            switch result {
+//            // 取得所有存放在 user 下符合類別的 chatroom
+//            case .success(let savedChat):
+//                let chatroomsID = savedChat.map { $0.chatroomID }
+//                let usersID = savedChat.map { $0.id }
+//                var messages = [Message]()
+//                var users = [User]()
+//
+//                guard !chatroomsID.isEmpty else {
+//                    completion(.success([]))
+//                    return
+//                }
+//
+//=======
+//<<<<<<< Updated upstream
+//                    return
+//                }
+//
+//                if let data = data,
+//                   let image = UIImage(data: data) {
+//                    DispatchQueue.main.async {
+//                        completion(.success(image))
+//=======
+//                }
+//                group.leave()
+//            }
+//        }
+//        group.notify(queue: .main) {
+//            completion(.success(messages))
+//        }
+//    }
+
+    func getAllMatchedUsersDetail(usersID: [UserID], completion: @escaping (Result<[User], Error>) -> Void) {
         let userRef = FirestoreEndpoint.users.ref
-        userRef.whereField("id", in: users).getDocuments { (snapshot, error) in
+        userRef.whereField("id", in: usersID).getDocuments { (snapshot, error) in
             if let error = error {
                 completion(.failure(error))
                 return
@@ -697,7 +787,7 @@ class FirebaseManager {
                     group.leave()
                 }
                 group.enter()
-                self?.getAllMatchedUsersDetail(users: usersID) { result in
+                self?.getAllMatchedUsersDetail(usersID: usersID) { result in
                     switch result {
                     case .success(let usersDetail):
                         users = usersDetail
@@ -738,7 +828,7 @@ class FirebaseManager {
                     completion(.success([]))
                     return
                 }
-                self?.getAllMatchedUsersDetail(users: usersID) { result in
+                self?.getAllMatchedUsersDetail(usersID: usersID) { result in
                     switch result {
                     case .success(let usersDetail):
                         completion(.success(usersDetail))
@@ -800,6 +890,56 @@ class FirebaseManager {
             if let err = err {
                 completion(.failure(err))
                 return
+//=======
+//>>>>>>> Stashed changes
+//                    }
+//                }
+            }
+        }
+    }
+
+    func getAllMyProjectsID(completion: @escaping (Result<[ProjectItem], Error>) -> Void) {
+        let ref = FirestoreEndpoint.myPosts.ref
+        ref.getDocuments { (snapshot, err) in
+            if let err = err {
+                completion(.failure(err))
+                return
+            }
+            if let snapshot = snapshot {
+                let projects: [ProjectItem] = snapshot.documents.compactMap {
+                    do {
+                        return try $0.data(as: ProjectItem.self, decoder: FirebaseManager.decoder)
+                    } catch {
+                        completion(.failure(error))
+                        return nil
+                    }
+                }
+                completion(.success(projects))
+            } else {
+                completion(.failure(CommonError.noValidQuerysnapshot))
+            }
+        }
+    }
+
+    func getAllMyProjects(projectsID: [ProjectID], completion: @escaping (Result<[Project], Error>) -> Void) {
+        let ref = FirestoreEndpoint.projects.ref
+        ref.whereField("projectID", in: projectsID).getDocuments { (snapshot, err) in
+            if let err = err {
+                completion(.failure(err))
+                return
+            }
+            if let snapshot = snapshot {
+                let projects: [Project] = snapshot.documents.compactMap {
+                    do {
+                        return try $0.data(as: Project.self, decoder: FirebaseManager.decoder)
+                    } catch {
+                        completion(.failure(error))
+                        return nil
+                    }
+                }
+                completion(.success(projects))
+            } else {
+                completion(.failure(CommonError.noValidQuerysnapshot))
             }
             completion(.success("Success"))
         }
