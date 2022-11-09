@@ -50,7 +50,7 @@ struct User: Codable, Hashable {
     var name: String
     var email: String
     var thumbnailURL: URLString
-    var interest = [String]()
+    var interests = [String]()
     var skills = [String]()
     var posts = [ProjectID]()
     var sentRequests = [UserID]()
