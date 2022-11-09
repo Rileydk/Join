@@ -60,6 +60,7 @@ class MyPostsDetailViewController: BaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         guard let project = project else { return }
+        print(project, project.applicants)
         guard !project.applicants.isEmpty else {
             print("No applicants")
             return

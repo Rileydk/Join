@@ -49,8 +49,8 @@ class ProjectDetailsViewController: UIViewController {
                 forCellReuseIdentifier: JoinButtonCell.identifier
             )
             tableView.register(
-                UINib(nibName: ProjectContactCell.identifier, bundle: nil),
-                forCellReuseIdentifier: ProjectContactCell.identifier
+                UINib(nibName: ContactCell.identifier, bundle: nil),
+                forCellReuseIdentifier: ContactCell.identifier
             )
             tableView.register(
                 UINib(nibName: DetailTitleHeaderView.identifier, bundle: nil),
@@ -180,8 +180,8 @@ extension ProjectDetailsViewController {
 
         case .contact(let user):
             guard let cell = tableView.dequeueReusableCell(
-                withIdentifier: ProjectContactCell.identifier,
-                for: indexPath) as? ProjectContactCell else {
+                withIdentifier: ContactCell.identifier,
+                for: indexPath) as? ContactCell else {
                 fatalError("Cannot create project contact cell")
             }
             cell.layoutCell(user: user)

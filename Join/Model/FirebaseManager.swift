@@ -40,6 +40,7 @@ enum FirestoreEndpoint {
     case projects
     case users
     case chatrooms
+    case myPosts
     case myFriends
     case myUnknownChat
     case otherFriends(UserID)
@@ -66,6 +67,8 @@ enum FirestoreEndpoint {
             return users
         case .chatrooms:
             return db.collection(chatrooms)
+        case .myPosts:
+            return myDoc.collection("Posts")
         case .myFriends:
             return myDoc.collection(friends)
         case .myUnknownChat:
@@ -647,9 +650,9 @@ class FirebaseManager {
         }
     }
 
-    func getAllMatchedUsersDetail(users: [UserID], completion: @escaping (Result<[User], Error>) -> Void) {
+    func getAllMatchedUsersDetail(usersID: [UserID], completion: @escaping (Result<[User], Error>) -> Void) {
         let userRef = FirestoreEndpoint.users.ref
-        userRef.whereField("id", in: users).getDocuments { (snapshot, error) in
+        userRef.whereField("id", in: usersID).getDocuments { (snapshot, error) in
             if let error = error {
                 completion(.failure(error))
                 return
@@ -697,7 +700,7 @@ class FirebaseManager {
                     group.leave()
                 }
                 group.enter()
-                self?.getAllMatchedUsersDetail(users: usersID) { result in
+                self?.getAllMatchedUsersDetail(usersID: usersID) { result in
                     switch result {
                     case .success(let usersDetail):
                         users = usersDetail
@@ -738,7 +741,7 @@ class FirebaseManager {
                     completion(.success([]))
                     return
                 }
-                self?.getAllMatchedUsersDetail(users: usersID) { result in
+                self?.getAllMatchedUsersDetail(usersID: usersID) { result in
                     switch result {
                     case .success(let usersDetail):
                         completion(.success(usersDetail))
@@ -802,6 +805,52 @@ class FirebaseManager {
                 return
             }
             completion(.success("Success"))
+        }
+    }
+
+    func getAllMyProjectsID(completion: @escaping (Result<[ProjectItem], Error>) -> Void) {
+        let ref = FirestoreEndpoint.myPosts.ref
+        ref.getDocuments { (snapshot, err) in
+            if let err = err {
+                completion(.failure(err))
+                return
+            }
+            if let snapshot = snapshot {
+                let projectItems: [ProjectItem] = snapshot.documents.compactMap {
+                    do {
+                        return try $0.data(as: ProjectItem.self, decoder: FirebaseManager.decoder)
+                    } catch {
+                        completion(.failure(error))
+                        return nil
+                    }
+                }
+                completion(.success(projectItems))
+            } else {
+                completion(.failure(CommonError.noValidQuerysnapshot))
+            }
+        }
+    }
+
+    func getAllMyProjects(projectsID: [ProjectID], completion: @escaping (Result<[Project], Error>) -> Void) {
+        let ref = FirestoreEndpoint.projects.ref
+        ref.whereField("projectID", in: projectsID).getDocuments { (snapshot, err) in
+            if let err = err {
+                completion(.failure(err))
+                return
+            }
+            if let snapshot = snapshot {
+                let projects: [Project] = snapshot.documents.compactMap {
+                    do {
+                        return try $0.data(as: Project.self, decoder: FirebaseManager.decoder)
+                    } catch {
+                        completion(.failure(error))
+                        return nil
+                    }
+                }
+                completion(.success(projects))
+            } else {
+                completion(.failure(CommonError.noValidQuerysnapshot))
+            }
         }
     }
 }
