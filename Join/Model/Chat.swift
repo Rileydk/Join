@@ -56,14 +56,14 @@ struct GroupChatroom: Codable {
     var imageURL: URLString
     var members: [UserID]
     var admin: UserID
-    var messages: [Message]?
 
-    var toInitDict: [String: Any] {
+    var toDict: [String: Any] {
         return [
             "id": id as Any,
             "name": name as Any,
             "image": imageURL as Any,
-            "members": members as Any
+            "members": members as Any,
+            "admin": admin as Any
         ]
     }
 }

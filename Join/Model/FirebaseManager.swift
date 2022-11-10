@@ -50,6 +50,7 @@ enum FirestoreEndpoint {
     case otherFriends(UserID)
     case otherUnknownChat(UserID)
     case messages(ChatroomID)
+    case groupMessages(ChatroomID)
     case interests
 
     var ref: CollectionReference {
@@ -87,6 +88,8 @@ enum FirestoreEndpoint {
             return users.document(userID).collection(unknownChat)
         case .messages(let chatroomID):
             return db.collection(chatrooms).document(chatroomID).collection(messages)
+        case .groupMessages(let chatroomID):
+            return db.collection(groupChatrooms).document(chatroomID).collection(messages)
         case .interests:
             return db.collection(interests)
         }
@@ -897,7 +900,7 @@ class FirebaseManager {
 
         let group = DispatchGroup()
         group.enter()
-        groupChatroomsRef.document(chatroomID).setData(groupChatroom.toInitDict) { err in
+        groupChatroomsRef.document(chatroomID).setData(groupChatroom.toDict) { err in
             if let err = err {
                 group.leave()
                 group.notify(queue: .main) {
@@ -926,6 +929,67 @@ class FirebaseManager {
 
         group.notify(queue: .main) {
             completion(.success(chatroomID))
+        }
+    }
+
+    func getGroupChatroomInfo(chatroomID: ChatroomID, completion: @escaping (Result<GroupChatroom, Error>) -> Void) {
+        let ref = FirestoreEndpoint.groupChatroom.ref
+        ref.document(chatroomID).getDocument { (snapshot, err) in
+            if let err = err {
+                completion(.failure(err))
+                return
+            }
+            if let snapshot = snapshot {
+                do {
+                    let chatroomInfo = try snapshot.data(as: GroupChatroom.self, decoder: FirebaseManager.decoder)
+                    completion(.success(chatroomInfo))
+                } catch {
+                    completion(.failure(error))
+                }
+            } else {
+                completion(.failure(CommonError.noValidQuerysnapshot))
+            }
+        }
+    }
+
+    func addNewGroupMessage(message: Message, chatroomID: ChatroomID, completion: @escaping (Result<String, Error>) -> Void) {
+        let ref = FirestoreEndpoint.groupMessages(chatroomID).ref
+        let documentID = ref.document().documentID
+        var message = message
+        message.messageID = documentID
+
+        ref.document(documentID).setData(message.toDict) { error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            completion(.success("Success"))
+        }
+    }
+
+    func listenToNewGroupMessages(chatroomID: ChatroomID, completion: @escaping (Result<[Message], Error>) -> Void) {
+        let ref = FirestoreEndpoint.groupMessages(chatroomID).ref
+        newMessageListener = ref.addSnapshotListener { (querySnapshot, error) in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            if let querySnapshot = querySnapshot {
+                let messages: [Message] = querySnapshot.documentChanges.compactMap {
+                    do {
+                        return try $0.document.data(as: Message.self, decoder: FirebaseManager.decoder)
+                    } catch {
+                        completion(.failure(error))
+                        return nil
+                    }
+                }
+                if !querySnapshot.metadata.hasPendingWrites {
+                    completion(.success(messages))
+                }
+
+            } else {
+                completion(.failure(CommonError.noValidQuerysnapshot))
+            }
         }
     }
 }

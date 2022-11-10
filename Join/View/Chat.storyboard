@@ -103,7 +103,48 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bLx-R3-CqK" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2031.8840579710147" y="908.70535714285711"/>
+            <point key="canvasLocation" x="2032" y="909"/>
+        </scene>
+        <!--Group Chatroom View Controller-->
+        <scene sceneID="H6G-1d-b2f">
+            <objects>
+                <viewController storyboardIdentifier="GroupChatroomViewController" id="juY-jJ-6td" customClass="GroupChatroomViewController" customModule="Join" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="NsB-Rw-aSc">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="fXa-Zh-AVa">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="806"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </tableView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Dgl-eh-KOk" customClass="MessageTypingSuperview" customModule="Join" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="806" width="414" height="90"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="90" id="Jbe-GB-oRf"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="bpA-KL-CTF"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="Dgl-eh-KOk" firstAttribute="top" secondItem="fXa-Zh-AVa" secondAttribute="bottom" id="A1b-53-UY9"/>
+                            <constraint firstItem="Dgl-eh-KOk" firstAttribute="leading" secondItem="bpA-KL-CTF" secondAttribute="leading" id="PIR-93-XqO"/>
+                            <constraint firstItem="fXa-Zh-AVa" firstAttribute="leading" secondItem="bpA-KL-CTF" secondAttribute="leading" id="TSH-JD-DAj"/>
+                            <constraint firstAttribute="bottom" secondItem="Dgl-eh-KOk" secondAttribute="bottom" id="WJL-L4-7CI"/>
+                            <constraint firstItem="fXa-Zh-AVa" firstAttribute="top" secondItem="NsB-Rw-aSc" secondAttribute="top" id="fM8-ep-uwD"/>
+                            <constraint firstItem="bpA-KL-CTF" firstAttribute="trailing" secondItem="Dgl-eh-KOk" secondAttribute="trailing" id="iWs-PB-KV5"/>
+                            <constraint firstItem="bpA-KL-CTF" firstAttribute="trailing" secondItem="fXa-Zh-AVa" secondAttribute="trailing" id="qoG-JH-Nti"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="messageTypingSuperview" destination="Dgl-eh-KOk" id="bG9-pm-WKq"/>
+                        <outlet property="tableView" destination="fXa-Zh-AVa" id="p7b-DO-P0w"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="RwQ-Lr-CU1" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2879.7101449275365" y="908.70535714285711"/>
         </scene>
         <!--Friend Selection View Controller-->
         <scene sceneID="NiX-NT-qQ5">

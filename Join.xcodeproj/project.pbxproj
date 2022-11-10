@@ -65,6 +65,7 @@
 		BF9A869F291CDE8300BF934D /* GroupCreationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9A869E291CDE8300BF934D /* GroupCreationViewController.swift */; };
 		BF9A86A3291CE06400BF934D /* GroupCreationHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9A86A1291CE06400BF934D /* GroupCreationHeaderCell.swift */; };
 		BF9A86A4291CE06400BF934D /* GroupCreationHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF9A86A2291CE06400BF934D /* GroupCreationHeaderCell.xib */; };
+		BF9A86A6291D1A6100BF934D /* GroupChatroomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9A86A5291D1A6100BF934D /* GroupChatroomViewController.swift */; };
 		BFF8A4AE2913A92300ADC950 /* ProjectDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF8A4AD2913A92300ADC950 /* ProjectDetailsViewController.swift */; };
 		BFF8A4B32913AD3000ADC950 /* BigImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF8A4B12913AD3000ADC950 /* BigImageCell.swift */; };
 		BFF8A4B42913AD3000ADC950 /* BigImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BFF8A4B22913AD3000ADC950 /* BigImageCell.xib */; };
@@ -162,6 +163,7 @@
 		BF9A869E291CDE8300BF934D /* GroupCreationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupCreationViewController.swift; sourceTree = "<group>"; };
 		BF9A86A1291CE06400BF934D /* GroupCreationHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupCreationHeaderCell.swift; sourceTree = "<group>"; };
 		BF9A86A2291CE06400BF934D /* GroupCreationHeaderCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GroupCreationHeaderCell.xib; sourceTree = "<group>"; };
+		BF9A86A5291D1A6100BF934D /* GroupChatroomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupChatroomViewController.swift; sourceTree = "<group>"; };
 		BFF8A4AD2913A92300ADC950 /* ProjectDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectDetailsViewController.swift; sourceTree = "<group>"; };
 		BFF8A4B12913AD3000ADC950 /* BigImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigImageCell.swift; sourceTree = "<group>"; };
 		BFF8A4B22913AD3000ADC950 /* BigImageCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BigImageCell.xib; sourceTree = "<group>"; };
@@ -462,6 +464,7 @@
 			children = (
 				BF9A869C291CC9D000BF934D /* FriendSelectionViewController.swift */,
 				BF9A869E291CDE8300BF934D /* GroupCreationViewController.swift */,
+				BF9A86A5291D1A6100BF934D /* GroupChatroomViewController.swift */,
 			);
 			path = GroupChatroom;
 			sourceTree = "<group>";
@@ -747,6 +750,7 @@
 				BF42FA71290D196200501789 /* SingleLineInputCell.swift in Sources */,
 				BFF8A4DD2916341D00ADC950 /* ChatroomViewController.swift in Sources */,
 				BFF8A4C52913EDB800ADC950 /* PersonalEntryViewController.swift in Sources */,
+				BF9A86A6291D1A6100BF934D /* GroupChatroomViewController.swift in Sources */,
 				BF42FAC829111FD400501789 /* ImagePickerCell.swift in Sources */,
 				BF42FA37290BE2AA00501789 /* SceneDelegate.swift in Sources */,
 				BFF8A4BF2913B46600ADC950 /* JoinButtonCell.swift in Sources */,

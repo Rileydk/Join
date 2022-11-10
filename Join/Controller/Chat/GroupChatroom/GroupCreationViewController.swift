@@ -36,7 +36,7 @@ class GroupCreationViewController: BaseViewController {
     var groupMembers = [User]()
     var groupChatroom = GroupChatroom(
         id: "", name: "", imageURL: "",
-        members: [], admin: "", messages: []
+        members: [], admin: ""
     )
     var groupImage: UIImage?
 
@@ -77,8 +77,8 @@ class GroupCreationViewController: BaseViewController {
 
                             let chatStoryboard = UIStoryboard(name: StoryboardCategory.chat.rawValue, bundle: nil)
                             guard let chatroomVC =  chatStoryboard.instantiateViewController(
-                                withIdentifier: ChatroomViewController.identifier
-                                ) as? ChatroomViewController else {
+                                withIdentifier: GroupChatroomViewController.identifier
+                                ) as? GroupChatroomViewController else {
                                 fatalError("Cannot get chatroom vc")
                             }
                             chatroomVC.chatroomID = chatroomID

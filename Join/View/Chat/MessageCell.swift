@@ -12,6 +12,7 @@ class MessageCell: TableViewCell {
     @IBOutlet weak var thumbnailImageView: UIImageView!
     @IBOutlet weak var messageTextView: UITextView!
 
+    let firebaseManager = FirebaseManager.shared
     var tapHandler: (() -> Void)?
 
     override func prepareForReuse() {
@@ -41,11 +42,15 @@ class MessageCell: TableViewCell {
         thumbnailImageView.layer.cornerRadius = thumbnailImageView.frame.size.width / 2
     }
 
-    func layoutCell(image: UIImage?, message: String) {
-        if let image = image {
-            thumbnailImageView.image = image
-        } else {
-            print("image is nil")
+    func layoutCell(imageURL: URLString?, message: String) {
+        guard let imageURL = imageURL else { return }
+        firebaseManager.downloadImage(urlString: imageURL) { [unowned self] result in
+            switch result {
+            case .success(let image):
+                self.thumbnailImageView.image = image
+            case .failure(let error):
+                print(error)
+            }
         }
         messageTextView.text = message
     }
