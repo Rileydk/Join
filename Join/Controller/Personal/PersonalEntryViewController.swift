@@ -14,7 +14,9 @@ class PersonalEntryViewController: UIViewController {
     }
 
     enum NextPage: String, CaseIterable {
-        case profile = "我的專頁"
+        case profile = "我的主頁"
+        case posts = "我的專案"
+        case applications = "我的應徵紀錄"
         case friends = "我的好友"
         case preference = "偏好設定"
     }
@@ -44,6 +46,26 @@ class PersonalEntryViewController: UIViewController {
             }
             profileVC.userData = myAccount
             navigationController?.pushViewController(profileVC, animated: true)
+        }
+
+        if NextPage.allCases[index] == .posts {
+            let personalStoryboard = UIStoryboard(name: StoryboardCategory.personal.rawValue, bundle: nil)
+            guard let myPostsVC = personalStoryboard.instantiateViewController(
+                withIdentifier: MyPostsViewController.identifier
+            ) as? MyPostsViewController else {
+                fatalError("Cannot create personal profile vc")
+            }
+            navigationController?.pushViewController(myPostsVC, animated: true)
+        }
+
+        if NextPage.allCases[index] == .applications {
+            let personalStoryboard = UIStoryboard(name: StoryboardCategory.personal.rawValue, bundle: nil)
+            guard let myApplicationsVC = personalStoryboard.instantiateViewController(
+                withIdentifier: MyApplicationsViewController.identifier
+            ) as? MyApplicationsViewController else {
+                fatalError("Cannot create personal profile vc")
+            }
+            navigationController?.pushViewController(myApplicationsVC, animated: true)
         }
 
         if NextPage.allCases[index] == .friends {
