@@ -9,6 +9,7 @@ import UIKit
 
 class ChatListViewController: BaseViewController {
     @IBOutlet weak var tabSegmentedControl: UISegmentedControl!
+    @IBOutlet weak var addGroupChatroomBarButton: UIBarButtonItem!
     @IBOutlet weak var tableView: UITableView! {
         didSet {
             tableView.register(
@@ -66,6 +67,15 @@ class ChatListViewController: BaseViewController {
 
     @IBAction func changeTab(_ sender: UISegmentedControl) {
         type = ChatroomType.allCases[sender.selectedSegmentIndex]
+    }
+    @IBAction func addGroupChatroom(_ sender: UIBarButtonItem) {
+        let chatStoryboard = UIStoryboard(name: StoryboardCategory.chat.rawValue, bundle: nil)
+        guard let friendSelectionVC = chatStoryboard.instantiateViewController(
+            withIdentifier: FriendSelectionViewController.identifier
+            ) as? FriendSelectionViewController else {
+            fatalError("Cannot create friend selection vc")
+        }
+        navigationController?.pushViewController(friendSelectionVC, animated: true)
     }
 }
 

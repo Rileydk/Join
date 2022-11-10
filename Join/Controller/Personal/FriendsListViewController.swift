@@ -82,7 +82,7 @@ extension FriendsListViewController: UITableViewDataSource {
             ) as? FriendCell else {
             fatalError("Cannot create friend cell")
         }
-        cell.layoutCell(friend: friend)
+        cell.layoutCell(friend: friend, source: .friendList)
         return cell
     }
 }

@@ -8,10 +8,16 @@
 import UIKit
 
 class FriendCell: TableViewCell {
+    enum Source {
+        case friendList
+        case friendSelection
+    }
+
     let firebaseManager = FirebaseManager.shared
 
     @IBOutlet weak var thumbnailImageView: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var selectImageView: UIImageView!
 
     override func prepareForReuse() {
         super.prepareForReuse()
@@ -20,7 +26,7 @@ class FriendCell: TableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        print("initial selected state", isSelected)
     }
 
     override func layoutSubviews() {
@@ -28,7 +34,12 @@ class FriendCell: TableViewCell {
         thumbnailImageView.layer.cornerRadius = thumbnailImageView.frame.size.width / 2
     }
 
-    func layoutCell(friend: User) {
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+
+    }
+
+    func layoutCell(friend: User, source: Source) {
         nameLabel.text = friend.name
         firebaseManager.downloadImage(urlString: friend.thumbnailURL) { [weak self] result in
             switch result {
@@ -37,6 +48,20 @@ class FriendCell: TableViewCell {
             case .failure(let error):
                 print(error)
             }
+        }
+        if source == .friendSelection {
+            selectImageView.isHidden = false
+        } else {
+            selectImageView.isHidden = true
+        }
+    }
+
+    func layoutCell(friend: User, source: Source, isSelectedNow: Bool) {
+        layoutCell(friend: friend, source: source)
+        if isSelectedNow {
+            selectImageView.image = UIImage(systemName: "checkmark.circle.fill")
+        } else {
+            selectImageView.image = UIImage(systemName: "checkmark.circle")
         }
     }
 }

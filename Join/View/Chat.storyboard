@@ -47,8 +47,15 @@
                             <constraint firstItem="tsz-g0-cUG" firstAttribute="trailing" secondItem="uyr-5O-0eY" secondAttribute="trailing" id="rMk-Wz-bfJ"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="DAu-Py-tgo"/>
+                    <navigationItem key="navigationItem" id="DAu-Py-tgo">
+                        <barButtonItem key="rightBarButtonItem" title="Item" image="plus.message" catalog="system" id="0ds-7h-Qdn">
+                            <connections>
+                                <action selector="addGroupChatroom:" destination="xzF-Dt-Vic" id="dNV-5a-Ibc"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
+                        <outlet property="addGroupChatroomBarButton" destination="0ds-7h-Qdn" id="il4-ZO-RXN"/>
                         <outlet property="tabSegmentedControl" destination="NwU-Lx-6XG" id="EFg-zQ-eoX"/>
                         <outlet property="tableView" destination="tsz-g0-cUG" id="P1f-KQ-FGD"/>
                     </connections>
@@ -98,6 +105,36 @@
             </objects>
             <point key="canvasLocation" x="2031.8840579710147" y="908.70535714285711"/>
         </scene>
+        <!--Friend Selection View Controller-->
+        <scene sceneID="NiX-NT-qQ5">
+            <objects>
+                <viewController storyboardIdentifier="FriendSelectionViewController" id="ogG-tp-bKQ" customClass="FriendSelectionViewController" customModule="Join" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="nta-iq-nwA">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="gBE-jc-geQ">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </tableView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="gsu-mf-ERF"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="gsu-mf-ERF" firstAttribute="trailing" secondItem="gBE-jc-geQ" secondAttribute="trailing" id="WJV-ff-kms"/>
+                            <constraint firstItem="gBE-jc-geQ" firstAttribute="top" secondItem="nta-iq-nwA" secondAttribute="top" id="XZw-TS-FFb"/>
+                            <constraint firstItem="gBE-jc-geQ" firstAttribute="leading" secondItem="gsu-mf-ERF" secondAttribute="leading" id="q98-2l-Hnb"/>
+                            <constraint firstAttribute="bottom" secondItem="gBE-jc-geQ" secondAttribute="bottom" id="w4Z-Pj-IZT"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="tableView" destination="gBE-jc-geQ" id="xGq-1t-qgO"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="aAI-X5-1dI" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2852" y="909"/>
+        </scene>
         <!--Item-->
         <scene sceneID="XYW-fG-2wx">
             <objects>
@@ -119,6 +156,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="plus.message" catalog="system" width="128" height="113"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
