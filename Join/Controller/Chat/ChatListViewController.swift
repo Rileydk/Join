@@ -58,6 +58,7 @@ class ChatListViewController: BaseViewController {
             case .success(let listItem):
                 self.messageList = listItem
             case .failure(let error):
+                self.messageList = []
                 print(error)
             }
         }

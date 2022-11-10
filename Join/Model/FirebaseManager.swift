@@ -17,6 +17,7 @@ enum CommonError: Error, LocalizedError {
     case notFriendYet
     case countIncorrect
     case noExistChatroom
+    case noMessage
 
     var errorDescription: String {
         switch self {
@@ -25,13 +26,15 @@ enum CommonError: Error, LocalizedError {
         case .noValidQuerysnapshot:
             return FindPartnersFormSections.noValidQuerysnapshotError
         case .decodeFailed:
-            return FindPartnersFormSections.decodeFailedErrorDescription
+            return FindPartnersFormSections.decodeFailedError
         case .notFriendYet:
             return FindPartnersFormSections.notFriendError
         case .countIncorrect:
-            return FindPartnersFormSections.countIncorrectErrorDescription
+            return FindPartnersFormSections.countIncorrectError
         case .noExistChatroom:
-            return FindPartnersFormSections.noExistChatroomErrorDescription
+            return FindPartnersFormSections.noExistChatroomError
+        case .noMessage:
+            return FindPartnersFormSections.noMessageError
         }
     }
 }
@@ -636,8 +639,12 @@ class FirebaseManager {
                 }
 
                 if let snapshot = snapshot {
+                    guard let lastMessage = snapshot.documents.first else {
+                        completion(.failure(CommonError.noMessage))
+                        return
+                    }
                     do {
-                        let message = try snapshot.documents.first!.data(as: Message.self, decoder: FirebaseManager.decoder)
+                        let message = try lastMessage.data(as: Message.self, decoder: FirebaseManager.decoder)
                         messages.append(message)
                     } catch {
                         completion(.failure(error))
