@@ -78,11 +78,6 @@
             </objects>
             <point key="canvasLocation" x="2893" y="909"/>
         </scene>
-<<<<<<< Updated upstream
-=======
-<<<<<<< Updated upstream
-=======
->>>>>>> Stashed changes
         <!--Friends List View Controller-->
         <scene sceneID="i6H-hP-t3b">
             <objects>
@@ -113,8 +108,6 @@
             </objects>
             <point key="canvasLocation" x="2893" y="1639"/>
         </scene>
-<<<<<<< Updated upstream
-=======
         <!--My Posts View Controller-->
         <scene sceneID="t0v-9o-lJp">
             <objects>
@@ -192,7 +185,6 @@
             </objects>
             <point key="canvasLocation" x="4519" y="1635"/>
         </scene>
->>>>>>> Stashed changes
         <!--Others Profile View Controller-->
         <scene sceneID="MqC-HL-7v4">
             <objects>
@@ -230,10 +222,6 @@
             </objects>
             <point key="canvasLocation" x="3690" y="909"/>
         </scene>
-<<<<<<< Updated upstream
-=======
->>>>>>> Stashed changes
->>>>>>> Stashed changes
         <!--Item-->
         <scene sceneID="BFG-DT-NJj">
             <objects>
