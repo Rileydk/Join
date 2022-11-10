@@ -1,36 +1,41 @@
 //
-//  MyPostsViewController.swift
+//  MyApplicationsViewController.swift
 //  Join
 //
-//  Created by Riley Lai on 2022/11/9.
+//  Created by Riley Lai on 2022/11/10.
 //
 
 import UIKit
 
-class MyPostsViewController: BaseViewController {
+class MyApplicationsViewController: BaseViewController {
     enum Section: CaseIterable {
-        case myPosts
+        case myApplications
     }
 
     enum Item: Hashable {
-        case post(Project)
+        case myApplication(Project)
     }
+
+    typealias ApplicationsDatasource = UICollectionViewDiffableDataSource<Section, Item>
+    private var datasource: ApplicationsDatasource!
+    let firebaseManager = FirebaseManager.shared
+    var projects = [Project]()
 
     @IBOutlet weak var collectionView: UICollectionView! {
         didSet {
             collectionView.register(
-                UINib(nibName: IdeaCell.identifier, bundle: nil), forCellWithReuseIdentifier: IdeaCell.identifier
+                UINib(nibName: RecommendationCell.identifier, bundle: nil),
+                forCellWithReuseIdentifier: RecommendationCell.identifier
             )
-            collectionView.setCollectionViewLayout(createLayout(), animated: false)
+            collectionView.register(
+                UINib(nibName: IdeaCell.identifier, bundle: nil),
+                forCellWithReuseIdentifier: IdeaCell.identifier
+            )
+            collectionView.setCollectionViewLayout(createLayout(), animated: true)
             collectionView.delegate = self
             configureDataSource()
         }
     }
-
-    typealias PostsDatasource = UICollectionViewDiffableDataSource<Section, Item>
-    private var datasource: PostsDatasource!
-    let firebaseManager = FirebaseManager.shared
-    var myPosts = [Project]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,43 +44,20 @@ class MyPostsViewController: BaseViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        getProjects()
+        getMyApplications()
     }
-
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        if segue.identifier == SegueIdentifier.GoProjectDetailPage {
-//            guard let detailVC = segue.destination as? ProjectDetailsViewController,
-//                  let project = sender as? Project else {
-//                fatalError("Cannot create ProjectDetailsVC")
-//            }
-//            detailVC.project = project
-//        }
-//    }
 
     func layoutViews() {
-        title = "我發佈的專案"
+        title = "我的應徵紀錄"
     }
 
-    func getProjects() {
-        firebaseManager.getAllMyProjectsID { [weak self] result in
+    func getMyApplications() {
+        firebaseManager.getAllMyApplications { [weak self] result in
             switch result {
-            case .success(let postsItems):
-                let projectsID = postsItems.map { $0.projectID }
-                guard !projectsID.isEmpty else {
-                    print("No projects")
-                    return
-                }
-                self?.firebaseManager.getAllMyProjects(projectsID: projectsID) { [weak self] result in
-                    switch result {
-                    case .success(let posts):
-                        self?.myPosts = posts
-                        self?.updateDatasource()
-                    case .failure(let err):
-                        print(err)
-                    }
-                }
+            case .success(let projects):
+                self?.projects = projects
+                self?.updateDatasource()
             case .failure(let err):
-                print("failed")
                 print(err)
             }
         }
@@ -83,8 +65,8 @@ class MyPostsViewController: BaseViewController {
 }
 
 // MARK: - Layout
-extension MyPostsViewController {
-    func createPostsSection() -> NSCollectionLayoutSection {
+extension MyApplicationsViewController {
+    func createMyApplicationSection() -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1),
             heightDimension: .fractionalHeight(1)
@@ -105,8 +87,8 @@ extension MyPostsViewController {
         let section = datasource.snapshot().sectionIdentifiers[index]
 
         switch section {
-        case .myPosts:
-            return createPostsSection()
+        case .myApplications:
+            return createMyApplicationSection()
         }
     }
 
@@ -118,10 +100,10 @@ extension MyPostsViewController {
 }
 
 // MARK: - Data Source
-extension MyPostsViewController {
+extension MyApplicationsViewController {
     func configureDataSource() {
         // swiftlint:disable line_length
-        datasource = PostsDatasource(collectionView: collectionView) { [weak self] (collectionView, indexPath, idea) -> UICollectionViewCell? in
+        datasource = ApplicationsDatasource(collectionView: collectionView) { [weak self] (collectionView, indexPath, idea) -> UICollectionViewCell? in
             return self?.createCell(collectionView: collectionView, indexPath: indexPath, item: idea)
         }
 
@@ -131,7 +113,7 @@ extension MyPostsViewController {
     // swiftlint:disable line_length
     func createCell(collectionView: UICollectionView ,indexPath: IndexPath, item: Item) -> UICollectionViewCell {
         switch item {
-        case .post(let project):
+        case .myApplication(let project):
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: IdeaCell.identifier, for: indexPath) as? IdeaCell else {
                 fatalError("Cannot create Idea Cell")
             }
@@ -143,23 +125,23 @@ extension MyPostsViewController {
     func updateDatasource() {
         var snapshot = NSDiffableDataSourceSnapshot<Section, Item>()
         snapshot.appendSections(Section.allCases)
-        snapshot.appendItems(myPosts.map { .post($0) }, toSection: .myPosts)
+        snapshot.appendItems(projects.map { .myApplication($0) }, toSection: .myApplications)
 
         datasource.apply(snapshot, animatingDifferences: false)
     }
 }
 
 // MARK: - Collection View Delegate
-extension MyPostsViewController: UICollectionViewDelegate {
+extension MyApplicationsViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let section = Section.allCases[indexPath.section]
         switch section {
-        case .myPosts:
-            let personalStoryboard = UIStoryboard(name: StoryboardCategory.personal.rawValue, bundle: nil)
-            guard let detailVC = personalStoryboard.instantiateViewController(withIdentifier: MyPostsDetailViewController.identifier) as? MyPostsDetailViewController else {
+        case .myApplications:
+            let findIdeasStoryboard = UIStoryboard(name: StoryboardCategory.findIdeas.rawValue, bundle: nil)
+            guard let detailVC = findIdeasStoryboard.instantiateViewController(withIdentifier: ProjectDetailsViewController.identifier) as? ProjectDetailsViewController else {
                 fatalError("Cannot create my post detail vc")
             }
-            detailVC.project = myPosts[indexPath.row]
+            detailVC.project = projects[indexPath.row]
             navigationController?.pushViewController(detailVC, animated: true)
         }
     }

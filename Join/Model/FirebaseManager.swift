@@ -854,4 +854,27 @@ class FirebaseManager {
             }
         }
     }
+
+    func getAllMyApplications(completion: @escaping (Result<[Project], Error>) -> Void) {
+        let ref = FirestoreEndpoint.projects.ref
+        ref.whereField("applicants", arrayContains: myAccount.id).getDocuments { (snapshot, err) in
+            if let err = err {
+                completion(.failure(err))
+                return
+            }
+            if let snapshot = snapshot {
+                let projects: [Project] = snapshot.documents.compactMap {
+                    do {
+                        return try $0.data(as: Project.self, decoder: FirebaseManager.decoder)
+                    } catch {
+                        completion(.failure(error))
+                        return nil
+                    }
+                }
+                completion(.success(projects))
+            } else {
+                completion(.failure(CommonError.noValidQuerysnapshot))
+            }
+        }
+    }
 }

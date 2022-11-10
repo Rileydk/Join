@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ProjectDetailsViewController: UIViewController {
+class ProjectDetailsViewController: BaseViewController {
     enum Section: CaseIterable {
         case bigImage
 //        case categories

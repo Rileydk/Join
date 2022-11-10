@@ -60,6 +60,7 @@
 		BF9A8691291BCF9F00BF934D /* MyPostsDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9A8690291BCF9F00BF934D /* MyPostsDetailViewController.swift */; };
 		BF9A8697291BD13400BF934D /* MyApplicantCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9A8695291BD13400BF934D /* MyApplicantCell.swift */; };
 		BF9A8698291BD13400BF934D /* MyApplicantCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF9A8696291BD13400BF934D /* MyApplicantCell.xib */; };
+		BF9A869B291C9DE200BF934D /* MyApplicationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9A869A291C9DE200BF934D /* MyApplicationsViewController.swift */; };
 		BFF8A4AE2913A92300ADC950 /* ProjectDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF8A4AD2913A92300ADC950 /* ProjectDetailsViewController.swift */; };
 		BFF8A4B32913AD3000ADC950 /* BigImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF8A4B12913AD3000ADC950 /* BigImageCell.swift */; };
 		BFF8A4B42913AD3000ADC950 /* BigImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BFF8A4B22913AD3000ADC950 /* BigImageCell.xib */; };
@@ -77,9 +78,6 @@
 		BFF8A4D02914C2E300ADC950 /* PersonalProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF8A4CF2914C2E300ADC950 /* PersonalProfileViewController.swift */; };
 		BFF8A4D32914C79900ADC950 /* PersonBasicCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF8A4D12914C79900ADC950 /* PersonBasicCell.swift */; };
 		BFF8A4D42914C79900ADC950 /* PersonBasicCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BFF8A4D22914C79900ADC950 /* PersonBasicCell.xib */; };
-		BFF8A4D62915009B00ADC950 /* OthersProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF8A4D52915009B00ADC950 /* OthersProfileViewController.swift */; };
-		BFF8A4D92915036000ADC950 /* ProjectContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF8A4D72915036000ADC950 /* ProjectContactCell.swift */; };
-		BFF8A4DA2915036000ADC950 /* ProjectContactCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BFF8A4D82915036000ADC950 /* ProjectContactCell.xib */; };
 		BFF8A4D62915009B00ADC950 /* OthersProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF8A4D52915009B00ADC950 /* OthersProfileViewController.swift */; };
 		BFF8A4D92915036000ADC950 /* ContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF8A4D72915036000ADC950 /* ContactCell.swift */; };
 		BFF8A4DA2915036000ADC950 /* ContactCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BFF8A4D82915036000ADC950 /* ContactCell.xib */; };
@@ -155,6 +153,7 @@
 		BF9A8690291BCF9F00BF934D /* MyPostsDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPostsDetailViewController.swift; sourceTree = "<group>"; };
 		BF9A8695291BD13400BF934D /* MyApplicantCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyApplicantCell.swift; sourceTree = "<group>"; };
 		BF9A8696291BD13400BF934D /* MyApplicantCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MyApplicantCell.xib; sourceTree = "<group>"; };
+		BF9A869A291C9DE200BF934D /* MyApplicationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyApplicationsViewController.swift; sourceTree = "<group>"; };
 		BFF8A4AD2913A92300ADC950 /* ProjectDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectDetailsViewController.swift; sourceTree = "<group>"; };
 		BFF8A4B12913AD3000ADC950 /* BigImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigImageCell.swift; sourceTree = "<group>"; };
 		BFF8A4B22913AD3000ADC950 /* BigImageCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BigImageCell.xib; sourceTree = "<group>"; };
@@ -172,9 +171,6 @@
 		BFF8A4CF2914C2E300ADC950 /* PersonalProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalProfileViewController.swift; sourceTree = "<group>"; };
 		BFF8A4D12914C79900ADC950 /* PersonBasicCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonBasicCell.swift; sourceTree = "<group>"; };
 		BFF8A4D22914C79900ADC950 /* PersonBasicCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PersonBasicCell.xib; sourceTree = "<group>"; };
-		BFF8A4D52915009B00ADC950 /* OthersProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OthersProfileViewController.swift; sourceTree = "<group>"; };
-		BFF8A4D72915036000ADC950 /* ProjectContactCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectContactCell.swift; sourceTree = "<group>"; };
-		BFF8A4D82915036000ADC950 /* ProjectContactCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProjectContactCell.xib; sourceTree = "<group>"; };
 		BFF8A4D52915009B00ADC950 /* OthersProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OthersProfileViewController.swift; sourceTree = "<group>"; };
 		BFF8A4D72915036000ADC950 /* ContactCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCell.swift; sourceTree = "<group>"; };
 		BFF8A4D82915036000ADC950 /* ContactCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ContactCell.xib; sourceTree = "<group>"; };
@@ -412,8 +408,6 @@
 				BFF8A4B92913AE9D00ADC950 /* DetailTitleHeaderView.xib */,
 				BFF8A4BD2913B46600ADC950 /* JoinButtonCell.swift */,
 				BFF8A4BE2913B46600ADC950 /* JoinButtonCell.xib */,
-				BFF8A4D72915036000ADC950 /* ProjectContactCell.swift */,
-				BFF8A4D82915036000ADC950 /* ProjectContactCell.xib */,
 				BFF8A4D72915036000ADC950 /* ContactCell.swift */,
 				BFF8A4D82915036000ADC950 /* ContactCell.xib */,
 			);
@@ -447,9 +441,18 @@
 			path = MyPosts;
 			sourceTree = "<group>";
 		};
+		BF9A8699291C9DAB00BF934D /* MyApplications */ = {
+			isa = PBXGroup;
+			children = (
+				BF9A869A291C9DE200BF934D /* MyApplicationsViewController.swift */,
+			);
+			path = MyApplications;
+			sourceTree = "<group>";
+		};
 		BFF8A4C32913EC6000ADC950 /* Personal */ = {
 			isa = PBXGroup;
 			children = (
+				BF9A8699291C9DAB00BF934D /* MyApplications */,
 				BF9A868F291BCF8700BF934D /* MyPosts */,
 				BFF8A4C42913EDB800ADC950 /* PersonalEntryViewController.swift */,
 				BFF8A4CF2914C2E300ADC950 /* PersonalProfileViewController.swift */,
@@ -462,7 +465,6 @@
 		BFF8A4C62913EE1500ADC950 /* Personal */ = {
 			isa = PBXGroup;
 			children = (
-				BF9A86752918FA7100BF934D /* FriendsList */,
 				BF9A8692291BD0F000BF934D /* MyPosts */,
 				BF9A86752918FA7100BF934D /* FriendsList */,
 				BFF8A4C72913EE4C00ADC950 /* PersonalMainThumbnailCell.swift */,
@@ -575,7 +577,7 @@
 				BF42FA41290BE2AC00501789 /* LaunchScreen.storyboard in Resources */,
 				BFF8A4EB29164BF500ADC950 /* MessageCell.xib in Resources */,
 				BFF8A4BA2913AE9D00ADC950 /* DetailTitleHeaderView.xib in Resources */,
-				BFF8A4DA2915036000ADC950 /* ProjectContactCell.xib in Resources */,
+				BFF8A4DA2915036000ADC950 /* ContactCell.xib in Resources */,
 				BFF8A4DA2915036000ADC950 /* ContactCell.xib in Resources */,
 				BF42FA58290CEA5900501789 /* FindIdeas.storyboard in Resources */,
 				BFF8A4F72917992000ADC950 /* ChatListCell.xib in Resources */,
@@ -670,6 +672,7 @@
 				BF42FA67290D04EF00501789 /* FindPartnersFormSections.swift in Sources */,
 				BF42FACD291154B500501789 /* Date+Ext.swift in Sources */,
 				BF42FA56290CE89500501789 /* TabBarController.swift in Sources */,
+				BF9A869B291C9DE200BF934D /* MyApplicationsViewController.swift in Sources */,
 				BFF8A4CD2913F32600ADC950 /* GoNextPageButtonCell.swift in Sources */,
 				BF42FA7D290D2ADB00501789 /* MultilineInputCell.swift in Sources */,
 				BFF8A4EE29164DCB00ADC950 /* MyMessageCell.swift in Sources */,
@@ -678,7 +681,7 @@
 				BFF8A4B32913AD3000ADC950 /* BigImageCell.swift in Sources */,
 				BF42FAD92912960D00501789 /* CollectionViewCell.swift in Sources */,
 				BF42FABC290FF32300501789 /* MemberCardViewController.swift in Sources */,
-				BFF8A4D92915036000ADC950 /* ProjectContactCell.swift in Sources */,
+				BFF8A4D92915036000ADC950 /* ContactCell.swift in Sources */,
 				BFF8A4F32917982B00ADC950 /* ChatListViewController.swift in Sources */,
 				BFF8A4D32914C79900ADC950 /* PersonBasicCell.swift in Sources */,
 				BF9A867D2918FB1800BF934D /* FriendCell.swift in Sources */,
