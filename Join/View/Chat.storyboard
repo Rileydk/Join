@@ -127,13 +127,52 @@
                             <constraint firstAttribute="bottom" secondItem="gBE-jc-geQ" secondAttribute="bottom" id="w4Z-Pj-IZT"/>
                         </constraints>
                     </view>
+                    <toolbarItems/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="tableView" destination="gBE-jc-geQ" id="xGq-1t-qgO"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aAI-X5-1dI" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2852" y="909"/>
+            <point key="canvasLocation" x="2032" y="1606"/>
+        </scene>
+        <!--Group Creation View Controller-->
+        <scene sceneID="hH5-lz-Ywy">
+            <objects>
+                <viewController storyboardIdentifier="GroupCreationViewController" id="hgG-TM-Y2V" customClass="GroupCreationViewController" customModule="Join" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="vnh-xY-h3H">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="g22-ia-9o9">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Of9-TK-gLJ">
+                                    <size key="itemSize" width="128" height="128"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells/>
+                            </collectionView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="tCK-IW-Tif"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="g22-ia-9o9" firstAttribute="leading" secondItem="tCK-IW-Tif" secondAttribute="leading" id="2ju-kb-bxb"/>
+                            <constraint firstAttribute="bottom" secondItem="g22-ia-9o9" secondAttribute="bottom" id="LUc-zJ-lx6"/>
+                            <constraint firstItem="tCK-IW-Tif" firstAttribute="trailing" secondItem="g22-ia-9o9" secondAttribute="trailing" id="hg2-iw-tAw"/>
+                            <constraint firstItem="g22-ia-9o9" firstAttribute="top" secondItem="vnh-xY-h3H" secondAttribute="top" id="hgB-Yt-e0Y"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="collectionView" destination="g22-ia-9o9" id="nEA-td-qzE"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ZOj-L0-Qd6" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2881" y="1606"/>
         </scene>
         <!--Item-->
         <scene sceneID="XYW-fG-2wx">

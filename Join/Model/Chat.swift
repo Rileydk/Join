@@ -32,7 +32,7 @@ enum ChatroomType: CaseIterable {
         switch self {
         case .unknown: return "UnknownChat"
         case .friend: return "Friends"
-        case .group: return "GroupChat"
+        case .group: return "GroupChatrooms"
         }
     }
 }
@@ -46,6 +46,24 @@ struct Chatroom: Codable {
         return [
             "id": id as Any,
             "member": member as Any
+        ]
+    }
+}
+
+struct GroupChatroom: Codable {
+    var id: ChatroomID
+    var name: String
+    var imageURL: URLString
+    var members: [UserID]
+    var admin: UserID
+    var messages: [Message]?
+
+    var toInitDict: [String: Any] {
+        return [
+            "id": id as Any,
+            "name": name as Any,
+            "image": imageURL as Any,
+            "members": members as Any
         ]
     }
 }

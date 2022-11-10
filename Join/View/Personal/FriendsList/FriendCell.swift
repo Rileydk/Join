@@ -26,7 +26,6 @@ class FriendCell: TableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        print("initial selected state", isSelected)
     }
 
     override func layoutSubviews() {
@@ -36,7 +35,6 @@ class FriendCell: TableViewCell {
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
     }
 
     func layoutCell(friend: User, source: Source) {

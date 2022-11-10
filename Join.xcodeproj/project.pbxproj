@@ -62,6 +62,9 @@
 		BF9A8698291BD13400BF934D /* MyApplicantCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF9A8696291BD13400BF934D /* MyApplicantCell.xib */; };
 		BF9A869B291C9DE200BF934D /* MyApplicationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9A869A291C9DE200BF934D /* MyApplicationsViewController.swift */; };
 		BF9A869D291CC9D000BF934D /* FriendSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9A869C291CC9D000BF934D /* FriendSelectionViewController.swift */; };
+		BF9A869F291CDE8300BF934D /* GroupCreationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9A869E291CDE8300BF934D /* GroupCreationViewController.swift */; };
+		BF9A86A3291CE06400BF934D /* GroupCreationHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9A86A1291CE06400BF934D /* GroupCreationHeaderCell.swift */; };
+		BF9A86A4291CE06400BF934D /* GroupCreationHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF9A86A2291CE06400BF934D /* GroupCreationHeaderCell.xib */; };
 		BFF8A4AE2913A92300ADC950 /* ProjectDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF8A4AD2913A92300ADC950 /* ProjectDetailsViewController.swift */; };
 		BFF8A4B32913AD3000ADC950 /* BigImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF8A4B12913AD3000ADC950 /* BigImageCell.swift */; };
 		BFF8A4B42913AD3000ADC950 /* BigImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BFF8A4B22913AD3000ADC950 /* BigImageCell.xib */; };
@@ -156,6 +159,9 @@
 		BF9A8696291BD13400BF934D /* MyApplicantCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MyApplicantCell.xib; sourceTree = "<group>"; };
 		BF9A869A291C9DE200BF934D /* MyApplicationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyApplicationsViewController.swift; sourceTree = "<group>"; };
 		BF9A869C291CC9D000BF934D /* FriendSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendSelectionViewController.swift; sourceTree = "<group>"; };
+		BF9A869E291CDE8300BF934D /* GroupCreationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupCreationViewController.swift; sourceTree = "<group>"; };
+		BF9A86A1291CE06400BF934D /* GroupCreationHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupCreationHeaderCell.swift; sourceTree = "<group>"; };
+		BF9A86A2291CE06400BF934D /* GroupCreationHeaderCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GroupCreationHeaderCell.xib; sourceTree = "<group>"; };
 		BFF8A4AD2913A92300ADC950 /* ProjectDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectDetailsViewController.swift; sourceTree = "<group>"; };
 		BFF8A4B12913AD3000ADC950 /* BigImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigImageCell.swift; sourceTree = "<group>"; };
 		BFF8A4B22913AD3000ADC950 /* BigImageCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BigImageCell.xib; sourceTree = "<group>"; };
@@ -451,6 +457,15 @@
 			path = MyApplications;
 			sourceTree = "<group>";
 		};
+		BF9A86A0291CDF4900BF934D /* GroupChatroom */ = {
+			isa = PBXGroup;
+			children = (
+				BF9A869C291CC9D000BF934D /* FriendSelectionViewController.swift */,
+				BF9A869E291CDE8300BF934D /* GroupCreationViewController.swift */,
+			);
+			path = GroupChatroom;
+			sourceTree = "<group>";
+		};
 		BFF8A4C32913EC6000ADC950 /* Personal */ = {
 			isa = PBXGroup;
 			children = (
@@ -482,9 +497,9 @@
 		BFF8A4DB291633EE00ADC950 /* Chat */ = {
 			isa = PBXGroup;
 			children = (
+				BF9A86A0291CDF4900BF934D /* GroupChatroom */,
 				BFF8A4F22917982B00ADC950 /* ChatListViewController.swift */,
 				BFF8A4DC2916341D00ADC950 /* ChatroomViewController.swift */,
-				BF9A869C291CC9D000BF934D /* FriendSelectionViewController.swift */,
 			);
 			path = Chat;
 			sourceTree = "<group>";
@@ -501,6 +516,8 @@
 				BFF8A4ED29164DCB00ADC950 /* MyMessageCell.xib */,
 				BFF8A4F42917992000ADC950 /* ChatListCell.swift */,
 				BFF8A4F52917992000ADC950 /* ChatListCell.xib */,
+				BF9A86A1291CE06400BF934D /* GroupCreationHeaderCell.swift */,
+				BF9A86A2291CE06400BF934D /* GroupCreationHeaderCell.xib */,
 			);
 			path = Chat;
 			sourceTree = "<group>";
@@ -589,6 +606,7 @@
 				BFF8A4EF29164DCB00ADC950 /* MyMessageCell.xib in Resources */,
 				BF42FAC52910010000501789 /* AddNewCell.xib in Resources */,
 				BFF8A4D42914C79900ADC950 /* PersonBasicCell.xib in Resources */,
+				BF9A86A4291CE06400BF934D /* GroupCreationHeaderCell.xib in Resources */,
 				BFF8A4B42913AD3000ADC950 /* BigImageCell.xib in Resources */,
 				BF42FA5C290CED6C00501789 /* FindPartners.storyboard in Resources */,
 				BF42FAB8290FBE2D00501789 /* AddNewLineSectionCell.xib in Resources */,
@@ -681,6 +699,7 @@
 				BFF8A4EE29164DCB00ADC950 /* MyMessageCell.swift in Sources */,
 				BF42FA39290BE2AA00501789 /* FindIdeasViewController.swift in Sources */,
 				BFF8A4E4291636EE00ADC950 /* MessageTypingView.swift in Sources */,
+				BF9A869F291CDE8300BF934D /* GroupCreationViewController.swift in Sources */,
 				BFF8A4B32913AD3000ADC950 /* BigImageCell.swift in Sources */,
 				BF42FAD92912960D00501789 /* CollectionViewCell.swift in Sources */,
 				BF42FABC290FF32300501789 /* MemberCardViewController.swift in Sources */,
@@ -701,6 +720,7 @@
 				BFF8A4D32914C79900ADC950 /* PersonBasicCell.swift in Sources */,
 				BF9A868E291BAD1500BF934D /* MyPostsViewController.swift in Sources */,
 				BF9A867D2918FB1800BF934D /* FriendCell.swift in Sources */,
+				BF9A86A3291CE06400BF934D /* GroupCreationHeaderCell.swift in Sources */,
 				BF42FACF2912557500501789 /* UIImage+Ext.swift in Sources */,
 				BF42FAB2290FAC2000501789 /* Project.swift in Sources */,
 				BF9A8691291BCF9F00BF934D /* MyPostsDetailViewController.swift in Sources */,

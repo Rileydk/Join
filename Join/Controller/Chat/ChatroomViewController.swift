@@ -78,9 +78,17 @@ class ChatroomViewController: BaseViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        // FIXME: - Not working
+        self.hidesBottomBarWhenPushed = true
+
         updateUserData()
         guard let chatroomID = chatroomID else { return }
         updateAllMessages(chatroomID: chatroomID)
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        self.hidesBottomBarWhenPushed = false
     }
 
     func updateUserData() {

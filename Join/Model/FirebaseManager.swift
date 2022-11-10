@@ -43,6 +43,7 @@ enum FirestoreEndpoint {
     case projects
     case users
     case chatrooms
+    case groupChatroom
     case myPosts
     case myFriends
     case myUnknownChat
@@ -58,6 +59,7 @@ enum FirestoreEndpoint {
 
         let projects = "Project"
         let chatrooms = "Chatroom"
+        let groupChatrooms = "GroupChatrooms"
         let posts = "Posts"
         let friends = "Friends"
         let unknownChat = "UnknownChat"
@@ -71,6 +73,8 @@ enum FirestoreEndpoint {
             return users
         case .chatrooms:
             return db.collection(chatrooms)
+        case .groupChatroom:
+            return db.collection(groupChatrooms)
         case .myPosts:
             return myDoc.collection(posts)
         case .myFriends:
@@ -96,7 +100,7 @@ class FirebaseManager {
     static let decoder = Firestore.Decoder()
     var newMessageListener: ListenerRegistration?
 
-    func uploadImage(image: Data, completion: @escaping (Result<String, Error>) -> Void) {
+    func uploadImage(image: Data, completion: @escaping (Result<URLString, Error>) -> Void) {
         let ref = Storage.storage().reference()
         let uuid = UUID()
         let imageRef = ref.child("\(uuid)")
@@ -882,6 +886,46 @@ class FirebaseManager {
             } else {
                 completion(.failure(CommonError.noValidQuerysnapshot))
             }
+        }
+    }
+
+    func createGroupChatroom(groupChatroom: GroupChatroom, completion: @escaping (Result<ChatroomID, Error>) -> Void) {
+        let groupChatroomsRef = FirestoreEndpoint.groupChatroom.ref
+        let chatroomID = groupChatroomsRef.document().documentID
+        var groupChatroom = groupChatroom
+        groupChatroom.id = chatroomID
+
+        let group = DispatchGroup()
+        group.enter()
+        groupChatroomsRef.document(chatroomID).setData(groupChatroom.toInitDict) { err in
+            if let err = err {
+                group.leave()
+                group.notify(queue: .main) {
+                    completion(.failure(err))
+                }
+                return
+            }
+            group.leave()
+        }
+
+//        group.wait()
+        groupChatroom.members.forEach {
+            group.enter()
+            let ref = FirestoreEndpoint.users.ref
+            ref.document($0).collection("GroupChats").document(chatroomID).setData(["chatroomID": chatroomID]) { err in
+                if let err = err {
+                    group.leave()
+                    group.notify(queue: .main) {
+                        completion(.failure(err))
+                    }
+                    return
+                }
+                group.leave()
+            }
+        }
+
+        group.notify(queue: .main) {
+            completion(.success(chatroomID))
         }
     }
 }
