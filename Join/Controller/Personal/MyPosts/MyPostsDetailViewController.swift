@@ -135,7 +135,17 @@ extension MyPostsDetailViewController {
                 ) as? ContactCell else {
                 fatalError("Cannot create contact cell")
             }
-            cell.layoutCell(user: applicant)
+            cell.layoutCell(user: applicant, from: .myPosts)
+            cell.tapHandler = { [weak self] in
+                let personalStoryboard = UIStoryboard(name: StoryboardCategory.personal.rawValue, bundle: nil)
+                guard let profileVC = personalStoryboard.instantiateViewController(
+                    withIdentifier: OthersProfileViewController.identifier
+                ) as? OthersProfileViewController else {
+                    fatalError("Cannot create others profile vc")
+                }
+                profileVC.userData = self?.applicants[indexPath.row]
+                self?.navigationController?.pushViewController(profileVC, animated: true)
+            }
             return cell
         }
     }

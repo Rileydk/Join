@@ -73,6 +73,7 @@
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
+                <outlet property="messageButton" destination="SV4-Vk-044" id="cqg-81-ld7"/>
                 <outlet property="nameButton" destination="5Za-l2-8Yg" id="peZ-jf-UgS"/>
                 <outlet property="thumbnailImageView" destination="iDO-fW-XP1" id="lj0-W2-jXM"/>
             </connections>

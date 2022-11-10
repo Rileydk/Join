@@ -8,11 +8,16 @@
 import UIKit
 
 class ContactCell: TableViewCell {
-    let firebaseManager = FirebaseManager.shared
+    enum Source {
+        case projectDetails
+        case myPosts
+    }
 
     @IBOutlet weak var thumbnailImageView: UIImageView!
     @IBOutlet weak var nameButton: UIButton!
+    @IBOutlet weak var messageButton: UIButton!
 
+    let firebaseManager = FirebaseManager.shared
     var tapHandler: (() -> Void)?
     var messageHandler: (() -> Void)?
 
@@ -33,7 +38,7 @@ class ContactCell: TableViewCell {
         thumbnailImageView.layer.cornerRadius = thumbnailImageView.frame.size.width / 2
     }
 
-    func layoutCell(user: User) {
+    func layoutCell(user: User, from source: Source) {
         firebaseManager.downloadImage(urlString: user.thumbnailURL) { [weak self] result in
             switch result {
             case .success(let image):
@@ -43,6 +48,11 @@ class ContactCell: TableViewCell {
             }
         }
         nameButton.setTitle(user.name, for: .normal)
+        if source == .myPosts || user.id == myAccount.id {
+            messageButton.isHidden = true
+        } else {
+            messageButton.isHidden = false
+        }
     }
 
     @IBAction func goProfilePage(_ sender: UIButton) {

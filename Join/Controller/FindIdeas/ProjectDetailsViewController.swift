@@ -183,7 +183,7 @@ extension ProjectDetailsViewController {
                 for: indexPath) as? ContactCell else {
                 fatalError("Cannot create project contact cell")
             }
-            cell.layoutCell(user: user)
+            cell.layoutCell(user: user, from: .projectDetails)
             cell.tapHandler = { [weak self] in
                 let personalStoryboard = UIStoryboard(name: StoryboardCategory.personal.rawValue, bundle: nil)
                 guard let profileVC = personalStoryboard.instantiateViewController(
