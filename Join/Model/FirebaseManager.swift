@@ -907,7 +907,7 @@ class FirebaseManager {
         var groupChatroom = groupChatroom
         groupChatroom.id = chatroomID
 
-        firebaseQueue.async {
+        firebaseQueue.async { [weak self] in
             let group = DispatchGroup()
             group.enter()
             groupChatroomsRef.document(chatroomID).setData(groupChatroom.toDict) { err in
@@ -921,8 +921,44 @@ class FirebaseManager {
                 group.leave()
             }
 
+            group.enter()
+            self?.addNewGroupChatMembers(chatroomID: chatroomID, members: groupChatroom.members) { result in
+                switch result {
+                case .success:
+                    group.leave()
+                case .failure(let err):
+                    group.leave()
+                    group.notify(queue: .main) {
+                        completion(.failure(err))
+                    }
+                }
+            }
+
+            group.notify(queue: .main) {
+                completion(.success(chatroomID))
+            }
+        }
+    }
+
+    func addNewGroupChatMembers(chatroomID: ChatroomID,members: [GroupChatMember], completion: @escaping (Result<String, Error>) -> Void) {
+        firebaseQueue.async {
+            let group = DispatchGroup()
+            group.enter()
+            let ref = FirestoreEndpoint.groupChatroom.ref
+            let membersDict = members.map { $0.toDict }
+            ref.document(chatroomID).updateData(["members": FieldValue.arrayUnion(membersDict)]) { err in
+                if let err = err {
+                    group.leave()
+                    group.notify(queue: .main) {
+                        completion(.failure(err))
+                    }
+                    return
+                }
+                group.leave()
+            }
+
             group.wait()
-            groupChatroom.members.forEach {
+            members.forEach {
                 group.enter()
                 let ref = FirestoreEndpoint.users.ref
                 ref.document($0.id).collection("GroupChats").document(chatroomID).setData(["chatroomID": chatroomID]) { err in
@@ -938,13 +974,9 @@ class FirebaseManager {
             }
 
             group.notify(queue: .main) {
-                completion(.success(chatroomID))
+                completion(.success("Success"))
             }
         }
-    }
-
-    func addNewGroupChatMembers(members: [GroupChatMember], completion: @escaping (Result<String, Error>) -> Void) {
-
     }
 
     func getGroupChatroomInfo(chatroomID: ChatroomID, completion: @escaping (Result<GroupChatroom, Error>) -> Void) {

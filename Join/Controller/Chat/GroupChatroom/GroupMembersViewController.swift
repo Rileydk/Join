@@ -24,6 +24,7 @@ class GroupMembersViewController: BaseViewController {
         }
     }
 
+    var chatroomID: ChatroomID?
     var members = [User]()
 
     override func viewDidLoad() {
@@ -52,6 +53,20 @@ extension GroupMembersViewController: UITableViewDataSource {
                 withIdentifier: AddNewMemberCell.identifier, for: indexPath
                 ) as? AddNewMemberCell else {
                 fatalError("Cannot create add new member cell")
+            }
+            cell.tapHandler = { [weak self] in
+                guard let strongSelf = self,
+                      let chatroomID = strongSelf.chatroomID else { return }
+                let chatStoryboard = UIStoryboard(name: StoryboardCategory.chat.rawValue, bundle: nil)
+                guard let friendSelectionVC = chatStoryboard.instantiateViewController(
+                    withIdentifier: FriendSelectionViewController.identifier
+                ) as? FriendSelectionViewController else {
+                    fatalError("Cannot create friend selection vc")
+                }
+                friendSelectionVC.source = .addNewMembers
+                friendSelectionVC.members = strongSelf.members
+                friendSelectionVC.chatroomID = chatroomID
+                strongSelf.navigationController?.pushViewController(friendSelectionVC, animated: true)
             }
             return cell
         } else {

@@ -75,7 +75,6 @@ class GroupCreationViewController: BaseViewController {
                     switch result {
                     case .success(let imageURL):
                         strongSelf.groupChatroom.imageURL = imageURL
-                        print("get back image URL: ", strongSelf.groupChatroom.imageURL)
                         group.leave()
                     case .failure(let err):
                         group.leave()

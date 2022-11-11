@@ -10,6 +10,8 @@ import UIKit
 class AddNewMemberCell: TableViewCell {
     @IBOutlet weak var addButton: UIButton!
     @IBOutlet weak var titleLabel: UILabel!
+
+    var tapHandler: (() -> Void)?
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -23,5 +25,6 @@ class AddNewMemberCell: TableViewCell {
     }
     
     @IBAction func addNewMembers(_ sender: UIButton) {
+        tapHandler?()
     }
 }

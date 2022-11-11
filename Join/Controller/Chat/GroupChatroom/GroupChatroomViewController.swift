@@ -68,7 +68,10 @@ class GroupChatroomViewController: BaseViewController {
     }
 
     func layoutViews() {
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "line.horizontal.3.decrease.circle"), style: .plain, target: self, action: #selector(openSettingPage))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            image: UIImage(systemName: "line.horizontal.3.decrease.circle"),
+            style: .plain, target: self, action: #selector(openSettingPage)
+        )
     }
 
     func getNeccesaryInfo() {
@@ -168,11 +171,13 @@ class GroupChatroomViewController: BaseViewController {
     }
 
     @objc func openSettingPage() {
+        guard let chatroomID = chatroomID else { return }
         let chatStoryboard = UIStoryboard(name: StoryboardCategory.chat.rawValue, bundle: nil)
         guard let groupMembersVC = chatStoryboard.instantiateViewController(withIdentifier: GroupMembersViewController.identifier) as? GroupMembersViewController else {
             fatalError("Cannot load group members vc")
         }
         groupMembersVC.members = members
+        groupMembersVC.chatroomID = chatroomID
         navigationController?.pushViewController(groupMembersVC, animated: true)
     }
 }

@@ -6,10 +6,20 @@
 //
 
 import UIKit
+import ProgressHUD
 
 class FriendSelectionViewController: BaseViewController {
+    enum Source {
+        case createNewGroupChat
+        case addNewMembers
+    }
+
     let firebaseManager = FirebaseManager.shared
+
+    var source: Source = .createNewGroupChat
     var friends = [User]()
+    var members = [User]()
+    var chatroomID: ChatroomID?
     var filteredFriends = [User]()
     var selectedIndexes = [Int]()
     var selectedFriends = [User]()
@@ -55,9 +65,15 @@ class FriendSelectionViewController: BaseViewController {
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = false
 
-        navigationItem.rightBarButtonItem = UIBarButtonItem(
-            title: "Next", style: .done, target: self, action: #selector(prepareGroupChatroom)
-        )
+        if source == .createNewGroupChat {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(
+                title: "Next", style: .done, target: self, action: #selector(prepareGroupChatroom)
+            )
+        } else {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(
+                title: "Invite", style: .done, target: self, action: #selector(addNewMembers)
+            )
+        }
     }
 
     @objc func prepareGroupChatroom() {
@@ -69,6 +85,28 @@ class FriendSelectionViewController: BaseViewController {
         }
         groupCreationVC.selectedFriends = selectedFriends
         navigationController?.pushViewController(groupCreationVC, animated: true)
+    }
+
+    @objc func addNewMembers() {
+        guard let chatroomID = chatroomID else { return }
+        let newMembers = selectedFriends.map { GroupChatMember(id: $0.id, currentStatus: .join) }
+        // swiftlint:disable line_length
+        firebaseManager.addNewGroupChatMembers(chatroomID: chatroomID, members: newMembers) { [weak self] result in
+            switch result {
+            case .success:
+                ProgressHUD.showSucceed()
+
+                guard let chatroomVC = self?.navigationController?.viewControllers
+                    .dropLast().dropLast().last! else {
+                    fatalError("Cannot go back to chatroom vc")
+                }
+                self?.navigationController?.popToViewController(chatroomVC, animated: true)
+
+            case .failure(let err):
+                ProgressHUD.showError()
+                print(err)
+            }
+        }
     }
 }
 
@@ -82,6 +120,8 @@ extension FriendSelectionViewController: UITableViewDelegate {
         guard let cell = tableView.cellForRow(at: indexPath) as? FriendCell else {
             fatalError("Cannot get friend cell")
         }
+
+        if members.contains(filteredFriends[indexPath.row]) { return }
 
         if let index = selectedFriends.firstIndex(of: filteredFriends[indexPath.row]) {
             selectedFriends.remove(at: index)
@@ -108,8 +148,10 @@ extension FriendSelectionViewController: UITableViewDataSource {
         ) as? FriendCell else {
             fatalError("Cannot create friend cell")
         }
+
+        let isMember = members.contains(friend)
         cell.layoutCell(
-            friend: friend, source: .friendSelection,
+            friend: friend, source: .friendSelection, isMember: isMember,
             isSelectedNow: selectedFriends.contains(filteredFriends[indexPath.row])
         )
         return cell

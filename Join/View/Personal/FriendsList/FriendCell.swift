@@ -54,8 +54,19 @@ class FriendCell: TableViewCell {
         }
     }
 
-    func layoutCell(friend: User, source: Source, isSelectedNow: Bool) {
+    func layoutCell(friend: User, source: Source, isMember: Bool, isSelectedNow: Bool) {
         layoutCell(friend: friend, source: source)
+
+        if isMember {
+            print("isMember")
+            selectImageView.isHidden = true
+            thumbnailImageView.alpha = 0.5
+            nameLabel.textColor = .lightGray
+            selectionStyle = .none
+        } else {
+            selectImageView.isHidden = false
+        }
+
         if isSelectedNow {
             selectImageView.image = UIImage(systemName: "checkmark.circle.fill")
         } else {
