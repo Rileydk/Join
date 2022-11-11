@@ -50,6 +50,7 @@ class GroupChatroomViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        layoutViews()
         listenToNewMessages()
     }
 
@@ -64,6 +65,10 @@ class GroupChatroomViewController: BaseViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         tabBarController?.tabBar.isHidden = false
+    }
+
+    func layoutViews() {
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "line.horizontal.3.decrease.circle"), style: .plain, target: self, action: #selector(openSettingPage))
     }
 
     func getNeccesaryInfo() {
@@ -161,6 +166,15 @@ class GroupChatroomViewController: BaseViewController {
             }
         }
     }
+
+    @objc func openSettingPage() {
+        let chatStoryboard = UIStoryboard(name: StoryboardCategory.chat.rawValue, bundle: nil)
+        guard let groupMembersVC = chatStoryboard.instantiateViewController(withIdentifier: GroupMembersViewController.identifier) as? GroupMembersViewController else {
+            fatalError("Cannot load group members vc")
+        }
+        groupMembersVC.members = members
+        navigationController?.pushViewController(groupMembersVC, animated: true)
+    }
 }
 
 // MARK: - Table View Datasource
@@ -187,9 +201,6 @@ extension GroupChatroomViewController: UITableViewDataSource {
                 fatalError("Cannot create message cell")
             }
 
-//            print("sender: ", message.sender)
-//            print("members: ", members)
-//            let member = members.first { $0.id == message.sender }!
             cell.layoutCell(message: wholeInfoMessages[indexPath.row])
 //            cell.tapHandler = { [weak self] in
 //                let personalStoryboard = UIStoryboard(name: StoryboardCategory.personal.rawValue, bundle: nil)

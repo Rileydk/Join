@@ -146,6 +146,36 @@
             </objects>
             <point key="canvasLocation" x="2879.7101449275365" y="908.70535714285711"/>
         </scene>
+        <!--Group Members View Controller-->
+        <scene sceneID="oRo-wf-b3K">
+            <objects>
+                <viewController storyboardIdentifier="GroupMembersViewController" id="qQk-qG-DsE" customClass="GroupMembersViewController" customModule="Join" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="yIt-xx-soe">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="dXj-YW-Tx4">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </tableView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="59x-ua-KnM"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="dXj-YW-Tx4" firstAttribute="top" secondItem="yIt-xx-soe" secondAttribute="top" id="LYd-pA-1Yi"/>
+                            <constraint firstItem="59x-ua-KnM" firstAttribute="trailing" secondItem="dXj-YW-Tx4" secondAttribute="trailing" id="Up6-RE-gsw"/>
+                            <constraint firstItem="dXj-YW-Tx4" firstAttribute="leading" secondItem="59x-ua-KnM" secondAttribute="leading" id="c5e-8L-N0E"/>
+                            <constraint firstAttribute="bottom" secondItem="dXj-YW-Tx4" secondAttribute="bottom" id="sxc-JA-A3j"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="tableView" destination="dXj-YW-Tx4" id="wV7-Vn-ogU"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="E6n-fA-333" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3722" y="909"/>
+        </scene>
         <!--Friend Selection View Controller-->
         <scene sceneID="NiX-NT-qQ5">
             <objects>
