@@ -61,7 +61,7 @@ struct GroupChatroom: Codable {
         return [
             "id": id as Any,
             "name": name as Any,
-            "image": imageURL as Any,
+            "imageURL": imageURL as Any,
             "members": members as Any,
             "admin": admin as Any
         ]
@@ -95,4 +95,14 @@ struct MessageListItem: Codable {
     let userID: UserID
     let latestMessage: Message
     let chatroomID: ChatroomID
+}
+
+struct SavedGroupChat: Codable {
+    var chatroomID: ChatroomID
+}
+
+struct GroupMessageListItem {
+    let chatroomID: ChatroomID
+    var chatroom: GroupChatroom?
+    let latestMessage: Message
 }

@@ -72,7 +72,6 @@ class GroupCreationViewController: BaseViewController {
                     strongSelf.firebaseManager.createGroupChatroom(groupChatroom: strongSelf.groupChatroom) { [weak self] result in
                         switch result {
                         case .success(let chatroomID):
-                            print("Successfully create group chatroom")
                             ProgressHUD.showSuccess()
 
                             let chatStoryboard = UIStoryboard(name: StoryboardCategory.chat.rawValue, bundle: nil)

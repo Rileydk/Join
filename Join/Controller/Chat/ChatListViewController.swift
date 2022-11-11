@@ -34,6 +34,12 @@ class ChatListViewController: BaseViewController {
             tableView.reloadData()
         }
     }
+    var groupMessageList = [GroupMessageListItem]() {
+        didSet {
+            print("reload")
+            tableView.reloadData()
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,13 +60,64 @@ class ChatListViewController: BaseViewController {
     }
 
     func getMessageList() {
-        firebaseManager.getAllLatestMessages(type: type) { [unowned self] result in
-            switch result {
-            case .success(let listItem):
-                self.messageList = listItem
-            case .failure(let error):
-                self.messageList = []
-                print(error)
+        if type == .group {
+            var chatroomIDsBox = [ChatroomID]()
+            var groupMessageListItems = [GroupMessageListItem]()
+
+            firebaseManager.firebaseQueue.async { [weak self] in
+                let group = DispatchGroup()
+                group.enter()
+                self?.firebaseManager.getAllSavedGroupChatroomIDs { result in
+                    switch result {
+                    case .success(let chatroomIDs):
+                        chatroomIDsBox = chatroomIDs
+                        group.leave()
+                    case .failure(let err):
+                        print(err)
+                        group.leave()
+                    }
+                }
+
+                group.wait()
+                group.enter()
+                self?.firebaseManager.getAllLatestGroupMessages(chatroomIDs: chatroomIDsBox) { result in
+                    switch result {
+                    case .success(let groupListItems):
+                        groupMessageListItems = groupListItems
+                        group.leave()
+                    case .failure(let err):
+                        print(err)
+                        group.leave()
+                    }
+                }
+
+                group.wait()
+                group.enter()
+                self?.firebaseManager.getAllGroupChatroomInfo(messagesItems: groupMessageListItems) { result in
+                    switch result {
+                    case .success(let groupListItems):
+                        groupMessageListItems = groupListItems
+                        group.leave()
+                    case .failure(let err):
+                        print(err)
+                        group.leave()
+                    }
+                }
+
+                group.notify(queue: .main) { [weak self] in
+                    self?.groupMessageList = groupMessageListItems
+                }
+            }
+
+        } else {
+            firebaseManager.getAllLatestMessages(type: type) { [unowned self] result in
+                switch result {
+                case .success(let listItem):
+                    self.messageList = listItem
+                case .failure(let error):
+                    self.messageList = []
+                    print(error)
+                }
             }
         }
     }
@@ -116,7 +173,11 @@ extension ChatListViewController: UITableViewDelegate {
 // MARK: - Table View Datasource
 extension ChatListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        messageList.count
+        if type == .group {
+            return groupMessageList.count
+        } else {
+            return messageList.count
+        }
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -125,7 +186,13 @@ extension ChatListViewController: UITableViewDataSource {
             for: indexPath) as? ChatListCell else {
             fatalError("Cannot create chat list cell")
         }
-        cell.layoutCell(messageItem: messageList[indexPath.row])
+        if type == .group {
+            cell.layoutCell(groupMessageItem: groupMessageList[indexPath.row])
+        } else {
+            cell.layoutCell(messageItem: messageList[indexPath.row])
+            return cell
+        }
+
         return cell
     }
 }

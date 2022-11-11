@@ -81,6 +81,7 @@ struct FindPartnersFormSections {
     static let noMessageError = "No Message"
     static let countIncorrectError = "Messages count not match with users"
     static let decodeFailedError = "Decode failed"
+    static let nilResultError = "nil result"
     // 這個似乎是錯誤的
     // static let datePickerLocale = "zh_TW"
 }
