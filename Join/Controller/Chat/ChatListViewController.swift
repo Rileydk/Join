@@ -36,7 +36,6 @@ class ChatListViewController: BaseViewController {
     }
     var groupMessageList = [GroupMessageListItem]() {
         didSet {
-            print("reload")
             tableView.reloadData()
         }
     }
@@ -105,6 +104,7 @@ class ChatListViewController: BaseViewController {
                 }
 
                 group.notify(queue: .main) { [weak self] in
+                    let groupMessageListItems = groupMessageListItems.filter { $0.chatroom != nil }
                     self?.groupMessageList = groupMessageListItems
                 }
             }
@@ -143,28 +143,45 @@ extension ChatListViewController: UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let userID = messageList[indexPath.row].userID
-        let chatroomID = messageList[indexPath.row].chatroomID
 
-        firebaseManager.getUserInfo(id: userID) { result in
-            switch result {
-            case .success(let user):
-                let chatStoryboard = UIStoryboard(name: StoryboardCategory.chat.rawValue, bundle: nil)
-                guard let chatVC = chatStoryboard.instantiateViewController(
-                    withIdentifier: ChatroomViewController.identifier
-                ) as? ChatroomViewController else {
-                    fatalError("Cannot create chatroom vc")
-                }
+        if type == .group {
+            let chatroomID = groupMessageList[indexPath.row].chatroomID
+            let chatroomName = groupMessageList[indexPath.row].chatroom!.name
+            let chatStoryboard = UIStoryboard(name: StoryboardCategory.chat.rawValue, bundle: nil)
+            guard let chatroomVC =  chatStoryboard.instantiateViewController(
+                withIdentifier: GroupChatroomViewController.identifier
+            ) as? GroupChatroomViewController else {
+                fatalError("Cannot get chatroom vc")
+            }
+            chatroomVC.chatroomID = chatroomID
+            chatroomVC.title = chatroomName
 
-                chatVC.userData = user
-                chatVC.chatroomID = chatroomID
-                self.hidesBottomBarWhenPushed = true
-                DispatchQueue.main.async { [unowned self] in
-                    self.hidesBottomBarWhenPushed = false
+            navigationController?.pushViewController(chatroomVC, animated: true)
+
+        } else {
+            let userID = messageList[indexPath.row].userID
+            let chatroomID = messageList[indexPath.row].chatroomID
+
+            firebaseManager.getUserInfo(id: userID) { result in
+                switch result {
+                case .success(let user):
+                    let chatStoryboard = UIStoryboard(name: StoryboardCategory.chat.rawValue, bundle: nil)
+                    guard let chatVC = chatStoryboard.instantiateViewController(
+                        withIdentifier: ChatroomViewController.identifier
+                    ) as? ChatroomViewController else {
+                        fatalError("Cannot create chatroom vc")
+                    }
+
+                    chatVC.userData = user
+                    chatVC.chatroomID = chatroomID
+                    self.hidesBottomBarWhenPushed = true
+                    DispatchQueue.main.async { [unowned self] in
+                        self.hidesBottomBarWhenPushed = false
+                    }
+                    self.navigationController?.pushViewController(chatVC, animated: true)
+                case .failure(let error):
+                    print(error)
                 }
-                self.navigationController?.pushViewController(chatVC, animated: true)
-            case .failure(let error):
-                print(error)
             }
         }
     }

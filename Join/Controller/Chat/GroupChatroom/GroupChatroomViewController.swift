@@ -25,8 +25,8 @@ class GroupChatroomViewController: BaseViewController {
                 forCellReuseIdentifier: MyMessageCell.identifier
             )
             tableView.register(
-                UINib(nibName: MessageCell.identifier, bundle: nil),
-                forCellReuseIdentifier: MessageCell.identifier
+                UINib(nibName: GroupMessageCell.identifier, bundle: nil),
+                forCellReuseIdentifier: GroupMessageCell.identifier
             )
             tableView.dataSource = self
             tableView.rowHeight = UITableView.automaticDimension
@@ -40,34 +40,25 @@ class GroupChatroomViewController: BaseViewController {
     let firebaseManager = FirebaseManager.shared
     var chatroomID: ChatroomID?
     var chatroomInfo: GroupChatroom?
-    var messages = [Message]() {
+    var messages = [Message]()
+    var members = [User]()
+    var wholeInfoMessages = [WholeInfoMessage]() {
         didSet {
             tableView.reloadData()
         }
     }
-    var members = [User]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        guard let chatroomID = chatroomID else { return }
-        firebaseManager.listenToNewGroupMessages(chatroomID: chatroomID) { [weak self] result in
-            switch result {
-            case .success(let messages):
-                self?.messages += messages
-            case .failure(let error):
-                print(error)
-            }
-        }
+        listenToNewMessages()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         tabBarController?.tabBar.isHidden = true
 
-        guard let chatroomID = chatroomID else { return }
-        updateAllMessages(chatroomID: chatroomID)
-        getChatroominfo()
+        guard chatroomID != nil else { return }
+        getNeccesaryInfo()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -75,23 +66,65 @@ class GroupChatroomViewController: BaseViewController {
         tabBarController?.tabBar.isHidden = false
     }
 
-    func getChatroominfo() {
-        guard let chatroomID = chatroomID else { return }
-        firebaseManager.getGroupChatroomInfo(chatroomID: chatroomID) { [unowned self] result in
-            switch result {
-            case .success(let chatroomInfo):
-                self.chatroomInfo = chatroomInfo
-                self.firebaseManager.getAllMatchedUsersDetail(usersID: chatroomInfo.members) { result in
-                    switch result {
-                    case .success(let members):
-                        self.members = members
-                    case .failure(let err):
+    func getNeccesaryInfo() {
+        firebaseManager.firebaseQueue.async { [unowned self] in
+            let group = DispatchGroup()
+            group.enter()
+            guard let chatroomID = self.chatroomID else { return }
+            firebaseManager.getGroupChatroomInfo(chatroomID: chatroomID) { [unowned self] result in
+                switch result {
+                case .success(let chatroomInfo):
+                    self.chatroomInfo = chatroomInfo
+                    self.title = chatroomInfo.name
+                    group.leave()
+                case .failure(let err):
+                    group.leave()
+                    group.notify(queue: .main) {
                         print(err)
                     }
                 }
-                self.title = chatroomInfo.name
-            case .failure(let err):
-                print(err)
+            }
+
+            group.enter()
+            self.firebaseManager.getGroupMessages(of: chatroomID) { [unowned self] result in
+                switch result {
+                case .success(let messages):
+                    self.messages = messages
+                    group.leave()
+                case .failure(let err):
+                    group.notify(queue: .main) {
+                        print(err)
+                    }
+                }
+            }
+
+            group.wait()
+            group.enter()
+            guard let membersIDs = self.chatroomInfo?.members else { return }
+            self.firebaseManager.getAllMatchedUsersDetail(usersID: membersIDs) { result in
+                switch result {
+                case .success(let members):
+                    self.members = members
+                    group.leave()
+                case .failure(let err):
+                    group.leave()
+                    group.notify(queue: .main) {
+                        print(err)
+                    }
+                }
+            }
+
+            group.wait()
+            group.notify(queue: .main) { [unowned self] in
+                var messages = [WholeInfoMessage]()
+                for message in self.messages {
+                    if let sender = self.members.first(where: { message.sender == $0.id }) {
+                        messages.append(WholeInfoMessage(sender: sender, message: message))
+                    } else {
+                        print("No such member")
+                    }
+                }
+                wholeInfoMessages = messages
             }
         }
     }
@@ -108,11 +141,21 @@ class GroupChatroomViewController: BaseViewController {
         }
     }
 
-    func updateAllMessages(chatroomID: ChatroomID) {
-        firebaseManager.getAllMessages(chatroomID: chatroomID) { [unowned self] result in
+    func listenToNewMessages() {
+        guard let chatroomID = chatroomID else { return }
+        firebaseManager.listenToNewGroupMessages(chatroomID: chatroomID) { [unowned self] result in
             switch result {
-            case .success(let messages):
-                self.messages = messages
+            case .success(let newMessages):
+                self.messages += newMessages
+                var messages = [WholeInfoMessage]()
+                for message in newMessages {
+                    if let sender = self.members.first(where: { message.sender == $0.id }) {
+                        messages.append(WholeInfoMessage(sender: sender, message: message))
+                    } else {
+                        print("No such member")
+                    }
+                }
+                wholeInfoMessages += messages
             case .failure(let error):
                 print(error)
             }
@@ -123,7 +166,7 @@ class GroupChatroomViewController: BaseViewController {
 // MARK: - Table View Datasource
 extension GroupChatroomViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        messages.count
+        return wholeInfoMessages.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -134,28 +177,30 @@ extension GroupChatroomViewController: UITableViewDataSource {
             ) as? MyMessageCell else {
                 fatalError("Cannot create my message cell")
             }
-            cell.layoutCell(message: message.content)
+            cell.layoutCell(message: wholeInfoMessages[indexPath.row].message.content)
             return cell
 
         } else {
             guard let cell = tableView.dequeueReusableCell(
-                withIdentifier: MessageCell.identifier, for: indexPath
-            ) as? MessageCell else {
+                withIdentifier: GroupMessageCell.identifier, for: indexPath
+            ) as? GroupMessageCell else {
                 fatalError("Cannot create message cell")
             }
 
-            let member = members[indexPath.row]
-            cell.layoutCell(imageURL: member.thumbnailURL, message: message.content)
-            cell.tapHandler = { [weak self] in
-                let personalStoryboard = UIStoryboard(name: StoryboardCategory.personal.rawValue, bundle: nil)
-                guard let profileVC = personalStoryboard.instantiateViewController(
-                    withIdentifier: OthersProfileViewController.identifier
-                ) as? OthersProfileViewController else {
-                    fatalError("Cannot create others profile vc")
-                }
-                profileVC.userData = member
-                self?.navigationController?.pushViewController(profileVC, animated: true)
-            }
+//            print("sender: ", message.sender)
+//            print("members: ", members)
+//            let member = members.first { $0.id == message.sender }!
+            cell.layoutCell(message: wholeInfoMessages[indexPath.row])
+//            cell.tapHandler = { [weak self] in
+//                let personalStoryboard = UIStoryboard(name: StoryboardCategory.personal.rawValue, bundle: nil)
+//                guard let profileVC = personalStoryboard.instantiateViewController(
+//                    withIdentifier: OthersProfileViewController.identifier
+//                ) as? OthersProfileViewController else {
+//                    fatalError("Cannot create others profile vc")
+//                }
+//                profileVC.userData = member
+//                self?.navigationController?.pushViewController(profileVC, animated: true)
+//            }
             return cell
         }
     }

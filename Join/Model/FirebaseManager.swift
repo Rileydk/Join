@@ -548,7 +548,7 @@ class FirebaseManager {
         }
     }
 
-    func getAllMessages(chatroomID: ChatroomID, completion: @escaping (Result<[Message], Error>) -> Void) {
+    func getMessages(of chatroomID: ChatroomID, completion: @escaping (Result<[Message], Error>) -> Void) {
         let ref = FirestoreEndpoint.chatrooms.ref
         ref.document(chatroomID).collection("Messages").order(by: "time").getDocuments { (querySnapshot, error) in
             if let error = error {
@@ -1105,6 +1105,29 @@ class FirebaseManager {
                     }
                 }
                 completion(.success(chatroomsDetails))
+            } else {
+                completion(.failure(CommonError.noValidQuerysnapshot))
+            }
+        }
+    }
+
+    func getGroupMessages(of chatroomID: ChatroomID, completion: @escaping (Result<[Message], Error>) -> Void) {
+        let ref = FirestoreEndpoint.groupChatroom.ref
+        ref.document(chatroomID).collection("Messages").order(by: "time").getDocuments { (querySnapshot, error) in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            if let querySnapshot = querySnapshot {
+                let messages: [Message] = querySnapshot.documents.compactMap {
+                    do {
+                        return try $0.data(as: Message.self, decoder: FirebaseManager.decoder)
+                    } catch {
+                        completion(.failure(error))
+                        return nil
+                    }
+                }
+                completion(.success(messages))
             } else {
                 completion(.failure(CommonError.noValidQuerysnapshot))
             }

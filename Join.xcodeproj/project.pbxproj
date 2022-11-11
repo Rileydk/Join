@@ -66,6 +66,8 @@
 		BF9A86A3291CE06400BF934D /* GroupCreationHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9A86A1291CE06400BF934D /* GroupCreationHeaderCell.swift */; };
 		BF9A86A4291CE06400BF934D /* GroupCreationHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF9A86A2291CE06400BF934D /* GroupCreationHeaderCell.xib */; };
 		BF9A86A6291D1A6100BF934D /* GroupChatroomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9A86A5291D1A6100BF934D /* GroupChatroomViewController.swift */; };
+		BF9A86AB291E19B300BF934D /* GroupMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9A86A9291E19B300BF934D /* GroupMessageCell.swift */; };
+		BF9A86AC291E19B300BF934D /* GroupMessageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF9A86AA291E19B300BF934D /* GroupMessageCell.xib */; };
 		BFF8A4AE2913A92300ADC950 /* ProjectDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF8A4AD2913A92300ADC950 /* ProjectDetailsViewController.swift */; };
 		BFF8A4B32913AD3000ADC950 /* BigImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF8A4B12913AD3000ADC950 /* BigImageCell.swift */; };
 		BFF8A4B42913AD3000ADC950 /* BigImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BFF8A4B22913AD3000ADC950 /* BigImageCell.xib */; };
@@ -164,6 +166,8 @@
 		BF9A86A1291CE06400BF934D /* GroupCreationHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupCreationHeaderCell.swift; sourceTree = "<group>"; };
 		BF9A86A2291CE06400BF934D /* GroupCreationHeaderCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GroupCreationHeaderCell.xib; sourceTree = "<group>"; };
 		BF9A86A5291D1A6100BF934D /* GroupChatroomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupChatroomViewController.swift; sourceTree = "<group>"; };
+		BF9A86A9291E19B300BF934D /* GroupMessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupMessageCell.swift; sourceTree = "<group>"; };
+		BF9A86AA291E19B300BF934D /* GroupMessageCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GroupMessageCell.xib; sourceTree = "<group>"; };
 		BFF8A4AD2913A92300ADC950 /* ProjectDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectDetailsViewController.swift; sourceTree = "<group>"; };
 		BFF8A4B12913AD3000ADC950 /* BigImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigImageCell.swift; sourceTree = "<group>"; };
 		BFF8A4B22913AD3000ADC950 /* BigImageCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BigImageCell.xib; sourceTree = "<group>"; };
@@ -521,6 +525,8 @@
 				BFF8A4F52917992000ADC950 /* ChatListCell.xib */,
 				BF9A86A1291CE06400BF934D /* GroupCreationHeaderCell.swift */,
 				BF9A86A2291CE06400BF934D /* GroupCreationHeaderCell.xib */,
+				BF9A86A9291E19B300BF934D /* GroupMessageCell.swift */,
+				BF9A86AA291E19B300BF934D /* GroupMessageCell.xib */,
 			);
 			path = Chat;
 			sourceTree = "<group>";
@@ -608,6 +614,7 @@
 				BFF8A4CE2913F32600ADC950 /* GoNextPageButtonCell.xib in Resources */,
 				BFF8A4EF29164DCB00ADC950 /* MyMessageCell.xib in Resources */,
 				BF42FAC52910010000501789 /* AddNewCell.xib in Resources */,
+				BF9A86AC291E19B300BF934D /* GroupMessageCell.xib in Resources */,
 				BFF8A4D42914C79900ADC950 /* PersonBasicCell.xib in Resources */,
 				BF9A86A4291CE06400BF934D /* GroupCreationHeaderCell.xib in Resources */,
 				BFF8A4B42913AD3000ADC950 /* BigImageCell.xib in Resources */,
@@ -693,6 +700,7 @@
 				BF42FADC2912967900501789 /* IdeaCell.swift in Sources */,
 				BF42FAC42910010000501789 /* AddNewCell.swift in Sources */,
 				BFF8A4DF2916342E00ADC950 /* BaseViewController.swift in Sources */,
+				BF9A86AB291E19B300BF934D /* GroupMessageCell.swift in Sources */,
 				BF42FA67290D04EF00501789 /* FindPartnersFormSections.swift in Sources */,
 				BF42FACD291154B500501789 /* Date+Ext.swift in Sources */,
 				BF42FA56290CE89500501789 /* TabBarController.swift in Sources */,

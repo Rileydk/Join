@@ -82,7 +82,7 @@ class ChatroomViewController: BaseViewController {
 
         updateUserData()
         guard let chatroomID = chatroomID else { return }
-        updateAllMessages(chatroomID: chatroomID)
+        updateMessages(chatroomID: chatroomID)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -114,8 +114,8 @@ class ChatroomViewController: BaseViewController {
         }
     }
 
-    func updateAllMessages(chatroomID: ChatroomID) {
-        firebaseManager.getAllMessages(chatroomID: chatroomID) { [unowned self] result in
+    func updateMessages(chatroomID: ChatroomID) {
+        firebaseManager.getMessages(of: chatroomID) { [unowned self] result in
             switch result {
             case .success(let messages):
                 self.messages = messages

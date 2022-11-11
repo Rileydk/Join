@@ -106,3 +106,8 @@ struct GroupMessageListItem {
     var chatroom: GroupChatroom?
     let latestMessage: Message
 }
+
+struct WholeInfoMessage {
+    let sender: User
+    let message: Message
+}
