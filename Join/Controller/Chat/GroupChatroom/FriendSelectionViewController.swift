@@ -67,7 +67,7 @@ class FriendSelectionViewController: BaseViewController {
             ) as? GroupCreationViewController else {
             fatalError("Cannot create group creation vc")
         }
-        groupCreationVC.groupMembers = selectedFriends
+        groupCreationVC.selectedFriends = selectedFriends
         navigationController?.pushViewController(groupCreationVC, animated: true)
     }
 }

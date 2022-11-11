@@ -54,7 +54,7 @@ struct GroupChatroom: Codable {
     var id: ChatroomID
     var name: String
     var imageURL: URLString
-    var members: [UserID]
+    var members: [GroupChatMember]
     var admin: UserID
 
     var toDict: [String: Any] {
@@ -62,7 +62,7 @@ struct GroupChatroom: Codable {
             "id": id as Any,
             "name": name as Any,
             "imageURL": imageURL as Any,
-            "members": members as Any,
+            "members": members.map { $0.toDict } as Any,
             "admin": admin as Any
         ]
     }
@@ -82,6 +82,23 @@ struct Message: Codable {
             "type": type.rawValue as Any,
             "content": content as Any,
             "time": time as Any
+        ]
+    }
+}
+
+struct GroupChatMember: Codable {
+    enum Status: String, Codable {
+        case join
+        case exit
+    }
+
+    let id: UserID
+    var currentStatus: Status
+
+    var toDict: [String: Any] {
+        return [
+            "id": id as Any,
+            "currentStatus": currentStatus.rawValue as Any
         ]
     }
 }

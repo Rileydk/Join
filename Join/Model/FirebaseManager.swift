@@ -925,7 +925,7 @@ class FirebaseManager {
             groupChatroom.members.forEach {
                 group.enter()
                 let ref = FirestoreEndpoint.users.ref
-                ref.document($0).collection("GroupChats").document(chatroomID).setData(["chatroomID": chatroomID]) { err in
+                ref.document($0.id).collection("GroupChats").document(chatroomID).setData(["chatroomID": chatroomID]) { err in
                     if let err = err {
                         group.leave()
                         group.notify(queue: .main) {
@@ -941,6 +941,10 @@ class FirebaseManager {
                 completion(.success(chatroomID))
             }
         }
+    }
+
+    func addNewGroupChatMembers(members: [GroupChatMember], completion: @escaping (Result<String, Error>) -> Void) {
+
     }
 
     func getGroupChatroomInfo(chatroomID: ChatroomID, completion: @escaping (Result<GroupChatroom, Error>) -> Void) {
@@ -1045,7 +1049,6 @@ class FirebaseManager {
                     }
                 }
                 if let snapshot = snapshot {
-//                    print("snapshot documents", snapshot.documents)
                     do {
                         if let message = try snapshot.documents.first?.data(as: Message.self, decoder: FirebaseManager.decoder) {
                             groupMessageListItem.append(GroupMessageListItem(chatroomID: chatroomID, latestMessage: message))

@@ -33,12 +33,12 @@ class GroupCreationViewController: BaseViewController {
     typealias GroupDatasource = UICollectionViewDiffableDataSource<Section, Item>
     private var datasource: GroupDatasource!
     let firebaseManager = FirebaseManager.shared
-    var groupMembers = [User]()
+    var selectedFriends = [User]()
     var groupChatroom = GroupChatroom(
-        id: "", name: "", imageURL: "",
-        members: [], admin: ""
+        id: "", name: "", imageURL: "", members: [], admin: ""
     )
     var groupImage: UIImage?
+    var chatroomID: ChatroomID?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,59 +49,83 @@ class GroupCreationViewController: BaseViewController {
     }
 
     @objc func createGroup() {
-        groupMembers.insert(myAccount, at: 0)
+        selectedFriends.insert(myAccount, at: 0)
         if groupChatroom.name.isEmpty {
-            for member in groupMembers {
-                groupChatroom.name += member.name
-                if member != groupMembers.last {
+            for friend in selectedFriends {
+                groupChatroom.name += friend.name
+                if friend != selectedFriends.last {
                     groupChatroom.name += ", "
                 }
             }
         }
-        groupChatroom.imageURL = myAccount.thumbnailURL
-        groupChatroom.members = groupMembers.map { $0.id }
+        groupChatroom.members = selectedFriends.map {
+            GroupChatMember(id: $0.id, currentStatus: .join)
+        }
         groupChatroom.admin = myAccount.id
 
-        if let groupImage = groupImage,
-           let imageData = groupImage.jpeg(.lowest) {
-            firebaseManager.uploadImage(image: imageData) { [weak self] result in
-                guard let strongSelf = self else { return }
-                switch result {
-                case .success(let imageURL):
-                    strongSelf.groupChatroom.imageURL = imageURL
-                    strongSelf.firebaseManager.createGroupChatroom(groupChatroom: strongSelf.groupChatroom) { [weak self] result in
-                        switch result {
-                        case .success(let chatroomID):
-                            ProgressHUD.showSuccess()
+        firebaseManager.firebaseQueue.async { [weak self] in
+            guard let strongSelf = self else { return }
 
-                            let chatStoryboard = UIStoryboard(name: StoryboardCategory.chat.rawValue, bundle: nil)
-                            guard let chatroomVC =  chatStoryboard.instantiateViewController(
-                                withIdentifier: GroupChatroomViewController.identifier
-                                ) as? GroupChatroomViewController else {
-                                fatalError("Cannot get chatroom vc")
-                            }
-                            chatroomVC.chatroomID = chatroomID
-                            chatroomVC.title = self?.groupChatroom.name
-
-                            guard let rootVC = self?.navigationController?.viewControllers.first! as? ChatListViewController else {
-                                fatalError("Cannot get chat list vc")
-                            }
-
-                            self?.hidesBottomBarWhenPushed = true
-                            DispatchQueue.main.async {
-                                self?.hidesBottomBarWhenPushed = false
-                            }
-                            self?.navigationController?.setViewControllers([rootVC, chatroomVC], animated: true)
-
-                        case .failure(let err):
+            let group = DispatchGroup()
+            group.enter()
+            if let groupImage = self?.groupImage,
+               let imageData = groupImage.jpeg(.lowest) {
+                strongSelf.firebaseManager.uploadImage(image: imageData) { [weak self] result in
+                    guard let strongSelf = self else { return }
+                    switch result {
+                    case .success(let imageURL):
+                        strongSelf.groupChatroom.imageURL = imageURL
+                        print("get back image URL: ", strongSelf.groupChatroom.imageURL)
+                        group.leave()
+                    case .failure(let err):
+                        group.leave()
+                        group.notify(queue: .main) {
                             print(err)
                         }
                     }
+                }
+            } else {
+                strongSelf.groupChatroom.imageURL = myAccount.thumbnailURL
+                group.leave()
+            }
+
+            group.wait()
+            group.enter()
+            strongSelf.firebaseManager.createGroupChatroom(groupChatroom: strongSelf.groupChatroom) { result in
+                switch result {
+                case .success(let chatroomID):
+                    strongSelf.chatroomID = chatroomID
+                    group.leave()
                 case .failure(let err):
-                    print(err)
+                    group.leave()
+                    group.notify(queue: .main) {
+                        print(err)
+                    }
                 }
             }
 
+            group.notify(queue: .main) {
+                ProgressHUD.showSuccess()
+
+                let chatStoryboard = UIStoryboard(name: StoryboardCategory.chat.rawValue, bundle: nil)
+                guard let chatroomVC =  chatStoryboard.instantiateViewController(
+                    withIdentifier: GroupChatroomViewController.identifier
+                ) as? GroupChatroomViewController else {
+                    fatalError("Cannot get chatroom vc")
+                }
+                chatroomVC.chatroomID = strongSelf.chatroomID
+                chatroomVC.title = strongSelf.groupChatroom.name
+
+                guard let rootVC = strongSelf.navigationController?.viewControllers.first! as? ChatListViewController else {
+                    fatalError("Cannot get chat list vc")
+                }
+
+                self?.hidesBottomBarWhenPushed = true
+                DispatchQueue.main.async {
+                    self?.hidesBottomBarWhenPushed = false
+                }
+                self?.navigationController?.setViewControllers([rootVC, chatroomVC], animated: true)
+            }
         }
     }
 }

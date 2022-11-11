@@ -105,7 +105,8 @@ class GroupChatroomViewController: BaseViewController {
 
             group.wait()
             group.enter()
-            guard let membersIDs = self.chatroomInfo?.members else { return }
+            guard let chatroomInfo = self.chatroomInfo else { return }
+            let membersIDs = chatroomInfo.members.map { $0.id }
             self.firebaseManager.getAllMatchedUsersDetail(usersID: membersIDs) { result in
                 switch result {
                 case .success(let members):
@@ -119,7 +120,6 @@ class GroupChatroomViewController: BaseViewController {
                 }
             }
 
-            group.wait()
             group.notify(queue: .main) { [unowned self] in
                 var messages = [WholeInfoMessage]()
                 for message in self.messages {
