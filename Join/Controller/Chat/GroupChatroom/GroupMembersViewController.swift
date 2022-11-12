@@ -22,12 +22,12 @@ class GroupMembersViewController: BaseViewController {
             )
             tableView.delegate = self
             tableView.dataSource = self
-            tableView.setEditing(true, animated: true)
         }
     }
 
     let firebaseManager = FirebaseManager.shared
     var chatroomID: ChatroomID?
+    var chatroomAdmin: UserID?
     var shouldReload = true
     lazy var members = [User]() {
         didSet {
@@ -39,7 +39,10 @@ class GroupMembersViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        editAction()
+        if chatroomAdmin == myAccount.id {
+            tableView.setEditing(true, animated: true)
+            editAction()
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -78,7 +81,8 @@ class GroupMembersViewController: BaseViewController {
                     group.leave()
                     group.notify(queue: .main) {
                         var members = members
-                        if let index = members.firstIndex(of: myAccount),
+                        if let member = members.first(where: { $0.id == myAccount.id }),
+                            let index = members.firstIndex(of: member),
                            index != 0 {
                             members.swapAt(0, index)
                         }
