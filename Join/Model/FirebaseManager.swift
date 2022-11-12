@@ -650,37 +650,58 @@ class FirebaseManager {
         }
     }
 
-    func getAllMatchedChatroomMessages(chatrooms: [ChatroomID], completion: @escaping (Result<[Message], Error>) -> Void) {
-        var messages = [Message]()
+    func getAllMatchedChatroomMessages(messagesList: [MessageListItem], completion: @escaping (Result<[MessageListItem], Error>) -> Void) {
+        let chatrooms = messagesList.map { $0.chatroomID }
+        var messagesList = messagesList
 
-        let group = DispatchGroup()
-        for i in 0 ..< chatrooms.count {
-            group.enter()
-            let ref = FirestoreEndpoint.messages(chatrooms[i]).ref
-            ref.order(by: "time", descending: true).limit(to: 1).getDocuments { (snapshot, error) in
-                if let error = error {
-                    completion(.failure(error))
-                    return
-                }
-
-                if let snapshot = snapshot {
-                    guard let lastMessage = snapshot.documents.first else {
-                        completion(.failure(CommonError.noMessage))
+        firebaseQueue.async {
+            let group = DispatchGroup()
+            for i in 0 ..< chatrooms.count {
+                group.enter()
+                let ref = FirestoreEndpoint.messages(chatrooms[i]).ref
+                ref.order(by: "time", descending: true).getDocuments { (snapshot, error) in
+                    if let error = error {
+                        group.leave()
+                        group.notify(queue: .main) {
+                            completion(.failure(error))
+                        }
                         return
                     }
-                    do {
-                        let message = try lastMessage.data(as: Message.self, decoder: FirebaseManager.decoder)
-                        messages.append(message)
-                    } catch {
-                        completion(.failure(error))
+
+                    if let snapshot = snapshot {
+                        let messages: [Message] = snapshot.documents.compactMap {
+                            do {
+                                return try $0.data(as: Message.self, decoder: FirebaseManager.decoder)
+                            } catch {
+                                group.leave()
+                                group.notify(queue: .main) {
+                                    completion(.failure(error))
+                                }
+                                return nil
+                            }
+                        }
+
+                        for item in messagesList {
+                            if item.chatroomID == messagesList[i].chatroomID {
+                                messagesList[i].messages = messages
+                            }
+                        }
+                        group.leave()
+
+                    } else {
+                        group.leave()
+                        group.notify(queue: .main) {
+                            completion(.failure(CommonError.noValidQuerysnapshot))
+                        }
                     }
                 }
-                group.leave()
+            }
+            group.notify(queue: .main) {
+                messagesList = messagesList.filter { !$0.messages.isEmpty }
+                completion(.success(messagesList))
             }
         }
-        group.notify(queue: .main) {
-            completion(.success(messages))
-        }
+
     }
 
     func getAllMatchedUsersDetail(usersID: [UserID], completion: @escaping (Result<[User], Error>) -> Void) {
@@ -706,61 +727,43 @@ class FirebaseManager {
         }
     }
 
-    func getAllLatestMessages(type: ChatroomType, completion: @escaping (Result<[MessageListItem], Error>) -> Void) {
-        getAllFriendsAndChatroomsInfo(type: type) { [weak self] result in
-            switch result {
-            // 取得所有存放在 user 下符合類別的 chatroom
-            case .success(let savedChat):
-                let chatroomsID = savedChat.map { $0.chatroomID }
-                let usersID = savedChat.map { $0.id }
-                var messages = [Message]()
-                var users = [User]()
+    func getAllMessagesCombinedWithSender(type: ChatroomType, completion: @escaping (Result<[MessageListItem], Error>) -> Void) {
+        var messagesList = [MessageListItem]()
 
-                guard !chatroomsID.isEmpty else {
-                    completion(.success([]))
-                    return
-                }
-
-                let group = DispatchGroup()
-                group.enter()
-                self?.getAllMatchedChatroomMessages(chatrooms: chatroomsID) { result in
-                    switch result {
-                    case .success(let latestMessages):
-                        messages = latestMessages
-                    case .failure(let error):
+        firebaseQueue.async { [weak self] in
+            let group = DispatchGroup()
+            group.enter()
+            self?.getAllFriendsAndChatroomsInfo(type: type) { result in
+                switch result {
+                    // 取得所有存放在 user 下符合類別的 chatroom
+                case .success(let savedChat):
+                    messagesList = savedChat.map { MessageListItem(chatroomID: $0.chatroomID, objectID: $0.id) }
+                    group.leave()
+                case .failure(let error):
+                    group.leave()
+                    group.notify(queue: .main) {
                         completion(.failure(error))
                     }
-                    group.leave()
                 }
-                group.enter()
-                self?.getAllMatchedUsersDetail(usersID: usersID) { result in
-                    switch result {
-                    case .success(let usersDetail):
-                        users = usersDetail
-                    case .failure(let error):
-                        print(error)
-                    }
-                    group.leave()
-                }
-                group.notify(queue: .main) {
-                    if messages.count != users.count {
-                        completion(.failure(CommonError.countIncorrect))
-                    } else {
-                        var latestMessageList = [MessageListItem]()
-                        for i in 0 ..< messages.count {
-                            latestMessageList += [
-                                MessageListItem(
-                                    userID: users[i].id,
-                                    latestMessage: messages[i],
-                                    chatroomID: chatroomsID[i]
-                            )]
-                        }
-                        completion(.success(latestMessageList))
-                    }
-                }
+            }
 
-            case .failure(let error):
-                completion(.failure(error))
+            group.wait()
+            group.enter()
+            self?.getAllMatchedChatroomMessages(messagesList: messagesList) { result in
+                switch result {
+                case .success(let fetchedMessagesList):
+                    messagesList = fetchedMessagesList
+                    group.leave()
+                case .failure(let error):
+                    group.leave()
+                    group.notify(queue: .main) {
+                        completion(.failure(error))
+                    }
+                }
+            }
+
+            group.notify(queue: .main) {
+                completion(.success(messagesList))
             }
         }
     }

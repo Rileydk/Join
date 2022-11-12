@@ -125,14 +125,20 @@ class ChatListViewController: BaseViewController {
                 }
 
                 group.notify(queue: .main) { [weak self] in
+//                    groupMessageListItems = groupMessageListItems.sorted(by: {
+//                        $0.messages.first!.time > $1.messages.first!.time
+//                    })
                     self?.groupMessageList = groupMessageListItems
                 }
             }
 
         } else {
-            firebaseManager.getAllLatestMessages(type: type) { [unowned self] result in
+            firebaseManager.getAllMessagesCombinedWithSender(type: type) { [unowned self] result in
                 switch result {
                 case .success(let listItem):
+                    var listItem = listItem.sorted(by: {
+                        $0.messages.first!.time > $1.messages.first!.time
+                    })
                     self.messageList = listItem
                 case .failure(let error):
                     self.messageList = []
@@ -179,7 +185,7 @@ extension ChatListViewController: UITableViewDelegate {
             navigationController?.pushViewController(chatroomVC, animated: true)
 
         } else {
-            let userID = messageList[indexPath.row].userID
+            let userID = messageList[indexPath.row].objectID
             let chatroomID = messageList[indexPath.row].chatroomID
 
             firebaseManager.getUserInfo(id: userID) { result in

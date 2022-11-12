@@ -27,7 +27,7 @@ class ChatListCell: TableViewCell {
     }
 
     func layoutCell(messageItem: MessageListItem) {
-        firebaseManager.getUserInfo(id: messageItem.userID) { [weak self] result in
+        firebaseManager.getUserInfo(id: messageItem.objectID) { [weak self] result in
             switch result {
             case .success(let user):
                 self?.firebaseManager.downloadImage(urlString: user.thumbnailURL) { [weak self] result in
@@ -35,7 +35,9 @@ class ChatListCell: TableViewCell {
                     case .success(let image):
                         self?.userThumbnailImageView.image = image
                         self?.nameLabel.text = user.name
-                        self?.latestMessageLabel.text = messageItem.latestMessage.content
+                        if let latesMessage = messageItem.messages.first {
+                            self?.latestMessageLabel.text = latesMessage.content
+                        }
                     case .failure(let error):
                         print(error)
                     }

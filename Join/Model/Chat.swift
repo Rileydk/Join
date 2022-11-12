@@ -109,9 +109,9 @@ struct SavedChat: Codable {
 }
 
 struct MessageListItem: Codable {
-    let userID: UserID
-    let latestMessage: Message
     let chatroomID: ChatroomID
+    let objectID: UserID
+    var messages = [Message]()
 }
 
 struct SavedGroupChat: Codable {
