@@ -219,16 +219,16 @@ extension GroupChatroomViewController: UITableViewDataSource {
             }
 
             cell.layoutCell(message: wholeInfoMessages[indexPath.row])
-//            cell.tapHandler = { [weak self] in
-//                let personalStoryboard = UIStoryboard(name: StoryboardCategory.personal.rawValue, bundle: nil)
-//                guard let profileVC = personalStoryboard.instantiateViewController(
-//                    withIdentifier: OthersProfileViewController.identifier
-//                ) as? OthersProfileViewController else {
-//                    fatalError("Cannot create others profile vc")
-//                }
-//                profileVC.userData = member
-//                self?.navigationController?.pushViewController(profileVC, animated: true)
-//            }
+            cell.tapHandler = { [weak self] in
+                let personalStoryboard = UIStoryboard(name: StoryboardCategory.personal.rawValue, bundle: nil)
+                guard let profileVC = personalStoryboard.instantiateViewController(
+                    withIdentifier: OthersProfileViewController.identifier
+                ) as? OthersProfileViewController else {
+                    fatalError("Cannot create others profile vc")
+                }
+                profileVC.userData = self?.wholeInfoMessages[indexPath.row].sender
+                self?.navigationController?.pushViewController(profileVC, animated: true)
+            }
             return cell
         }
     }

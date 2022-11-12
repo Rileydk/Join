@@ -166,6 +166,17 @@ extension GroupMembersViewController: UITableViewDelegate {
         70
     }
 
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let personalStoryboard = UIStoryboard(name: StoryboardCategory.personal.rawValue, bundle: nil)
+        guard let profileVC = personalStoryboard.instantiateViewController(
+            withIdentifier: OthersProfileViewController.identifier
+        ) as? OthersProfileViewController else {
+            fatalError("Cannot create others profile vc")
+        }
+        profileVC.userData = members[indexPath.row - 1]
+        navigationController?.pushViewController(profileVC, animated: true)
+    }
+
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         if indexPath.row == 0 {
             return false
