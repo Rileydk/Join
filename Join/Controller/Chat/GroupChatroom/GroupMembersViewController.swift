@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import ProgressHUD
 
 class GroupMembersViewController: BaseViewController {
 
@@ -21,16 +22,86 @@ class GroupMembersViewController: BaseViewController {
             )
             tableView.delegate = self
             tableView.dataSource = self
+            tableView.setEditing(true, animated: true)
         }
     }
 
+    let firebaseManager = FirebaseManager.shared
     var chatroomID: ChatroomID?
-    var members = [User]()
+    lazy var members = [User]() {
+        didSet {
+            tableView.reloadData()
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        editAction()
+    }
 
-        // Do any additional setup after loading the view.
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        getAllCurrentGroupChatMembers()
+    }
+
+    func getAllCurrentGroupChatMembers() {
+        guard let chatroomID = chatroomID else {
+            print("No chatroom id")
+            return
+        }
+        var currentMembersIDs = [UserID]()
+
+        firebaseManager.firebaseQueue.async { [weak self] in
+            let group = DispatchGroup()
+            group.enter()
+            self?.firebaseManager.getAllCurrentGroupChatMembers(chatroomID: chatroomID) { result in
+                switch result {
+                case .success(let membersIDs):
+                    currentMembersIDs = membersIDs
+                    group.leave()
+                case .failure(let err):
+                    group.leave()
+                    group.notify(queue: .main) {
+                        print(err)
+                    }
+                }
+            }
+
+            group.wait()
+            group.enter()
+            self?.firebaseManager.getAllMatchedUsersDetail(usersID: currentMembersIDs) { result in
+                switch result {
+                case .success(let members):
+                    group.leave()
+                    group.notify(queue: .main) {
+                        var members = members
+                        if let index = members.firstIndex(of: myAccount),
+                           index != 0 {
+                            members.swapAt(0, index)
+                        }
+                        self?.members = members
+                    }
+                case .failure(let err):
+                    group.leave()
+                    group.notify(queue: .main) {
+                        print(err)
+                    }
+                }
+            }
+        }
+
+    }
+
+    @objc func editAction() {
+        tableView.isEditing.toggle()
+        if !tableView.isEditing {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(
+                barButtonSystemItem: .edit, target: self, action: #selector(editAction)
+            )
+        } else {
+            navigationItem.rightBarButtonItem =
+            UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(editAction))
+        }
     }
 }
 
@@ -38,6 +109,16 @@ class GroupMembersViewController: BaseViewController {
 extension GroupMembersViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         70
+    }
+
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        if indexPath.row == 0 {
+            return false
+        } else if members[indexPath.row - 1].id == myAccount.id {
+            return false
+        } else {
+            return true
+        }
     }
 }
 
@@ -77,6 +158,26 @@ extension GroupMembersViewController: UITableViewDataSource {
             }
             cell.layoutCell(friend: members[indexPath.row - 1], source: .friendList)
             return cell
+        }
+    }
+
+    // swiftlint:disable line_length
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            guard let chatroomID = chatroomID else {
+                fatalError("No valid chatroom ID")
+            }
+            firebaseManager.updateGroupChatroomMemberStatus(setTo: .exit, membersIDs: [members[indexPath.row - 1].id], chatroomID: chatroomID) { [weak self] result in
+                switch result {
+                case .success:
+                    ProgressHUD.showSucceed()
+                    self?.members.remove(at: indexPath.row - 1)
+                case .failure(let err):
+                    ProgressHUD.showError()
+                    print(err)
+                }
+            }
+
         }
     }
 }

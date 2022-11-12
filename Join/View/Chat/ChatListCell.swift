@@ -47,15 +47,12 @@ class ChatListCell: TableViewCell {
     }
 
     func layoutCell(groupMessageItem: GroupMessageListItem) {
-        guard let chatroom = groupMessageItem.chatroom else {
-            return
-        }
-        firebaseManager.downloadImage(urlString: chatroom.imageURL) { [weak self] result in
+        firebaseManager.downloadImage(urlString: groupMessageItem.chatroom.imageURL) { [weak self] result in
             switch result {
             case .success(let image):
                 self?.userThumbnailImageView.image = image
-                self?.nameLabel.text = chatroom.name
-                self?.latestMessageLabel.text = groupMessageItem.latestMessage.content
+                self?.nameLabel.text = groupMessageItem.chatroom.name
+                self?.latestMessageLabel.text = groupMessageItem.messages.last?.content ?? ""
             case .failure(let err):
                 print(err)
             }

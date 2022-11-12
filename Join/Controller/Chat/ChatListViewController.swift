@@ -29,11 +29,13 @@ class ChatListViewController: BaseViewController {
             getMessageList()
         }
     }
+    // 一對一聊天室用
     var messageList = [MessageListItem]() {
         didSet {
             tableView.reloadData()
         }
     }
+    // 群組聊天室用
     var groupMessageList = [GroupMessageListItem]() {
         didSet {
             tableView.reloadData()
@@ -72,39 +74,57 @@ class ChatListViewController: BaseViewController {
                         chatroomIDsBox = chatroomIDs
                         group.leave()
                     case .failure(let err):
-                        print(err)
                         group.leave()
+                        group.notify(queue: .main) {
+                            print(err)
+                        }
                     }
                 }
 
                 group.wait()
                 group.enter()
-                self?.firebaseManager.getAllLatestGroupMessages(chatroomIDs: chatroomIDsBox) { result in
+                self?.firebaseManager.getAllGroupChatroomInfo(chatroomIDs: chatroomIDsBox) { [weak self] result in
                     switch result {
                     case .success(let groupListItems):
                         groupMessageListItems = groupListItems
                         group.leave()
                     case .failure(let err):
-                        print(err)
-                        group.leave()
+                        if err as? CommonError == CommonError.noExistChatroom {
+                            group.leave()
+                            group.notify(queue: .main) {
+                                self?.groupMessageList = []
+                            }
+                        } else {
+                            group.leave()
+                            group.notify(queue: .main) {
+                                print(err)
+                            }
+                        }
                     }
                 }
 
                 group.wait()
                 group.enter()
-                self?.firebaseManager.getAllGroupChatroomInfo(messagesItems: groupMessageListItems) { result in
+                // swiftlint:disable line_length
+                self?.firebaseManager.getAllMessagesCombinedWithEachGroup(messagesItems: groupMessageListItems) { result in
                     switch result {
                     case .success(let groupListItems):
                         groupMessageListItems = groupListItems
                         group.leave()
                     case .failure(let err):
-                        print(err)
-                        group.leave()
+                        if err as? CommonError == CommonError.noMessage {
+                            group.leave()
+                            print("No message")
+                        } else {
+                            group.leave()
+                            group.notify(queue: .main) {
+                                print(err)
+                            }
+                        }
                     }
                 }
 
                 group.notify(queue: .main) { [weak self] in
-                    let groupMessageListItems = groupMessageListItems.filter { $0.chatroom != nil }
                     self?.groupMessageList = groupMessageListItems
                 }
             }
@@ -146,7 +166,7 @@ extension ChatListViewController: UITableViewDelegate {
 
         if type == .group {
             let chatroomID = groupMessageList[indexPath.row].chatroomID
-            let chatroomName = groupMessageList[indexPath.row].chatroom!.name
+            let chatroomName = groupMessageList[indexPath.row].chatroom.name
             let chatStoryboard = UIStoryboard(name: StoryboardCategory.chat.rawValue, bundle: nil)
             guard let chatroomVC =  chatStoryboard.instantiateViewController(
                 withIdentifier: GroupChatroomViewController.identifier

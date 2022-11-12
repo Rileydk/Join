@@ -41,6 +41,7 @@ class GroupChatroomViewController: BaseViewController {
     var chatroomID: ChatroomID?
     var chatroomInfo: GroupChatroom?
     var messages = [Message]()
+    var membersInfos = [GroupChatMember]()
     var members = [User]()
     var wholeInfoMessages = [WholeInfoMessage]() {
         didSet {
@@ -93,6 +94,15 @@ class GroupChatroomViewController: BaseViewController {
                 }
             }
 
+            firebaseManager.getAllGroupChatMembersIncludingExit(chatroomID: chatroomID) { result in
+                switch result {
+                case .success(let membersInfos):
+                    self.membersInfos = membersInfos
+                case .failure(let err):
+                    print(err)
+                }
+            }
+
             group.enter()
             self.firebaseManager.getGroupMessages(of: chatroomID) { [unowned self] result in
                 switch result {
@@ -100,6 +110,7 @@ class GroupChatroomViewController: BaseViewController {
                     self.messages = messages
                     group.leave()
                 case .failure(let err):
+                    group.leave()
                     group.notify(queue: .main) {
                         print(err)
                     }
@@ -109,8 +120,8 @@ class GroupChatroomViewController: BaseViewController {
             group.wait()
             group.enter()
             guard let chatroomInfo = self.chatroomInfo else { return }
-            let membersIDs = chatroomInfo.members.map { $0.id }
-            self.firebaseManager.getAllMatchedUsersDetail(usersID: membersIDs) { result in
+            let membersUserIDs = membersInfos.map { $0.userID }
+            self.firebaseManager.getAllMatchedUsersDetail(usersID: membersUserIDs) { result in
                 switch result {
                 case .success(let members):
                     self.members = members
@@ -173,10 +184,11 @@ class GroupChatroomViewController: BaseViewController {
     @objc func openSettingPage() {
         guard let chatroomID = chatroomID else { return }
         let chatStoryboard = UIStoryboard(name: StoryboardCategory.chat.rawValue, bundle: nil)
-        guard let groupMembersVC = chatStoryboard.instantiateViewController(withIdentifier: GroupMembersViewController.identifier) as? GroupMembersViewController else {
+        guard let groupMembersVC = chatStoryboard.instantiateViewController(
+            withIdentifier: GroupMembersViewController.identifier
+            ) as? GroupMembersViewController else {
             fatalError("Cannot load group members vc")
         }
-        groupMembersVC.members = members
         groupMembersVC.chatroomID = chatroomID
         navigationController?.pushViewController(groupMembersVC, animated: true)
     }

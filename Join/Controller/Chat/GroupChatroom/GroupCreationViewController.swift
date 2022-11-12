@@ -35,8 +35,9 @@ class GroupCreationViewController: BaseViewController {
     let firebaseManager = FirebaseManager.shared
     var selectedFriends = [User]()
     var groupChatroom = GroupChatroom(
-        id: "", name: "", imageURL: "", members: [], admin: ""
+        id: "", name: "", imageURL: "", admin: ""
     )
+    var selectedMembers = [GroupChatMember]()
     var groupImage: UIImage?
     var chatroomID: ChatroomID?
 
@@ -58,8 +59,8 @@ class GroupCreationViewController: BaseViewController {
                 }
             }
         }
-        groupChatroom.members = selectedFriends.map {
-            GroupChatMember(id: $0.id, currentStatus: .join)
+        selectedMembers = selectedFriends.map {
+            GroupChatMember(userID: $0.id, currentStatus: .join)
         }
         groupChatroom.admin = myAccount.id
 
@@ -90,7 +91,7 @@ class GroupCreationViewController: BaseViewController {
 
             group.wait()
             group.enter()
-            strongSelf.firebaseManager.createGroupChatroom(groupChatroom: strongSelf.groupChatroom) { result in
+            strongSelf.firebaseManager.createGroupChatroom(groupChatroom: strongSelf.groupChatroom, members: strongSelf.selectedMembers) { result in
                 switch result {
                 case .success(let chatroomID):
                     strongSelf.chatroomID = chatroomID

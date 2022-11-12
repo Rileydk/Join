@@ -10,6 +10,7 @@ import UIKit
 
 typealias ChatroomID = String
 typealias MessageID = String
+typealias MemberID = String
 
 enum MessageType: String, CaseIterable, Codable {
     case text
@@ -37,6 +38,11 @@ enum ChatroomType: CaseIterable {
     }
 }
 
+enum MemberStatus: String, Codable {
+    case join
+    case exit
+}
+
 struct Chatroom: Codable {
     let id: ChatroomID
     let member: [UserID]
@@ -54,7 +60,6 @@ struct GroupChatroom: Codable {
     var id: ChatroomID
     var name: String
     var imageURL: URLString
-    var members: [GroupChatMember]
     var admin: UserID
 
     var toDict: [String: Any] {
@@ -62,7 +67,6 @@ struct GroupChatroom: Codable {
             "id": id as Any,
             "name": name as Any,
             "imageURL": imageURL as Any,
-            "members": members.map { $0.toDict } as Any,
             "admin": admin as Any
         ]
     }
@@ -87,17 +91,13 @@ struct Message: Codable {
 }
 
 struct GroupChatMember: Codable {
-    enum Status: String, Codable {
-        case join
-        case exit
-    }
 
-    let id: UserID
-    var currentStatus: Status
+    let userID: UserID
+    var currentStatus: MemberStatus
 
     var toDict: [String: Any] {
         return [
-            "id": id as Any,
+            "userID": userID as Any,
             "currentStatus": currentStatus.rawValue as Any
         ]
     }
@@ -120,8 +120,8 @@ struct SavedGroupChat: Codable {
 
 struct GroupMessageListItem {
     let chatroomID: ChatroomID
-    var chatroom: GroupChatroom?
-    let latestMessage: Message
+    let chatroom: GroupChatroom
+    var messages = [Message]()
 }
 
 struct WholeInfoMessage {
