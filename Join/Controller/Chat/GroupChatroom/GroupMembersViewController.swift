@@ -28,9 +28,12 @@ class GroupMembersViewController: BaseViewController {
 
     let firebaseManager = FirebaseManager.shared
     var chatroomID: ChatroomID?
+    var shouldReload = true
     lazy var members = [User]() {
         didSet {
-            tableView.reloadData()
+            if shouldReload {
+                tableView.reloadData()
+            }
         }
     }
 
@@ -171,7 +174,10 @@ extension GroupMembersViewController: UITableViewDataSource {
                 switch result {
                 case .success:
                     ProgressHUD.showSucceed()
+                    self?.shouldReload = false
                     self?.members.remove(at: indexPath.row - 1)
+                    self?.tableView.deleteRows(at: [indexPath], with: .automatic)
+                    self?.shouldReload = true
                 case .failure(let err):
                     ProgressHUD.showError()
                     print(err)
