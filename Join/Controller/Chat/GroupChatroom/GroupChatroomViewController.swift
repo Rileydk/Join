@@ -189,8 +189,7 @@ class GroupChatroomViewController: BaseViewController {
             ) as? GroupMembersViewController else {
             fatalError("Cannot load group members vc")
         }
-        groupMembersVC.chatroomID = chatroomID
-        groupMembersVC.chatroomAdmin = chatroomInfo?.admin
+        groupMembersVC.chatroomInfo = chatroomInfo
         navigationController?.pushViewController(groupMembersVC, animated: true)
     }
 }

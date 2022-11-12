@@ -26,8 +26,7 @@ class GroupMembersViewController: BaseViewController {
     }
 
     let firebaseManager = FirebaseManager.shared
-    var chatroomID: ChatroomID?
-    var chatroomAdmin: UserID?
+    var chatroomInfo: GroupChatroom?
     var shouldReload = true
     lazy var members = [User]() {
         didSet {
@@ -39,9 +38,15 @@ class GroupMembersViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        if chatroomAdmin == myAccount.id {
+        guard let admin = chatroomInfo?.admin else {
+            print("No chatroom id")
+            return
+        }
+        if admin == myAccount.id {
             tableView.setEditing(true, animated: true)
             editAction()
+        } else {
+            addExitButton()
         }
     }
 
@@ -51,7 +56,7 @@ class GroupMembersViewController: BaseViewController {
     }
 
     func getAllCurrentGroupChatMembers() {
-        guard let chatroomID = chatroomID else {
+        guard let chatroomID = chatroomInfo?.id else {
             print("No chatroom id")
             return
         }
@@ -110,6 +115,49 @@ class GroupMembersViewController: BaseViewController {
             UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(editAction))
         }
     }
+
+    func addExitButton() {
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            image: UIImage(systemName: "rectangle.portrait.and.arrow.right"),
+            style: .plain, target: self, action: #selector(exitGroup)
+        )
+    }
+
+    @objc func exitGroup() {
+        alertConfirmExit()
+    }
+
+    func alertConfirmExit() {
+        guard let chatroom = chatroomInfo else {
+            print("No chatroom id")
+            return
+        }
+        let alert = UIAlertController(title: "確定要離開\(chatroom.name)嗎？", message: nil, preferredStyle: .alert)
+        let confirmAction = UIAlertAction(title: "Confirm", style: .destructive) { [weak self] _ in
+            self?.leaveGroup()
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        alert.addAction(cancelAction)
+        alert.addAction(confirmAction)
+        present(alert, animated: true)
+    }
+
+    func leaveGroup() {
+        guard let chatroomID = chatroomInfo?.id else {
+            print("No chatroom id")
+            return
+        }
+        firebaseManager.updateGroupChatroomMemberStatus(setTo: .exit, membersIDs: [myAccount.id], chatroomID: chatroomID) { [weak self] result in
+            switch result {
+            case .success:
+                ProgressHUD.showSucceed()
+                self?.navigationController?.popToRootViewController(animated: true)
+            case .failure(let err):
+                ProgressHUD.showError()
+                print(err)
+            }
+        }
+    }
 }
 
 // MARK: - Table View Delegate
@@ -144,7 +192,7 @@ extension GroupMembersViewController: UITableViewDataSource {
             }
             cell.tapHandler = { [weak self] in
                 guard let strongSelf = self,
-                      let chatroomID = strongSelf.chatroomID else { return }
+                      let chatroomID = strongSelf.chatroomInfo?.id else { return }
                 let chatStoryboard = UIStoryboard(name: StoryboardCategory.chat.rawValue, bundle: nil)
                 guard let friendSelectionVC = chatStoryboard.instantiateViewController(
                     withIdentifier: FriendSelectionViewController.identifier
@@ -171,8 +219,9 @@ extension GroupMembersViewController: UITableViewDataSource {
     // swiftlint:disable line_length
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            guard let chatroomID = chatroomID else {
-                fatalError("No valid chatroom ID")
+            guard let chatroomID = chatroomInfo?.id else {
+                print("No chatroom id")
+                return
             }
             firebaseManager.updateGroupChatroomMemberStatus(setTo: .exit, membersIDs: [members[indexPath.row - 1].id], chatroomID: chatroomID) { [weak self] result in
                 switch result {
