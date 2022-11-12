@@ -918,6 +918,7 @@ class FirebaseManager {
         let chatroomID = groupChatroomsRef.document().documentID
         var groupChatroom = groupChatroom
         groupChatroom.id = chatroomID
+        groupChatroom.createdTime = Date()
 
         firebaseQueue.async { [weak self] in
             let group = DispatchGroup()
@@ -935,7 +936,7 @@ class FirebaseManager {
 
             group.wait()
             group.enter()
-            self?.addNewGroupChatMembers(chatroomID: chatroomID, members: members) { result in
+            self?.addNewGroupChatMembers(chatroomID: chatroomID, selectedMembers: members) { result in
                 switch result {
                 case .success:
                     group.leave()
@@ -953,12 +954,13 @@ class FirebaseManager {
         }
     }
 
-    func addNewGroupChatMembers(chatroomID: ChatroomID,members: [GroupChatMember], completion: @escaping (Result<String, Error>) -> Void) {
+    func addNewGroupChatMembers(chatroomID: ChatroomID, selectedMembers: [GroupChatMember], completion: @escaping (Result<String, Error>) -> Void) {
         firebaseQueue.async { [weak self] in
-            let ref = FirestoreEndpoint.groupChatroom.ref.document(chatroomID).collection("Members")
             var allMembersIncludingExit = [GroupChatMember]()
             var newMembers = [GroupChatMember]()
             var exitedMembers = [GroupChatMember]()
+
+            print("chatroom id", chatroomID)
 
             let group = DispatchGroup()
             group.enter()
@@ -966,11 +968,11 @@ class FirebaseManager {
                 switch result {
                 case .success(let allMembers):
                     for member in allMembers {
-                        for newMember in members {
-                            if member.userID == newMember.userID {
-                                exitedMembers.append(newMember)
+                        for selectedMember in selectedMembers {
+                            if member.userID == selectedMember.userID {
+                                exitedMembers.append(selectedMember)
                             } else {
-                                newMembers.append(newMember)
+                                newMembers.append(selectedMember)
                             }
                         }
                     }
@@ -985,36 +987,45 @@ class FirebaseManager {
             }
 
             group.wait()
-            group.enter()
-            let exitedMembersIDs = exitedMembers.map { $0.userID }
-            self?.updateGroupChatroomMemberStatus(setTo: .join, membersIDs: exitedMembersIDs, chatroomID: chatroomID, completion: { result in
-                switch result {
-                case .success:
-                    group.leave()
-                case .failure(let err):
-                    group.leave()
-                    group.notify(queue: .main) {
-                        completion(.failure(err))
-                    }
-                }
-            })
+            if newMembers.isEmpty && exitedMembers.isEmpty {
+                newMembers = selectedMembers
+            }
 
-            newMembers.forEach {
+            if !exitedMembers.isEmpty {
                 group.enter()
-                ref.document($0.userID).setData($0.toDict) { err in
-                    if let err = err {
+                let exitedMembersIDs = exitedMembers.map { $0.userID }
+                self?.updateGroupChatroomMemberStatus(setTo: .join, membersIDs: exitedMembersIDs, chatroomID: chatroomID, completion: { result in
+                    switch result {
+                    case .success:
+                        group.leave()
+                    case .failure(let err):
                         group.leave()
                         group.notify(queue: .main) {
                             completion(.failure(err))
                         }
-                        return
                     }
-                    group.leave()
+                })
+            }
+
+            if !newMembers.isEmpty {
+                newMembers.forEach {
+                    group.enter()
+                    let ref = FirestoreEndpoint.groupChatroom.ref.document(chatroomID).collection("Members")
+                    ref.document($0.userID).setData($0.toDict) { err in
+                        if let err = err {
+                            group.leave()
+                            group.notify(queue: .main) {
+                                completion(.failure(err))
+                            }
+                            return
+                        }
+                        group.leave()
+                    }
                 }
             }
 
             group.wait()
-            members.forEach {
+            selectedMembers.forEach {
                 group.enter()
                 let ref = FirestoreEndpoint.users.ref
                 ref.document($0.userID).collection("GroupChats").document(chatroomID).setData(["chatroomID": chatroomID]) { err in
@@ -1039,10 +1050,12 @@ class FirebaseManager {
         let ref = FirestoreEndpoint.groupChatroom.ref
         ref.document(chatroomID).collection("Members").getDocuments { (snapshot, err) in
             if let err = err {
+                print("error")
                 completion(.failure(err))
                 return
             }
             if let snapshot = snapshot {
+                print("snapshot", snapshot.documents)
                 let members: [GroupChatMember] = snapshot.documents.compactMap {
                     do {
                         return try $0.data(as: GroupChatMember.self, decoder: FirebaseManager.decoder)
@@ -1053,6 +1066,7 @@ class FirebaseManager {
                 }
                 completion(.success(members))
             } else {
+                print("no snapshot")
                 completion(.failure(CommonError.noValidQuerysnapshot))
             }
         }

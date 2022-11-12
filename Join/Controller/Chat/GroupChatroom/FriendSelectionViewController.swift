@@ -91,7 +91,7 @@ class FriendSelectionViewController: BaseViewController {
         guard let chatroomID = chatroomID else { return }
         let newMembers = selectedFriends.map { GroupChatMember(userID: $0.id, currentStatus: .join) }
         // swiftlint:disable line_length
-        firebaseManager.addNewGroupChatMembers(chatroomID: chatroomID, members: newMembers) { [weak self] result in
+        firebaseManager.addNewGroupChatMembers(chatroomID: chatroomID, selectedMembers: newMembers) { [weak self] result in
             switch result {
             case .success:
                 ProgressHUD.showSucceed()

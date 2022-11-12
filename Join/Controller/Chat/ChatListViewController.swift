@@ -125,9 +125,9 @@ class ChatListViewController: BaseViewController {
                 }
 
                 group.notify(queue: .main) { [weak self] in
-//                    groupMessageListItems = groupMessageListItems.sorted(by: {
-//                        $0.messages.first!.time > $1.messages.first!.time
-//                    })
+                    groupMessageListItems = groupMessageListItems.sorted(by: {
+                        $0.messages.first?.time ?? $0.chatroom.createdTime > $1.messages.first?.time ?? $0.chatroom.createdTime
+                    })
                     self?.groupMessageList = groupMessageListItems
                 }
             }

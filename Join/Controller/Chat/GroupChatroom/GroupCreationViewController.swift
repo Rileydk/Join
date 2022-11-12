@@ -35,7 +35,7 @@ class GroupCreationViewController: BaseViewController {
     let firebaseManager = FirebaseManager.shared
     var selectedFriends = [User]()
     var groupChatroom = GroupChatroom(
-        id: "", name: "", imageURL: "", admin: ""
+        id: "", name: "", imageURL: "", admin: "", createdTime: Date()
     )
     var selectedMembers = [GroupChatMember]()
     var groupImage: UIImage?

@@ -61,13 +61,15 @@ struct GroupChatroom: Codable {
     var name: String
     var imageURL: URLString
     var admin: UserID
+    var createdTime: Date
 
     var toDict: [String: Any] {
         return [
             "id": id as Any,
             "name": name as Any,
             "imageURL": imageURL as Any,
-            "admin": admin as Any
+            "admin": admin as Any,
+            "createdTime": createdTime as Any
         ]
     }
 }
