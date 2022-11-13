@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2585457536E3C3F568F3A4AC /* Pods_Join.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95A33A59C05820643F8B2FFB /* Pods_Join.framework */; };
+		BF0271412920D093000EA2F8 /* UIColor+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF0271402920D093000EA2F8 /* UIColor+Ext.swift */; };
 		BF42FA35290BE2AA00501789 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FA34290BE2AA00501789 /* AppDelegate.swift */; };
 		BF42FA37290BE2AA00501789 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FA36290BE2AA00501789 /* SceneDelegate.swift */; };
 		BF42FA39290BE2AA00501789 /* FindIdeasViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FA38290BE2AA00501789 /* FindIdeasViewController.swift */; };
@@ -46,8 +47,8 @@
 		BF42FACB2911473A00501789 /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FACA2911473A00501789 /* FirebaseManager.swift */; };
 		BF42FACD291154B500501789 /* Date+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FACC291154B500501789 /* Date+Ext.swift */; };
 		BF42FACF2912557500501789 /* UIImage+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FACE2912557500501789 /* UIImage+Ext.swift */; };
-		BF42FAD62912945F00501789 /* RecommendationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FAD42912945F00501789 /* RecommendationCell.swift */; };
-		BF42FAD72912945F00501789 /* RecommendationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF42FAD52912945F00501789 /* RecommendationCell.xib */; };
+		BF42FAD62912945F00501789 /* FriendProjectCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FAD42912945F00501789 /* FriendProjectCell.swift */; };
+		BF42FAD72912945F00501789 /* FriendProjectCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF42FAD52912945F00501789 /* FriendProjectCell.xib */; };
 		BF42FAD92912960D00501789 /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FAD82912960D00501789 /* CollectionViewCell.swift */; };
 		BF42FADC2912967900501789 /* IdeaCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FADA2912967900501789 /* IdeaCell.swift */; };
 		BF42FADD2912967900501789 /* IdeaCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF42FADB2912967900501789 /* IdeaCell.xib */; };
@@ -109,6 +110,7 @@
 
 /* Begin PBXFileReference section */
 		95A33A59C05820643F8B2FFB /* Pods_Join.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Join.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BF0271402920D093000EA2F8 /* UIColor+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Ext.swift"; sourceTree = "<group>"; };
 		BF42FA31290BE2AA00501789 /* Join.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Join.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF42FA34290BE2AA00501789 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BF42FA36290BE2AA00501789 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -149,8 +151,8 @@
 		BF42FACA2911473A00501789 /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
 		BF42FACC291154B500501789 /* Date+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Ext.swift"; sourceTree = "<group>"; };
 		BF42FACE2912557500501789 /* UIImage+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Ext.swift"; sourceTree = "<group>"; };
-		BF42FAD42912945F00501789 /* RecommendationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendationCell.swift; sourceTree = "<group>"; };
-		BF42FAD52912945F00501789 /* RecommendationCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RecommendationCell.xib; sourceTree = "<group>"; };
+		BF42FAD42912945F00501789 /* FriendProjectCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendProjectCell.swift; sourceTree = "<group>"; };
+		BF42FAD52912945F00501789 /* FriendProjectCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FriendProjectCell.xib; sourceTree = "<group>"; };
 		BF42FAD82912960D00501789 /* CollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewCell.swift; sourceTree = "<group>"; };
 		BF42FADA2912967900501789 /* IdeaCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdeaCell.swift; sourceTree = "<group>"; };
 		BF42FADB2912967900501789 /* IdeaCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = IdeaCell.xib; sourceTree = "<group>"; };
@@ -343,6 +345,7 @@
 				BF42FA6D290D178400501789 /* UIView+Ext.swift */,
 				BF42FACC291154B500501789 /* Date+Ext.swift */,
 				BF42FACE2912557500501789 /* UIImage+Ext.swift */,
+				BF0271402920D093000EA2F8 /* UIColor+Ext.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -418,8 +421,8 @@
 		BF42FAD12912941C00501789 /* FindIdeas */ = {
 			isa = PBXGroup;
 			children = (
-				BF42FAD42912945F00501789 /* RecommendationCell.swift */,
-				BF42FAD52912945F00501789 /* RecommendationCell.xib */,
+				BF42FAD42912945F00501789 /* FriendProjectCell.swift */,
+				BF42FAD52912945F00501789 /* FriendProjectCell.xib */,
 				BF42FADA2912967900501789 /* IdeaCell.swift */,
 				BF42FADB2912967900501789 /* IdeaCell.xib */,
 				BFF8A4B12913AD3000ADC950 /* BigImageCell.swift */,
@@ -609,7 +612,7 @@
 				BF42FA79290D264100501789 /* SingleLineInputCell.xib in Resources */,
 				BF9A8698291BD13400BF934D /* MyApplicantCell.xib in Resources */,
 				BF42FA5D290CED7100501789 /* Chat.storyboard in Resources */,
-				BF42FAD72912945F00501789 /* RecommendationCell.xib in Resources */,
+				BF42FAD72912945F00501789 /* FriendProjectCell.xib in Resources */,
 				BFF8A4C02913B46600ADC950 /* JoinButtonCell.xib in Resources */,
 				BFF8A4CA2913EE4C00ADC950 /* PersonalMainThumbnailCell.xib in Resources */,
 				BF42FA41290BE2AC00501789 /* LaunchScreen.storyboard in Resources */,
@@ -765,7 +768,8 @@
 				BF42FA76290D1CD800501789 /* FindPartnersBasicViewController.swift in Sources */,
 				BF9A8697291BD13400BF934D /* MyApplicantCell.swift in Sources */,
 				BF42FA6E290D178400501789 /* UIView+Ext.swift in Sources */,
-				BF42FAD62912945F00501789 /* RecommendationCell.swift in Sources */,
+				BF0271412920D093000EA2F8 /* UIColor+Ext.swift in Sources */,
+				BF42FAD62912945F00501789 /* FriendProjectCell.swift in Sources */,
 				BF42FA71290D196200501789 /* SingleLineInputCell.swift in Sources */,
 				BFF8A4DD2916341D00ADC950 /* ChatroomViewController.swift in Sources */,
 				BFF8A4C52913EDB800ADC950 /* PersonalEntryViewController.swift in Sources */,

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class RecommendationCell: CollectionViewCell {
+class FriendProjectCell: CollectionViewCell {
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
 
@@ -20,7 +20,7 @@ class RecommendationCell: CollectionViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        titleLabel.backgroundColor = UIColor.gray.withAlphaComponent(0.6)
+//        titleLabel.backgroundColor = UIColor.gray.withAlphaComponent(0.6)
         imageView.layer.cornerRadius = 12
     }
 

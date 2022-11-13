@@ -28,8 +28,8 @@ class FindIdeasViewController: UIViewController {
     @IBOutlet weak var collectionView: UICollectionView! {
         didSet {
             collectionView.register(
-                UINib(nibName: RecommendationCell.identifier, bundle: nil),
-                forCellWithReuseIdentifier: RecommendationCell.identifier
+                UINib(nibName: FriendProjectCell.identifier, bundle: nil),
+                forCellWithReuseIdentifier: FriendProjectCell.identifier
             )
             collectionView.register(
                 UINib(nibName: IdeaCell.identifier, bundle: nil),
@@ -63,6 +63,7 @@ class FindIdeasViewController: UIViewController {
 
     func layoutViews() {
         title = Tab.findIdeas.title
+        collectionView.backgroundColor = UIColor.Gray5
     }
 
     func getProjects() {
@@ -142,6 +143,7 @@ extension FindIdeasViewController {
             heightDimension: .fractionalHeight(1)
         )
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        item.contentInsets = .init(top: 0, leading: 5, bottom: 0, trailing: 5)
 
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1),
@@ -207,8 +209,8 @@ extension FindIdeasViewController {
         switch item {
         case .recommendation(let data):
             guard let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: RecommendationCell.identifier,
-                for: indexPath) as? RecommendationCell else {
+                withReuseIdentifier: FriendProjectCell.identifier,
+                for: indexPath) as? FriendProjectCell else {
                 fatalError("Cannot create Recommendation Cell")
             }
             cell.layoutCell(project: data)

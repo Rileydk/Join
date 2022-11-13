@@ -45,7 +45,7 @@
                         <rect key="frame" x="16" y="106" width="382" height="86"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="11" translatesAutoresizingMaskIntoConstraints="NO" id="ZMY-JK-vUq">
-                                <rect key="frame" x="0.0" y="0.0" width="240" height="86"/>
+                                <rect key="frame" x="0.0" y="0.0" width="230" height="86"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="tp0-9F-hUY">
                                         <rect key="frame" x="0.0" y="0.0" width="213.5" height="22"/>
@@ -116,9 +116,9 @@
                                 </subviews>
                             </stackView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="photo.artframe" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="8oS-aI-VM5">
-                                <rect key="frame" x="262" y="1" width="120" height="83.5"/>
+                                <rect key="frame" x="252" y="1" width="130" height="83.5"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="120" id="9tN-Hc-G5T"/>
+                                    <constraint firstAttribute="width" constant="130" id="9tN-Hc-G5T"/>
                                 </constraints>
                             </imageView>
                         </subviews>
