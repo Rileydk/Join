@@ -43,6 +43,11 @@ enum MemberStatus: String, Codable {
     case exit
 }
 
+enum InoutStatus: String, Codable {
+    case `in`
+    case out
+}
+
 struct Chatroom: Codable {
     let id: ChatroomID
     let member: [UserID]
@@ -93,14 +98,17 @@ struct Message: Codable {
 }
 
 struct GroupChatMember: Codable {
-
     let userID: UserID
-    var currentStatus: MemberStatus
+    var currentMemberStatus: MemberStatus
+    var currentInoutStatus: InoutStatus
+    var lastTimeInChatroom: Date
 
     var toDict: [String: Any] {
         return [
             "userID": userID as Any,
-            "currentStatus": currentStatus.rawValue as Any
+            "currentMemberStatus": currentMemberStatus.rawValue as Any,
+            "currentInoutStatus": currentInoutStatus.rawValue as Any,
+            "lastTimeInChatroom": lastTimeInChatroom as Any
         ]
     }
 }

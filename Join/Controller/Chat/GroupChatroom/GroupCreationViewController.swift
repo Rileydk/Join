@@ -60,7 +60,10 @@ class GroupCreationViewController: BaseViewController {
             }
         }
         selectedMembers = selectedFriends.map {
-            GroupChatMember(userID: $0.id, currentStatus: .join)
+            GroupChatMember(
+                userID: $0.id, currentMemberStatus: .join,
+                currentInoutStatus: .out, lastTimeInChatroom: Date()
+            )
         }
         groupChatroom.admin = myAccount.id
 

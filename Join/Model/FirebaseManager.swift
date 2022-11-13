@@ -1074,7 +1074,7 @@ class FirebaseManager {
 
     func getAllCurrentGroupChatMembers(chatroomID: ChatroomID, completion: @escaping (Result<[UserID], Error>) -> Void) {
         let ref = FirestoreEndpoint.groupChatroom.ref
-        ref.document(chatroomID).collection("Members").whereField("currentStatus", isEqualTo: "join").getDocuments { (snapshot, err) in
+        ref.document(chatroomID).collection("Members").whereField("currentMemberStatus", isEqualTo: "join").getDocuments { (snapshot, err) in
             if let err = err {
                 completion(.failure(err))
                 return
@@ -1295,7 +1295,7 @@ class FirebaseManager {
             let group = DispatchGroup()
             membersIDs.forEach {
                 group.enter()
-                membersRef.document($0).updateData(["currentStatus": status.rawValue]) { err in
+                membersRef.document($0).updateData(["currentMemberStatus": status.rawValue]) { err in
                     if let err = err {
                         group.leave()
                         group.notify(queue: .main) {

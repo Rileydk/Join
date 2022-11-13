@@ -60,7 +60,7 @@ class GroupChatroomViewController: BaseViewController {
         tabBarController?.tabBar.isHidden = true
 
         guard chatroomID != nil else { return }
-        getNeccesaryInfo()
+        getNecessaryInfo()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -75,7 +75,7 @@ class GroupChatroomViewController: BaseViewController {
         )
     }
 
-    func getNeccesaryInfo() {
+    func getNecessaryInfo() {
         firebaseManager.firebaseQueue.async { [unowned self] in
             let group = DispatchGroup()
             group.enter()

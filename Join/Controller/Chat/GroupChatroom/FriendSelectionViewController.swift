@@ -89,7 +89,12 @@ class FriendSelectionViewController: BaseViewController {
 
     @objc func addNewMembers() {
         guard let chatroomID = chatroomID else { return }
-        let newMembers = selectedFriends.map { GroupChatMember(userID: $0.id, currentStatus: .join) }
+        let newMembers = selectedFriends.map {
+            GroupChatMember(
+                userID: $0.id, currentMemberStatus: .join,
+                currentInoutStatus: .out, lastTimeInChatroom: Date()
+            )
+        }
         // swiftlint:disable line_length
         firebaseManager.addNewGroupChatMembers(chatroomID: chatroomID, selectedMembers: newMembers) { [weak self] result in
             switch result {
