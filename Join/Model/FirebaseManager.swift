@@ -313,19 +313,35 @@ class FirebaseManager {
     }
 
     func sendFriendRequest(to id: UserID, completion: @escaping (Result<String, Error>) -> Void) {
-        let myDocRef = FirestoreEndpoint.users.ref.document(id)
-        myDocRef.updateData(["receivedRequests": [myAccount.id]]) { error in
-            if let error = error {
-                completion(.failure(error))
-                return
-            }
-            myDocRef.updateData(["sentRequests": [id]]) { error in
+        firebaseQueue.async {
+            let group = DispatchGroup()
+            group.enter()
+            let objectDocRef = FirestoreEndpoint.users.ref.document(id)
+            objectDocRef.updateData(["receivedRequests": [myAccount.id]]) { error in
                 if let error = error {
-                    completion(.failure(error))
+                    group.leave()
+                    group.notify(queue: .main) {
+                        completion(.failure(error))
+                    }
                     return
                 }
-                completion(.success("Success"))
-                return
+                group.leave()
+            }
+
+            group.enter()
+            let myDocRef = FirestoreEndpoint.users.ref.document(myAccount.id)
+            myDocRef.updateData(["sentRequests": [id]]) { error in
+                if let error = error {
+                    group.leave()
+                    group.notify(queue: .main) {
+                        completion(.failure(error))
+                    }
+                    return
+                }
+                group.leave()
+            }
+            group.notify(queue: .main) {
+                completion(.success("Successfully send request!"))
             }
         }
     }
