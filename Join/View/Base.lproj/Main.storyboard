@@ -4,6 +4,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -18,19 +19,21 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gys-rA-fxC">
-                                <rect key="frame" x="61" y="494" width="292" height="39"/>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <rect key="frame" x="89" y="489" width="87" height="35"/>
+                                <color key="backgroundColor" name="Blue1"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                <inset key="contentEdgeInsets" minX="6" minY="4" maxX="6" maxY="4"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                <state key="normal" title="以 Potential Friend 的身份登入"/>
+                                <state key="normal" title="Friend 1"/>
                                 <connections>
-                                    <action selector="choosePotentialFriend:" destination="1NE-3J-0Fa" eventType="touchUpInside" id="bzv-fi-fD1"/>
+                                    <action selector="chooseFriend1:" destination="1NE-3J-0Fa" eventType="touchUpInside" id="X1c-oA-Bbv"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ckf-uB-PJB">
-                                <rect key="frame" x="117.5" y="374" width="179" height="39"/>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <rect key="frame" x="111.5" y="374" width="191" height="35"/>
+                                <color key="backgroundColor" name="Blue1"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                <inset key="contentEdgeInsets" minX="6" minY="4" maxX="6" maxY="4"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" title="以大琪的身份登入"/>
                                 <connections>
@@ -38,14 +41,26 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xvs-K2-f4a">
-                                <rect key="frame" x="88" y="609" width="239" height="39"/>
+                                <rect key="frame" x="236" y="489" width="90" height="35"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" name="Blue1"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                <inset key="contentEdgeInsets" minX="6" minY="4" maxX="6" maxY="4"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                <state key="normal" title="以 Passenger的身份登入"/>
+                                <state key="normal" title="Friend 2"/>
                                 <connections>
-                                    <action selector="choosePassenger:" destination="1NE-3J-0Fa" eventType="touchUpInside" id="9FS-8c-IIq"/>
+                                    <action selector="chooseFriend2:" destination="1NE-3J-0Fa" eventType="touchUpInside" id="FRb-Ue-QWo"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Let-2Y-2cx">
+                                <rect key="frame" x="167.5" y="590" width="79" height="35"/>
+                                <color key="backgroundColor" name="Blue1"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                <inset key="contentEdgeInsets" minX="6" minY="4" maxX="6" maxY="4"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" title="新成員"/>
+                                <connections>
+                                    <action selector="chooseNewMember:" destination="1NE-3J-0Fa" eventType="touchUpInside" id="WDw-MX-2cr"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -53,8 +68,10 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="Ckf-uB-PJB" firstAttribute="top" secondItem="hFF-GX-KZx" secondAttribute="top" constant="330" id="7Om-zh-yOO"/>
-                            <constraint firstItem="Gys-rA-fxC" firstAttribute="top" secondItem="Ckf-uB-PJB" secondAttribute="bottom" constant="81" id="ZgJ-j2-fab"/>
-                            <constraint firstItem="Gys-rA-fxC" firstAttribute="centerX" secondItem="x7i-qJ-YkP" secondAttribute="centerX" id="qAq-y9-KV1"/>
+                            <constraint firstItem="Let-2Y-2cx" firstAttribute="centerX" secondItem="x7i-qJ-YkP" secondAttribute="centerX" id="KWj-rx-lbh"/>
+                            <constraint firstItem="Let-2Y-2cx" firstAttribute="top" secondItem="Gys-rA-fxC" secondAttribute="bottom" constant="66" id="O9o-ER-yTt"/>
+                            <constraint firstItem="Gys-rA-fxC" firstAttribute="top" secondItem="Ckf-uB-PJB" secondAttribute="bottom" constant="80" id="ZgJ-j2-fab"/>
+                            <constraint firstItem="Gys-rA-fxC" firstAttribute="centerX" secondItem="x7i-qJ-YkP" secondAttribute="centerX" constant="-74.5" id="qAq-y9-KV1"/>
                             <constraint firstItem="Ckf-uB-PJB" firstAttribute="centerX" secondItem="x7i-qJ-YkP" secondAttribute="centerX" id="wyv-Uo-KCn"/>
                         </constraints>
                     </view>
@@ -84,6 +101,9 @@
         </scene>
     </scenes>
     <resources>
+        <namedColor name="Blue1">
+            <color red="0.0" green="0.22352941176470589" blue="0.38823529411764707" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

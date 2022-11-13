@@ -141,6 +141,7 @@ class FirebaseManager {
                     return
                 }
                 let urlString = "\(downloadURL)"
+                print("url: ", urlString)
                 completion(.success(urlString))
             }
         }
