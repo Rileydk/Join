@@ -62,73 +62,15 @@ class ChatListViewController: BaseViewController {
 
     func getMessageList() {
         if type == .group {
-            var chatroomIDsBox = [ChatroomID]()
-            var groupMessageListItems = [GroupMessageListItem]()
-
-            firebaseManager.firebaseQueue.async { [weak self] in
-                let group = DispatchGroup()
-                group.enter()
-                self?.firebaseManager.getAllSavedGroupChatroomIDs { result in
-                    switch result {
-                    case .success(let chatroomIDs):
-                        chatroomIDsBox = chatroomIDs
-                        group.leave()
-                    case .failure(let err):
-                        group.leave()
-                        group.notify(queue: .main) {
-                            print(err)
-                        }
-                    }
-                }
-
-                group.wait()
-                group.enter()
-                self?.firebaseManager.getAllGroupChatroomInfo(chatroomIDs: chatroomIDsBox) { [weak self] result in
-                    switch result {
-                    case .success(let groupListItems):
-                        groupMessageListItems = groupListItems
-                        group.leave()
-                    case .failure(let err):
-                        if err as? CommonError == CommonError.noExistChatroom {
-                            group.leave()
-                            group.notify(queue: .main) {
-                                self?.groupMessageList = []
-                            }
-                        } else {
-                            group.leave()
-                            group.notify(queue: .main) {
-                                print(err)
-                            }
-                        }
-                    }
-                }
-
-                group.wait()
-                group.enter()
-                // swiftlint:disable line_length
-                self?.firebaseManager.getAllMessagesCombinedWithEachGroup(messagesItems: groupMessageListItems) { result in
-                    switch result {
-                    case .success(let groupListItems):
-                        groupMessageListItems = groupListItems
-                        group.leave()
-                    case .failure(let err):
-                        if err as? CommonError == CommonError.noMessage {
-                            group.leave()
-                            print("No message")
-                        } else {
-                            group.leave()
-                            group.notify(queue: .main) {
-                                print(err)
-                            }
-                        }
-                    }
-                }
-
-                group.notify(queue: .main) { [weak self] in
-                    groupMessageListItems = groupMessageListItems.sorted(by: {
+            firebaseManager.getAllGroupMessages { [weak self] result in
+                switch result {
+                case .success(let groupMessagesList):
+                    var listItem = groupMessagesList.sorted(by: {
                         $0.messages.first?.time ?? $0.chatroom.createdTime > $1.messages.first?.time ?? $0.chatroom.createdTime
                     })
-                    self?.groupMessageList = groupMessageListItems
+                    self?.groupMessageList = listItem
+                case .failure(let err):
+                    print(err)
                 }
             }
 

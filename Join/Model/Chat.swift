@@ -118,6 +118,7 @@ struct SavedChat: Codable {
 struct MessageListItem: Codable {
     let chatroomID: ChatroomID
     let objectID: UserID
+    var lastTimeInChatroom: Date
     var messages = [Message]()
 }
 
@@ -128,6 +129,7 @@ struct SavedGroupChat: Codable {
 struct GroupMessageListItem {
     let chatroomID: ChatroomID
     let chatroom: GroupChatroom
+    var lastTimeInChatroom: Date
     var messages = [Message]()
 }
 
