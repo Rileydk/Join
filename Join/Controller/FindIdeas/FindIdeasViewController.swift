@@ -167,11 +167,12 @@ extension FindIdeasViewController {
 
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1),
-            heightDimension: .estimated(220)
+            heightDimension: .estimated(190)
         )
         let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
 
         let section = NSCollectionLayoutSection(group: group)
+        section.contentInsets = .init(top: 15, leading: 0, bottom: 15, trailing: 0)
         return section
     }
 
