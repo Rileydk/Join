@@ -23,8 +23,8 @@
                         <color key="tintColor" name="Gray3"/>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="18v-nq-9vB">
-                        <rect key="frame" x="8" y="115" width="84" height="17"/>
-                        <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
+                        <rect key="frame" x="8" y="112.5" width="84" height="19.5"/>
+                        <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="16"/>
                         <color key="textColor" name="Gray5"/>
                         <nil key="highlightedColor"/>
                     </label>
