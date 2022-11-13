@@ -70,17 +70,20 @@ class FindIdeasViewController: UIViewController {
         var friendsProjects = [Project]()
         var interestProjects = [Project]()
 
-        DispatchQueue.global().async { [unowned self] in
+        firebaseManager.firebaseQueue.async { [unowned self] in
             let group = DispatchGroup()
             group.enter()
             self.firebaseManager.getAllProjects { [weak self] result in
                 switch result {
                 case .success(let projects):
                     self?.projects = projects
+                    group.leave()
                 case .failure(let error):
-                    print(error)
+                    group.leave()
+                    group.notify(queue: .main) {
+                        print(error)
+                    }
                 }
-                group.leave()
             }
 
             group.wait()
@@ -93,10 +96,13 @@ class FindIdeasViewController: UIViewController {
                             project.contact == friend.id
                         }
                     }
+                    group.leave()
                 case .failure(let error):
-                    print(error)
+                    group.leave()
+                    group.notify(queue: .main) {
+                        print(error)
+                    }
                 }
-                group.leave()
             }
 
             group.enter()
@@ -110,26 +116,27 @@ class FindIdeasViewController: UIViewController {
                             }
                         }
                     }
+                    group.leave()
+                    group.notify(queue: .main) { [unowned self] in
+                        recommendedProjects = friendsProjects
+                        recommendedProjects += interestProjects.filter { interestProject in
+                            !recommendedProjects.contains { recommendedProject in
+                                interestProject.projectID == recommendedProject.projectID
+                            }
+                        }
+                        restProjects = projects.filter { project in
+                            !recommendedProjects.contains { recommendedProject in
+                                project.projectID == recommendedProject.projectID
+                            }
+                        }
+                        self.updateDatasource()
+                    }
                 case .failure(let err):
-                    print(err)
-                }
-                group.leave()
-            }
-
-            group.notify(queue: .main) { [unowned self] in
-                recommendedProjects = friendsProjects
-                recommendedProjects += interestProjects.filter { interestProject in
-                    !recommendedProjects.contains { recommendedProject in
-                        interestProject.projectID == recommendedProject.projectID
+                    group.leave()
+                    group.notify(queue: .main) {
+                        print(err)
                     }
                 }
-                restProjects = projects.filter { project in
-                    !recommendedProjects.contains { recommendedProject in
-                        project.projectID == recommendedProject.projectID
-                    }
-                }
-
-                self.updateDatasource()
             }
         }
     }
@@ -170,9 +177,10 @@ extension FindIdeasViewController {
             heightDimension: .estimated(190)
         )
         let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
+        group.interItemSpacing = .fixed(28)
 
         let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = .init(top: 15, leading: 0, bottom: 15, trailing: 0)
+//        section.contentInsets = .init(top: 0, leading: 16, bottom: 20, trailing: 16)
         return section
     }
 

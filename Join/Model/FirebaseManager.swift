@@ -484,7 +484,11 @@ class FirebaseManager {
             if let snapshot = documentSnapshot {
                 do {
                     let document = try snapshot.data(as: SavedChat.self, decoder: FirebaseManager.decoder)
-                    completion(.success(document.chatroomID))
+                    guard let chatroomID = document.chatroomID else {
+                        completion(.failure(CommonError.noExistChatroom))
+                        return
+                    }
+                    completion(.success(chatroomID))
                 } catch {
                     completion(.failure(CommonError.noExistChatroom))
                 }
@@ -784,7 +788,12 @@ class FirebaseManager {
                 switch result {
                     // 取得所有存放在 user 下符合類別的 chatroom
                 case .success(let savedChat):
-                    messagesList = savedChat.map { MessageListItem(chatroomID: $0.chatroomID, objectID: $0.id, lastTimeInChatroom: Date()) }
+                    messagesList = savedChat.map {
+                        MessageListItem(
+                            chatroomID: $0.chatroomID ?? "",
+                            objectID: $0.id, lastTimeInChatroom: Date()
+                        )
+                    }.filter { !$0.chatroomID.isEmpty }
                     group.leave()
                 case .failure(let error):
                     group.leave()
