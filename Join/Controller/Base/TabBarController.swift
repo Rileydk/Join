@@ -46,26 +46,26 @@ enum Tab {
         case .findIdeas:
             return UITabBarItem(
                 title: self.title,
-                image: nil,
-                selectedImage: nil
+                image: UIImage(systemName: "lightbulb"),
+                selectedImage: UIImage(systemName: "lightbulb.fill")
             )
         case .findPartners:
             return UITabBarItem(
                 title: self.title,
-                image: nil,
-                selectedImage: nil
+                image: UIImage(systemName: "person.3"),
+                selectedImage: UIImage(systemName: "person.3.fill")
             )
         case .chat:
             return UITabBarItem(
                 title: self.title,
-                image: nil,
-                selectedImage: nil
+                image: UIImage(systemName: "message"),
+                selectedImage: UIImage(systemName: "message.fill")
             )
         case .personal:
             return UITabBarItem(
                 title: self.title,
-                image: nil,
-                selectedImage: nil
+                image: UIImage(systemName: "person.circle"),
+                selectedImage: UIImage(systemName: "person.circle.fill")
             )
         }
     }
@@ -78,5 +78,6 @@ class TabBarController: UITabBarController {
 
         let tabs: [Tab] = [.findIdeas, .findPartners, .chat, .personal]
         viewControllers = tabs.map { $0.controller() }
+        tabBar.tintColor = .Blue1
     }
 }
