@@ -46,21 +46,26 @@ class OthersProfileViewController: BaseViewController {
     }
 
     func updateData() {
-        let group = DispatchGroup()
-        group.enter()
-        getUserThumbnail {
-            group.leave()
-        }
-        group.enter()
-        updateRelationship {
-            group.leave()
-        }
-        group.enter()
-        updateUserData {
-            group.leave()
-        }
-        group.notify(queue: .main) { [unowned self] in
-            self.updateDatasource()
+        firebaseManager.firebaseQueue.async { [weak self] in
+            let group = DispatchGroup()
+            group.enter()
+            self?.getUserThumbnail {
+                group.leave()
+            }
+            group.wait()
+            group.enter()
+            self?.updateRelationship {
+                group.leave()
+            }
+            group.wait()
+            group.enter()
+            self?.updateUserData {
+                group.leave()
+            }
+            group.wait()
+            group.notify(queue: .main) {
+                self?.updateDatasource()
+            }
         }
     }
 

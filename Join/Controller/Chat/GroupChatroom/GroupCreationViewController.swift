@@ -37,7 +37,7 @@ class GroupCreationViewController: BaseViewController {
     var groupChatroom = GroupChatroom(
         id: "", name: "", imageURL: "", admin: "", createdTime: Date()
     )
-    var selectedMembers = [GroupChatMember]()
+    var selectedMembers = [ChatroomMember]()
     var groupImage: UIImage?
     var chatroomID: ChatroomID?
 
@@ -60,7 +60,7 @@ class GroupCreationViewController: BaseViewController {
             }
         }
         selectedMembers = selectedFriends.map {
-            GroupChatMember(
+            ChatroomMember(
                 userID: $0.id, currentMemberStatus: .join,
                 currentInoutStatus: .out, lastTimeInChatroom: Date()
             )

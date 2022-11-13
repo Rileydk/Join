@@ -50,13 +50,10 @@ enum InoutStatus: String, Codable {
 
 struct Chatroom: Codable {
     let id: ChatroomID
-    let member: [UserID]
-    var messages: [Message]?
 
-    var toInitDict: [String: Any] {
+    var toDict: [String: Any] {
         return [
-            "id": id as Any,
-            "member": member as Any
+            "id": id as Any
         ]
     }
 }
@@ -97,7 +94,7 @@ struct Message: Codable {
     }
 }
 
-struct GroupChatMember: Codable {
+struct ChatroomMember: Codable {
     let userID: UserID
     var currentMemberStatus: MemberStatus
     var currentInoutStatus: InoutStatus
@@ -121,6 +118,7 @@ struct SavedChat: Codable {
 struct MessageListItem: Codable {
     let chatroomID: ChatroomID
     let objectID: UserID
+    var lastTimeInChatroom: Date
     var messages = [Message]()
 }
 
@@ -131,6 +129,7 @@ struct SavedGroupChat: Codable {
 struct GroupMessageListItem {
     let chatroomID: ChatroomID
     let chatroom: GroupChatroom
+    var lastTimeInChatroom: Date
     var messages = [Message]()
 }
 

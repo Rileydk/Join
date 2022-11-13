@@ -90,7 +90,7 @@ class FriendSelectionViewController: BaseViewController {
     @objc func addNewMembers() {
         guard let chatroomID = chatroomID else { return }
         let newMembers = selectedFriends.map {
-            GroupChatMember(
+            ChatroomMember(
                 userID: $0.id, currentMemberStatus: .join,
                 currentInoutStatus: .out, lastTimeInChatroom: Date()
             )

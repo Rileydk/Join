@@ -41,7 +41,7 @@ class GroupChatroomViewController: BaseViewController {
     var chatroomID: ChatroomID?
     var chatroomInfo: GroupChatroom?
     var messages = [Message]()
-    var membersInfos = [GroupChatMember]()
+    var membersInfos = [ChatroomMember]()
     var members = [User]()
     var wholeInfoMessages = [WholeInfoMessage]() {
         didSet {
@@ -63,9 +63,15 @@ class GroupChatroomViewController: BaseViewController {
         getNecessaryInfo()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        updateInoutStatus(to: .in)
+    }
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         tabBarController?.tabBar.isHidden = false
+        updateInoutStatus(to: .out)
     }
 
     func layoutViews() {
@@ -191,6 +197,18 @@ class GroupChatroomViewController: BaseViewController {
         }
         groupMembersVC.chatroomInfo = chatroomInfo
         navigationController?.pushViewController(groupMembersVC, animated: true)
+    }
+
+    func updateInoutStatus(to status: InoutStatus) {
+        guard chatroomID != nil else { return }
+        firebaseManager.updateGroupChatroomInoutStatus(setTo: status, chatroomID: chatroomID!) { result in
+            switch result {
+            case .success(let status):
+                print(status)
+            case .failure(let err):
+                print(err)
+            }
+        }
     }
 }
 
