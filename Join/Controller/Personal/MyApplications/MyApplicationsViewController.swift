@@ -24,8 +24,8 @@ class MyApplicationsViewController: BaseViewController {
     @IBOutlet weak var collectionView: UICollectionView! {
         didSet {
             collectionView.register(
-                UINib(nibName: RecommendationCell.identifier, bundle: nil),
-                forCellWithReuseIdentifier: RecommendationCell.identifier
+                UINib(nibName: FriendProjectCell.identifier, bundle: nil),
+                forCellWithReuseIdentifier: FriendProjectCell.identifier
             )
             collectionView.register(
                 UINib(nibName: IdeaCell.identifier, bundle: nil),
