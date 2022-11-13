@@ -31,7 +31,7 @@ class GroupChatroomViewController: BaseViewController {
             tableView.dataSource = self
             tableView.rowHeight = UITableView.automaticDimension
             tableView.estimatedRowHeight = 60
-            tableView.backgroundColor = .yellow
+            tableView.backgroundColor = .Blue4
             tableView.separatorStyle = .none
             tableView.allowsSelection = false
         }

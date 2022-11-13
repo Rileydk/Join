@@ -22,6 +22,7 @@ class GroupMembersViewController: BaseViewController {
             )
             tableView.delegate = self
             tableView.dataSource = self
+            tableView.backgroundColor = .Gray5
         }
     }
 
@@ -150,7 +151,7 @@ class GroupMembersViewController: BaseViewController {
         firebaseManager.updateGroupChatroomMemberStatus(setTo: .exit, membersIDs: [myAccount.id], chatroomID: chatroomID) { [weak self] result in
             switch result {
             case .success:
-                ProgressHUD.showSucceed()
+                ProgressHUD.showSuccess()
                 self?.navigationController?.popToRootViewController(animated: true)
             case .failure(let err):
                 ProgressHUD.showError()

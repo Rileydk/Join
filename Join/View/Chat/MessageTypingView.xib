@@ -4,8 +4,9 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Image references" minToolsVersion="12.0"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -20,6 +21,7 @@
                     <subviews>
                         <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="tGD-Qh-eKt">
                             <rect key="frame" x="0.0" y="0.0" width="340" height="34"/>
+                            <color key="backgroundColor" name="Gray5"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits"/>
                         </textField>
@@ -29,8 +31,11 @@
                                 <constraint firstAttribute="width" secondItem="fAt-6T-wwH" secondAttribute="height" multiplier="1:1" id="8fS-nS-Drb"/>
                                 <constraint firstAttribute="width" constant="30" id="Cmr-Nv-5dZ"/>
                             </constraints>
+                            <color key="tintColor" name="Blue3"/>
                             <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                            <state key="normal" image="paperplane" catalog="system"/>
+                            <state key="normal">
+                                <imageReference key="image" image="paperplane" catalog="system" symbolScale="large"/>
+                            </state>
                             <connections>
                                 <action selector="sendMessage" destination="iN0-l3-epB" eventType="touchUpInside" id="kZg-mm-6m7"/>
                             </connections>
@@ -39,7 +44,6 @@
                 </stackView>
             </subviews>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
-            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
                 <constraint firstItem="BrY-Ya-f8n" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="20" id="64j-jv-QXe"/>
                 <constraint firstItem="BrY-Ya-f8n" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="FtY-R6-QDQ"/>
@@ -55,8 +59,11 @@
     </objects>
     <resources>
         <image name="paperplane" catalog="system" width="128" height="118"/>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
+        <namedColor name="Blue3">
+            <color red="0.29411764705882354" green="0.7686274509803922" blue="0.94509803921568625" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="Gray5">
+            <color red="0.94117647058823528" green="0.94117647058823528" blue="0.94117647058823528" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
     </resources>
 </document>

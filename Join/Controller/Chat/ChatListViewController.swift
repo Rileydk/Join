@@ -19,6 +19,7 @@ class ChatListViewController: BaseViewController {
             tableView.delegate = self
             tableView.dataSource = self
             tableView.separatorStyle = .none
+            tableView.backgroundColor = .Gray5
         }
     }
 
@@ -53,6 +54,8 @@ class ChatListViewController: BaseViewController {
     }
 
     func layoutViews() {
+        view.backgroundColor = .Gray5
+
         let types = ChatroomType.allCases
         for i in 0 ..< types.count {
             tabSegmentedControl.setTitle(types[i].buttonTitle, forSegmentAt: i)
