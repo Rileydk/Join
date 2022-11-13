@@ -929,6 +929,7 @@ class FirebaseManager {
                         return nil
                     }
                 }
+                print("project items: ", projectItems)
                 completion(.success(projectItems))
             } else {
                 completion(.failure(CommonError.noValidQuerysnapshot))
