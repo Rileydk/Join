@@ -112,7 +112,7 @@ struct ChatroomMember: Codable {
 
 struct SavedChat: Codable {
     let id: UserID
-    var chatroomID: ChatroomID
+    var chatroomID: ChatroomID?
 }
 
 struct MessageListItem: Codable {
