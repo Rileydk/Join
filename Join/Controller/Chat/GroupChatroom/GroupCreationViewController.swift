@@ -27,6 +27,7 @@ class GroupCreationViewController: BaseViewController {
             )
             collectionView.setCollectionViewLayout(createLayout(), animated: true)
             configureDatasource()
+            collectionView.backgroundColor = .Gray5
         }
     }
 

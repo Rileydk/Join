@@ -27,16 +27,16 @@
                         </constraints>
                     </imageView>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="dif-by-o6T">
-                        <rect key="frame" x="80" y="17.5" width="190" height="55.5"/>
+                        <rect key="frame" x="80" y="17.5" width="170" height="55.5"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XHp-C3-vPS">
-                                <rect key="frame" x="0.0" y="0.0" width="190" height="29"/>
+                                <rect key="frame" x="0.0" y="0.0" width="170" height="29"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="24"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Latest Message" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xX0-ZD-O3y">
-                                <rect key="frame" x="0.0" y="34" width="190" height="21.5"/>
+                                <rect key="frame" x="0.0" y="34" width="170" height="21.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                 <color key="textColor" systemColor="opaqueSeparatorColor"/>
                                 <nil key="highlightedColor"/>
@@ -44,7 +44,7 @@
                         </subviews>
                     </stackView>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="c1z-4p-EYD">
-                        <rect key="frame" x="288" y="35" width="20" height="20"/>
+                        <rect key="frame" x="255" y="35" width="45" height="20"/>
                         <color key="backgroundColor" name="Red"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="20" id="Qj9-7z-S0H"/>
@@ -53,7 +53,7 @@
                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="14"/>
                         <inset key="contentEdgeInsets" minX="4" minY="4" maxX="4" maxY="4"/>
                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                        <state key="normal" title="1"/>
+                        <state key="normal" title="999+"/>
                     </button>
                 </subviews>
                 <constraints>
@@ -61,8 +61,8 @@
                     <constraint firstItem="dif-by-o6T" firstAttribute="leading" secondItem="ou0-oK-aLI" secondAttribute="trailing" constant="8" id="AWz-uq-irv"/>
                     <constraint firstItem="ou0-oK-aLI" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="Ug0-rQ-2bV"/>
                     <constraint firstItem="c1z-4p-EYD" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="UlB-Gw-DmY"/>
-                    <constraint firstAttribute="trailing" secondItem="c1z-4p-EYD" secondAttribute="trailing" constant="12" id="YRu-4I-m0c"/>
-                    <constraint firstAttribute="trailing" secondItem="dif-by-o6T" secondAttribute="trailing" constant="50" id="Yfx-En-YQr"/>
+                    <constraint firstAttribute="trailing" secondItem="c1z-4p-EYD" secondAttribute="trailing" constant="20" id="YRu-4I-m0c"/>
+                    <constraint firstAttribute="trailing" secondItem="dif-by-o6T" secondAttribute="trailing" constant="70" id="Yfx-En-YQr"/>
                     <constraint firstItem="ou0-oK-aLI" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="uhz-kd-gPK"/>
                 </constraints>
             </tableViewCellContentView>

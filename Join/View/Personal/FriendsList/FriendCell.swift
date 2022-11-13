@@ -26,6 +26,8 @@ class FriendCell: TableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
+        backgroundColor = .Gray5
+        contentView.backgroundColor = .Gray5
     }
 
     override func layoutSubviews() {

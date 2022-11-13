@@ -26,6 +26,7 @@ class ChatListCell: TableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         unreadMessagesAmountButton.isHidden = true
+        contentView.backgroundColor = .Gray5
     }
 
     override func layoutSubviews() {

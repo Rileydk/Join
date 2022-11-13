@@ -15,13 +15,14 @@ class AddNewMemberCell: TableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        addButton.layer.borderWidth = 1
+        addButton.layer.borderColor = UIColor.Gray3?.cgColor
+        contentView.backgroundColor = .Gray5
     }
 
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        addButton.layer.cornerRadius = addButton.frame.size.width / 2
     }
     
     @IBAction func addNewMembers(_ sender: UIButton) {

@@ -30,6 +30,8 @@ class MessageTypingSuperview: UIView {
             Bundle(for: MessageTypingView.self)
             .loadNibNamed(MessageTypingView.identifier, owner: nil)?
             .first as? MessageTypingView {
+
+            messageTypingView.backgroundColor = .Blue1
             addSubview(messageTypingView)
             messageTypingView.frame = bounds
             messageTypingView.delegate = self
