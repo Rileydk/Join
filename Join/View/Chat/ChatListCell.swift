@@ -14,12 +14,12 @@ class ChatListCell: TableViewCell {
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var latestMessageLabel: UILabel!
     @IBOutlet weak var unreadMessagesAmountButton: UIButton!
-    
+
     override func prepareForReuse() {
         super.prepareForReuse()
         userThumbnailImageView.image = nil
         nameLabel.text = ""
-        latestMessageLabel.text = nil
+        latestMessageLabel.text = ""
         unreadMessagesAmountButton.isHidden = true
     }
 
@@ -27,6 +27,8 @@ class ChatListCell: TableViewCell {
         super.awakeFromNib()
         unreadMessagesAmountButton.isHidden = true
         contentView.backgroundColor = .Gray5
+        nameLabel.text = ""
+        latestMessageLabel.text = ""
     }
 
     override func layoutSubviews() {
