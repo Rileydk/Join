@@ -120,7 +120,7 @@
 		BF42FA55290CE89500501789 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		BF42FA57290CEA5900501789 /* FindIdeas.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = FindIdeas.storyboard; sourceTree = "<group>"; };
 		BF42FA59290CEA7F00501789 /* FindPartners.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = FindPartners.storyboard; sourceTree = "<group>"; };
-		BF42FA5A290CEAB500501789 /* Chat.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Chat.storyboard; path = /Users/riley/Desktop/iOS/Courses/appworks/Join/Join/View/Chat.storyboard; sourceTree = "<absolute>"; };
+		BF42FA5A290CEAB500501789 /* Chat.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Chat.storyboard; sourceTree = "<group>"; };
 		BF42FA5B290CEAD500501789 /* Personal.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Personal.storyboard; sourceTree = "<group>"; };
 		BF42FA60290CEF4700501789 /* UIStoryboard+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStoryboard+Ext.swift"; sourceTree = "<group>"; };
 		BF42FA66290D04EF00501789 /* FindPartnersFormSections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindPartnersFormSections.swift; sourceTree = "<group>"; };
