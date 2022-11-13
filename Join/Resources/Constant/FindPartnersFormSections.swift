@@ -77,9 +77,11 @@ struct FindPartnersFormSections {
     static let noValidImageURLError = "No valid image url"
     static let noValidQuerysnapshotError = "No valid querysnapshot"
     static let notFriendError = "Not friend yet"
-    static let noExistChatroomErrorDescription = "No exist chatroom"
-    static let countIncorrectErrorDescription = "Messages count not match with users"
-    static let decodeFailedErrorDescription = "Decode failed"
+    static let noExistChatroomError = "No exist chatroom"
+    static let noMessageError = "No Message"
+    static let countIncorrectError = "Messages count not match with users"
+    static let decodeFailedError = "Decode failed"
+    static let nilResultError = "nil result"
     // 這個似乎是錯誤的
     // static let datePickerLocale = "zh_TW"
 }

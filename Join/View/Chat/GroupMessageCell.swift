@@ -1,15 +1,15 @@
 //
-//  MessageCell.swift
+//  GroupMessageCell.swift
 //  Join
 //
-//  Created by Riley Lai on 2022/11/5.
+//  Created by Riley Lai on 2022/11/11.
 //
 
 import UIKit
 
-class MessageCell: TableViewCell {
-
-    @IBOutlet weak var thumbnailImageView: UIImageView!
+class GroupMessageCell: TableViewCell {
+    @IBOutlet weak var senderThumbnailImageView: UIImageView!
+    @IBOutlet weak var senderNameLabel: UILabel!
     @IBOutlet weak var messageTextView: UITextView!
 
     let firebaseManager = FirebaseManager.shared
@@ -17,7 +17,7 @@ class MessageCell: TableViewCell {
 
     override func prepareForReuse() {
         super.prepareForReuse()
-        thumbnailImageView.image = nil
+        senderThumbnailImageView.image = nil
     }
 
     override func awakeFromNib() {
@@ -32,27 +32,28 @@ class MessageCell: TableViewCell {
         messageTextView.isUserInteractionEnabled = false
         messageTextView.isScrollEnabled = false
 
-        thumbnailImageView.isUserInteractionEnabled = true
+        senderThumbnailImageView.isUserInteractionEnabled = true
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(thumbnailGetTapped))
-        thumbnailImageView.addGestureRecognizer(tapGestureRecognizer)
+        senderThumbnailImageView.addGestureRecognizer(tapGestureRecognizer)
     }
 
     override func layoutSubviews() {
         super.layoutSubviews()
-        thumbnailImageView.layer.cornerRadius = thumbnailImageView.frame.size.width / 2
+        senderThumbnailImageView.layer.cornerRadius = senderThumbnailImageView.frame.size.width / 2
     }
 
-    func layoutCell(imageURL: URLString?, message: String) {
-        guard let imageURL = imageURL else { return }
-        firebaseManager.downloadImage(urlString: imageURL) { [unowned self] result in
+    func layoutCell(message: WholeInfoMessage) {
+        firebaseManager.downloadImage(urlString: message.sender.thumbnailURL) { [unowned self] result in
             switch result {
             case .success(let image):
-                self.thumbnailImageView.image = image
-            case .failure(let error):
-                print(error)
+                self.senderThumbnailImageView.image = image
+            case .failure(let err):
+                print(err)
             }
         }
-        messageTextView.text = message
+
+        senderNameLabel.text = message.sender.name
+        messageTextView.text = message.message.content
     }
 
     @objc func thumbnailGetTapped() {

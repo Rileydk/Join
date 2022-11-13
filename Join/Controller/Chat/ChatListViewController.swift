@@ -9,6 +9,7 @@ import UIKit
 
 class ChatListViewController: BaseViewController {
     @IBOutlet weak var tabSegmentedControl: UISegmentedControl!
+    @IBOutlet weak var addGroupChatroomBarButton: UIBarButtonItem!
     @IBOutlet weak var tableView: UITableView! {
         didSet {
             tableView.register(
@@ -28,7 +29,14 @@ class ChatListViewController: BaseViewController {
             getMessageList()
         }
     }
+    // 一對一聊天室用
     var messageList = [MessageListItem]() {
+        didSet {
+            tableView.reloadData()
+        }
+    }
+    // 群組聊天室用
+    var groupMessageList = [GroupMessageListItem]() {
         didSet {
             tableView.reloadData()
         }
@@ -53,18 +61,104 @@ class ChatListViewController: BaseViewController {
     }
 
     func getMessageList() {
-        firebaseManager.getAllLatestMessages(type: type) { [unowned self] result in
-            switch result {
-            case .success(let listItem):
-                self.messageList = listItem
-            case .failure(let error):
-                print(error)
+        if type == .group {
+            var chatroomIDsBox = [ChatroomID]()
+            var groupMessageListItems = [GroupMessageListItem]()
+
+            firebaseManager.firebaseQueue.async { [weak self] in
+                let group = DispatchGroup()
+                group.enter()
+                self?.firebaseManager.getAllSavedGroupChatroomIDs { result in
+                    switch result {
+                    case .success(let chatroomIDs):
+                        chatroomIDsBox = chatroomIDs
+                        group.leave()
+                    case .failure(let err):
+                        group.leave()
+                        group.notify(queue: .main) {
+                            print(err)
+                        }
+                    }
+                }
+
+                group.wait()
+                group.enter()
+                self?.firebaseManager.getAllGroupChatroomInfo(chatroomIDs: chatroomIDsBox) { [weak self] result in
+                    switch result {
+                    case .success(let groupListItems):
+                        groupMessageListItems = groupListItems
+                        group.leave()
+                    case .failure(let err):
+                        if err as? CommonError == CommonError.noExistChatroom {
+                            group.leave()
+                            group.notify(queue: .main) {
+                                self?.groupMessageList = []
+                            }
+                        } else {
+                            group.leave()
+                            group.notify(queue: .main) {
+                                print(err)
+                            }
+                        }
+                    }
+                }
+
+                group.wait()
+                group.enter()
+                // swiftlint:disable line_length
+                self?.firebaseManager.getAllMessagesCombinedWithEachGroup(messagesItems: groupMessageListItems) { result in
+                    switch result {
+                    case .success(let groupListItems):
+                        groupMessageListItems = groupListItems
+                        group.leave()
+                    case .failure(let err):
+                        if err as? CommonError == CommonError.noMessage {
+                            group.leave()
+                            print("No message")
+                        } else {
+                            group.leave()
+                            group.notify(queue: .main) {
+                                print(err)
+                            }
+                        }
+                    }
+                }
+
+                group.notify(queue: .main) { [weak self] in
+                    groupMessageListItems = groupMessageListItems.sorted(by: {
+                        $0.messages.first?.time ?? $0.chatroom.createdTime > $1.messages.first?.time ?? $0.chatroom.createdTime
+                    })
+                    self?.groupMessageList = groupMessageListItems
+                }
+            }
+
+        } else {
+            firebaseManager.getAllMessagesCombinedWithSender(type: type) { [unowned self] result in
+                switch result {
+                case .success(let listItem):
+                    var listItem = listItem.sorted(by: {
+                        $0.messages.first!.time > $1.messages.first!.time
+                    })
+                    self.messageList = listItem
+                case .failure(let error):
+                    self.messageList = []
+                    print(error)
+                }
             }
         }
     }
 
     @IBAction func changeTab(_ sender: UISegmentedControl) {
         type = ChatroomType.allCases[sender.selectedSegmentIndex]
+    }
+    @IBAction func addGroupChatroom(_ sender: UIBarButtonItem) {
+        let chatStoryboard = UIStoryboard(name: StoryboardCategory.chat.rawValue, bundle: nil)
+        guard let friendSelectionVC = chatStoryboard.instantiateViewController(
+            withIdentifier: FriendSelectionViewController.identifier
+            ) as? FriendSelectionViewController else {
+            fatalError("Cannot create friend selection vc")
+        }
+        navigationController?.pushViewController(friendSelectionVC, animated: true)
     }
 }
 
@@ -75,28 +169,45 @@ extension ChatListViewController: UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let userID = messageList[indexPath.row].userID
-        let chatroomID = messageList[indexPath.row].chatroomID
 
-        firebaseManager.getUserInfo(id: userID) { result in
-            switch result {
-            case .success(let user):
-                let chatStoryboard = UIStoryboard(name: StoryboardCategory.chat.rawValue, bundle: nil)
-                guard let chatVC = chatStoryboard.instantiateViewController(
-                    withIdentifier: ChatroomViewController.identifier
-                ) as? ChatroomViewController else {
-                    fatalError("Cannot create chatroom vc")
-                }
+        if type == .group {
+            let chatroomID = groupMessageList[indexPath.row].chatroomID
+            let chatroomName = groupMessageList[indexPath.row].chatroom.name
+            let chatStoryboard = UIStoryboard(name: StoryboardCategory.chat.rawValue, bundle: nil)
+            guard let chatroomVC =  chatStoryboard.instantiateViewController(
+                withIdentifier: GroupChatroomViewController.identifier
+            ) as? GroupChatroomViewController else {
+                fatalError("Cannot get chatroom vc")
+            }
+            chatroomVC.chatroomID = chatroomID
+            chatroomVC.title = chatroomName
 
-                chatVC.userData = user
-                chatVC.chatroomID = chatroomID
-                self.hidesBottomBarWhenPushed = true
-                DispatchQueue.main.async { [unowned self] in
-                    self.hidesBottomBarWhenPushed = false
+            navigationController?.pushViewController(chatroomVC, animated: true)
+
+        } else {
+            let userID = messageList[indexPath.row].objectID
+            let chatroomID = messageList[indexPath.row].chatroomID
+
+            firebaseManager.getUserInfo(id: userID) { result in
+                switch result {
+                case .success(let user):
+                    let chatStoryboard = UIStoryboard(name: StoryboardCategory.chat.rawValue, bundle: nil)
+                    guard let chatVC = chatStoryboard.instantiateViewController(
+                        withIdentifier: ChatroomViewController.identifier
+                    ) as? ChatroomViewController else {
+                        fatalError("Cannot create chatroom vc")
+                    }
+
+                    chatVC.userData = user
+                    chatVC.chatroomID = chatroomID
+                    self.hidesBottomBarWhenPushed = true
+                    DispatchQueue.main.async { [unowned self] in
+                        self.hidesBottomBarWhenPushed = false
+                    }
+                    self.navigationController?.pushViewController(chatVC, animated: true)
+                case .failure(let error):
+                    print(error)
                 }
-                self.navigationController?.pushViewController(chatVC, animated: true)
-            case .failure(let error):
-                print(error)
             }
         }
     }
@@ -105,7 +216,11 @@ extension ChatListViewController: UITableViewDelegate {
 // MARK: - Table View Datasource
 extension ChatListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        messageList.count
+        if type == .group {
+            return groupMessageList.count
+        } else {
+            return messageList.count
+        }
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -114,7 +229,13 @@ extension ChatListViewController: UITableViewDataSource {
             for: indexPath) as? ChatListCell else {
             fatalError("Cannot create chat list cell")
         }
-        cell.layoutCell(messageItem: messageList[indexPath.row])
+        if type == .group {
+            cell.layoutCell(groupMessageItem: groupMessageList[indexPath.row])
+        } else {
+            cell.layoutCell(messageItem: messageList[indexPath.row])
+            return cell
+        }
+
         return cell
     }
 }

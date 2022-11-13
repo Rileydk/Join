@@ -61,6 +61,16 @@
 		BF9A8697291BD13400BF934D /* MyApplicantCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9A8695291BD13400BF934D /* MyApplicantCell.swift */; };
 		BF9A8698291BD13400BF934D /* MyApplicantCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF9A8696291BD13400BF934D /* MyApplicantCell.xib */; };
 		BF9A869B291C9DE200BF934D /* MyApplicationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9A869A291C9DE200BF934D /* MyApplicationsViewController.swift */; };
+		BF9A869D291CC9D000BF934D /* FriendSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9A869C291CC9D000BF934D /* FriendSelectionViewController.swift */; };
+		BF9A869F291CDE8300BF934D /* GroupCreationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9A869E291CDE8300BF934D /* GroupCreationViewController.swift */; };
+		BF9A86A3291CE06400BF934D /* GroupCreationHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9A86A1291CE06400BF934D /* GroupCreationHeaderCell.swift */; };
+		BF9A86A4291CE06400BF934D /* GroupCreationHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF9A86A2291CE06400BF934D /* GroupCreationHeaderCell.xib */; };
+		BF9A86A6291D1A6100BF934D /* GroupChatroomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9A86A5291D1A6100BF934D /* GroupChatroomViewController.swift */; };
+		BF9A86AB291E19B300BF934D /* GroupMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9A86A9291E19B300BF934D /* GroupMessageCell.swift */; };
+		BF9A86AC291E19B300BF934D /* GroupMessageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF9A86AA291E19B300BF934D /* GroupMessageCell.xib */; };
+		BF9A86AE291E356C00BF934D /* GroupMembersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9A86AD291E356C00BF934D /* GroupMembersViewController.swift */; };
+		BF9A86B1291E3AE800BF934D /* AddNewMemberCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9A86AF291E3AE800BF934D /* AddNewMemberCell.swift */; };
+		BF9A86B2291E3AE800BF934D /* AddNewMemberCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF9A86B0291E3AE800BF934D /* AddNewMemberCell.xib */; };
 		BFF8A4AE2913A92300ADC950 /* ProjectDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF8A4AD2913A92300ADC950 /* ProjectDetailsViewController.swift */; };
 		BFF8A4B32913AD3000ADC950 /* BigImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF8A4B12913AD3000ADC950 /* BigImageCell.swift */; };
 		BFF8A4B42913AD3000ADC950 /* BigImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BFF8A4B22913AD3000ADC950 /* BigImageCell.xib */; };
@@ -154,6 +164,16 @@
 		BF9A8695291BD13400BF934D /* MyApplicantCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyApplicantCell.swift; sourceTree = "<group>"; };
 		BF9A8696291BD13400BF934D /* MyApplicantCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MyApplicantCell.xib; sourceTree = "<group>"; };
 		BF9A869A291C9DE200BF934D /* MyApplicationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyApplicationsViewController.swift; sourceTree = "<group>"; };
+		BF9A869C291CC9D000BF934D /* FriendSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendSelectionViewController.swift; sourceTree = "<group>"; };
+		BF9A869E291CDE8300BF934D /* GroupCreationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupCreationViewController.swift; sourceTree = "<group>"; };
+		BF9A86A1291CE06400BF934D /* GroupCreationHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupCreationHeaderCell.swift; sourceTree = "<group>"; };
+		BF9A86A2291CE06400BF934D /* GroupCreationHeaderCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GroupCreationHeaderCell.xib; sourceTree = "<group>"; };
+		BF9A86A5291D1A6100BF934D /* GroupChatroomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupChatroomViewController.swift; sourceTree = "<group>"; };
+		BF9A86A9291E19B300BF934D /* GroupMessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupMessageCell.swift; sourceTree = "<group>"; };
+		BF9A86AA291E19B300BF934D /* GroupMessageCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GroupMessageCell.xib; sourceTree = "<group>"; };
+		BF9A86AD291E356C00BF934D /* GroupMembersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupMembersViewController.swift; sourceTree = "<group>"; };
+		BF9A86AF291E3AE800BF934D /* AddNewMemberCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewMemberCell.swift; sourceTree = "<group>"; };
+		BF9A86B0291E3AE800BF934D /* AddNewMemberCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddNewMemberCell.xib; sourceTree = "<group>"; };
 		BFF8A4AD2913A92300ADC950 /* ProjectDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectDetailsViewController.swift; sourceTree = "<group>"; };
 		BFF8A4B12913AD3000ADC950 /* BigImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigImageCell.swift; sourceTree = "<group>"; };
 		BFF8A4B22913AD3000ADC950 /* BigImageCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BigImageCell.xib; sourceTree = "<group>"; };
@@ -449,6 +469,17 @@
 			path = MyApplications;
 			sourceTree = "<group>";
 		};
+		BF9A86A0291CDF4900BF934D /* GroupChatroom */ = {
+			isa = PBXGroup;
+			children = (
+				BF9A869C291CC9D000BF934D /* FriendSelectionViewController.swift */,
+				BF9A869E291CDE8300BF934D /* GroupCreationViewController.swift */,
+				BF9A86A5291D1A6100BF934D /* GroupChatroomViewController.swift */,
+				BF9A86AD291E356C00BF934D /* GroupMembersViewController.swift */,
+			);
+			path = GroupChatroom;
+			sourceTree = "<group>";
+		};
 		BFF8A4C32913EC6000ADC950 /* Personal */ = {
 			isa = PBXGroup;
 			children = (
@@ -480,6 +511,7 @@
 		BFF8A4DB291633EE00ADC950 /* Chat */ = {
 			isa = PBXGroup;
 			children = (
+				BF9A86A0291CDF4900BF934D /* GroupChatroom */,
 				BFF8A4F22917982B00ADC950 /* ChatListViewController.swift */,
 				BFF8A4DC2916341D00ADC950 /* ChatroomViewController.swift */,
 			);
@@ -498,6 +530,12 @@
 				BFF8A4ED29164DCB00ADC950 /* MyMessageCell.xib */,
 				BFF8A4F42917992000ADC950 /* ChatListCell.swift */,
 				BFF8A4F52917992000ADC950 /* ChatListCell.xib */,
+				BF9A86A1291CE06400BF934D /* GroupCreationHeaderCell.swift */,
+				BF9A86A2291CE06400BF934D /* GroupCreationHeaderCell.xib */,
+				BF9A86A9291E19B300BF934D /* GroupMessageCell.swift */,
+				BF9A86AA291E19B300BF934D /* GroupMessageCell.xib */,
+				BF9A86AF291E3AE800BF934D /* AddNewMemberCell.swift */,
+				BF9A86B0291E3AE800BF934D /* AddNewMemberCell.xib */,
 			);
 			path = Chat;
 			sourceTree = "<group>";
@@ -577,6 +615,7 @@
 				BF42FA41290BE2AC00501789 /* LaunchScreen.storyboard in Resources */,
 				BFF8A4EB29164BF500ADC950 /* MessageCell.xib in Resources */,
 				BFF8A4BA2913AE9D00ADC950 /* DetailTitleHeaderView.xib in Resources */,
+				BF9A86B2291E3AE800BF934D /* AddNewMemberCell.xib in Resources */,
 				BFF8A4DA2915036000ADC950 /* ContactCell.xib in Resources */,
 				BFF8A4DA2915036000ADC950 /* ContactCell.xib in Resources */,
 				BF42FA58290CEA5900501789 /* FindIdeas.storyboard in Resources */,
@@ -585,7 +624,9 @@
 				BFF8A4CE2913F32600ADC950 /* GoNextPageButtonCell.xib in Resources */,
 				BFF8A4EF29164DCB00ADC950 /* MyMessageCell.xib in Resources */,
 				BF42FAC52910010000501789 /* AddNewCell.xib in Resources */,
+				BF9A86AC291E19B300BF934D /* GroupMessageCell.xib in Resources */,
 				BFF8A4D42914C79900ADC950 /* PersonBasicCell.xib in Resources */,
+				BF9A86A4291CE06400BF934D /* GroupCreationHeaderCell.xib in Resources */,
 				BFF8A4B42913AD3000ADC950 /* BigImageCell.xib in Resources */,
 				BF42FA5C290CED6C00501789 /* FindPartners.storyboard in Resources */,
 				BF42FAB8290FBE2D00501789 /* AddNewLineSectionCell.xib in Resources */,
@@ -669,6 +710,7 @@
 				BF42FADC2912967900501789 /* IdeaCell.swift in Sources */,
 				BF42FAC42910010000501789 /* AddNewCell.swift in Sources */,
 				BFF8A4DF2916342E00ADC950 /* BaseViewController.swift in Sources */,
+				BF9A86AB291E19B300BF934D /* GroupMessageCell.swift in Sources */,
 				BF42FA67290D04EF00501789 /* FindPartnersFormSections.swift in Sources */,
 				BF42FACD291154B500501789 /* Date+Ext.swift in Sources */,
 				BF42FA56290CE89500501789 /* TabBarController.swift in Sources */,
@@ -678,10 +720,13 @@
 				BFF8A4EE29164DCB00ADC950 /* MyMessageCell.swift in Sources */,
 				BF42FA39290BE2AA00501789 /* FindIdeasViewController.swift in Sources */,
 				BFF8A4E4291636EE00ADC950 /* MessageTypingView.swift in Sources */,
+				BF9A869F291CDE8300BF934D /* GroupCreationViewController.swift in Sources */,
 				BFF8A4B32913AD3000ADC950 /* BigImageCell.swift in Sources */,
+				BF9A86B1291E3AE800BF934D /* AddNewMemberCell.swift in Sources */,
 				BF42FAD92912960D00501789 /* CollectionViewCell.swift in Sources */,
 				BF42FABC290FF32300501789 /* MemberCardViewController.swift in Sources */,
 				BFF8A4D92915036000ADC950 /* ContactCell.swift in Sources */,
+				BF9A869D291CC9D000BF934D /* FriendSelectionViewController.swift in Sources */,
 				BFF8A4F32917982B00ADC950 /* ChatListViewController.swift in Sources */,
 				BFF8A4D32914C79900ADC950 /* PersonBasicCell.swift in Sources */,
 				BF9A867D2918FB1800BF934D /* FriendCell.swift in Sources */,
@@ -697,6 +742,7 @@
 				BFF8A4D32914C79900ADC950 /* PersonBasicCell.swift in Sources */,
 				BF9A868E291BAD1500BF934D /* MyPostsViewController.swift in Sources */,
 				BF9A867D2918FB1800BF934D /* FriendCell.swift in Sources */,
+				BF9A86A3291CE06400BF934D /* GroupCreationHeaderCell.swift in Sources */,
 				BF42FACF2912557500501789 /* UIImage+Ext.swift in Sources */,
 				BF42FAB2290FAC2000501789 /* Project.swift in Sources */,
 				BF9A8691291BCF9F00BF934D /* MyPostsDetailViewController.swift in Sources */,
@@ -723,7 +769,9 @@
 				BF42FA71290D196200501789 /* SingleLineInputCell.swift in Sources */,
 				BFF8A4DD2916341D00ADC950 /* ChatroomViewController.swift in Sources */,
 				BFF8A4C52913EDB800ADC950 /* PersonalEntryViewController.swift in Sources */,
+				BF9A86A6291D1A6100BF934D /* GroupChatroomViewController.swift in Sources */,
 				BF42FAC829111FD400501789 /* ImagePickerCell.swift in Sources */,
+				BF9A86AE291E356C00BF934D /* GroupMembersViewController.swift in Sources */,
 				BF42FA37290BE2AA00501789 /* SceneDelegate.swift in Sources */,
 				BFF8A4BF2913B46600ADC950 /* JoinButtonCell.swift in Sources */,
 				BFF8A4AE2913A92300ADC950 /* ProjectDetailsViewController.swift in Sources */,

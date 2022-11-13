@@ -78,9 +78,16 @@ class ChatroomViewController: BaseViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        tabBarController?.tabBar.isHidden = true
+
         updateUserData()
         guard let chatroomID = chatroomID else { return }
-        updateAllMessages(chatroomID: chatroomID)
+        updateMessages(chatroomID: chatroomID)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        tabBarController?.tabBar.isHidden = false
     }
 
     func updateUserData() {
@@ -107,8 +114,8 @@ class ChatroomViewController: BaseViewController {
         }
     }
 
-    func updateAllMessages(chatroomID: ChatroomID) {
-        firebaseManager.getAllMessages(chatroomID: chatroomID) { [unowned self] result in
+    func updateMessages(chatroomID: ChatroomID) {
+        firebaseManager.getMessages(of: chatroomID) { [unowned self] result in
             switch result {
             case .success(let messages):
                 self.messages = messages
@@ -142,7 +149,7 @@ extension ChatroomViewController: UITableViewDataSource {
                 ) as? MessageCell else {
                 fatalError("Cannot create message cell")
             }
-            cell.layoutCell(image: userThumbnail, message: message.content)
+            cell.layoutCell(imageURL: userData?.thumbnailURL, message: message.content)
             cell.tapHandler = { [weak self] in
                 let personalStoryboard = UIStoryboard(name: StoryboardCategory.personal.rawValue, bundle: nil)
                 guard let profileVC = personalStoryboard.instantiateViewController(

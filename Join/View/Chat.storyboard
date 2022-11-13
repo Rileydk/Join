@@ -47,8 +47,15 @@
                             <constraint firstItem="tsz-g0-cUG" firstAttribute="trailing" secondItem="uyr-5O-0eY" secondAttribute="trailing" id="rMk-Wz-bfJ"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="DAu-Py-tgo"/>
+                    <navigationItem key="navigationItem" id="DAu-Py-tgo">
+                        <barButtonItem key="rightBarButtonItem" title="Item" image="plus.message" catalog="system" id="0ds-7h-Qdn">
+                            <connections>
+                                <action selector="addGroupChatroom:" destination="xzF-Dt-Vic" id="dNV-5a-Ibc"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
+                        <outlet property="addGroupChatroomBarButton" destination="0ds-7h-Qdn" id="il4-ZO-RXN"/>
                         <outlet property="tabSegmentedControl" destination="NwU-Lx-6XG" id="EFg-zQ-eoX"/>
                         <outlet property="tableView" destination="tsz-g0-cUG" id="P1f-KQ-FGD"/>
                     </connections>
@@ -96,7 +103,147 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bLx-R3-CqK" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2031.8840579710147" y="908.70535714285711"/>
+            <point key="canvasLocation" x="2032" y="909"/>
+        </scene>
+        <!--Group Chatroom View Controller-->
+        <scene sceneID="H6G-1d-b2f">
+            <objects>
+                <viewController storyboardIdentifier="GroupChatroomViewController" id="juY-jJ-6td" customClass="GroupChatroomViewController" customModule="Join" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="NsB-Rw-aSc">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="fXa-Zh-AVa">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="806"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </tableView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Dgl-eh-KOk" customClass="MessageTypingSuperview" customModule="Join" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="806" width="414" height="90"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="90" id="Jbe-GB-oRf"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="bpA-KL-CTF"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="Dgl-eh-KOk" firstAttribute="top" secondItem="fXa-Zh-AVa" secondAttribute="bottom" id="A1b-53-UY9"/>
+                            <constraint firstItem="Dgl-eh-KOk" firstAttribute="leading" secondItem="bpA-KL-CTF" secondAttribute="leading" id="PIR-93-XqO"/>
+                            <constraint firstItem="fXa-Zh-AVa" firstAttribute="leading" secondItem="bpA-KL-CTF" secondAttribute="leading" id="TSH-JD-DAj"/>
+                            <constraint firstAttribute="bottom" secondItem="Dgl-eh-KOk" secondAttribute="bottom" id="WJL-L4-7CI"/>
+                            <constraint firstItem="fXa-Zh-AVa" firstAttribute="top" secondItem="NsB-Rw-aSc" secondAttribute="top" id="fM8-ep-uwD"/>
+                            <constraint firstItem="bpA-KL-CTF" firstAttribute="trailing" secondItem="Dgl-eh-KOk" secondAttribute="trailing" id="iWs-PB-KV5"/>
+                            <constraint firstItem="bpA-KL-CTF" firstAttribute="trailing" secondItem="fXa-Zh-AVa" secondAttribute="trailing" id="qoG-JH-Nti"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="messageTypingSuperview" destination="Dgl-eh-KOk" id="bG9-pm-WKq"/>
+                        <outlet property="tableView" destination="fXa-Zh-AVa" id="p7b-DO-P0w"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="RwQ-Lr-CU1" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2879.7101449275365" y="908.70535714285711"/>
+        </scene>
+        <!--Group Members View Controller-->
+        <scene sceneID="oRo-wf-b3K">
+            <objects>
+                <viewController storyboardIdentifier="GroupMembersViewController" id="qQk-qG-DsE" customClass="GroupMembersViewController" customModule="Join" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="yIt-xx-soe">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="dXj-YW-Tx4">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </tableView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="59x-ua-KnM"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="dXj-YW-Tx4" firstAttribute="top" secondItem="yIt-xx-soe" secondAttribute="top" id="LYd-pA-1Yi"/>
+                            <constraint firstItem="59x-ua-KnM" firstAttribute="trailing" secondItem="dXj-YW-Tx4" secondAttribute="trailing" id="Up6-RE-gsw"/>
+                            <constraint firstItem="dXj-YW-Tx4" firstAttribute="leading" secondItem="59x-ua-KnM" secondAttribute="leading" id="c5e-8L-N0E"/>
+                            <constraint firstAttribute="bottom" secondItem="dXj-YW-Tx4" secondAttribute="bottom" id="sxc-JA-A3j"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="tableView" destination="dXj-YW-Tx4" id="wV7-Vn-ogU"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="E6n-fA-333" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3722" y="909"/>
+        </scene>
+        <!--Friend Selection View Controller-->
+        <scene sceneID="NiX-NT-qQ5">
+            <objects>
+                <viewController storyboardIdentifier="FriendSelectionViewController" id="ogG-tp-bKQ" customClass="FriendSelectionViewController" customModule="Join" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="nta-iq-nwA">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="gBE-jc-geQ">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </tableView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="gsu-mf-ERF"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="gsu-mf-ERF" firstAttribute="trailing" secondItem="gBE-jc-geQ" secondAttribute="trailing" id="WJV-ff-kms"/>
+                            <constraint firstItem="gBE-jc-geQ" firstAttribute="top" secondItem="nta-iq-nwA" secondAttribute="top" id="XZw-TS-FFb"/>
+                            <constraint firstItem="gBE-jc-geQ" firstAttribute="leading" secondItem="gsu-mf-ERF" secondAttribute="leading" id="q98-2l-Hnb"/>
+                            <constraint firstAttribute="bottom" secondItem="gBE-jc-geQ" secondAttribute="bottom" id="w4Z-Pj-IZT"/>
+                        </constraints>
+                    </view>
+                    <toolbarItems/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="tableView" destination="gBE-jc-geQ" id="xGq-1t-qgO"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="aAI-X5-1dI" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2032" y="1606"/>
+        </scene>
+        <!--Group Creation View Controller-->
+        <scene sceneID="hH5-lz-Ywy">
+            <objects>
+                <viewController storyboardIdentifier="GroupCreationViewController" id="hgG-TM-Y2V" customClass="GroupCreationViewController" customModule="Join" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="vnh-xY-h3H">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="g22-ia-9o9">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Of9-TK-gLJ">
+                                    <size key="itemSize" width="128" height="128"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells/>
+                            </collectionView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="tCK-IW-Tif"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="g22-ia-9o9" firstAttribute="leading" secondItem="tCK-IW-Tif" secondAttribute="leading" id="2ju-kb-bxb"/>
+                            <constraint firstAttribute="bottom" secondItem="g22-ia-9o9" secondAttribute="bottom" id="LUc-zJ-lx6"/>
+                            <constraint firstItem="tCK-IW-Tif" firstAttribute="trailing" secondItem="g22-ia-9o9" secondAttribute="trailing" id="hg2-iw-tAw"/>
+                            <constraint firstItem="g22-ia-9o9" firstAttribute="top" secondItem="vnh-xY-h3H" secondAttribute="top" id="hgB-Yt-e0Y"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="collectionView" destination="g22-ia-9o9" id="nEA-td-qzE"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ZOj-L0-Qd6" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2881" y="1606"/>
         </scene>
         <!--Item-->
         <scene sceneID="XYW-fG-2wx">
@@ -119,6 +266,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="plus.message" catalog="system" width="128" height="113"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
