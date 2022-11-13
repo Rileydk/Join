@@ -57,6 +57,7 @@ enum FirestoreEndpoint {
     case otherGroupChat(UserID)
     case messages(ChatroomID)
     case groupMessages(ChatroomID)
+    case privateChatroomMembers(ChatroomID)
     case groupMembers(ChatroomID)
     case interests
 
@@ -103,6 +104,8 @@ enum FirestoreEndpoint {
             return db.collection(chatrooms).document(chatroomID).collection(messages)
         case .groupMessages(let chatroomID):
             return db.collection(groupChatrooms).document(chatroomID).collection(messages)
+        case .privateChatroomMembers(let chatroomID):
+            return db.collection(chatrooms).document(chatroomID).collection(members)
         case .groupMembers(let chatroomID):
             return db.collection(groupChatrooms).document(chatroomID).collection(members)
         case .interests:
@@ -476,24 +479,51 @@ class FirebaseManager {
     }
 
     func createChatroom(id: UserID, type: ChatroomType, completion: @escaping (Result<ChatroomID, Error>) -> Void) {
-        let chatroomRef = FirestoreEndpoint.chatrooms.ref
-        let documentID = chatroomRef.document().documentID
-        let chatroom = Chatroom(id: documentID, member: [myAccount.id, id], messages: [])
+        firebaseQueue.async {
+            let chatroomRef = FirestoreEndpoint.chatrooms.ref
+            let chatroomID = chatroomRef.document().documentID
+            let chatroom = Chatroom(id: chatroomID)
 
-        // 建立新的 chatroom
-        chatroomRef.document(documentID).setData(chatroom.toInitDict) { [unowned self] error in
-            if let error = error {
-                completion(.failure(error))
-                return
-            }
-            // 分別存入 friend 或 unknownchatroom 中
-            self.saveChatroomID(to: type, id: id, chatroomID: documentID) { result in
-                switch result {
-                case .success:
-                    completion(.success(documentID))
-                case .failure(let error):
-                    completion(.failure(error))
+            let group = DispatchGroup()
+            group.enter()
+            chatroomRef.document(chatroomID).setData(chatroom.toDict) { [unowned self] error in
+                if let error = error {
+                    group.leave()
+                    group.notify(queue: .main) {
+                        completion(.failure(error))
+                    }
+                    return
                 }
+                group.leave()
+            }
+
+            group.wait()
+            let membersRef = FirestoreEndpoint.privateChatroomMembers(chatroomID).ref
+            [myAccount.id, id].forEach {
+                group.enter()
+                let member = ChatroomMember(userID: $0, currentMemberStatus: .join, currentInoutStatus: .out, lastTimeInChatroom: Date())
+                membersRef.document($0).setData(member.toDict) { err in
+                    if let err = err {
+                        group.leave()
+                        group.notify(queue: .main) {
+                            completion(.failure(err))
+                        }
+                    }
+                    group.leave()
+                }
+            }
+
+            group.wait()
+            group.notify(queue: .main) { [weak self] in
+                self?.saveChatroomID(to: type, id: id, chatroomID: chatroomID, completion: { result in
+                    switch result {
+                    case .success:
+                        completion(.success(chatroomID))
+                    case .failure(let err):
+                        completion(.failure(err))
+                    }
+                })
+
             }
         }
     }
@@ -633,6 +663,7 @@ class FirebaseManager {
                 return
             }
             if let snapshot = snapshot {
+                print("snapshot: ", snapshot.documents)
                 // 過濾尚未建立 chatroom 者
                 let chatroomsInfo: [SavedChat] = snapshot.documents.compactMap {
                     do {
@@ -913,7 +944,7 @@ class FirebaseManager {
         }
     }
 
-    func createGroupChatroom(groupChatroom: GroupChatroom, members: [GroupChatMember],completion: @escaping (Result<ChatroomID, Error>) -> Void) {
+    func createGroupChatroom(groupChatroom: GroupChatroom, members: [ChatroomMember],completion: @escaping (Result<ChatroomID, Error>) -> Void) {
         let groupChatroomsRef = FirestoreEndpoint.groupChatroom.ref
         let chatroomID = groupChatroomsRef.document().documentID
         var groupChatroom = groupChatroom
@@ -954,13 +985,11 @@ class FirebaseManager {
         }
     }
 
-    func addNewGroupChatMembers(chatroomID: ChatroomID, selectedMembers: [GroupChatMember], completion: @escaping (Result<String, Error>) -> Void) {
+    func addNewGroupChatMembers(chatroomID: ChatroomID, selectedMembers: [ChatroomMember], completion: @escaping (Result<String, Error>) -> Void) {
         firebaseQueue.async { [weak self] in
-            var allMembersIncludingExit = [GroupChatMember]()
-            var newMembers = [GroupChatMember]()
-            var exitedMembers = [GroupChatMember]()
-
-            print("chatroom id", chatroomID)
+            var allMembersIncludingExit = [ChatroomMember]()
+            var newMembers = [ChatroomMember]()
+            var exitedMembers = [ChatroomMember]()
 
             let group = DispatchGroup()
             group.enter()
@@ -1046,7 +1075,7 @@ class FirebaseManager {
         }
     }
 
-    func getAllGroupChatMembersIncludingExit(chatroomID: ChatroomID, completion: @escaping (Result<[GroupChatMember], Error>) -> Void) {
+    func getAllGroupChatMembersIncludingExit(chatroomID: ChatroomID, completion: @escaping (Result<[ChatroomMember], Error>) -> Void) {
         let ref = FirestoreEndpoint.groupChatroom.ref
         ref.document(chatroomID).collection("Members").getDocuments { (snapshot, err) in
             if let err = err {
@@ -1056,9 +1085,9 @@ class FirebaseManager {
             }
             if let snapshot = snapshot {
                 print("snapshot", snapshot.documents)
-                let members: [GroupChatMember] = snapshot.documents.compactMap {
+                let members: [ChatroomMember] = snapshot.documents.compactMap {
                     do {
-                        return try $0.data(as: GroupChatMember.self, decoder: FirebaseManager.decoder)
+                        return try $0.data(as: ChatroomMember.self, decoder: FirebaseManager.decoder)
                     } catch {
                         completion(.failure(error))
                         return nil
@@ -1082,7 +1111,7 @@ class FirebaseManager {
             if let snapshot = snapshot {
                 let membersIDs: [UserID] = snapshot.documents.compactMap {
                     do {
-                        return try $0.data(as: GroupChatMember.self, decoder: FirebaseManager.decoder).userID
+                        return try $0.data(as: ChatroomMember.self, decoder: FirebaseManager.decoder).userID
                     } catch {
                         completion(.failure(error))
                         return nil
@@ -1325,6 +1354,78 @@ class FirebaseManager {
 
             group.notify(queue: .main) {
                 completion(.success("Successfully remove members"))
+            }
+        }
+    }
+
+    func updateGroupChatroomInoutStatus(setTo status: InoutStatus, chatroomID: ChatroomID, completion: @escaping (Result<String, Error>) -> Void) {
+        let membersRef = FirestoreEndpoint.groupMembers(chatroomID).ref
+
+        firebaseQueue.async {
+            let group = DispatchGroup()
+            group.enter()
+            membersRef.document(myAccount.id).updateData(["currentInoutStatus": status.rawValue]) { err in
+                if let err = err {
+                    group.leave()
+                    group.notify(queue: .main) {
+                        completion(.failure(err))
+                    }
+                    return
+                }
+                group.leave()
+            }
+
+            if status == .out {
+                group.enter()
+                membersRef.document(myAccount.id).updateData(["lastTimeInChatroom": Date()]) { err in
+                    if let err = err {
+                        group.leave()
+                        group.notify(queue: .main) {
+                            completion(.failure(err))
+                        }
+                        return
+                    }
+                    group.leave()
+                }
+            }
+            group.notify(queue: .main) {
+                completion(.success(status.rawValue))
+            }
+        }
+    }
+
+    func updatePrivateChatInoutStatus(setTo status: InoutStatus, chatroomID: ChatroomID, completion: @escaping (Result<String, Error>) -> Void) {
+        let membersRef = FirestoreEndpoint.privateChatroomMembers(chatroomID).ref
+
+        firebaseQueue.async {
+            let group = DispatchGroup()
+            group.enter()
+            membersRef.document(myAccount.id).updateData(["currentInoutStatus": status.rawValue]) { err in
+                if let err = err {
+                    group.leave()
+                    group.notify(queue: .main) {
+                        completion(.failure(err))
+                    }
+                    return
+                }
+                group.leave()
+            }
+
+            if status == .out {
+                group.enter()
+                membersRef.document(myAccount.id).updateData(["lastTimeInChatroom": Date()]) { err in
+                    if let err = err {
+                        group.leave()
+                        group.notify(queue: .main) {
+                            completion(.failure(err))
+                        }
+                        return
+                    }
+                    group.leave()
+                }
+            }
+            group.notify(queue: .main) {
+                completion(.success(status.rawValue))
             }
         }
     }

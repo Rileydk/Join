@@ -83,11 +83,13 @@ class ChatroomViewController: BaseViewController {
         updateUserData()
         guard let chatroomID = chatroomID else { return }
         updateMessages(chatroomID: chatroomID)
+        updateInoutStatus(to: .in)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         tabBarController?.tabBar.isHidden = false
+        updateInoutStatus(to: .out)
     }
 
     func updateUserData() {
@@ -121,6 +123,18 @@ class ChatroomViewController: BaseViewController {
                 self.messages = messages
             case .failure(let error):
                 print(error)
+            }
+        }
+    }
+
+    func updateInoutStatus(to status: InoutStatus) {
+        guard chatroomID != nil else { return }
+        firebaseManager.updatePrivateChatInoutStatus(setTo: status, chatroomID: chatroomID!) { result in
+            switch result {
+            case .success(let status):
+                print(status)
+            case .failure(let err):
+                print(err)
             }
         }
     }
