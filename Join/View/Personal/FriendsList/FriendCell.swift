@@ -39,7 +39,7 @@ class FriendCell: TableViewCell {
         super.setSelected(selected, animated: animated)
     }
 
-    func layoutCell(friend: User, source: Source) {
+    func layoutCell(friend: JUser, source: Source) {
         nameLabel.text = friend.name
         firebaseManager.downloadImage(urlString: friend.thumbnailURL) { [weak self] result in
             switch result {
@@ -56,7 +56,7 @@ class FriendCell: TableViewCell {
         }
     }
 
-    func layoutCell(friend: User, source: Source, isMember: Bool, isSelectedNow: Bool) {
+    func layoutCell(friend: JUser, source: Source, isMember: Bool, isSelectedNow: Bool) {
         layoutCell(friend: friend, source: source)
 
         if isMember {

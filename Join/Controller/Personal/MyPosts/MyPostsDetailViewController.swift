@@ -27,14 +27,14 @@ class MyPostsDetailViewController: BaseViewController {
         //        case description
         //        case group
         //        case location
-        case applicant(User)
+        case applicant(JUser)
     }
 
     typealias ProjectDetailsDatasource = UITableViewDiffableDataSource<Section, Item>
     private var datasource: ProjectDetailsDatasource!
     let firebaseManager = FirebaseManager.shared
     var project: Project?
-    var applicants = [User]()
+    var applicants = [JUser]()
 
     @IBOutlet weak var tableView: UITableView! {
         didSet {

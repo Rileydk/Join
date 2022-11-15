@@ -23,7 +23,7 @@ class PersonalMainThumbnailCell: TableViewCell {
         thumbnailImageView.layer.cornerRadius = thumbnailImageView.frame.size.width / 2
     }
 
-    func layoutCell(user: User) {
+    func layoutCell(user: JUser) {
         firebaseManager.downloadImage(urlString: user.thumbnailURL) { [weak self] result in
             switch result {
             case .success(let image):

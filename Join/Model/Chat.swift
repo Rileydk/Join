@@ -134,6 +134,6 @@ struct GroupMessageListItem {
 }
 
 struct WholeInfoMessage {
-    let sender: User
+    let sender: JUser
     let message: Message
 }

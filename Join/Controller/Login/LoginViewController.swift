@@ -112,23 +112,46 @@ extension LoginViewController: ASAuthorizationControllerDelegate {
                                                       idToken: idTokenString,
                                                       rawNonce: nonce)
             // Sign in with Firebase.
-            Auth.auth().signIn(with: credential) { (authResult, error) in
+            Auth.auth().signIn(with: credential) { [weak self] (_, error) in
                 if let error = error {
                     print(error.localizedDescription)
                     print((error as NSError).userInfo )
                     return
                 }
-                if let authResult = authResult {
-                    print("before sign out", Auth.auth().currentUser)
-                    do {
-                        try Auth.auth().signOut()
-                    } catch {
-                        print(error)
+                if let firUser = Auth.auth().currentUser {
+                    self?.firebaseManager.firebaseQueue.async {
+                        let group = DispatchGroup()
+                        group.enter()
+                        self?.firebaseManager.lookUpUser(userID: firUser.uid) { result in
+                            switch result {
+                            case .success(let user):
+                                group.leave()
+                                // using user id to get interests and load projects
+                                print("user: ", user)
+                            case .failure(let err):
+                                if err as? CommonError == CommonError.noExistUser {
+                                    group.leave()
+                                } else {
+                                    group.leave()
+                                    group.notify(queue: .main) {
+                                        print(err)
+                                    }
+                                }
+                            }
+                        }
+
+                        group.wait()
+                        group.enter()
+                        self?.firebaseManager.createNewUser(firebaseAuthUser: firUser) { result in
+                            switch result {
+                            case .success:
+                                // go to edit page
+                                print()
+                            case .failure(let err):
+                                print(err)
+                            }
+                        }
                     }
-                    print("after sign out", Auth.auth().currentUser)
-                    // 使用 UID 查詢 User 是否已存在，
-                    // 若存在，取出資料
-                    // 若不存在，在 Col(Users) 建立資料，並請 user 編輯、確認資料
                 }
             }
         }

@@ -33,13 +33,13 @@ class PersonBasicCell: CollectionViewCell {
         thumbnailImageView.image = image
     }
 
-    func layoutCell(withSelf user: User, image: UIImage) {
+    func layoutCell(withSelf user: JUser, image: UIImage) {
         layoutCell(image: image, name: user.name)
         relationshipButton.isHidden = true
         sendMessageButton.isHidden = true
     }
 
-    func layoutCell(withOther user: User, thumbnail: UIImage, relationship: Relationship) {
+    func layoutCell(withOther user: JUser, thumbnail: UIImage, relationship: Relationship) {
         layoutCell(image: thumbnail, name: user.name)
         if user.id == myAccount.id {
             relationshipButton.isHidden = true

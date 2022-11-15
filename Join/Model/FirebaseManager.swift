@@ -10,11 +10,13 @@ import Foundation
 import FirebaseFirestore
 import FirebaseStorage
 import FirebaseFirestoreSwift
+import FirebaseAuth
 
 enum CommonError: Error, LocalizedError {
     case noValidImageURLError
     case noValidQuerysnapshot
     case decodeFailed
+    case noExistUser
     case notFriendYet
     case countIncorrect
     case noExistChatroom
@@ -29,6 +31,8 @@ enum CommonError: Error, LocalizedError {
             return FindPartnersFormSections.noValidQuerysnapshotError
         case .decodeFailed:
             return FindPartnersFormSections.decodeFailedError
+        case .noExistUser:
+            return FindPartnersFormSections.noExistUser
         case .notFriendYet:
             return FindPartnersFormSections.notFriendError
         case .countIncorrect:
@@ -63,7 +67,7 @@ enum FirestoreEndpoint {
 
     var ref: CollectionReference {
         let db = Firestore.firestore()
-        let users = db.collection("User")
+        let users = db.collection("Users")
         let myDoc = users.document(myAccount.id)
 
         let projects = "Project"
@@ -122,6 +126,41 @@ class FirebaseManager {
     static let decoder = Firestore.Decoder()
     var newMessageListener: ListenerRegistration?
 
+    func lookUpUser(userID: UserID, completion: @escaping (Result<JUser, Error>) -> Void) {
+        let ref = FirestoreEndpoint.users.ref
+        ref.document(userID).getDocument { (snapshot, err) in
+            if let err = err {
+                completion(.failure(err))
+                return
+            }
+            if let snapshot = snapshot {
+                do {
+                    let user = try snapshot.data(as: JUser.self, decoder: FirebaseManager.decoder)
+                    completion(.success(user))
+                } catch {
+                    completion(.failure(CommonError.noExistUser))
+                }
+            } else {
+                completion(.failure(CommonError.noValidQuerysnapshot))
+                return
+            }
+        }
+    }
+
+    func createNewUser(firebaseAuthUser firUser: User, completion: @escaping (Result<String, Error>) -> Void) {
+        let ref = FirestoreEndpoint.users.ref
+        let newUser = JUser(id: firUser.uid, name: firUser.displayName ?? "",
+                            email: firUser.email ?? "",
+                            thumbnailURL: firUser.photoURL != nil ? "\(firUser.photoURL)" : "")
+        ref.document(firUser.uid).setData(newUser.toDict) { err in
+            if let err = err {
+                completion(.failure(err))
+                return
+            }
+            completion(.success("Success"))
+        }
+    }
+
     func uploadImage(image: Data, completion: @escaping (Result<URLString, Error>) -> Void) {
         let ref = Storage.storage().reference()
         let uuid = UUID()
@@ -130,6 +169,7 @@ class FirebaseManager {
         imageRef.putData(image) { (_, error) in
             if let error = error {
                 completion(.failure(error))
+                return
             }
 
             imageRef.downloadURL { (url, error) in
@@ -270,7 +310,7 @@ class FirebaseManager {
         }
     }
 
-    func getUserInfo(id: UserID, completion: @escaping (Result<User, Error>) -> Void) {
+    func getUserInfo(id: UserID, completion: @escaping (Result<JUser, Error>) -> Void) {
         let ref = FirestoreEndpoint.users.ref
         ref.whereField("id", isEqualTo: id).getDocuments { querySnapshot, error in
             if let error = error {
@@ -279,7 +319,7 @@ class FirebaseManager {
             }
             if let querySnapshot = querySnapshot {
                 do {
-                    let user = try querySnapshot.documents.first!.data(as: User.self, decoder: FirebaseManager.decoder)
+                    let user = try querySnapshot.documents.first!.data(as: JUser.self, decoder: FirebaseManager.decoder)
                     completion(.success(user))
                 } catch {
                     completion(.failure(error))
@@ -755,7 +795,7 @@ class FirebaseManager {
 
     }
 
-    func getAllMatchedUsersDetail(usersID: [UserID], completion: @escaping (Result<[User], Error>) -> Void) {
+    func getAllMatchedUsersDetail(usersID: [UserID], completion: @escaping (Result<[JUser], Error>) -> Void) {
         let userRef = FirestoreEndpoint.users.ref
         userRef.whereField("id", in: usersID).getDocuments { (snapshot, error) in
             if let error = error {
@@ -763,9 +803,9 @@ class FirebaseManager {
                 return
             }
             if let snapshot = snapshot {
-                let usersInfo: [User] = snapshot.documents.compactMap {
+                let usersInfo: [JUser] = snapshot.documents.compactMap {
                     do {
-                        return try $0.data(as: User.self, decoder: FirebaseManager.decoder)
+                        return try $0.data(as: JUser.self, decoder: FirebaseManager.decoder)
                     } catch {
                         completion(.failure(error))
                         return nil
@@ -837,7 +877,7 @@ class FirebaseManager {
         }
     }
 
-    func getAllFriendsInfo(completion: @escaping (Result<[User], Error>) -> Void) {
+    func getAllFriendsInfo(completion: @escaping (Result<[JUser], Error>) -> Void) {
         getAllFriendsAndChatroomsInfo(type: .friend) { [weak self] result in
             switch result {
             case .success(let friends):
