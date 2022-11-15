@@ -17,12 +17,12 @@ class FriendSelectionViewController: BaseViewController {
     let firebaseManager = FirebaseManager.shared
 
     var source: Source = .createNewGroupChat
-    var friends = [User]()
-    var members = [User]()
+    var friends = [JUser]()
+    var members = [JUser]()
     var chatroomID: ChatroomID?
-    var filteredFriends = [User]()
+    var filteredFriends = [JUser]()
     var selectedIndexes = [Int]()
-    var selectedFriends = [User]()
+    var selectedFriends = [JUser]()
 
     @IBOutlet weak var tableView: UITableView! {
         didSet {

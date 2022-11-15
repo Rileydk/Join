@@ -9,8 +9,8 @@ import UIKit
 
 class FriendsListViewController: BaseViewController {
     let firebaseManager = FirebaseManager.shared
-    var friends = [User]()
-    lazy var filteredFriends = [User]()
+    var friends = [JUser]()
+    lazy var filteredFriends = [JUser]()
 
     var searchController = UISearchController()
     @IBOutlet weak var tableView: UITableView! {

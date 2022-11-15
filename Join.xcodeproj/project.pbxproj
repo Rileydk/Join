@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		2585457536E3C3F568F3A4AC /* Pods_Join.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95A33A59C05820643F8B2FFB /* Pods_Join.framework */; };
 		BF0271412920D093000EA2F8 /* UIColor+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF0271402920D093000EA2F8 /* UIColor+Ext.swift */; };
+		BF027145292273E5000EA2F8 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF027144292273E5000EA2F8 /* LoginViewController.swift */; };
 		BF42FA35290BE2AA00501789 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FA34290BE2AA00501789 /* AppDelegate.swift */; };
 		BF42FA37290BE2AA00501789 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FA36290BE2AA00501789 /* SceneDelegate.swift */; };
 		BF42FA39290BE2AA00501789 /* FindIdeasViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FA38290BE2AA00501789 /* FindIdeasViewController.swift */; };
@@ -34,7 +35,7 @@
 		BF42FAAE290F6B8000501789 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BF42FAAD290F6B7F00501789 /* GoogleService-Info.plist */; };
 		BF42FAB0290F7E9000501789 /* SelectionCategoriesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FAAF290F7E9000501789 /* SelectionCategoriesViewController.swift */; };
 		BF42FAB2290FAC2000501789 /* Project.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FAB1290FAC2000501789 /* Project.swift */; };
-		BF42FAB4290FAC5C00501789 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FAB3290FAC5C00501789 /* User.swift */; };
+		BF42FAB4290FAC5C00501789 /* JUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FAB3290FAC5C00501789 /* JUser.swift */; };
 		BF42FAB7290FBE2D00501789 /* AddNewLineSectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FAB5290FBE2D00501789 /* AddNewLineSectionCell.swift */; };
 		BF42FAB8290FBE2D00501789 /* AddNewLineSectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF42FAB6290FBE2D00501789 /* AddNewLineSectionCell.xib */; };
 		BF42FABC290FF32300501789 /* MemberCardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FABB290FF32300501789 /* MemberCardViewController.swift */; };
@@ -111,6 +112,8 @@
 /* Begin PBXFileReference section */
 		95A33A59C05820643F8B2FFB /* Pods_Join.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Join.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF0271402920D093000EA2F8 /* UIColor+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Ext.swift"; sourceTree = "<group>"; };
+		BF027142292272A3000EA2F8 /* Join.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Join.entitlements; sourceTree = "<group>"; };
+		BF027144292273E5000EA2F8 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		BF42FA31290BE2AA00501789 /* Join.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Join.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF42FA34290BE2AA00501789 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BF42FA36290BE2AA00501789 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -138,7 +141,7 @@
 		BF42FAAD290F6B7F00501789 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		BF42FAAF290F7E9000501789 /* SelectionCategoriesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionCategoriesViewController.swift; sourceTree = "<group>"; };
 		BF42FAB1290FAC2000501789 /* Project.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Project.swift; sourceTree = "<group>"; };
-		BF42FAB3290FAC5C00501789 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		BF42FAB3290FAC5C00501789 /* JUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JUser.swift; sourceTree = "<group>"; };
 		BF42FAB5290FBE2D00501789 /* AddNewLineSectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewLineSectionCell.swift; sourceTree = "<group>"; };
 		BF42FAB6290FBE2D00501789 /* AddNewLineSectionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddNewLineSectionCell.xib; sourceTree = "<group>"; };
 		BF42FABB290FF32300501789 /* MemberCardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberCardViewController.swift; sourceTree = "<group>"; };
@@ -243,6 +246,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		BF027143292273CA000EA2F8 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				BF027144292273E5000EA2F8 /* LoginViewController.swift */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
 		BF42FA28290BE2AA00501789 = {
 			isa = PBXGroup;
 			children = (
@@ -264,6 +275,7 @@
 		BF42FA33290BE2AA00501789 /* Join */ = {
 			isa = PBXGroup;
 			children = (
+				BF027142292272A3000EA2F8 /* Join.entitlements */,
 				BF42FA52290CE63C00501789 /* Model */,
 				BF42FA50290CE5C400501789 /* Controller */,
 				BF42FA53290CE64300501789 /* View */,
@@ -283,6 +295,7 @@
 				BF42FA74290D1C8500501789 /* FindPartners */,
 				BFF8A4DB291633EE00ADC950 /* Chat */,
 				BFF8A4C32913EC6000ADC950 /* Personal */,
+				BF027143292273CA000EA2F8 /* Login */,
 				BFF8A4FA2917FBF100ADC950 /* MockLoginViewController.swift */,
 			);
 			path = Controller;
@@ -304,7 +317,7 @@
 			isa = PBXGroup;
 			children = (
 				BF42FAB1290FAC2000501789 /* Project.swift */,
-				BF42FAB3290FAC5C00501789 /* User.swift */,
+				BF42FAB3290FAC5C00501789 /* JUser.swift */,
 				BFF8A4F029164FA200ADC950 /* Chat.swift */,
 				BF42FACA2911473A00501789 /* FirebaseManager.swift */,
 			);
@@ -728,6 +741,7 @@
 				BF9A86B1291E3AE800BF934D /* AddNewMemberCell.swift in Sources */,
 				BF42FAD92912960D00501789 /* CollectionViewCell.swift in Sources */,
 				BF42FABC290FF32300501789 /* MemberCardViewController.swift in Sources */,
+				BF027145292273E5000EA2F8 /* LoginViewController.swift in Sources */,
 				BFF8A4D92915036000ADC950 /* ContactCell.swift in Sources */,
 				BF9A869D291CC9D000BF934D /* FriendSelectionViewController.swift in Sources */,
 				BFF8A4F32917982B00ADC950 /* ChatListViewController.swift in Sources */,
@@ -755,7 +769,7 @@
 				BFF8A4E729163D8200ADC950 /* MessageTypingSuperview.swift in Sources */,
 				BFF8A4F62917992000ADC950 /* ChatListCell.swift in Sources */,
 				BF42FA81290D31EF00501789 /* GoSelectionCell.swift in Sources */,
-				BF42FAB4290FAC5C00501789 /* User.swift in Sources */,
+				BF42FAB4290FAC5C00501789 /* JUser.swift in Sources */,
 				BF42FAC1290FF73B00501789 /* RecruitingCell.swift in Sources */,
 				BF42FA35290BE2AA00501789 /* AppDelegate.swift in Sources */,
 				BFF8A4EA29164BF500ADC950 /* MessageCell.swift in Sources */,
@@ -928,6 +942,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Join/Join.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = LC7DCZXZ89;
@@ -960,6 +975,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Join/Join.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = LC7DCZXZ89;

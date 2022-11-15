@@ -29,7 +29,7 @@ class GroupMembersViewController: BaseViewController {
     let firebaseManager = FirebaseManager.shared
     var chatroomInfo: GroupChatroom?
     var shouldReload = true
-    lazy var members = [User]() {
+    lazy var members = [JUser]() {
         didSet {
             if shouldReload {
                 tableView.reloadData()

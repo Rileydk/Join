@@ -24,8 +24,8 @@ class MemberCell: TableViewCell {
     var deleteHandler: (() -> Void)?
     weak var delegate: MemberCellDelegate?
 
-    var friends = [User]()
-    var filteredFriends = [User]()
+    var friends = [JUser]()
+    var filteredFriends = [JUser]()
     var member = Member(id: nil, role: "", skills: "")
 
     override func awakeFromNib() {

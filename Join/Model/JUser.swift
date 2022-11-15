@@ -27,15 +27,26 @@ enum Relationship: CaseIterable {
 
 typealias UserID = String
 
-struct User: Codable, Hashable {
+struct JUser: Codable, Hashable {
     let id: UserID
     var name: String
     var email: String
-    var thumbnailURL: URLString
+    var thumbnailURL: URLString = ""
     var interests = [String]()
     var skills = [String]()
     var sentRequests = [UserID]()
     var receivedRequests = [UserID]()
+
+    var toDict: [String: Any] {
+        return [
+            "id": id as Any,
+            "name": name as Any,
+            "email": email as Any,
+            "thumbnailURL": thumbnailURL as Any,
+            "interests": interests as Any,
+            "skills": skills as Any
+        ]
+    }
 }
 
 struct Friend: Codable {

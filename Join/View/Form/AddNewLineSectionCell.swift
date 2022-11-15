@@ -34,7 +34,7 @@ class AddNewLineSectionCell: TableViewCell {
         layoutCell(info: info)
 
         if !members.isEmpty {
-            var membersInfo = [User]()
+            var membersInfo = [JUser]()
             let usersID = members.map { $0.id! }
             firebaseManager.getAllMatchedUsersDetail(usersID: usersID) { [weak self] result in
                 switch result {

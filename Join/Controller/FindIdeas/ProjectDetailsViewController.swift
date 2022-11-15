@@ -27,7 +27,7 @@ class ProjectDetailsViewController: BaseViewController {
 //        case essentialLocation
 //        case description
 //        case group
-        case contact(User)
+        case contact(JUser)
 //        case location
         case joinButton(Project)
     }
@@ -36,7 +36,7 @@ class ProjectDetailsViewController: BaseViewController {
     private var datasource: ProjectDetailsDatasource!
     let firebaseManager = FirebaseManager.shared
     var project: Project?
-    var userData: User?
+    var userData: JUser?
 
     @IBOutlet weak var tableView: UITableView! {
         didSet {

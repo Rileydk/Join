@@ -13,13 +13,13 @@ class PersonalProfileViewController: BaseViewController {
     }
 
     enum Item: Hashable {
-        case person(User, UIImage)
+        case person(JUser, UIImage)
     }
 
     typealias ProfileDatasource = UICollectionViewDiffableDataSource<Section, Item>
     private var datasource: ProfileDatasource!
     let firebaseManager = FirebaseManager.shared
-    var userData: User?
+    var userData: JUser?
     var userThumbnail: UIImage?
 
     @IBOutlet weak var collectionView: UICollectionView! {

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="lZC-Gt-iOY">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="1NE-3J-0Fa">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -83,7 +83,38 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IuZ-Rg-EH1" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-772" y="-293"/>
+            <point key="canvasLocation" x="-1167" y="-305"/>
+        </scene>
+        <!--Login View Controller-->
+        <scene sceneID="yuz-1g-uis">
+            <objects>
+                <viewController id="fRP-IN-oFy" customClass="LoginViewController" customModule="Join" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="9NK-WY-suk">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="o3S-tz-X8h">
+                                <rect key="frame" x="88" y="739" width="238" height="55"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="o3S-tz-X8h" secondAttribute="height" multiplier="13:3" id="Kls-Fq-RIs"/>
+                                    <constraint firstAttribute="height" constant="55" id="Rqm-ZV-wx2"/>
+                                </constraints>
+                            </stackView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="Z2T-iz-tEL"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="Z2T-iz-tEL" firstAttribute="bottom" secondItem="o3S-tz-X8h" secondAttribute="bottom" constant="68" id="Mxp-97-E1r"/>
+                            <constraint firstItem="o3S-tz-X8h" firstAttribute="centerX" secondItem="9NK-WY-suk" secondAttribute="centerX" id="krP-bu-ZzC"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="loginProviderStackView" destination="o3S-tz-X8h" id="fMZ-WE-JOH"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="hl8-6T-Yos" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1168.1159420289855" y="526.33928571428567"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="Vag-jx-ymv">
@@ -101,42 +132,7 @@
             </objects>
             <point key="canvasLocation" x="272" y="92"/>
         </scene>
-        <!--Login View Controller-->
-        <scene sceneID="xFf-Ab-qrt">
-            <objects>
-                <viewController storyboardIdentifier="LoginViewController" id="lZC-Gt-iOY" customClass="LoginViewController" customModule="Join" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="bhS-Dm-V3w">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="xXt-pa-GFz">
-                                <rect key="frame" x="88" y="739" width="238" height="55"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" secondItem="xXt-pa-GFz" secondAttribute="height" multiplier="13:3" id="VgE-I7-h8X"/>
-                                    <constraint firstAttribute="height" constant="55" id="qYa-oj-vtk"/>
-                                </constraints>
-                            </stackView>
-                        </subviews>
-                        <viewLayoutGuide key="safeArea" id="MHb-T9-jD8"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <constraints>
-                            <constraint firstItem="xXt-pa-GFz" firstAttribute="centerX" secondItem="bhS-Dm-V3w" secondAttribute="centerX" id="QEm-ql-FIg"/>
-                            <constraint firstItem="MHb-T9-jD8" firstAttribute="bottom" secondItem="xXt-pa-GFz" secondAttribute="bottom" constant="68" id="qnY-yZ-CFI"/>
-                        </constraints>
-                    </view>
-                    <connections>
-                        <outlet property="loginProviderStackView" destination="xXt-pa-GFz" id="nWz-V3-gTY"/>
-                        <segue destination="AWW-iZ-ttW" kind="show" id="Wum-Uz-8pD"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="d62-zk-yHj" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-772" y="407"/>
-        </scene>
     </scenes>
-    <inferredMetricsTieBreakers>
-        <segue reference="Wum-Uz-8pD"/>
-    </inferredMetricsTieBreakers>
     <resources>
         <namedColor name="Blue1">
             <color red="0.0" green="0.22352941176470589" blue="0.38823529411764707" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

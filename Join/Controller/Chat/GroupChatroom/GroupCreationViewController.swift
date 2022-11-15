@@ -34,7 +34,7 @@ class GroupCreationViewController: BaseViewController {
     typealias GroupDatasource = UICollectionViewDiffableDataSource<Section, Item>
     private var datasource: GroupDatasource!
     let firebaseManager = FirebaseManager.shared
-    var selectedFriends = [User]()
+    var selectedFriends = [JUser]()
     var groupChatroom = GroupChatroom(
         id: "", name: "", imageURL: "", admin: "", createdTime: Date()
     )

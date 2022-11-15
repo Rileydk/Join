@@ -43,7 +43,7 @@ class ChatroomViewController: BaseViewController {
             tableView.reloadData()
         }
     }
-    var userData: User? {
+    var userData: JUser? {
         didSet {
             firebaseManager.downloadImage(urlString: userData!.thumbnailURL) { [unowned self] result in
                 switch result {

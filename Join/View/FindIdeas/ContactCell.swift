@@ -38,7 +38,7 @@ class ContactCell: TableViewCell {
         thumbnailImageView.layer.cornerRadius = thumbnailImageView.frame.size.width / 2
     }
 
-    func layoutCell(user: User, from source: Source) {
+    func layoutCell(user: JUser, from source: Source) {
         firebaseManager.downloadImage(urlString: user.thumbnailURL) { [weak self] result in
             switch result {
             case .success(let image):

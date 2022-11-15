@@ -76,6 +76,7 @@ struct FindPartnersFormSections {
 
     static let noValidImageURLError = "No valid image url"
     static let noValidQuerysnapshotError = "No valid querysnapshot"
+    static let noExistUser = "No exist user"
     static let notFriendError = "Not friend yet"
     static let noExistChatroomError = "No exist chatroom"
     static let noMessageError = "No Message"

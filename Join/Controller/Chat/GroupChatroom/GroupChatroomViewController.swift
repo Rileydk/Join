@@ -42,7 +42,7 @@ class GroupChatroomViewController: BaseViewController {
     var chatroomInfo: GroupChatroom?
     var messages = [Message]()
     var membersInfos = [ChatroomMember]()
-    var members = [User]()
+    var members = [JUser]()
     var wholeInfoMessages = [WholeInfoMessage]() {
         didSet {
             tableView.reloadData()
