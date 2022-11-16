@@ -8,5 +8,5 @@
 import Foundation
 
 extension UserDefaults {
-    static let uid = "uid"
+    static let uidKey = "uid"
 }

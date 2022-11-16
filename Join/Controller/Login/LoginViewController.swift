@@ -125,7 +125,7 @@ extension LoginViewController: ASAuthorizationControllerDelegate {
                         self?.firebaseManager.lookUpUser(userID: firUser.uid) { result in
                             switch result {
                             case .success(let user):
-                                UserDefaults.standard.setValue(user.id, forKey: UserDefaults.uid)
+                                UserDefaults.standard.setValue(user.id, forKey: UserDefaults.uidKey)
 
                                 group.leave()
                                 group.notify(queue: .main) {
@@ -157,11 +157,11 @@ extension LoginViewController: ASAuthorizationControllerDelegate {
                                             email: firUser.email ?? "",
                                             thumbnailURL: firUser.photoURL != nil
                                                 ? String(describing: firUser.photoURL)
-                                                : "")
+                                                : FindPartnersFormSections.placeholderImageURL)
                         self?.firebaseManager.set(user: newUser) { result in
                             switch result {
                             case .success(let user):
-                                UserDefaults.standard.setValue(user.id, forKey: UserDefaults.uid)
+                                UserDefaults.standard.setValue(user.id, forKey: UserDefaults.uidKey)
 
                                 let storyboard = UIStoryboard(name: StoryboardCategory.personal.rawValue, bundle: nil)
                                 guard let profileEditVC = storyboard.instantiateViewController(
