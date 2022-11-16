@@ -41,7 +41,7 @@ class FriendCell: TableViewCell {
 
     func layoutCell(friend: JUser, source: Source) {
         nameLabel.text = friend.name
-        firebaseManager.downloadImage(urlString: friend.thumbnailURL) { [weak self] result in
+        firebaseManager.downloadImage(urlString: friend.thumbnailURL ?? FindPartnersFormSections.placeholderImageURL) { [weak self] result in
             switch result {
             case .success(let image):
                 self?.thumbnailImageView.image = image

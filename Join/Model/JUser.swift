@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import FirebaseAuth
 
 var myAccount = riley
 
@@ -31,11 +32,11 @@ struct JUser: Codable, Hashable {
     let id: UserID
     var name: String
     var email: String
-    var thumbnailURL: URLString = ""
+    var thumbnailURL: URLString?
     var interests = [String]()
     var skills = [String]()
-    var sentRequests = [UserID]()
-    var receivedRequests = [UserID]()
+//    var sentRequests = [UserID]()
+//    var receivedRequests = [UserID]()
 
     var toDict: [String: Any] {
         return [

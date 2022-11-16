@@ -39,7 +39,7 @@ class ContactCell: TableViewCell {
     }
 
     func layoutCell(user: JUser, from source: Source) {
-        firebaseManager.downloadImage(urlString: user.thumbnailURL) { [weak self] result in
+        firebaseManager.downloadImage(urlString: user.thumbnailURL ?? FindPartnersFormSections.placeholderImageURL) { [weak self] result in
             switch result {
             case .success(let image):
                 self?.thumbnailImageView.image = image

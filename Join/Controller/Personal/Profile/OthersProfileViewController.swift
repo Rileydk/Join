@@ -94,13 +94,13 @@ class OthersProfileViewController: BaseViewController {
                         self.relationship = .friend
                     case .failure(let error):
                         print(error)
-                        if myInfo.sentRequests.contains(id) {
-                            self.relationship = .sentRequest
-                        } else if myInfo.receivedRequests.contains(id) {
-                            self.relationship = .receivedRequest
-                        } else {
-                            self.relationship = .unknown
-                        }
+//                        if myInfo.sentRequests.contains(id) {
+//                            self.relationship = .sentRequest
+//                        } else if myInfo.receivedRequests.contains(id) {
+//                            self.relationship = .receivedRequest
+//                        } else {
+//                            self.relationship = .unknown
+//                        }
                     }
                 }
                 completion()

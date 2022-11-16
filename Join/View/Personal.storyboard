@@ -268,6 +268,36 @@
             </objects>
             <point key="canvasLocation" x="3690" y="909"/>
         </scene>
+        <!--Personal Profile Edit View Controller-->
+        <scene sceneID="lJW-DO-e22">
+            <objects>
+                <viewController storyboardIdentifier="PersonalProfileEditViewController" id="Cko-k2-xxF" customClass="PersonalProfileEditViewController" customModule="Join" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="boo-eN-aIA">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="Z66-9r-IGE">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </tableView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="kBZ-bM-Wey"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="Z66-9r-IGE" firstAttribute="leading" secondItem="kBZ-bM-Wey" secondAttribute="leading" id="3cn-w2-8ZV"/>
+                            <constraint firstItem="Z66-9r-IGE" firstAttribute="top" secondItem="boo-eN-aIA" secondAttribute="top" id="Xak-CG-jBF"/>
+                            <constraint firstAttribute="bottom" secondItem="Z66-9r-IGE" secondAttribute="bottom" id="cRM-S4-PD4"/>
+                            <constraint firstItem="kBZ-bM-Wey" firstAttribute="trailing" secondItem="Z66-9r-IGE" secondAttribute="trailing" id="mqN-gB-ot3"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="tableView" destination="Z66-9r-IGE" id="Aai-VC-2a1"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="SH9-7l-D5R" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4519" y="909"/>
+        </scene>
         <!--Item-->
         <scene sceneID="BFG-DT-NJj">
             <objects>

@@ -16,6 +16,11 @@ class GoNextPageButtonCell: TableViewCell {
         button.setTitle(title, for: .normal)
     }
 
+    func layoutCellForLogout() {
+        button.setTitle("Log out", for: .normal)
+        button.setTitleColor(.Red, for: .normal)
+    }
+
     @IBAction func goNextPage(_ sender: UIButton) {
         tapHandler?()
     }

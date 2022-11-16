@@ -22,8 +22,8 @@ class FindPartnersBasicViewController: BaseViewController {
     @IBOutlet weak var tableView: UITableView! {
         didSet {
             tableView.register(
-                UINib(nibName: SingleLineInputCell.identifier, bundle: nil),
-                forCellReuseIdentifier: SingleLineInputCell.identifier
+                UINib(nibName: SingleLineDescriptionInputCell.identifier, bundle: nil),
+                forCellReuseIdentifier: SingleLineDescriptionInputCell.identifier
             )
             tableView.register(
                 UINib(nibName: MultilineInputCell.identifier, bundle: nil),
@@ -189,8 +189,8 @@ extension FindPartnersBasicViewController: UITableViewDataSource {
         let inputType = formState.items[indexPath.row].type
         if inputType == .textField {
             guard let cell = tableView.dequeueReusableCell(
-                withIdentifier: SingleLineInputCell.identifier,
-                for: indexPath) as? SingleLineInputCell else {
+                withIdentifier: SingleLineDescriptionInputCell.identifier,
+                for: indexPath) as? SingleLineDescriptionInputCell else {
                 fatalError("Cannot create single line input cell")
             }
             cell.layoutCell(info: formState.items[indexPath.row])

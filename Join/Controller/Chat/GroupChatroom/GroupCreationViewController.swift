@@ -89,7 +89,7 @@ class GroupCreationViewController: BaseViewController {
                     }
                 }
             } else {
-                strongSelf.groupChatroom.imageURL = myAccount.thumbnailURL
+                strongSelf.groupChatroom.imageURL = myAccount.thumbnailURL ?? FindPartnersFormSections.placeholderImageURL
                 group.leave()
             }
 

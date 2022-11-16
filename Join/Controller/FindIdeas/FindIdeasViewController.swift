@@ -7,7 +7,7 @@
 
 import UIKit
 
-class FindIdeasViewController: UIViewController {
+class FindIdeasViewController: BaseViewController {
     enum Section: CaseIterable {
         case recommendations
         case newIdeas
@@ -106,7 +106,8 @@ class FindIdeasViewController: UIViewController {
             }
 
             group.enter()
-            self.firebaseManager.getUserInfo(id: myAccount.id) { result in
+            guard let id = firebaseManager.myAuth.currentUser?.uid else { return }
+            self.firebaseManager.getUserInfo(id: id) { result in
                 switch result {
                 case .success(let user):
                     interestProjects = self.projects.filter { project in

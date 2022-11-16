@@ -45,7 +45,7 @@ class GroupMessageCell: TableViewCell {
     }
 
     func layoutCell(message: WholeInfoMessage) {
-        firebaseManager.downloadImage(urlString: message.sender.thumbnailURL) { [unowned self] result in
+        firebaseManager.downloadImage(urlString: message.sender.thumbnailURL ?? FindPartnersFormSections.placeholderImageURL) { [unowned self] result in
             switch result {
             case .success(let image):
                 self.senderThumbnailImageView.image = image

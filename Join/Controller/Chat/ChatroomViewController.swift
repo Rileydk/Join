@@ -45,7 +45,7 @@ class ChatroomViewController: BaseViewController {
     }
     var userData: JUser? {
         didSet {
-            firebaseManager.downloadImage(urlString: userData!.thumbnailURL) { [unowned self] result in
+            firebaseManager.downloadImage(urlString: userData!.thumbnailURL ?? FindPartnersFormSections.placeholderImageURL) { [unowned self] result in
                 switch result {
                 case .success(let image):
                     self.userThumbnail = image

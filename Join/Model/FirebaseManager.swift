@@ -122,6 +122,7 @@ enum FirestoreEndpoint {
 // swiftlint:disable type_body_length
 class FirebaseManager {
     static let shared = FirebaseManager()
+    let myAuth = Auth.auth()
     let firebaseQueue = DispatchQueue(label: "firebaseQueue", attributes: .concurrent)
     static let decoder = Firestore.Decoder()
     var newMessageListener: ListenerRegistration?
@@ -147,17 +148,53 @@ class FirebaseManager {
         }
     }
 
-    func createNewUser(firebaseAuthUser firUser: User, completion: @escaping (Result<String, Error>) -> Void) {
+    func set(user: JUser, completion: @escaping (Result<JUser, Error>) -> Void) {
         let ref = FirestoreEndpoint.users.ref
-        let newUser = JUser(id: firUser.uid, name: firUser.displayName ?? "",
-                            email: firUser.email ?? "",
-                            thumbnailURL: firUser.photoURL != nil ? "\(firUser.photoURL)" : "")
-        ref.document(firUser.uid).setData(newUser.toDict) { err in
+        ref.document(user.id).setData(user.toDict) { err in
             if let err = err {
                 completion(.failure(err))
                 return
             }
-            completion(.success("Success"))
+            completion(.success(user))
+        }
+    }
+
+    func updateAuthentication(oldInfo: JUser, newInfo: JUser ,completion: @escaping (Result<String, Error>) -> Void) {
+        let changeRequest = Auth.auth().currentUser?.createProfileChangeRequest()
+        firebaseQueue.async { [weak self] in
+            let group = DispatchGroup()
+            if oldInfo.name != newInfo.name {
+                group.enter()
+                changeRequest?.displayName = newInfo.name
+                changeRequest?.commitChanges { err in
+                    if let err = err {
+                        group.leave()
+                        group.notify(queue: .main) {
+                            completion(.failure(err))
+                        }
+                        return
+                    }
+                    group.leave()
+                }
+            }
+
+            if oldInfo.email != newInfo.email {
+                group.enter()
+                self?.myAuth.currentUser?.updateEmail(to: newInfo.email) { err in
+                    if let err = err {
+                        group.leave()
+                        group.notify(queue: .main) {
+                            completion(.failure(err))
+                        }
+                        return
+                    }
+                    group.leave()
+                }
+            }
+
+            group.notify(queue: .main) {
+                completion(.success("Success"))
+            }
         }
     }
 

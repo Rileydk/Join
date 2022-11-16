@@ -11,6 +11,7 @@ class PersonalEntryViewController: UIViewController {
     enum Section: CaseIterable {
         case person
         case goNextPage
+        case logout
     }
 
     enum NextPage: String, CaseIterable {
@@ -35,6 +36,8 @@ class PersonalEntryViewController: UIViewController {
             tableView.dataSource = self
         }
     }
+
+    let firebaseManager = FirebaseManager.shared
 
     func goToNextPage(index: Int) {
         if NextPage.allCases[index] == .profile {
@@ -78,6 +81,15 @@ class PersonalEntryViewController: UIViewController {
             navigationController?.pushViewController(friendsListVC, animated: true)
         }
     }
+
+    func signOut(completion: @escaping (Result<String, Error>) -> Void) {
+        do {
+            try firebaseManager.myAuth.signOut()
+            completion(.success("Success"))
+        } catch let signOutError as NSError {
+            completion(.failure(signOutError))
+        }
+    }
 }
 
 // MARK: - Table View Delegate
@@ -106,15 +118,40 @@ extension PersonalEntryViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.section == 0 {
+        let section = Section.allCases[indexPath.section]
+        if section == .person {
             guard let cell = tableView.dequeueReusableCell(
                 withIdentifier: PersonalMainThumbnailCell.identifier,
                 for: indexPath) as? PersonalMainThumbnailCell else {
                 fatalError("Cannot create person main thumbnail cell")
             }
-            cell.layoutCell(user: myAccount)
+            cell.layoutCell(user: myAccount, isEditing: false)
             return cell
-
+        } else if section == .logout {
+            guard let cell = tableView.dequeueReusableCell(
+                withIdentifier: GoNextPageButtonCell.identifier,
+                for: indexPath) as? GoNextPageButtonCell else {
+                fatalError("Cannot create go next page button cell")
+            }
+            cell.layoutCellForLogout()
+            cell.tapHandler = { [weak self] in
+                let alert = UIAlertController(title: "確定要登出嗎？", message: nil, preferredStyle: .alert)
+                let yesAction = UIAlertAction(title: "Yes", style: .default) { _ in
+                    self?.signOut { result in
+                        switch result {
+                        case .success:
+                            self?.backToRoot()
+                        case .failure(let err):
+                            print(err)
+                        }
+                    }
+                }
+                let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+                alert.addAction(cancelAction)
+                alert.addAction(yesAction)
+                self?.present(alert, animated: true)
+            }
+            return cell
         } else {
             guard let cell = tableView.dequeueReusableCell(
                 withIdentifier: GoNextPageButtonCell.identifier,
@@ -126,6 +163,25 @@ extension PersonalEntryViewController: UITableViewDataSource {
                 self?.goToNextPage(index: indexPath.row)
             }
             return cell
+        }
+    }
+}
+
+extension UIViewController {
+    func backToRoot() {
+        if let rootVC = view.window?.rootViewController as? LoginViewController {
+            rootVC.dismiss(animated: false)
+        } else {
+            tabBarController?.selectedIndex = 0
+
+            let mainStoryboard = UIStoryboard(name: StoryboardCategory.main.rawValue, bundle: nil)
+            guard let loginVC = mainStoryboard.instantiateViewController(
+                withIdentifier: LoginViewController.identifier
+                ) as? LoginViewController else {
+                fatalError("Cannot instantiate log in vc")
+            }
+            loginVC.modalPresentationStyle = .fullScreen
+            present(loginVC, animated: false)
         }
     }
 }

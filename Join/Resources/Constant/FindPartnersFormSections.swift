@@ -83,6 +83,8 @@ struct FindPartnersFormSections {
     static let countIncorrectError = "Messages count not match with users"
     static let decodeFailedError = "Decode failed"
     static let nilResultError = "nil result"
+
+    static let placeholderImageURL = "https://firebasestorage.googleapis.com:443/v0/b/join-82f54.appspot.com/o/F5986CC3-D3EF-4408-AC79-D9D7FC1F8450?alt=media&token=44e11625-5d08-46c7-a8ac-90737e656591"
     // 這個似乎是錯誤的
     // static let datePickerLocale = "zh_TW"
 }
