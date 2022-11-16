@@ -17,7 +17,7 @@ class GoNextPageButtonCell: TableViewCell {
     }
 
     func layoutCellForLogout() {
-        button.setTitle("Log out", for: .normal)
+        button.setTitle("Sign out", for: .normal)
         button.setTitleColor(.Red, for: .normal)
     }
 

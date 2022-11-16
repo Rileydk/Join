@@ -13,6 +13,7 @@
 		BF02714829238B90000EA2F8 /* PersonalProfileEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF02714729238B8F000EA2F8 /* PersonalProfileEditViewController.swift */; };
 		BF02714C29238D42000EA2F8 /* SingleLineInputCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF02714A29238D42000EA2F8 /* SingleLineInputCell.swift */; };
 		BF02714D29238D42000EA2F8 /* SingleLineInputCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF02714B29238D42000EA2F8 /* SingleLineInputCell.xib */; };
+		BF0271592924E3D8000EA2F8 /* UserDefaults+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF0271582924E3D8000EA2F8 /* UserDefaults+Ext.swift */; };
 		BF42FA35290BE2AA00501789 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FA34290BE2AA00501789 /* AppDelegate.swift */; };
 		BF42FA37290BE2AA00501789 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FA36290BE2AA00501789 /* SceneDelegate.swift */; };
 		BF42FA39290BE2AA00501789 /* FindIdeasViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FA38290BE2AA00501789 /* FindIdeasViewController.swift */; };
@@ -120,6 +121,7 @@
 		BF02714729238B8F000EA2F8 /* PersonalProfileEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalProfileEditViewController.swift; sourceTree = "<group>"; };
 		BF02714A29238D42000EA2F8 /* SingleLineInputCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleLineInputCell.swift; sourceTree = "<group>"; };
 		BF02714B29238D42000EA2F8 /* SingleLineInputCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SingleLineInputCell.xib; sourceTree = "<group>"; };
+		BF0271582924E3D8000EA2F8 /* UserDefaults+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+Ext.swift"; sourceTree = "<group>"; };
 		BF42FA31290BE2AA00501789 /* Join.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Join.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF42FA34290BE2AA00501789 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BF42FA36290BE2AA00501789 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -375,6 +377,7 @@
 				BF42FACC291154B500501789 /* Date+Ext.swift */,
 				BF42FACE2912557500501789 /* UIImage+Ext.swift */,
 				BF0271402920D093000EA2F8 /* UIColor+Ext.swift */,
+				BF0271582924E3D8000EA2F8 /* UserDefaults+Ext.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -806,6 +809,7 @@
 				BF42FAD62912945F00501789 /* FriendProjectCell.swift in Sources */,
 				BF42FA71290D196200501789 /* SingleLineDescriptionInputCell.swift in Sources */,
 				BFF8A4DD2916341D00ADC950 /* ChatroomViewController.swift in Sources */,
+				BF0271592924E3D8000EA2F8 /* UserDefaults+Ext.swift in Sources */,
 				BFF8A4C52913EDB800ADC950 /* PersonalEntryViewController.swift in Sources */,
 				BF9A86A6291D1A6100BF934D /* GroupChatroomViewController.swift in Sources */,
 				BF42FAC829111FD400501789 /* ImagePickerCell.swift in Sources */,

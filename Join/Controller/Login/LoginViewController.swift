@@ -125,6 +125,8 @@ extension LoginViewController: ASAuthorizationControllerDelegate {
                         self?.firebaseManager.lookUpUser(userID: firUser.uid) { result in
                             switch result {
                             case .success(let user):
+                                UserDefaults.standard.setValue(user.id, forKey: UserDefaults.uid)
+
                                 group.leave()
                                 group.notify(queue: .main) {
                                     let mainStoryboard = UIStoryboard(name: StoryboardCategory.main.rawValue, bundle: nil)
@@ -159,6 +161,8 @@ extension LoginViewController: ASAuthorizationControllerDelegate {
                         self?.firebaseManager.set(user: newUser) { result in
                             switch result {
                             case .success(let user):
+                                UserDefaults.standard.setValue(user.id, forKey: UserDefaults.uid)
+
                                 let storyboard = UIStoryboard(name: StoryboardCategory.personal.rawValue, bundle: nil)
                                 guard let profileEditVC = storyboard.instantiateViewController(
                                     withIdentifier: PersonalProfileEditViewController.identifier
