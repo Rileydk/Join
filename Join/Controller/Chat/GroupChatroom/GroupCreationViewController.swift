@@ -56,7 +56,7 @@ class GroupCreationViewController: BaseViewController {
 
             let group = DispatchGroup()
             group.enter()
-            let myID = UserDefaults.standard.string(forKey: UserDefaults.uidKey) ?? ""
+            let myID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey) ?? ""
             self?.firebaseManager.getUserInfo(id: myID) { [weak self] result in
                 switch result {
                 case .success(let userData):
@@ -103,7 +103,7 @@ class GroupCreationViewController: BaseViewController {
                     }
                 }
             } else {
-                strongSelf.groupChatroom.imageURL = UserDefaults.standard.string(forKey: UserDefaults.userThumbnailURLKey) ?? FindPartnersFormSections.placeholderImageURL
+                strongSelf.groupChatroom.imageURL = UserDefaults.standard.string(forKey: UserDefaults.UserKey.userThumbnailURLKey) ?? FindPartnersFormSections.placeholderImageURL
                 group.leave()
             }
 

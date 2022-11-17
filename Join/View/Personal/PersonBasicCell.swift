@@ -44,7 +44,7 @@ class PersonBasicCell: CollectionViewCell {
     func layoutCell(withOther user: JUser, relationship: Relationship) {
         layoutCell(with: user)
 
-        let myID = UserDefaults.standard.string(forKey: UserDefaults.uidKey) ?? ""
+        let myID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey) ?? ""
         if user.id == myID {
             relationshipButton.isHidden = true
             sendMessageButton.isHidden = true

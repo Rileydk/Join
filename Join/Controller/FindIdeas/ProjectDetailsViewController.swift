@@ -35,7 +35,7 @@ class ProjectDetailsViewController: BaseViewController {
     typealias ProjectDetailsDatasource = UITableViewDiffableDataSource<Section, Item>
     private var datasource: ProjectDetailsDatasource!
     let firebaseManager = FirebaseManager.shared
-    let myID = UserDefaults.standard.string(forKey: UserDefaults.uidKey) ?? ""
+    let myID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey) ?? ""
     var project: Project?
     var userData: JUser?
 

@@ -69,7 +69,7 @@ enum FirestoreEndpoint {
     var ref: CollectionReference {
         let db = Firestore.firestore()
         let users = db.collection("Users")
-        let myDoc = users.document(UserDefaults.standard.string(forKey: UserDefaults.uidKey) ?? "")
+        let myDoc = users.document(UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey) ?? "")
 
         let sentRequests = "SentRequests"
         let projects = "Project"
@@ -131,7 +131,7 @@ enum DocFieldName: String {
 class FirebaseManager {
     static let shared = FirebaseManager()
     let myAuth = Auth.auth()
-    let myID = UserDefaults.standard.string(forKey: UserDefaults.uidKey) ?? ""
+    let myID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey) ?? ""
     let firebaseQueue = DispatchQueue(label: "firebaseQueue", attributes: .concurrent)
     static let decoder = Firestore.Decoder()
     var newMessageListener: ListenerRegistration?

@@ -126,10 +126,10 @@ extension LoginViewController: ASAuthorizationControllerDelegate {
                         self?.firebaseManager.lookUpUser(userID: firUser.uid) { result in
                             switch result {
                             case .success(let user):
-                                UserDefaults.standard.setValue(user.id, forKey: UserDefaults.uidKey)
-                                UserDefaults.standard.setValue(user.thumbnailURL, forKey: UserDefaults.userThumbnailURLKey)
-                                UserDefaults.standard.setValue(user.name, forKey: UserDefaults.userNameKey)
-                                UserDefaults.standard.setValue(user.interests, forKey: UserDefaults.userInterestsKey)
+                                UserDefaults.standard.setValue(user.id, forKey: UserDefaults.UserKey.uidKey)
+                                UserDefaults.standard.setValue(user.thumbnailURL, forKey: UserDefaults.UserKey.userThumbnailURLKey)
+                                UserDefaults.standard.setValue(user.name, forKey: UserDefaults.UserKey.userNameKey)
+                                UserDefaults.standard.setValue(user.interests, forKey: UserDefaults.UserKey.userInterestsKey)
 
                                 shouldContinue = false
                                 group.leave()
@@ -168,7 +168,7 @@ extension LoginViewController: ASAuthorizationControllerDelegate {
                             self?.firebaseManager.set(user: newUser) { result in
                                 switch result {
                                 case .success(let user):
-                                    UserDefaults.standard.setValue(user.id, forKey: UserDefaults.uidKey)
+                                    UserDefaults.standard.setValue(user.id, forKey: UserDefaults.UserKey.uidKey)
 
                                     let storyboard = UIStoryboard(name: StoryboardCategory.personal.rawValue, bundle: nil)
                                     guard let profileEditVC = storyboard.instantiateViewController(

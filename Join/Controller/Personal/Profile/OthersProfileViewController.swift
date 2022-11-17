@@ -82,7 +82,7 @@ class OthersProfileViewController: BaseViewController {
             group.wait()
             if shouldContinue {
                 group.enter()
-                let myID = UserDefaults.standard.string(forKey: UserDefaults.uidKey) ?? ""
+                let myID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey) ?? ""
                 self?.firebaseManager.getUserInfo(id: myID) { result in
                     switch result {
                     case .success(let myData):

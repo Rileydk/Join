@@ -37,7 +37,7 @@ class ChatroomViewController: BaseViewController {
     }
 
     let firebaseManager = FirebaseManager.shared
-    let myID = UserDefaults.standard.string(forKey: UserDefaults.uidKey) ?? ""
+    let myID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey) ?? ""
     var chatroomID: ChatroomID?
     var messages = [Message]() {
         didSet {

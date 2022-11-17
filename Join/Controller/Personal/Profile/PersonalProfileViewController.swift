@@ -43,7 +43,7 @@ class PersonalProfileViewController: BaseViewController {
     }
 
     func updateData() {
-        let myID = UserDefaults.standard.string(forKey: UserDefaults.uidKey) ?? ""
+        let myID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey) ?? ""
         firebaseManager.getUserInfo(id: myID) { [weak self] result in
             guard let id = self?.userData?.id else { return }
             switch result {

@@ -27,7 +27,7 @@ class GroupMembersViewController: BaseViewController {
     }
 
     let firebaseManager = FirebaseManager.shared
-    let myID = UserDefaults.standard.string(forKey: UserDefaults.uidKey) ?? ""
+    let myID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey) ?? ""
     var chatroomInfo: GroupChatroom?
     var shouldReload = true
     lazy var members = [JUser]() {
