@@ -7,46 +7,55 @@
 
 import UIKit
 
-let riley = JUser(
-    id: "1qFVcUf1MZh90PDelqfU", name: "Riley Lai",
-    email: "ddd@gmail.com",
-    thumbnailURL: "https://firebasestorage.googleapis.com:443/v0/b/join-82f54.appspot.com/o/DA32761A-2775-414C-95E8-F01DCB2CDD66?alt=media&token=c6ac5b7e-1e53-4d0b-813a-eb12c051bf6d"
-)
-let friend = JUser(
-    id: "6z63wggZ1FdOnBEA7Q6s", name: "My Friend",
-    email: "ccc@gmail.com",
-    thumbnailURL: "https://firebasestorage.googleapis.com:443/v0/b/join-82f54.appspot.com/o/25E3357B-A23A-4852-884A-B424FB6ED3FC?alt=media&token=75cc10c7-534b-4e7f-a9fd-45ddcd73d76e"
-)
-let newMember = JUser(
-    id: "Pb4yAKffHnXcyIUq9Ypn", name: "New Member",
-    email: "qqq@gmail.com",
-    thumbnailURL: "https://firebasestorage.googleapis.com:443/v0/b/join-82f54.appspot.com/o/3CD870EC-3520-486A-9651-472378BE2A10?alt=media&token=6afe2b5d-5864-4376-9350-6c02085d8b3c"
-)
-let passenger = JUser(
-    id: "qvHLIRigbf5UnExgyr8t", name: "Passenger",
-    email: "eee@gmail.com",
-    thumbnailURL: "https://firebasestorage.googleapis.com:443/v0/b/join-82f54.appspot.com/o/F5986CC3-D3EF-4408-AC79-D9D7FC1F8450?alt=media&token=44e11625-5d08-46c7-a8ac-90737e656591"
-)
+let rileyID = "u1TWC1cOQafOstYeyYnpCjXSe653"
+let friendID = "6z63wggZ1FdOnBEA7Q6s"
+let newMemberID = "Pb4yAKffHnXcyIUq9Ypn"
+let passengerID = "qvHLIRigbf5UnExgyr8t"
 
 class MockLoginViewController: UIViewController {
     @IBAction func chooseRiley(_ sender: UIButton) {
-//        myAccount = riley
+        saveToUserDefaults(userID: rileyID)
         goToMainPage()
     }
 
     @IBAction func chooseFriend(_ sender: UIButton) {
-//        myAccount = friend
+        saveToUserDefaults(userID: friendID)
         goToMainPage()
     }
 
     @IBAction func chooseNewMember(_ sender: Any) {
-//        myAccount = newMember
+        saveToUserDefaults(userID: newMemberID)
         goToMainPage()
     }
 
     @IBAction func choosePassenger(_ sender: Any) {
-//        myAccount = passenger
+        saveToUserDefaults(userID: passengerID)
         goToMainPage()
+    }
+
+    func saveToUserDefaults(userID: UserID) {
+        let firebaseManager = FirebaseManager.shared
+        firebaseManager.lookUpUser(userID: userID) { result in
+            switch result {
+            case .success(let user):
+                UserDefaults.standard.setValue(user.id, forKey: UserDefaults.UserKey.uidKey)
+                UserDefaults.standard.setValue(user.thumbnailURL, forKey: UserDefaults.UserKey.userThumbnailURLKey)
+                UserDefaults.standard.setValue(user.name, forKey: UserDefaults.UserKey.userNameKey)
+                UserDefaults.standard.setValue(user.interests, forKey: UserDefaults.UserKey.userInterestsKey)
+
+                let mainStoryboard = UIStoryboard(name: StoryboardCategory.main.rawValue, bundle: nil)
+                guard let tabBarController = mainStoryboard.instantiateViewController(
+                    withIdentifier: TabBarController.identifier
+                ) as? TabBarController else {
+                    fatalError("Cannot load tab bar controller")
+                }
+                tabBarController.selectedIndex = 0
+                tabBarController.modalPresentationStyle = .fullScreen
+                self.present(tabBarController, animated: false)
+            case .failure(let err):
+                print(err)
+            }
+        }
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
