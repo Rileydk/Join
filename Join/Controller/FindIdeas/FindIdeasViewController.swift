@@ -7,7 +7,7 @@
 
 import UIKit
 
-class FindIdeasViewController: UIViewController {
+class FindIdeasViewController: BaseViewController {
     enum Section: CaseIterable {
         case recommendations
         case newIdeas
@@ -106,7 +106,11 @@ class FindIdeasViewController: UIViewController {
             }
 
             group.enter()
-            self.firebaseManager.getUserInfo(id: myAccount.id) { result in
+            // TODO: - 改為使用 UserDefaults 取得興趣類別
+            guard let id = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey) else {
+                fatalError("Doesn't have user id")
+            }
+            self.firebaseManager.getUserInfo(id: id) { result in
                 switch result {
                 case .success(let user):
                     interestProjects = self.projects.filter { project in

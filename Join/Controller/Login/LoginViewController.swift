@@ -112,26 +112,43 @@ extension LoginViewController: ASAuthorizationControllerDelegate {
                                                       idToken: idTokenString,
                                                       rawNonce: nonce)
             // Sign in with Firebase.
-            Auth.auth().signIn(with: credential) { [weak self] (_, error) in
+            firebaseManager.myAuth.signIn(with: credential) { [weak self] (_, error) in
                 if let error = error {
                     print(error.localizedDescription)
                     print((error as NSError).userInfo )
                     return
                 }
-                if let firUser = Auth.auth().currentUser {
+                if let firUser = self?.firebaseManager.myAuth.currentUser {
                     self?.firebaseManager.firebaseQueue.async {
+                        var shouldContinue = true
                         let group = DispatchGroup()
                         group.enter()
                         self?.firebaseManager.lookUpUser(userID: firUser.uid) { result in
                             switch result {
                             case .success(let user):
+                                UserDefaults.standard.setValue(user.id, forKey: UserDefaults.UserKey.uidKey)
+                                UserDefaults.standard.setValue(user.thumbnailURL, forKey: UserDefaults.UserKey.userThumbnailURLKey)
+                                UserDefaults.standard.setValue(user.name, forKey: UserDefaults.UserKey.userNameKey)
+                                UserDefaults.standard.setValue(user.interests, forKey: UserDefaults.UserKey.userInterestsKey)
+
+                                shouldContinue = false
                                 group.leave()
-                                // using user id to get interests and load projects
-                                print("user: ", user)
+                                group.notify(queue: .main) {
+                                    let mainStoryboard = UIStoryboard(name: StoryboardCategory.main.rawValue, bundle: nil)
+                                    guard let tabBarController = mainStoryboard.instantiateViewController(
+                                        withIdentifier: TabBarController.identifier
+                                    ) as? TabBarController else {
+                                        fatalError("Cannot load tab bar controller")
+                                    }
+                                    tabBarController.selectedIndex = 0
+                                    tabBarController.modalPresentationStyle = .fullScreen
+                                    self?.present(tabBarController, animated: false)
+                                }
                             case .failure(let err):
                                 if err as? CommonError == CommonError.noExistUser {
                                     group.leave()
                                 } else {
+                                    shouldContinue = false
                                     group.leave()
                                     group.notify(queue: .main) {
                                         print(err)
@@ -141,14 +158,33 @@ extension LoginViewController: ASAuthorizationControllerDelegate {
                         }
 
                         group.wait()
-                        group.enter()
-                        self?.firebaseManager.createNewUser(firebaseAuthUser: firUser) { result in
-                            switch result {
-                            case .success:
-                                // go to edit page
-                                print()
-                            case .failure(let err):
-                                print(err)
+                        if shouldContinue {
+                            group.enter()
+                            let newUser = JUser(id: firUser.uid, name: firUser.displayName ?? "",
+                                                email: firUser.email ?? "",
+                                                thumbnailURL: firUser.photoURL != nil
+                                                    ? String(describing: firUser.photoURL)
+                                                    : FindPartnersFormSections.placeholderImageURL)
+                            self?.firebaseManager.set(user: newUser) { result in
+                                switch result {
+                                case .success(let user):
+                                    UserDefaults.standard.setValue(user.id, forKey: UserDefaults.UserKey.uidKey)
+
+                                    let storyboard = UIStoryboard(name: StoryboardCategory.personal.rawValue, bundle: nil)
+                                    guard let profileEditVC = storyboard.instantiateViewController(
+                                        withIdentifier: PersonalProfileEditViewController.identifier
+                                        ) as? PersonalProfileEditViewController else {
+                                        fatalError("Cannot instantiate profile edit vc")
+                                    }
+                                    profileEditVC.user = user
+
+                                    let navController = UINavigationController(rootViewController: profileEditVC)
+                                    navController.modalPresentationStyle = .fullScreen
+                                    self?.present(navController, animated: false)
+
+                                case .failure(let err):
+                                    print(err)
+                                }
                             }
                         }
                     }

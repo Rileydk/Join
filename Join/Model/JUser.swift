@@ -6,8 +6,7 @@
 //
 
 import Foundation
-
-var myAccount = riley
+import FirebaseAuth
 
 enum Relationship: CaseIterable {
     case friend
@@ -31,7 +30,7 @@ struct JUser: Codable, Hashable {
     let id: UserID
     var name: String
     var email: String
-    var thumbnailURL: URLString = ""
+    var thumbnailURL: URLString?
     var interests = [String]()
     var skills = [String]()
     var sentRequests = [UserID]()

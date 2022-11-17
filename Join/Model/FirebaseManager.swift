@@ -52,10 +52,6 @@ enum FirestoreEndpoint {
     case users
     case chatrooms
     case groupChatroom
-    case myPosts
-    case myFriends
-    case myUnknownChat
-    case myGroupChat
     case otherFriends(UserID)
     case otherUnknownChat(UserID)
     case otherGroupChat(UserID)
@@ -68,11 +64,10 @@ enum FirestoreEndpoint {
     var ref: CollectionReference {
         let db = Firestore.firestore()
         let users = db.collection("Users")
-        let myDoc = users.document(myAccount.id)
 
         let projects = "Project"
         let chatrooms = "Chatroom"
-        let myGroupChats = "GroupChats"
+        let groupChats = "GroupChats"
         let groupChatrooms = "GroupChatrooms"
         let posts = "Posts"
         let friends = "Friends"
@@ -90,20 +85,12 @@ enum FirestoreEndpoint {
             return db.collection(chatrooms)
         case .groupChatroom:
             return db.collection(groupChatrooms)
-        case .myPosts:
-            return myDoc.collection(posts)
-        case .myFriends:
-            return myDoc.collection(friends)
-        case .myUnknownChat:
-            return myDoc.collection(unknownChat)
-        case .myGroupChat:
-            return myDoc.collection(myGroupChats)
         case .otherFriends(let userID):
             return users.document(userID).collection(friends)
         case .otherUnknownChat(let userID):
             return users.document(userID).collection(unknownChat)
         case .otherGroupChat(let userID):
-            return users.document(userID).collection(myGroupChats)
+            return users.document(userID).collection(groupChats)
         case .messages(let chatroomID):
             return db.collection(chatrooms).document(chatroomID).collection(messages)
         case .groupMessages(let chatroomID):
@@ -118,10 +105,54 @@ enum FirestoreEndpoint {
     }
 }
 
+enum FirestoreMyDocumentEndpoint {
+    case myPosts
+    case myFriends
+    case mySentRequests
+    case myUnknownChat
+    case myGroupChat
+
+    var ref: CollectionReference {
+        let db = Firestore.firestore()
+        let users = db.collection("Users")
+        guard let myID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey) else {
+            fatalError("User ID doesn't exist")
+        }
+        let myDoc = users.document(myID)
+
+        let sentRequests = "SentRequests"
+        let posts = "Posts"
+        let friends = "Friends"
+        let unknownChat = "UnknownChat"
+        let groupChats = "GroupChats"
+
+        switch self {
+        case .myPosts:
+            return myDoc.collection(posts)
+        case .myFriends:
+            return myDoc.collection(friends)
+        case .mySentRequests:
+            return myDoc.collection(sentRequests)
+        case .myUnknownChat:
+            return myDoc.collection(unknownChat)
+        case .myGroupChat:
+            return myDoc.collection(groupChats)
+        }
+    }
+}
+
+enum DocFieldName: String {
+    case id
+}
+
 // swiftlint:disable file_length
 // swiftlint:disable type_body_length
 class FirebaseManager {
     static let shared = FirebaseManager()
+    let myAuth = Auth.auth()
+    var myID: String? {
+        UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey)
+    }
     let firebaseQueue = DispatchQueue(label: "firebaseQueue", attributes: .concurrent)
     static let decoder = Firestore.Decoder()
     var newMessageListener: ListenerRegistration?
@@ -147,17 +178,53 @@ class FirebaseManager {
         }
     }
 
-    func createNewUser(firebaseAuthUser firUser: User, completion: @escaping (Result<String, Error>) -> Void) {
+    func set(user: JUser, completion: @escaping (Result<JUser, Error>) -> Void) {
         let ref = FirestoreEndpoint.users.ref
-        let newUser = JUser(id: firUser.uid, name: firUser.displayName ?? "",
-                            email: firUser.email ?? "",
-                            thumbnailURL: firUser.photoURL != nil ? "\(firUser.photoURL)" : "")
-        ref.document(firUser.uid).setData(newUser.toDict) { err in
+        ref.document(user.id).setData(user.toDict) { err in
             if let err = err {
                 completion(.failure(err))
                 return
             }
-            completion(.success("Success"))
+            completion(.success(user))
+        }
+    }
+
+    func updateAuthentication(oldInfo: JUser, newInfo: JUser ,completion: @escaping (Result<String, Error>) -> Void) {
+        let changeRequest = Auth.auth().currentUser?.createProfileChangeRequest()
+        firebaseQueue.async { [weak self] in
+            let group = DispatchGroup()
+            if oldInfo.name != newInfo.name {
+                group.enter()
+                changeRequest?.displayName = newInfo.name
+                changeRequest?.commitChanges { err in
+                    if let err = err {
+                        group.leave()
+                        group.notify(queue: .main) {
+                            completion(.failure(err))
+                        }
+                        return
+                    }
+                    group.leave()
+                }
+            }
+
+            if oldInfo.email != newInfo.email {
+                group.enter()
+                self?.myAuth.currentUser?.updateEmail(to: newInfo.email) { err in
+                    if let err = err {
+                        group.leave()
+                        group.notify(queue: .main) {
+                            completion(.failure(err))
+                        }
+                        return
+                    }
+                    group.leave()
+                }
+            }
+
+            group.notify(queue: .main) {
+                completion(.success("Success"))
+            }
         }
     }
 
@@ -256,7 +323,7 @@ class FirebaseManager {
     }
 
     func saveProjectIDToContact(projectID: ProjectID, completion: @escaping (Result<String, Error>) -> Void) {
-        let ref = FirestoreEndpoint.myPosts.ref
+        let ref = FirestoreMyDocumentEndpoint.myPosts.ref
         ref.document(projectID).setData(["projectID": projectID]) { err in
             if let err = err {
                 completion(.failure(err))
@@ -330,8 +397,32 @@ class FirebaseManager {
         }
     }
 
+    func getSingleDocument<T: Decodable>(from ref: CollectionReference, match field: DocFieldName? = nil, with stringCondition: String? = nil, completion: @escaping (Result<T, Error>) -> Void) {
+        if let field = field, let stringCondition = stringCondition {
+            ref.whereField(field.rawValue, isEqualTo: stringCondition).getDocuments { snapshot, err in
+                if let err = err {
+                    completion(.failure(err))
+                    return
+                }
+                if snapshot != nil {
+                    do {
+                        if let decodedResult = try snapshot?.documents.first?.data(as: T.self, decoder: FirebaseManager.decoder) {
+                            completion(.success(decodedResult))
+                        } else {
+                            completion(.failure(CommonError.notFriendYet))
+                        }
+                    } catch {
+                        completion(.failure(error))
+                    }
+                } else {
+                    completion(.failure(CommonError.noValidQuerysnapshot))
+                }
+            }
+        }
+    }
+
     func checkIsFriend(id: UserID, completion: @escaping (Result<Friend, Error>) -> Void) {
-        let ref = FirestoreEndpoint.myFriends.ref
+        let ref = FirestoreMyDocumentEndpoint.myFriends.ref
         ref.whereField("id", isEqualTo: id).getDocuments { (querySnapshot, error) in
             if let error = error {
                 completion(.failure(error))
@@ -353,12 +444,23 @@ class FirebaseManager {
         }
     }
 
+    func checkHasSentRequest(to id: UserID, completion: (Result<UserID, Error>) -> Void) {
+        let ref = FirestoreMyDocumentEndpoint.mySentRequests.ref
+        ref.whereField("id", isEqualTo: id).getDocuments { (snapshot, err) in
+        }
+    }
+
+    func checkHasReceivedRequest(from id: UserID, completion: (Result<UserID, Error>) -> Void) {
+
+    }
+
     func sendFriendRequest(to id: UserID, completion: @escaping (Result<String, Error>) -> Void) {
-        firebaseQueue.async {
+        firebaseQueue.async { [weak self] in
+            guard let strongSelf = self else { return }
             let group = DispatchGroup()
             group.enter()
             let objectDocRef = FirestoreEndpoint.users.ref.document(id)
-            objectDocRef.updateData(["receivedRequests": [myAccount.id]]) { error in
+            objectDocRef.updateData(["receivedRequests": [id]]) { error in
                 if let error = error {
                     group.leave()
                     group.notify(queue: .main) {
@@ -370,8 +472,11 @@ class FirebaseManager {
             }
 
             group.enter()
-            let myDocRef = FirestoreEndpoint.users.ref.document(myAccount.id)
-            myDocRef.updateData(["sentRequests": [id]]) { error in
+            guard let myID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey) else {
+                fatalError("Doesn't have user id")
+            }
+            let myDocRef = FirestoreEndpoint.users.ref.document(myID)
+            myDocRef.updateData(["sentRequests": [myID]]) { error in
                 if let error = error {
                     group.leave()
                     group.notify(queue: .main) {
@@ -388,7 +493,10 @@ class FirebaseManager {
     }
 
     func acceptFriendRequest(from id: UserID, completion: @escaping (Result<String, Error>) -> Void) {
-        let myDocRef = FirestoreEndpoint.users.ref.document(myAccount.id)
+        guard let myID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey) else {
+            fatalError("Doesn't have user id")
+        }
+        let myDocRef = FirestoreEndpoint.users.ref.document(myID)
         let friendDocRef = FirestoreEndpoint.users.ref.document(id)
         let group = DispatchGroup()
         group.enter()
@@ -416,7 +524,7 @@ class FirebaseManager {
         }
 
         group.enter()
-        friendDocRef.collection("Friends").document(myAccount.id).setData(["id": myAccount.id]) { error in
+        friendDocRef.collection("Friends").document(myID).setData(["id": myID]) { error in
             if let error  = error {
                 group.leave()
                 group.notify(queue: .main) {
@@ -428,7 +536,7 @@ class FirebaseManager {
         }
 
         group.enter()
-        friendDocRef.updateData(["sentRequests": FieldValue.arrayRemove([myAccount.id])]) { error in
+        friendDocRef.updateData(["sentRequests": FieldValue.arrayRemove([myID])]) { error in
             if let error  = error {
                 group.leave()
                 group.notify(queue: .main) {
@@ -515,7 +623,10 @@ class FirebaseManager {
     }
 
     func checkUnknownChatroom(id: UserID, completion: @escaping (Result<ChatroomID, Error>) -> Void) {
-        let myDocRef = FirestoreEndpoint.users.ref.document(myAccount.id)
+        guard let myID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey) else {
+            fatalError("Doesn't have user id")
+        }
+        let myDocRef = FirestoreEndpoint.users.ref.document(myID)
         myDocRef.collection("UnknownChat").document(id).getDocument { (documentSnapshot, error) in
             if let error = error {
                 completion(.failure(error))
@@ -540,14 +651,14 @@ class FirebaseManager {
     }
 
     func createChatroom(id: UserID, type: ChatroomType, completion: @escaping (Result<ChatroomID, Error>) -> Void) {
-        firebaseQueue.async {
+        firebaseQueue.async { [weak self] in
             let chatroomRef = FirestoreEndpoint.chatrooms.ref
             let chatroomID = chatroomRef.document().documentID
             let chatroom = Chatroom(id: chatroomID)
 
             let group = DispatchGroup()
             group.enter()
-            chatroomRef.document(chatroomID).setData(chatroom.toDict) { [unowned self] error in
+            chatroomRef.document(chatroomID).setData(chatroom.toDict) { error in
                 if let error = error {
                     group.leave()
                     group.notify(queue: .main) {
@@ -559,8 +670,11 @@ class FirebaseManager {
             }
 
             group.wait()
+            guard let myID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey) else {
+                fatalError("Doesn't have user id")
+            }
             let membersRef = FirestoreEndpoint.privateChatroomMembers(chatroomID).ref
-            [myAccount.id, id].forEach {
+            [myID, id].forEach {
                 group.enter()
                 let member = ChatroomMember(userID: $0, currentMemberStatus: .join, currentInoutStatus: .out, lastTimeInChatroom: Date())
                 membersRef.document($0).setData(member.toDict) { err in
@@ -590,7 +704,10 @@ class FirebaseManager {
     }
 
     func saveChatroomID(to type: ChatroomType, id: UserID, chatroomID: ChatroomID, completion: @escaping (Result<String, Error>) -> Void ) {
-        let myDocRef = FirestoreEndpoint.users.ref.document(myAccount.id)
+        guard let myID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey) else {
+            fatalError("Doesn't have user id")
+        }
+        let myDocRef = FirestoreEndpoint.users.ref.document(myID)
         let friendDocRef = FirestoreEndpoint.users.ref.document(id)
         let collectionName = type.collectionName
 
@@ -606,8 +723,8 @@ class FirebaseManager {
             group.leave()
         }
         group.enter()
-        friendDocRef.collection(collectionName).document(myAccount.id)
-            .setData(["id": myAccount.id, "chatroomID": chatroomID]) { error in
+        friendDocRef.collection(collectionName).document(myID)
+            .setData(["id": myID, "chatroomID": chatroomID]) { error in
             if let error = error {
                 completion(.failure(error))
                 group.leave()
@@ -622,8 +739,11 @@ class FirebaseManager {
 
     func removeUnknownChat(of friend: UserID) {
         let ref = FirestoreEndpoint.users.ref
-        let myUnknownChatDocRef = ref.document(myAccount.id).collection(ChatroomType.unknown.collectionName).document(friend)
-        let friendUnknownChatDocRef = ref.document(friend).collection(ChatroomType.unknown.collectionName).document(myAccount.id)
+        guard let myID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey) else {
+            fatalError("Doesn't have user id")
+        }
+        let myUnknownChatDocRef = ref.document(myID).collection(ChatroomType.unknown.collectionName).document(friend)
+        let friendUnknownChatDocRef = ref.document(friend).collection(ChatroomType.unknown.collectionName).document(myID)
         myUnknownChatDocRef.delete { error in
             if let error = error {
                 print(error)
@@ -717,7 +837,10 @@ class FirebaseManager {
     }
 
     func getAllFriendsAndChatroomsInfo(type: ChatroomType, completion: @escaping (Result<[SavedChat], Error>) -> Void) {
-        let ref = FirestoreEndpoint.users.ref.document(myAccount.id).collection(type.collectionName)
+        guard let myID = myID else {
+            fatalError("Doesn't have user id")
+        }
+        let ref = FirestoreEndpoint.users.ref.document(myID).collection(type.collectionName)
         ref.getDocuments { (snapshot, error) in
             if let error = error {
                 completion(.failure(error))
@@ -954,7 +1077,7 @@ class FirebaseManager {
     }
 
     func getAllMyProjectsID(completion: @escaping (Result<[ProjectItem], Error>) -> Void) {
-        let ref = FirestoreEndpoint.myPosts.ref
+        let ref = FirestoreMyDocumentEndpoint.myPosts.ref
         ref.getDocuments { (snapshot, err) in
             if let err = err {
                 completion(.failure(err))
@@ -1001,8 +1124,11 @@ class FirebaseManager {
     }
 
     func getAllMyApplications(completion: @escaping (Result<[Project], Error>) -> Void) {
+        guard let myID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey) else {
+            fatalError("Doesn't have user id")
+        }
         let ref = FirestoreEndpoint.projects.ref
-        ref.whereField("applicants", arrayContains: myAccount.id).getDocuments { (snapshot, err) in
+        ref.whereField("applicants", arrayContains: myID).getDocuments { (snapshot, err) in
             if let err = err {
                 completion(.failure(err))
                 return
@@ -1263,7 +1389,7 @@ class FirebaseManager {
     }
 
     func getAllSavedGroupChatroomIDs(completion: @escaping (Result<[ChatroomID], Error>) -> Void) {
-        let ref = FirestoreEndpoint.myGroupChat.ref
+        let ref = FirestoreMyDocumentEndpoint.myGroupChat.ref
         ref.getDocuments { (snapshot, err) in
             if let err = err {
                 completion(.failure(err))
@@ -1521,12 +1647,15 @@ class FirebaseManager {
     }
 
     func updateGroupChatroomInoutStatus(setTo status: InoutStatus, chatroomID: ChatroomID, completion: @escaping (Result<String, Error>) -> Void) {
+        guard let myID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey) else {
+            fatalError("Doesn't have user id")
+        }
         let membersRef = FirestoreEndpoint.groupMembers(chatroomID).ref
-
-        firebaseQueue.async {
+        firebaseQueue.async { [weak self] in
+            guard let strongSelf = self else { return }
             let group = DispatchGroup()
             group.enter()
-            membersRef.document(myAccount.id).updateData(["currentInoutStatus": status.rawValue]) { err in
+            membersRef.document(myID).updateData(["currentInoutStatus": status.rawValue]) { err in
                 if let err = err {
                     group.leave()
                     group.notify(queue: .main) {
@@ -1539,7 +1668,7 @@ class FirebaseManager {
 
             if status == .out {
                 group.enter()
-                membersRef.document(myAccount.id).updateData(["lastTimeInChatroom": Date()]) { err in
+                membersRef.document(myID).updateData(["lastTimeInChatroom": Date()]) { err in
                     if let err = err {
                         group.leave()
                         group.notify(queue: .main) {
@@ -1557,12 +1686,15 @@ class FirebaseManager {
     }
 
     func updatePrivateChatInoutStatus(setTo status: InoutStatus, chatroomID: ChatroomID, completion: @escaping (Result<String, Error>) -> Void) {
+        guard let myID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey) else {
+            fatalError("Doesn't have user id")
+        }
         let membersRef = FirestoreEndpoint.privateChatroomMembers(chatroomID).ref
-
-        firebaseQueue.async {
+        firebaseQueue.async { [weak self] in
+            guard let strongSelf = self else { return }
             let group = DispatchGroup()
             group.enter()
-            membersRef.document(myAccount.id).updateData(["currentInoutStatus": status.rawValue]) { err in
+            membersRef.document(myID).updateData(["currentInoutStatus": status.rawValue]) { err in
                 if let err = err {
                     group.leave()
                     group.notify(queue: .main) {
@@ -1575,7 +1707,7 @@ class FirebaseManager {
 
             if status == .out {
                 group.enter()
-                membersRef.document(myAccount.id).updateData(["lastTimeInChatroom": Date()]) { err in
+                membersRef.document(myID).updateData(["lastTimeInChatroom": Date()]) { err in
                     if let err = err {
                         group.leave()
                         group.notify(queue: .main) {
@@ -1593,12 +1725,15 @@ class FirebaseManager {
     }
 
     func getMyLastTimeInGroupChatroom(type: ChatroomType, messagesItems: [GroupMessageListItem], completion: @escaping (Result<[GroupMessageListItem], Error>) -> Void) {
+        guard let myID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey) else {
+            fatalError("Doesn't have user id")
+        }
         var messagesItems = messagesItems
         let group = DispatchGroup()
         for item in messagesItems {
             group.enter()
             let ref = FirestoreEndpoint.groupMembers(item.chatroomID).ref
-            ref.document(myAccount.id).getDocument { (snapshot, err) in
+            ref.document(myID).getDocument { (snapshot, err) in
                 if let err = err {
                     group.leave()
                     group.notify(queue: .main) {
@@ -1637,12 +1772,15 @@ class FirebaseManager {
     }
 
     func getMyLastTimeInChatroom(messagesItems: [MessageListItem], completion: @escaping (Result<[MessageListItem], Error>) -> Void) {
+        guard let myID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey) else {
+            fatalError("Doesn't have user id")
+        }
         var messagesItems = messagesItems
         let group = DispatchGroup()
         for item in messagesItems {
             group.enter()
             let ref = FirestoreEndpoint.privateChatroomMembers(item.chatroomID).ref
-            ref.document(myAccount.id).getDocument { (snapshot, err) in
+            ref.document(myID).getDocument { (snapshot, err) in
                 if let err = err {
                     group.leave()
                     group.notify(queue: .main) {

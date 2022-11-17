@@ -37,6 +37,7 @@ class ChatroomViewController: BaseViewController {
     }
 
     let firebaseManager = FirebaseManager.shared
+    let myID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey) ?? ""
     var chatroomID: ChatroomID?
     var messages = [Message]() {
         didSet {
@@ -45,19 +46,9 @@ class ChatroomViewController: BaseViewController {
     }
     var userData: JUser? {
         didSet {
-            firebaseManager.downloadImage(urlString: userData!.thumbnailURL) { [unowned self] result in
-                switch result {
-                case .success(let image):
-                    self.userThumbnail = image
-                case .failure(let error):
-                    print(error)
-                }
+            if let tableView = tableView {
+                tableView.reloadData()
             }
-        }
-    }
-    var userThumbnail: UIImage? {
-        didSet {
-            tableView.reloadData()
         }
     }
 
@@ -148,7 +139,7 @@ extension ChatroomViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let message = messages[indexPath.row]
-        if message.sender == myAccount.id {
+        if message.sender == myID {
             guard let cell = tableView.dequeueReusableCell(
                 withIdentifier: MyMessageCell.identifier, for: indexPath
                 ) as? MyMessageCell else {
@@ -171,7 +162,7 @@ extension ChatroomViewController: UITableViewDataSource {
                 ) as? OthersProfileViewController else {
                     fatalError("Cannot create others profile vc")
                 }
-                profileVC.userData = self?.userData
+                profileVC.objectData = self?.userData
                 self?.navigationController?.pushViewController(profileVC, animated: true)
             }
             return cell
@@ -184,7 +175,7 @@ extension ChatroomViewController: MessageSuperviewDelegate {
     func view(_ messageTypingSuperview: MessageTypingSuperview, didSend message: String) {
         let newMessage = Message(
             messageID: "",
-            sender: myAccount.id,
+            sender: myID,
             type: .text,
             content: message, time: Date()
         )

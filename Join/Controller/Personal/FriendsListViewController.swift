@@ -67,7 +67,7 @@ extension FriendsListViewController: UITableViewDelegate {
         ) as? OthersProfileViewController else {
             fatalError("Cannot create others profile vc")
         }
-        profileVC.userData = filteredFriends[indexPath.row]
+        profileVC.objectData = filteredFriends[indexPath.row]
         navigationController?.pushViewController(profileVC, animated: true)
     }
 }

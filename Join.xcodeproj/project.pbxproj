@@ -10,6 +10,10 @@
 		2585457536E3C3F568F3A4AC /* Pods_Join.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95A33A59C05820643F8B2FFB /* Pods_Join.framework */; };
 		BF0271412920D093000EA2F8 /* UIColor+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF0271402920D093000EA2F8 /* UIColor+Ext.swift */; };
 		BF027145292273E5000EA2F8 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF027144292273E5000EA2F8 /* LoginViewController.swift */; };
+		BF02714829238B90000EA2F8 /* PersonalProfileEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF02714729238B8F000EA2F8 /* PersonalProfileEditViewController.swift */; };
+		BF02714C29238D42000EA2F8 /* SingleLineInputCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF02714A29238D42000EA2F8 /* SingleLineInputCell.swift */; };
+		BF02714D29238D42000EA2F8 /* SingleLineInputCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF02714B29238D42000EA2F8 /* SingleLineInputCell.xib */; };
+		BF0271592924E3D8000EA2F8 /* UserDefaults+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF0271582924E3D8000EA2F8 /* UserDefaults+Ext.swift */; };
 		BF42FA35290BE2AA00501789 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FA34290BE2AA00501789 /* AppDelegate.swift */; };
 		BF42FA37290BE2AA00501789 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FA36290BE2AA00501789 /* SceneDelegate.swift */; };
 		BF42FA39290BE2AA00501789 /* FindIdeasViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FA38290BE2AA00501789 /* FindIdeasViewController.swift */; };
@@ -24,10 +28,10 @@
 		BF42FA61290CEF4700501789 /* UIStoryboard+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FA60290CEF4700501789 /* UIStoryboard+Ext.swift */; };
 		BF42FA67290D04EF00501789 /* FindPartnersFormSections.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FA66290D04EF00501789 /* FindPartnersFormSections.swift */; };
 		BF42FA6E290D178400501789 /* UIView+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FA6D290D178400501789 /* UIView+Ext.swift */; };
-		BF42FA71290D196200501789 /* SingleLineInputCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FA70290D196200501789 /* SingleLineInputCell.swift */; };
+		BF42FA71290D196200501789 /* SingleLineDescriptionInputCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FA70290D196200501789 /* SingleLineDescriptionInputCell.swift */; };
 		BF42FA73290D197000501789 /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FA72290D197000501789 /* TableViewCell.swift */; };
 		BF42FA76290D1CD800501789 /* FindPartnersBasicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FA75290D1CD800501789 /* FindPartnersBasicViewController.swift */; };
-		BF42FA79290D264100501789 /* SingleLineInputCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF42FA6B290D160900501789 /* SingleLineInputCell.xib */; };
+		BF42FA79290D264100501789 /* SingleLineDescriptionInputCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF42FA6B290D160900501789 /* SingleLineDescriptionInputCell.xib */; };
 		BF42FA7D290D2ADB00501789 /* MultilineInputCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FA7B290D2ADB00501789 /* MultilineInputCell.swift */; };
 		BF42FA7E290D2ADB00501789 /* MultilineInputCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF42FA7C290D2ADB00501789 /* MultilineInputCell.xib */; };
 		BF42FA81290D31EF00501789 /* GoSelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FA7F290D31EF00501789 /* GoSelectionCell.swift */; };
@@ -114,6 +118,10 @@
 		BF0271402920D093000EA2F8 /* UIColor+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Ext.swift"; sourceTree = "<group>"; };
 		BF027142292272A3000EA2F8 /* Join.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Join.entitlements; sourceTree = "<group>"; };
 		BF027144292273E5000EA2F8 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		BF02714729238B8F000EA2F8 /* PersonalProfileEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalProfileEditViewController.swift; sourceTree = "<group>"; };
+		BF02714A29238D42000EA2F8 /* SingleLineInputCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleLineInputCell.swift; sourceTree = "<group>"; };
+		BF02714B29238D42000EA2F8 /* SingleLineInputCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SingleLineInputCell.xib; sourceTree = "<group>"; };
+		BF0271582924E3D8000EA2F8 /* UserDefaults+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+Ext.swift"; sourceTree = "<group>"; };
 		BF42FA31290BE2AA00501789 /* Join.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Join.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF42FA34290BE2AA00501789 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BF42FA36290BE2AA00501789 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -129,9 +137,9 @@
 		BF42FA5B290CEAD500501789 /* Personal.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Personal.storyboard; sourceTree = "<group>"; };
 		BF42FA60290CEF4700501789 /* UIStoryboard+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStoryboard+Ext.swift"; sourceTree = "<group>"; };
 		BF42FA66290D04EF00501789 /* FindPartnersFormSections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindPartnersFormSections.swift; sourceTree = "<group>"; };
-		BF42FA6B290D160900501789 /* SingleLineInputCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SingleLineInputCell.xib; sourceTree = "<group>"; };
+		BF42FA6B290D160900501789 /* SingleLineDescriptionInputCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SingleLineDescriptionInputCell.xib; sourceTree = "<group>"; };
 		BF42FA6D290D178400501789 /* UIView+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Ext.swift"; sourceTree = "<group>"; };
-		BF42FA70290D196200501789 /* SingleLineInputCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleLineInputCell.swift; sourceTree = "<group>"; };
+		BF42FA70290D196200501789 /* SingleLineDescriptionInputCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleLineDescriptionInputCell.swift; sourceTree = "<group>"; };
 		BF42FA72290D197000501789 /* TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
 		BF42FA75290D1CD800501789 /* FindPartnersBasicViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindPartnersBasicViewController.swift; sourceTree = "<group>"; };
 		BF42FA7B290D2ADB00501789 /* MultilineInputCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultilineInputCell.swift; sourceTree = "<group>"; };
@@ -254,6 +262,16 @@
 			path = Login;
 			sourceTree = "<group>";
 		};
+		BF02714929238B97000EA2F8 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				BFF8A4CF2914C2E300ADC950 /* PersonalProfileViewController.swift */,
+				BFF8A4D52915009B00ADC950 /* OthersProfileViewController.swift */,
+				BF02714729238B8F000EA2F8 /* PersonalProfileEditViewController.swift */,
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
 		BF42FA28290BE2AA00501789 = {
 			isa = PBXGroup;
 			children = (
@@ -359,6 +377,7 @@
 				BF42FACC291154B500501789 /* Date+Ext.swift */,
 				BF42FACE2912557500501789 /* UIImage+Ext.swift */,
 				BF0271402920D093000EA2F8 /* UIColor+Ext.swift */,
+				BF0271582924E3D8000EA2F8 /* UserDefaults+Ext.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -375,8 +394,8 @@
 		BF42FA6A290D14CC00501789 /* Form */ = {
 			isa = PBXGroup;
 			children = (
-				BF42FA70290D196200501789 /* SingleLineInputCell.swift */,
-				BF42FA6B290D160900501789 /* SingleLineInputCell.xib */,
+				BF42FA70290D196200501789 /* SingleLineDescriptionInputCell.swift */,
+				BF42FA6B290D160900501789 /* SingleLineDescriptionInputCell.xib */,
 				BF42FA7B290D2ADB00501789 /* MultilineInputCell.swift */,
 				BF42FA7C290D2ADB00501789 /* MultilineInputCell.xib */,
 				BF42FA7F290D31EF00501789 /* GoSelectionCell.swift */,
@@ -387,6 +406,8 @@
 				BF42FAC32910010000501789 /* AddNewCell.xib */,
 				BF42FAC629111FD400501789 /* ImagePickerCell.swift */,
 				BF42FAC729111FD400501789 /* ImagePickerCell.xib */,
+				BF02714A29238D42000EA2F8 /* SingleLineInputCell.swift */,
+				BF02714B29238D42000EA2F8 /* SingleLineInputCell.xib */,
 			);
 			path = Form;
 			sourceTree = "<group>";
@@ -499,11 +520,10 @@
 		BFF8A4C32913EC6000ADC950 /* Personal */ = {
 			isa = PBXGroup;
 			children = (
+				BF02714929238B97000EA2F8 /* Profile */,
 				BF9A8699291C9DAB00BF934D /* MyApplications */,
 				BF9A868F291BCF8700BF934D /* MyPosts */,
 				BFF8A4C42913EDB800ADC950 /* PersonalEntryViewController.swift */,
-				BFF8A4CF2914C2E300ADC950 /* PersonalProfileViewController.swift */,
-				BFF8A4D52915009B00ADC950 /* OthersProfileViewController.swift */,
 				BF9A86732918FA3500BF934D /* FriendsListViewController.swift */,
 			);
 			path = Personal;
@@ -622,11 +642,12 @@
 				BF9A867E2918FB1800BF934D /* FriendCell.xib in Resources */,
 				BF42FA7E290D2ADB00501789 /* MultilineInputCell.xib in Resources */,
 				BF42FAC929111FD400501789 /* ImagePickerCell.xib in Resources */,
-				BF42FA79290D264100501789 /* SingleLineInputCell.xib in Resources */,
+				BF42FA79290D264100501789 /* SingleLineDescriptionInputCell.xib in Resources */,
 				BF9A8698291BD13400BF934D /* MyApplicantCell.xib in Resources */,
 				BF42FA5D290CED7100501789 /* Chat.storyboard in Resources */,
 				BF42FAD72912945F00501789 /* FriendProjectCell.xib in Resources */,
 				BFF8A4C02913B46600ADC950 /* JoinButtonCell.xib in Resources */,
+				BF02714D29238D42000EA2F8 /* SingleLineInputCell.xib in Resources */,
 				BFF8A4CA2913EE4C00ADC950 /* PersonalMainThumbnailCell.xib in Resources */,
 				BF42FA41290BE2AC00501789 /* LaunchScreen.storyboard in Resources */,
 				BFF8A4EB29164BF500ADC950 /* MessageCell.xib in Resources */,
@@ -720,6 +741,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BF02714C29238D42000EA2F8 /* SingleLineInputCell.swift in Sources */,
 				BF42FAB0290F7E9000501789 /* SelectionCategoriesViewController.swift in Sources */,
 				BF42FABF290FF65300501789 /* MemberCell.swift in Sources */,
 				BFF8A4D62915009B00ADC950 /* OthersProfileViewController.swift in Sources */,
@@ -740,6 +762,7 @@
 				BFF8A4B32913AD3000ADC950 /* BigImageCell.swift in Sources */,
 				BF9A86B1291E3AE800BF934D /* AddNewMemberCell.swift in Sources */,
 				BF42FAD92912960D00501789 /* CollectionViewCell.swift in Sources */,
+				BF02714829238B90000EA2F8 /* PersonalProfileEditViewController.swift in Sources */,
 				BF42FABC290FF32300501789 /* MemberCardViewController.swift in Sources */,
 				BF027145292273E5000EA2F8 /* LoginViewController.swift in Sources */,
 				BFF8A4D92915036000ADC950 /* ContactCell.swift in Sources */,
@@ -784,8 +807,9 @@
 				BF42FA6E290D178400501789 /* UIView+Ext.swift in Sources */,
 				BF0271412920D093000EA2F8 /* UIColor+Ext.swift in Sources */,
 				BF42FAD62912945F00501789 /* FriendProjectCell.swift in Sources */,
-				BF42FA71290D196200501789 /* SingleLineInputCell.swift in Sources */,
+				BF42FA71290D196200501789 /* SingleLineDescriptionInputCell.swift in Sources */,
 				BFF8A4DD2916341D00ADC950 /* ChatroomViewController.swift in Sources */,
+				BF0271592924E3D8000EA2F8 /* UserDefaults+Ext.swift in Sources */,
 				BFF8A4C52913EDB800ADC950 /* PersonalEntryViewController.swift in Sources */,
 				BF9A86A6291D1A6100BF934D /* GroupChatroomViewController.swift in Sources */,
 				BF42FAC829111FD400501789 /* ImagePickerCell.swift in Sources */,

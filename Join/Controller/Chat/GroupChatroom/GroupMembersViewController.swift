@@ -27,6 +27,7 @@ class GroupMembersViewController: BaseViewController {
     }
 
     let firebaseManager = FirebaseManager.shared
+    let myID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey) ?? ""
     var chatroomInfo: GroupChatroom?
     var shouldReload = true
     lazy var members = [JUser]() {
@@ -43,7 +44,7 @@ class GroupMembersViewController: BaseViewController {
             print("No chatroom id")
             return
         }
-        if admin == myAccount.id {
+        if admin == myID {
             tableView.setEditing(true, animated: true)
             editAction()
         } else {
@@ -81,13 +82,14 @@ class GroupMembersViewController: BaseViewController {
 
             group.wait()
             group.enter()
-            self?.firebaseManager.getAllMatchedUsersDetail(usersID: currentMembersIDs) { result in
+            self?.firebaseManager.getAllMatchedUsersDetail(usersID: currentMembersIDs) { [weak self] result in
+                guard let strongSelf = self else { return }
                 switch result {
                 case .success(let members):
                     group.leave()
                     group.notify(queue: .main) {
                         var members = members
-                        if let member = members.first(where: { $0.id == myAccount.id }),
+                        if let member = members.first(where: { $0.id == strongSelf.myID }),
                             let index = members.firstIndex(of: member),
                            index != 0 {
                             members.swapAt(0, index)
@@ -148,7 +150,7 @@ class GroupMembersViewController: BaseViewController {
             print("No chatroom id")
             return
         }
-        firebaseManager.updateGroupChatroomMemberStatus(setTo: .exit, membersIDs: [myAccount.id], chatroomID: chatroomID) { [weak self] result in
+        firebaseManager.updateGroupChatroomMemberStatus(setTo: .exit, membersIDs: [myID], chatroomID: chatroomID) { [weak self] result in
             switch result {
             case .success:
                 ProgressHUD.showSuccess()
@@ -174,14 +176,14 @@ extension GroupMembersViewController: UITableViewDelegate {
         ) as? OthersProfileViewController else {
             fatalError("Cannot create others profile vc")
         }
-        profileVC.userData = members[indexPath.row - 1]
+        profileVC.objectData = members[indexPath.row - 1]
         navigationController?.pushViewController(profileVC, animated: true)
     }
 
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         if indexPath.row == 0 {
             return false
-        } else if members[indexPath.row - 1].id == myAccount.id {
+        } else if members[indexPath.row - 1].id == myID {
             return false
         } else {
             return true

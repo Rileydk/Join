@@ -45,15 +45,8 @@ class MessageCell: TableViewCell {
     }
 
     func layoutCell(imageURL: URLString?, message: String) {
-        guard let imageURL = imageURL else { return }
-        firebaseManager.downloadImage(urlString: imageURL) { [unowned self] result in
-            switch result {
-            case .success(let image):
-                self.thumbnailImageView.image = image
-            case .failure(let error):
-                print(error)
-            }
-        }
+        guard let imageURL = URL(string: imageURL!) else { return }
+        thumbnailImageView.kf.setImage(with: imageURL)
         messageTextView.text = message
     }
 

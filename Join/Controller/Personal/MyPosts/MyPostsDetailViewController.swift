@@ -143,7 +143,7 @@ extension MyPostsDetailViewController {
                 ) as? OthersProfileViewController else {
                     fatalError("Cannot create others profile vc")
                 }
-                profileVC.userData = self?.applicants[indexPath.row]
+                profileVC.objectData = self?.applicants[indexPath.row]
                 self?.navigationController?.pushViewController(profileVC, animated: true)
             }
             return cell
