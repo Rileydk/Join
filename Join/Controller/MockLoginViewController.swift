@@ -9,31 +9,60 @@ import UIKit
 
 let rileyID = "u1TWC1cOQafOstYeyYnpCjXSe653"
 let friendID = "6z63wggZ1FdOnBEA7Q6s"
-let newMemberID = "Pb4yAKffHnXcyIUq9Ypn"
+let newMemberID = "Pb4yAKffHnXcyIUq9Yp"
 let passengerID = "qvHLIRigbf5UnExgyr8t"
 
-class MockLoginViewController: UIViewController {
+class MockLoginViewController: BaseViewController {
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        print("mock login view will appear", UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey))
+    }
+
     @IBAction func chooseRiley(_ sender: UIButton) {
-        saveToUserDefaults(userID: rileyID)
-        goToMainPage()
+        saveToUserDefaults(userID: rileyID) { [weak self] result in
+            switch result {
+            case .success:
+                self?.goToMainPage()
+            case .failure(let err):
+                print(err)
+            }
+        }
     }
 
     @IBAction func chooseFriend(_ sender: UIButton) {
-        saveToUserDefaults(userID: friendID)
-        goToMainPage()
+        saveToUserDefaults(userID: friendID) { [weak self] result in
+            switch result {
+            case .success:
+                self?.goToMainPage()
+            case .failure(let err):
+                print(err)
+            }
+        }
     }
 
     @IBAction func chooseNewMember(_ sender: Any) {
-        saveToUserDefaults(userID: newMemberID)
-        goToMainPage()
+        saveToUserDefaults(userID: newMemberID) { [weak self] result in
+            switch result {
+            case .success:
+                self?.goToMainPage()
+            case .failure(let err):
+                print(err)
+            }
+        }
     }
 
     @IBAction func choosePassenger(_ sender: Any) {
-        saveToUserDefaults(userID: passengerID)
-        goToMainPage()
+        saveToUserDefaults(userID: passengerID) { [weak self] result in
+            switch result {
+            case .success:
+                self?.goToMainPage()
+            case .failure(let err):
+                print(err)
+            }
+        }
     }
 
-    func saveToUserDefaults(userID: UserID) {
+    func saveToUserDefaults(userID: UserID, completion: @escaping (Result<String, Error>) -> Void) {
         let firebaseManager = FirebaseManager.shared
         firebaseManager.lookUpUser(userID: userID) { result in
             switch result {
@@ -42,18 +71,9 @@ class MockLoginViewController: UIViewController {
                 UserDefaults.standard.setValue(user.thumbnailURL, forKey: UserDefaults.UserKey.userThumbnailURLKey)
                 UserDefaults.standard.setValue(user.name, forKey: UserDefaults.UserKey.userNameKey)
                 UserDefaults.standard.setValue(user.interests, forKey: UserDefaults.UserKey.userInterestsKey)
-
-                let mainStoryboard = UIStoryboard(name: StoryboardCategory.main.rawValue, bundle: nil)
-                guard let tabBarController = mainStoryboard.instantiateViewController(
-                    withIdentifier: TabBarController.identifier
-                ) as? TabBarController else {
-                    fatalError("Cannot load tab bar controller")
-                }
-                tabBarController.selectedIndex = 0
-                tabBarController.modalPresentationStyle = .fullScreen
-                self.present(tabBarController, animated: false)
+                completion(.success("Success"))
             case .failure(let err):
-                print(err)
+                completion(.failure(err))
             }
         }
     }

@@ -11,7 +11,7 @@ import FirebaseAuth
 
 class FindPartnersBasicViewController: BaseViewController {
     let firebaseManager = FirebaseManager.shared
-    var project = Project(contact: UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey)!)
+    var project = Project(contact: UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey) ?? "")
     var image: UIImage?
     var formState = FindPartnersFormSections.basicSection
     var selectedCategories = [String]() {

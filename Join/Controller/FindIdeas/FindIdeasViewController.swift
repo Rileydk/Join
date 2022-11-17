@@ -107,7 +107,9 @@ class FindIdeasViewController: BaseViewController {
 
             group.enter()
             // TODO: - 改為使用 UserDefaults 取得興趣類別
-            guard let id = firebaseManager.myAuth.currentUser?.uid else { return }
+            guard let id = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey) else {
+                fatalError("Doesn't have user id")
+            }
             self.firebaseManager.getUserInfo(id: id) { result in
                 switch result {
                 case .success(let user):

@@ -82,12 +82,19 @@ class PersonalEntryViewController: UIViewController {
     }
 
     func signOut(completion: @escaping (Result<String, Error>) -> Void) {
-        do {
-            try firebaseManager.myAuth.signOut()
-            completion(.success("Success"))
-        } catch let signOutError as NSError {
-            completion(.failure(signOutError))
-        }
+        UserDefaults.standard.setValue(nil, forKey: UserDefaults.UserKey.uidKey)
+        UserDefaults.standard.setValue(nil, forKey: UserDefaults.UserKey.userThumbnailURLKey)
+        UserDefaults.standard.setValue(nil, forKey: UserDefaults.UserKey.userNameKey)
+        UserDefaults.standard.setValue(nil, forKey: UserDefaults.UserKey.userInterestsKey)
+        completion(.success("Successfully signed out"))
+        print("signed out:", UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey))
+
+//        do {
+//            try firebaseManager.myAuth.signOut()
+//            completion(.success("Success"))
+//        } catch let signOutError as NSError {
+//            completion(.failure(signOutError))
+//        }
     }
 }
 
@@ -168,15 +175,20 @@ extension PersonalEntryViewController: UITableViewDataSource {
 
 extension UIViewController {
     func backToRoot() {
-        if let rootVC = view.window?.rootViewController as? LoginViewController {
+        if let rootVC = view.window?.rootViewController as? MockLoginViewController {
             rootVC.dismiss(animated: false)
         } else {
             tabBarController?.selectedIndex = 0
 
             let mainStoryboard = UIStoryboard(name: StoryboardCategory.main.rawValue, bundle: nil)
+//            guard let loginVC = mainStoryboard.instantiateViewController(
+//                withIdentifier: LoginViewController.identifier
+//                ) as? LoginViewController else {
+//                fatalError("Cannot instantiate log in vc")
+//            }
             guard let loginVC = mainStoryboard.instantiateViewController(
-                withIdentifier: LoginViewController.identifier
-                ) as? LoginViewController else {
+                withIdentifier: MockLoginViewController.identifier
+            ) as? MockLoginViewController else {
                 fatalError("Cannot instantiate log in vc")
             }
             loginVC.modalPresentationStyle = .fullScreen
