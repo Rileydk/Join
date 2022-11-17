@@ -30,22 +30,22 @@ let passenger = JUser(
 
 class MockLoginViewController: UIViewController {
     @IBAction func chooseRiley(_ sender: UIButton) {
-        myAccount = riley
+//        myAccount = riley
         goToMainPage()
     }
 
     @IBAction func chooseFriend(_ sender: UIButton) {
-        myAccount = friend
+//        myAccount = friend
         goToMainPage()
     }
 
     @IBAction func chooseNewMember(_ sender: Any) {
-        myAccount = newMember
+//        myAccount = newMember
         goToMainPage()
     }
 
     @IBAction func choosePassenger(_ sender: Any) {
-        myAccount = passenger
+//        myAccount = passenger
         goToMainPage()
     }
 

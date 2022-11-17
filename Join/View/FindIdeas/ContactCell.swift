@@ -48,7 +48,8 @@ class ContactCell: TableViewCell {
             }
         }
         nameButton.setTitle(user.name, for: .normal)
-        if source == .myPosts || user.id == myAccount.id {
+        let myID = UserDefaults.standard.string(forKey: UserDefaults.uidKey) ?? ""
+        if source == .myPosts || user.id == myID {
             messageButton.isHidden = true
         } else {
             messageButton.isHidden = false

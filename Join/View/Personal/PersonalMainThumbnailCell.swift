@@ -29,19 +29,11 @@ class PersonalMainThumbnailCell: TableViewCell {
         thumbnailImageView.layer.cornerRadius = thumbnailImageView.frame.size.width / 2
     }
 
-    func layoutCell(user: JUser, isEditing: Bool) {
-        let imageURL = !(user.thumbnailURL ?? "").isEmpty
-            ? user.thumbnailURL!
-            : FindPartnersFormSections.placeholderImageURL
-        firebaseManager.downloadImage(urlString: imageURL) { [weak self] result in
-            switch result {
-            case .success(let image):
-                self?.thumbnailImageView.image = image
-            case .failure(let error):
-                print(error)
-            }
-        }
-        nameLabel.text = user.name
+    func layoutCell(isEditing: Bool) {
+        nameLabel.text = UserDefaults.standard.string(forKey: UserDefaults.userNameKey)
+        let imageURL = URL(string: UserDefaults.standard.string(forKey: UserDefaults.userThumbnailURLKey)!)
+                        ?? URL(string: FindPartnersFormSections.placeholderImageURL)!
+        thumbnailImageView.kf.setImage(with: imageURL)
 
         if isEditing {
             thumbnailImageView.isUserInteractionEnabled = true

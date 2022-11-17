@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 class PersonBasicCell: CollectionViewCell {
     let firebaseManager = FirebaseManager.shared
@@ -28,20 +29,23 @@ class PersonBasicCell: CollectionViewCell {
         thumbnailImageView.layer.cornerRadius = thumbnailImageView.frame.size.width / 2
     }
 
-    private func layoutCell(image: UIImage, name: String) {
-        nameLabel.text = name
-        thumbnailImageView.image = image
+    private func layoutCell(with user: JUser) {
+        nameLabel.text = user.name
+        let imageURL = URL(string: user.thumbnailURL!) ?? URL(string: FindPartnersFormSections.placeholderImageURL)!
+        thumbnailImageView.kf.setImage(with: imageURL)
     }
 
-    func layoutCell(withSelf user: JUser, image: UIImage) {
-        layoutCell(image: image, name: user.name)
+    func layoutCell(withSelf user: JUser) {
+        layoutCell(with: user)
         relationshipButton.isHidden = true
         sendMessageButton.isHidden = true
     }
 
-    func layoutCell(withOther user: JUser, thumbnail: UIImage, relationship: Relationship) {
-        layoutCell(image: thumbnail, name: user.name)
-        if user.id == myAccount.id {
+    func layoutCell(withOther user: JUser, relationship: Relationship) {
+        layoutCell(with: user)
+
+        let myID = UserDefaults.standard.string(forKey: UserDefaults.uidKey) ?? ""
+        if user.id == myID {
             relationshipButton.isHidden = true
             sendMessageButton.isHidden = true
         } else {

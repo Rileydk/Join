@@ -8,8 +8,6 @@
 import Foundation
 import FirebaseAuth
 
-var myAccount = riley
-
 enum Relationship: CaseIterable {
     case friend
     case sentRequest
@@ -35,8 +33,8 @@ struct JUser: Codable, Hashable {
     var thumbnailURL: URLString?
     var interests = [String]()
     var skills = [String]()
-//    var sentRequests = [UserID]()
-//    var receivedRequests = [UserID]()
+    var sentRequests = [UserID]()
+    var receivedRequests = [UserID]()
 
     var toDict: [String: Any] {
         return [

@@ -13,14 +13,13 @@ class PersonalProfileViewController: BaseViewController {
     }
 
     enum Item: Hashable {
-        case person(JUser, UIImage)
+        case person(JUser)
     }
 
     typealias ProfileDatasource = UICollectionViewDiffableDataSource<Section, Item>
     private var datasource: ProfileDatasource!
     let firebaseManager = FirebaseManager.shared
     var userData: JUser?
-    var userThumbnail: UIImage?
 
     @IBOutlet weak var collectionView: UICollectionView! {
         didSet {
@@ -40,26 +39,19 @@ class PersonalProfileViewController: BaseViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        userData = myAccount
         updateData()
     }
 
     func updateData() {
-        getUserThumbnail { [unowned self] in
-            self.updateDatasource()
-        }
-    }
-
-    func getUserThumbnail(completion: @escaping () -> Void) {
-        guard let imageURL = userData?.thumbnailURL else { return }
-        firebaseManager.downloadImage(urlString: imageURL) { [unowned self] result in
+        let myID = UserDefaults.standard.string(forKey: UserDefaults.uidKey) ?? ""
+        firebaseManager.getUserInfo(id: myID) { [weak self] result in
+            guard let id = self?.userData?.id else { return }
             switch result {
-            case .success(let image):
-                self.userThumbnail = image
-                completion()
-            case .failure(let error):
-                print(error)
-                completion()
+            case .success(let userData):
+                self?.userData = userData
+                self?.updateDatasource()
+            case .failure(let err):
+                print(err)
             }
         }
     }
@@ -113,13 +105,13 @@ extension PersonalProfileViewController {
     // swiftlint:disable line_length
     func createCell(collectionView: UICollectionView, indexPath: IndexPath, item: Item) -> UICollectionViewCell {
         switch item {
-        case .person(let user, let image):
+        case .person(let user):
             guard let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: PersonBasicCell.identifier,
                 for: indexPath) as? PersonBasicCell else {
                 fatalError("Cannot create personal basic cell")
             }
-            cell.layoutCell(withSelf: user, image: image)
+            cell.layoutCell(withSelf: user)
             return cell
         }
     }
@@ -127,9 +119,8 @@ extension PersonalProfileViewController {
     func updateDatasource() {
         var snapshot = NSDiffableDataSourceSnapshot<Section, Item>()
         snapshot.appendSections(Section.allCases)
-        if let userData = userData,
-           let userThumbnail = userThumbnail {
-            snapshot.appendItems([.person(userData, userThumbnail)], toSection: .person)
+        if let userData = userData {
+            snapshot.appendItems([.person(userData)], toSection: .person)
         }
 
         datasource.apply(snapshot, animatingDifferences: false)

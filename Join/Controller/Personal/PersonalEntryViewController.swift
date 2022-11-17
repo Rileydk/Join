@@ -47,7 +47,6 @@ class PersonalEntryViewController: UIViewController {
                 ) as? PersonalProfileViewController else {
                 fatalError("Cannot create personal profile vc")
             }
-            profileVC.userData = myAccount
             navigationController?.pushViewController(profileVC, animated: true)
         }
 
@@ -125,7 +124,7 @@ extension PersonalEntryViewController: UITableViewDataSource {
                 for: indexPath) as? PersonalMainThumbnailCell else {
                 fatalError("Cannot create person main thumbnail cell")
             }
-            cell.layoutCell(user: myAccount, isEditing: false)
+            cell.layoutCell(isEditing: false)
             return cell
         } else if section == .logout {
             guard let cell = tableView.dequeueReusableCell(

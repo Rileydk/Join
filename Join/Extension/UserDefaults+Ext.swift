@@ -9,4 +9,8 @@ import Foundation
 
 extension UserDefaults {
     static let uidKey = "uid"
+    static let userNameKey = "userName"
+    static let userThumbnailURLKey = "userThumbnailURL"
+    static let userInterestsKey = "userInterestsKey"
+    static let userSkillsKey = "userSkillsKey"
 }

@@ -14,14 +14,13 @@ class OthersProfileViewController: BaseViewController {
     }
 
     enum Item: Hashable {
-        case person(JUser, UIImage, Relationship)
+        case person(JUser, Relationship)
     }
 
     typealias ProfileDatasource = UICollectionViewDiffableDataSource<Section, Item>
     private var datasource: ProfileDatasource!
     let firebaseManager = FirebaseManager.shared
-    var userData: JUser?
-    var userThumbnail: UIImage?
+    var objectData: JUser?
     var relationship: Relationship?
 
     @IBOutlet weak var collectionView: UICollectionView! {
@@ -37,7 +36,7 @@ class OthersProfileViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = userData?.name
+        title = objectData?.name
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -46,83 +45,77 @@ class OthersProfileViewController: BaseViewController {
     }
 
     func updateData() {
+        updateRelationship { [weak self] result in
+            switch result {
+            case .success:
+                self?.updateDatasource()
+            case .failure(let err):
+                ProgressHUD.showError()
+                print(err)
+            }
+        }
+    }
+
+    func updateRelationship(completion: @escaping (Result<String, Error>) -> Void) {
         firebaseManager.firebaseQueue.async { [weak self] in
+            var shouldContinue = true
+
             let group = DispatchGroup()
             group.enter()
-            self?.getUserThumbnail {
-                group.leave()
+            guard let objectID = self?.objectData?.id else { return }
+            self?.firebaseManager.checkIsFriend(id: objectID) { result in
+                guard let strongSelf = self else { return }
+                switch result {
+                case .success:
+                    self?.relationship = .friend
+                    group.leave()
+                    group.notify(queue: .main) {
+                        completion(.success("Success"))
+                    }
+                    shouldContinue = false
+                case .failure(let error):
+                    print(error)
+                    group.leave()
+                }
             }
-            group.wait()
-            group.enter()
-            self?.updateRelationship {
-                group.leave()
-            }
-            group.wait()
-            group.enter()
-            self?.updateUserData {
-                group.leave()
-            }
-            group.wait()
-            group.notify(queue: .main) {
-                self?.updateDatasource()
-            }
-        }
-    }
 
-    func getUserThumbnail(completion: @escaping () -> Void) {
-        guard let imageURL = userData?.thumbnailURL else { return }
-        firebaseManager.downloadImage(urlString: imageURL) { [unowned self] result in
-            switch result {
-            case .success(let image):
-                self.userThumbnail = image
-                completion()
-            case .failure(let error):
-                print(error)
-                completion()
-            }
-        }
-    }
-
-    func updateRelationship(completion: @escaping () -> Void) {
-        firebaseManager.getUserInfo(id: myAccount.id) { [unowned self] result in
-            guard let id = userData?.id else { return }
-            switch result {
-            case .success(let myInfo):
-                firebaseManager.checkIsFriend(id: id) { result in
+            group.wait()
+            if shouldContinue {
+                group.enter()
+                let myID = UserDefaults.standard.string(forKey: UserDefaults.uidKey) ?? ""
+                self?.firebaseManager.getUserInfo(id: myID) { result in
                     switch result {
-                    case .success:
-                        self.relationship = .friend
-                    case .failure(let error):
-                        print(error)
-//                        if myInfo.sentRequests.contains(id) {
-//                            self.relationship = .sentRequest
-//                        } else if myInfo.receivedRequests.contains(id) {
-//                            self.relationship = .receivedRequest
-//                        } else {
-//                            self.relationship = .unknown
-//                        }
+                    case .success(let myData):
+                        if myData.sentRequests.contains(objectID) {
+                            self?.relationship = .sentRequest
+                        } else if myData.receivedRequests.contains(objectID) {
+                            self?.relationship = .receivedRequest
+                        } else {
+                            self?.relationship = .unknown
+                        }
+                        group.leave()
+                        group.notify(queue: .main) {
+                            completion(.success("Success"))
+                        }
+                    case .failure(let err):
+                        group.leave()
+                        group.notify(queue: .main) {
+                            completion(.failure(err))
+                        }
                     }
                 }
-                completion()
-            case .failure(let error):
-                print(error)
-                completion()
             }
         }
-    }
 
-    func updateUserData(completion: @escaping () -> Void) {
-        guard let id = userData?.id else { return }
-        firebaseManager.getUserInfo(id: id) { [unowned self] result in
-            switch result {
-            case .success(let userData):
-                self.userData = userData
-                completion()
-            case .failure(let error):
-                print(error)
-                completion()
-            }
-        }
+        //        let ref = FirestoreEndpoint.mySentRequests.ref
+        //        firebaseManager.getSingleDocument(from: ref, match: DocFieldName.id, with: userData?.id) { (result: Result<UserID, Error>) -> Void in
+        //            switch result {
+        //            case .success(let userID):
+        //                print("userID", userID)
+        //            case .failure(let err):
+        //                print(err)
+        //            }
+        //        }
     }
 
     func sendFriendRequest(id: UserID) {
@@ -152,7 +145,7 @@ class OthersProfileViewController: BaseViewController {
     }
 
     func goChatroom() {
-        guard let id = userData?.id else { return }
+        guard let id = objectData?.id else { return }
         firebaseManager.getChatroom(id: id) { [unowned self] result in
             switch result {
             case .success(let chatroomID):
@@ -162,7 +155,7 @@ class OthersProfileViewController: BaseViewController {
                 ) as? ChatroomViewController else {
                     fatalError("Cannot create chatroom vc")
                 }
-                chatVC.userData = self.userData
+                chatVC.userData = self.objectData
                 chatVC.chatroomID = chatroomID
                 self.hidesBottomBarWhenPushed = true
                 DispatchQueue.main.async { [unowned self] in
@@ -223,13 +216,13 @@ extension OthersProfileViewController {
     // swiftlint:disable line_length
     func createCell(collectionView: UICollectionView, indexPath: IndexPath, item: Item) -> UICollectionViewCell {
         switch item {
-        case .person(let user, let image, let relationship):
+        case .person(let user, let relationship):
             guard let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: PersonBasicCell.identifier,
                 for: indexPath) as? PersonBasicCell else {
                 fatalError("Cannot create personal basic cell")
             }
-            cell.layoutCell(withOther: user, thumbnail: image, relationship: relationship)
+            cell.layoutCell(withOther: user, relationship: relationship)
             cell.sendFriendRequestHandler = { [unowned self] in
                 self.sendFriendRequest(id: user.id)
             }
@@ -247,10 +240,9 @@ extension OthersProfileViewController {
     func updateDatasource() {
         var snapshot = NSDiffableDataSourceSnapshot<Section, Item>()
         snapshot.appendSections(Section.allCases)
-        if let userData = userData,
-           let userThumbnail = userThumbnail,
+        if let objectData = objectData,
            let relationship = relationship {
-            snapshot.appendItems([.person(userData, userThumbnail, relationship)], toSection: .person)
+            snapshot.appendItems([.person(objectData, relationship)], toSection: .person)
         }
 
         datasource.apply(snapshot, animatingDifferences: false)

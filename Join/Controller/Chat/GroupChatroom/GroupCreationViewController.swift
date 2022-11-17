@@ -51,27 +51,41 @@ class GroupCreationViewController: BaseViewController {
     }
 
     @objc func createGroup() {
-        selectedFriends.insert(myAccount, at: 0)
-        if groupChatroom.name.isEmpty {
-            for friend in selectedFriends {
-                groupChatroom.name += friend.name
-                if friend != selectedFriends.last {
-                    groupChatroom.name += ", "
-                }
-            }
-        }
-        selectedMembers = selectedFriends.map {
-            ChatroomMember(
-                userID: $0.id, currentMemberStatus: .join,
-                currentInoutStatus: .out, lastTimeInChatroom: Date()
-            )
-        }
-        groupChatroom.admin = myAccount.id
-
         firebaseManager.firebaseQueue.async { [weak self] in
             guard let strongSelf = self else { return }
 
             let group = DispatchGroup()
+            group.enter()
+            let myID = UserDefaults.standard.string(forKey: UserDefaults.uidKey) ?? ""
+            self?.firebaseManager.getUserInfo(id: myID) { [weak self] result in
+                switch result {
+                case .success(let userData):
+                    guard var selectedFriends = self?.selectedFriends,
+                          let groupChatroom = self?.groupChatroom else { return }
+                    selectedFriends.insert(userData, at: 0)
+                    if groupChatroom.name.isEmpty {
+                        for friend in selectedFriends {
+                            self?.groupChatroom.name += friend.name
+                            if friend != self?.selectedFriends.last {
+                                self?.groupChatroom.name += ", "
+                            }
+                        }
+                    }
+                    self?.selectedMembers = selectedFriends.map {
+                        ChatroomMember(
+                            userID: $0.id, currentMemberStatus: .join,
+                            currentInoutStatus: .out, lastTimeInChatroom: Date()
+                        )
+                    }
+                    self?.groupChatroom.admin = userData.id
+                    group.leave()
+                case .failure(let err):
+                    print(err)
+                    group.leave()
+                }
+            }
+
+
             group.enter()
             if let groupImage = self?.groupImage,
                let imageData = groupImage.jpeg(.lowest) {
@@ -89,7 +103,7 @@ class GroupCreationViewController: BaseViewController {
                     }
                 }
             } else {
-                strongSelf.groupChatroom.imageURL = myAccount.thumbnailURL ?? FindPartnersFormSections.placeholderImageURL
+                strongSelf.groupChatroom.imageURL = UserDefaults.standard.string(forKey: UserDefaults.userThumbnailURLKey) ?? FindPartnersFormSections.placeholderImageURL
                 group.leave()
             }
 

@@ -13,5 +13,6 @@ target 'Join' do
   pod "TTGTagCollectionView"
   pod 'IQKeyboardManagerSwift'
   pod 'ProgressHUD'
+  pod 'Kingfisher'
 
 end

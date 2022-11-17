@@ -35,6 +35,7 @@ class ProjectDetailsViewController: BaseViewController {
     typealias ProjectDetailsDatasource = UITableViewDiffableDataSource<Section, Item>
     private var datasource: ProjectDetailsDatasource!
     let firebaseManager = FirebaseManager.shared
+    let myID = UserDefaults.standard.string(forKey: UserDefaults.uidKey) ?? ""
     var project: Project?
     var userData: JUser?
 
@@ -80,24 +81,24 @@ class ProjectDetailsViewController: BaseViewController {
 
     func checkAlreadyApplied(project: Project) {
         firebaseManager.firebaseQueue.async { [weak self] in
-            self?.firebaseManager.getAllApplicants(
-                projectID: project.projectID, applicantID: myAccount.id, completion: { [weak self] result in
+            guard let strongSelf = self else { return }
+            strongSelf.firebaseManager.getAllApplicants(projectID: project.projectID, applicantID: strongSelf.myID) { [weak self] result in
                 switch result {
                 case .success(let applicants):
-                    if applicants.contains(myAccount.id) {
-                        self?.alertAlreadyAppied()
+                    if applicants.contains(strongSelf.myID) {
+                        self?.alertAlreadyApplied()
                     } else {
                         self?.alertCheckApplication(project: project)
                     }
                 case .failure(let err):
                     print(err)
                 }
-            })
+            }
         }
     }
 
     func applyForProject(projectID: ProjectID) {
-        firebaseManager.applyForProject(projectID: projectID, applicantID: myAccount.id) { result in
+        firebaseManager.applyForProject(projectID: projectID, applicantID: myID) { result in
             switch result {
             case .success:
                 print("Success")
@@ -121,7 +122,7 @@ class ProjectDetailsViewController: BaseViewController {
         present(alert, animated: true)
     }
 
-    func alertAlreadyAppied() {
+    func alertAlreadyApplied() {
         let alert = UIAlertController(title: "已經應徵過了", message: "不能重複應徵喔！", preferredStyle: .alert)
         let action = UIAlertAction(title: "OK", style: .default)
         alert.addAction(action)
@@ -191,7 +192,7 @@ extension ProjectDetailsViewController {
                 ) as? OthersProfileViewController else {
                     fatalError("Cannot create others profile vc")
                 }
-                profileVC.userData = self?.userData
+                profileVC.objectData = self?.userData
                 self?.navigationController?.pushViewController(profileVC, animated: true)
             }
             cell.messageHandler = { [weak self] in
@@ -260,7 +261,7 @@ extension ProjectDetailsViewController {
         if let userData = userData {
             snapshot.appendItems([.contact(userData)], toSection: .contact)
         }
-        if project.contact != myAccount.id {
+        if project.contact != myID {
             snapshot.appendItems([.joinButton(Project.mockProject)], toSection: .joinButton)
         }
         datasource.apply(snapshot, animatingDifferences: false)

@@ -120,13 +120,18 @@ extension LoginViewController: ASAuthorizationControllerDelegate {
                 }
                 if let firUser = self?.firebaseManager.myAuth.currentUser {
                     self?.firebaseManager.firebaseQueue.async {
+                        var shouldContinue = true
                         let group = DispatchGroup()
                         group.enter()
                         self?.firebaseManager.lookUpUser(userID: firUser.uid) { result in
                             switch result {
                             case .success(let user):
                                 UserDefaults.standard.setValue(user.id, forKey: UserDefaults.uidKey)
+                                UserDefaults.standard.setValue(user.thumbnailURL, forKey: UserDefaults.userThumbnailURLKey)
+                                UserDefaults.standard.setValue(user.name, forKey: UserDefaults.userNameKey)
+                                UserDefaults.standard.setValue(user.interests, forKey: UserDefaults.userInterestsKey)
 
+                                shouldContinue = false
                                 group.leave()
                                 group.notify(queue: .main) {
                                     let mainStoryboard = UIStoryboard(name: StoryboardCategory.main.rawValue, bundle: nil)
@@ -143,6 +148,7 @@ extension LoginViewController: ASAuthorizationControllerDelegate {
                                 if err as? CommonError == CommonError.noExistUser {
                                     group.leave()
                                 } else {
+                                    shouldContinue = false
                                     group.leave()
                                     group.notify(queue: .main) {
                                         print(err)
@@ -152,31 +158,33 @@ extension LoginViewController: ASAuthorizationControllerDelegate {
                         }
 
                         group.wait()
-                        group.enter()
-                        let newUser = JUser(id: firUser.uid, name: firUser.displayName ?? "",
-                                            email: firUser.email ?? "",
-                                            thumbnailURL: firUser.photoURL != nil
-                                                ? String(describing: firUser.photoURL)
-                                                : FindPartnersFormSections.placeholderImageURL)
-                        self?.firebaseManager.set(user: newUser) { result in
-                            switch result {
-                            case .success(let user):
-                                UserDefaults.standard.setValue(user.id, forKey: UserDefaults.uidKey)
+                        if shouldContinue {
+                            group.enter()
+                            let newUser = JUser(id: firUser.uid, name: firUser.displayName ?? "",
+                                                email: firUser.email ?? "",
+                                                thumbnailURL: firUser.photoURL != nil
+                                                    ? String(describing: firUser.photoURL)
+                                                    : FindPartnersFormSections.placeholderImageURL)
+                            self?.firebaseManager.set(user: newUser) { result in
+                                switch result {
+                                case .success(let user):
+                                    UserDefaults.standard.setValue(user.id, forKey: UserDefaults.uidKey)
 
-                                let storyboard = UIStoryboard(name: StoryboardCategory.personal.rawValue, bundle: nil)
-                                guard let profileEditVC = storyboard.instantiateViewController(
-                                    withIdentifier: PersonalProfileEditViewController.identifier
-                                    ) as? PersonalProfileEditViewController else {
-                                    fatalError("Cannot instantiate profile edit vc")
+                                    let storyboard = UIStoryboard(name: StoryboardCategory.personal.rawValue, bundle: nil)
+                                    guard let profileEditVC = storyboard.instantiateViewController(
+                                        withIdentifier: PersonalProfileEditViewController.identifier
+                                        ) as? PersonalProfileEditViewController else {
+                                        fatalError("Cannot instantiate profile edit vc")
+                                    }
+                                    profileEditVC.user = user
+
+                                    let navController = UINavigationController(rootViewController: profileEditVC)
+                                    navController.modalPresentationStyle = .fullScreen
+                                    self?.present(navController, animated: false)
+
+                                case .failure(let err):
+                                    print(err)
                                 }
-                                profileEditVC.user = user
-
-                                let navController = UINavigationController(rootViewController: profileEditVC)
-                                navController.modalPresentationStyle = .fullScreen
-                                self?.present(navController, animated: false)
-
-                            case .failure(let err):
-                                print(err)
                             }
                         }
                     }

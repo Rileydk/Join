@@ -151,7 +151,7 @@ extension PersonalProfileEditViewController: UITableViewDataSource {
                 for: indexPath) as? PersonalMainThumbnailCell else {
                 fatalError("Cannot create personal main thumbnail cell")
             }
-            cell.layoutCell(user: user, isEditing: true)
+            cell.layoutCell(isEditing: true)
             cell.updateImage = { [weak self] image in
                 self?.newImage = image
             }

@@ -38,6 +38,7 @@ class GroupChatroomViewController: BaseViewController {
     }
 
     let firebaseManager = FirebaseManager.shared
+    let myID = UserDefaults.standard.string(forKey: UserDefaults.uidKey) ?? ""
     var chatroomID: ChatroomID?
     var chatroomInfo: GroupChatroom?
     var messages = [Message]()
@@ -220,7 +221,7 @@ extension GroupChatroomViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let message = messages[indexPath.row]
-        if message.sender == myAccount.id {
+        if message.sender == myID {
             guard let cell = tableView.dequeueReusableCell(
                 withIdentifier: MyMessageCell.identifier, for: indexPath
             ) as? MyMessageCell else {
@@ -244,7 +245,7 @@ extension GroupChatroomViewController: UITableViewDataSource {
                 ) as? OthersProfileViewController else {
                     fatalError("Cannot create others profile vc")
                 }
-                profileVC.userData = self?.wholeInfoMessages[indexPath.row].sender
+                profileVC.objectData = self?.wholeInfoMessages[indexPath.row].sender
                 self?.navigationController?.pushViewController(profileVC, animated: true)
             }
             return cell
@@ -257,7 +258,7 @@ extension GroupChatroomViewController: MessageSuperviewDelegate {
     func view(_ messageTypingSuperview: MessageTypingSuperview, didSend message: String) {
         let newMessage = Message(
             messageID: "",
-            sender: myAccount.id,
+            sender: myID,
             type: .text,
             content: message, time: Date()
         )
