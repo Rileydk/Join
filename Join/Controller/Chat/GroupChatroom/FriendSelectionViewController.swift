@@ -24,6 +24,8 @@ class FriendSelectionViewController: BaseViewController {
     var selectedIndexes = [Int]()
     var selectedFriends = [JUser]()
 
+    var searchController = UISearchController()
+    
     @IBOutlet weak var tableView: UITableView! {
         didSet {
             tableView.register(
@@ -38,7 +40,6 @@ class FriendSelectionViewController: BaseViewController {
         }
     }
 
-    var searchController = UISearchController()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -151,7 +152,7 @@ extension FriendSelectionViewController: UITableViewDataSource {
         let friend = filteredFriends[indexPath.row]
         guard let cell = tableView.dequeueReusableCell(
             withIdentifier: FriendCell.identifier, for: indexPath
-        ) as? FriendCell else {
+            ) as? FriendCell else {
             fatalError("Cannot create friend cell")
         }
 

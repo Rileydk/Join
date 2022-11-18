@@ -60,7 +60,6 @@ class FriendCell: TableViewCell {
         layoutCell(friend: friend, source: source)
 
         if isMember {
-            print("isMember")
             selectImageView.isHidden = true
             thumbnailImageView.alpha = 0.5
             nameLabel.textColor = .lightGray

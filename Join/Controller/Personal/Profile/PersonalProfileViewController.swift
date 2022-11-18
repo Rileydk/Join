@@ -10,16 +10,26 @@ import UIKit
 class PersonalProfileViewController: BaseViewController {
     enum Section: CaseIterable {
         case person
+//        case skills
+//        case interests
+//        case portfolio
     }
 
     enum Item: Hashable {
         case person(JUser)
+//        case skills([String])
+//        case interests([String])
+//        case portfolio([Masterpiece])
     }
 
     typealias ProfileDatasource = UICollectionViewDiffableDataSource<Section, Item>
     private var datasource: ProfileDatasource!
     let firebaseManager = FirebaseManager.shared
-    var userData: JUser?
+    var userData: JUser? {
+        didSet {
+            layoutViews()
+        }
+    }
 
     @IBOutlet weak var collectionView: UICollectionView! {
         didSet {
@@ -32,20 +42,24 @@ class PersonalProfileViewController: BaseViewController {
         }
     }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        title = userData?.name
-    }
-
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         updateData()
     }
 
+    func layoutViews() {
+        title = userData?.name
+        navigationItem.rightBarButtonItems = [
+            UIBarButtonItem(image: UIImage(systemName: "pencil"), style: .plain, target: self, action: #selector(editPersonalInfo)),
+            UIBarButtonItem(image: UIImage(systemName: "plus.app"), style: .plain, target: self, action: #selector(addPortfolio))
+        ]
+    }
+
     func updateData() {
-        let myID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey) ?? ""
+        guard let myID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey) else {
+            fatalError("Doesn't have user id")
+        }
         firebaseManager.getUserInfo(id: myID) { [weak self] result in
-            guard let id = self?.userData?.id else { return }
             switch result {
             case .success(let userData):
                 self?.userData = userData
@@ -54,6 +68,19 @@ class PersonalProfileViewController: BaseViewController {
                 print(err)
             }
         }
+    }
+
+    @objc func editPersonalInfo() {
+        let personalStoryboard = UIStoryboard(name: StoryboardCategory.personal.rawValue, bundle: nil)
+        guard let personalProfileEditVC = personalStoryboard.instantiateViewController(withIdentifier: PersonalProfileEditViewController.identifier) as? PersonalProfileEditViewController else {
+            fatalError("Cannot load personal profile edit vc")
+        }
+        
+        navigationController?.pushViewController(personalProfileEditVC, animated: true)
+    }
+
+    @objc func addPortfolio() {
+
     }
 }
 

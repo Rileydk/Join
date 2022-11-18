@@ -1045,6 +1045,17 @@ class FirebaseManager {
         }
     }
 
+    func updateMyInterests(interests: [String], completion: @escaping (Result<String, Error>) -> Void) {
+        guard let myID = myID else { fatalError("Doesn't have myID") }
+        let ref = FirestoreEndpoint.users.ref
+        ref.document(myID).updateData(["interests": interests]) { err in
+            if let err = err {
+                completion(.failure(err))
+            }
+            completion(.success("Success"))
+        }
+    }
+
     func getAllApplicants(projectID: ProjectID, applicantID: UserID, completion: @escaping (Result<[UserID], Error>) -> Void) {
         let ref = FirestoreEndpoint.projects.ref
         ref.document(projectID).getDocument { (snapshot, err) in

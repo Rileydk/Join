@@ -9,6 +9,13 @@ import UIKit
 import ProgressHUD
 
 class PersonalProfileEditViewController: BaseViewController {
+    enum Section: CaseIterable {
+        case thumbnail
+        case basic
+        case interests
+//        case skills
+    }
+
     @IBOutlet weak var tableView: UITableView! {
         didSet {
             tableView.register(UINib(nibName: PersonalMainThumbnailCell.identifier, bundle: nil),
@@ -23,7 +30,13 @@ class PersonalProfileEditViewController: BaseViewController {
     }
 
     let firebaseManager = FirebaseManager.shared
-    var user: JUser?
+    var user: JUser? {
+        didSet {
+            if tableView != nil {
+                tableView.reloadData()
+            }
+        }
+    }
     var oldUserInfo: JUser?
     var newImage: UIImage?
 
@@ -31,6 +44,23 @@ class PersonalProfileEditViewController: BaseViewController {
         super.viewDidLoad()
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: .save, target: self, action: #selector(saveToAccount))
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if user == nil {
+            guard let myID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey) else {
+                fatalError("Doesn't have my id")
+            }
+            firebaseManager.getUserInfo(id: myID) { [weak self] result in
+                switch result {
+                case .success(let user):
+                    self?.user = user
+                case .failure(let err):
+                    print(err)
+                }
+            }
+        }
         oldUserInfo = user
     }
 
@@ -53,6 +83,7 @@ class PersonalProfileEditViewController: BaseViewController {
                         case .failure(let err):
                             group.leave()
                             group.notify(queue: .main) {
+                                print(err)
                                 ProgressHUD.showError()
                             }
                         }
@@ -85,7 +116,8 @@ class PersonalProfileEditViewController: BaseViewController {
                         group.leave()
                         group.notify(queue: .main) {
                             ProgressHUD.showSucceed()
-                            let mainStoryboard = UIStoryboard(name: StoryboardCategory.main.rawValue, bundle: nil)
+                            let mainStoryboard = UIStoryboard(
+                                name: StoryboardCategory.main.rawValue, bundle: nil)
                             guard let tabBarController = mainStoryboard.instantiateViewController(
                                 withIdentifier: TabBarController.identifier
                                 ) as? TabBarController else {
@@ -98,6 +130,7 @@ class PersonalProfileEditViewController: BaseViewController {
                     case .failure(let err):
                         group.leave()
                         group.notify(queue: .main) {
+                            print(err)
                             ProgressHUD.showError()
                         }
                     }
@@ -115,13 +148,15 @@ class PersonalProfileEditViewController: BaseViewController {
 // MARK: - Table View Delegate
 extension PersonalProfileEditViewController: UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
-        4
+        guard user != nil else { return 0 }
+        return Section.allCases.count
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.section == 0 {
+        let section = Section.allCases[indexPath.section]
+        if section == .thumbnail {
             return 250
-        } else if indexPath.section == 1 {
+        } else if section == .basic {
             return 80
         } else {
             return 40
@@ -132,9 +167,10 @@ extension PersonalProfileEditViewController: UITableViewDelegate {
 // MARK: - Table View Datasource
 extension PersonalProfileEditViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 0 {
+        let section = Section.allCases[section]
+        if section == .thumbnail {
             return 1
-        } else if section == 1 {
+        } else if section == .basic {
             return 2
         } else {
             return 1
@@ -145,7 +181,8 @@ extension PersonalProfileEditViewController: UITableViewDataSource {
         guard let user = user else {
             fatalError("Didn't get user info")
         }
-        if indexPath.section == 0 {
+        let section = Section.allCases[indexPath.section]
+        if section == .thumbnail {
             guard let cell = tableView.dequeueReusableCell(
                 withIdentifier: PersonalMainThumbnailCell.identifier,
                 for: indexPath) as? PersonalMainThumbnailCell else {
@@ -165,7 +202,7 @@ extension PersonalProfileEditViewController: UITableViewDataSource {
                 self?.present(picker, animated: true)
             }
             return cell
-        } else if indexPath.section == 1 {
+        } else if section == .basic {
             guard let cell = tableView.dequeueReusableCell(
                 withIdentifier: SingleLineInputCell.identifier,
                 for: indexPath) as? SingleLineInputCell else {
@@ -185,6 +222,7 @@ extension PersonalProfileEditViewController: UITableViewDataSource {
             }
             return cell
         } else {
+            // if section == .interests
             guard let cell = tableView.dequeueReusableCell(
                 withIdentifier: GoNextPageButtonCell.identifier,
                 for: indexPath) as? GoNextPageButtonCell else {
@@ -192,9 +230,20 @@ extension PersonalProfileEditViewController: UITableViewDataSource {
             }
             if indexPath.section == 2 {
                 cell.layoutCell(title: "Edit Skills")
-            }
-            if indexPath.section == 3 {
-                cell.layoutCell(title: "Edit Interests")
+                cell.tapHandler = { [weak self] in
+                    guard let self = self, let interests = self.user?.interests else {
+                        fatalError("Cannot get interests")
+                    }
+                    let personalStoryboard = UIStoryboard(
+                        name: StoryboardCategory.personal.rawValue, bundle: nil)
+                    guard let personalInfoSelectionVC = personalStoryboard.instantiateViewController(
+                        withIdentifier: PersonalInfoSelectionViewController.identifier
+                        ) as? PersonalInfoSelectionViewController else {
+                        fatalError("Cannot load PersonalInfoSelectionViewController")
+                    }
+                    personalInfoSelectionVC.selectedCategories = interests
+                    self.navigationController?.pushViewController(personalInfoSelectionVC, animated: true)
+                }
             }
             return cell
         }
