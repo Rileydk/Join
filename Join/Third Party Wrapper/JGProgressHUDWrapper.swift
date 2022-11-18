@@ -74,4 +74,14 @@ class JProgressHUD {
         hud.textLabel.text = text
         hud.show(in: view)
     }
+
+    func dismiss() {
+        if !Thread.isMainThread {
+            DispatchQueue.main.async { [weak self] in
+                self?.dismiss()
+            }
+            return
+        }
+        hud.dismiss()
+    }
 }

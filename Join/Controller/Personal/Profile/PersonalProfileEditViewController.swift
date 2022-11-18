@@ -47,20 +47,22 @@ class PersonalProfileEditViewController: BaseViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if user == nil {
-            guard let myID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey) else {
-                fatalError("Doesn't have my id")
-            }
-            firebaseManager.getUserInfo(id: myID) { [weak self] result in
-                switch result {
-                case .success(let user):
-                    self?.user = user
-                case .failure(let err):
-                    print(err)
-                }
+        guard let myID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey) else {
+            fatalError("Doesn't have my id")
+        }
+        JProgressHUD.shared.showLoading(view: view)
+        firebaseManager.getUserInfo(id: myID) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let user):
+                self.user = user
+                self.oldUserInfo = user
+                JProgressHUD.shared.dismiss()
+            case .failure(let err):
+                JProgressHUD.shared.showFailure(view: self.view)
+                print(err)
             }
         }
-        oldUserInfo = user
     }
 
     @objc func saveToAccount() {

@@ -59,13 +59,17 @@ class PersonalProfileViewController: BaseViewController {
         guard let myID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey) else {
             fatalError("Doesn't have user id")
         }
+        JProgressHUD.shared.showLoading(view: self.view)
         firebaseManager.getUserInfo(id: myID) { [weak self] result in
+            guard let self = self else { return }
             switch result {
             case .success(let userData):
-                self?.userData = userData
-                self?.updateDatasource()
+                self.userData = userData
+                self.updateDatasource()
+                JProgressHUD.shared.dismiss()
             case .failure(let err):
                 print(err)
+                JProgressHUD.shared.showFailure(view: self.view)
             }
         }
     }

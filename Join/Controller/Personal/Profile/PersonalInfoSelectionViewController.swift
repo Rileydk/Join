@@ -43,13 +43,16 @@ class PersonalInfoSelectionViewController: BaseViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        JProgressHUD.shared.showLoading(view: self.view)
         firebaseManager.getAllInterests { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let interests):
                 self.categories = interests
+                JProgressHUD.shared.dismiss()
             case .failure(let err):
                 print(err)
+                JProgressHUD.shared.showFailure(view: self.view)
             }
         }
     }
@@ -95,6 +98,7 @@ extension PersonalInfoSelectionViewController: UITableViewDelegate {
             selectedCategories.append(categories[indexPath.row])
             cell .selectImageView.image = UIImage(systemName: "checkmark.circle.fill")
         }
+        print("selected:", selectedCategories)
         tableView.reloadRows(at: [indexPath], with: .automatic)
     }
 }
