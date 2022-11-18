@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import ProgressHUD
 
 class OthersProfileViewController: BaseViewController {
     enum Section: CaseIterable {
@@ -50,7 +49,6 @@ class OthersProfileViewController: BaseViewController {
             case .success:
                 self?.updateDatasource()
             case .failure(let err):
-                ProgressHUD.showError()
                 print(err)
             }
         }
@@ -122,10 +120,8 @@ class OthersProfileViewController: BaseViewController {
         self.firebaseManager.sendFriendRequest(to: id) { [unowned self] result in
             switch result {
             case .success:
-                ProgressHUD.showSuccess()
                 self.updateData()
             case .failure(let error):
-                ProgressHUD.showFailed()
                 print(error)
             }
         }
@@ -135,10 +131,8 @@ class OthersProfileViewController: BaseViewController {
         self.firebaseManager.acceptFriendRequest(from: id) { [unowned self] result in
             switch result {
             case .success:
-                ProgressHUD.showSuccess()
                 self.updateData()
             case .failure(let error):
-                ProgressHUD.showFailed()
                 print(error)
             }
         }

@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import ProgressHUD
+import JGProgressHUD
 
 class PersonalInfoSelectionViewController: BaseViewController {
     @IBOutlet weak var tableView: UITableView! {
@@ -55,21 +55,20 @@ class PersonalInfoSelectionViewController: BaseViewController {
     }
 
     @objc func updateInterests() {
-        ProgressHUD.animationType = .lineSpinFade
-        ProgressHUD.colorHUD = .Blue1 ?? .black
-        ProgressHUD.colorAnimation = .Gray3 ?? .white
-        ProgressHUD.show()
+        JProgressHUD.shared.showSaving(view: view)
 
         firebaseManager.updateMyInterests(interests: selectedCategories) { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success:
-                ProgressHUD.dismiss()
-                ProgressHUD.showSucceed("Success")
-                self.backToPreviousPage()
+                JProgressHUD.shared.showSuccess(view: self.view) {
+                    self.backToPreviousPage()
+                }
             case .failure(let err):
+                JProgressHUD.shared.showFailure(view: self.view) {
+                    self.backToPreviousPage()
+                }
                 print(err)
-                ProgressHUD.showError("Failed to save interests")
             }
         }
     }

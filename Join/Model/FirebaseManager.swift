@@ -149,6 +149,7 @@ enum DocFieldName: String {
 // swiftlint:disable type_body_length
 class FirebaseManager {
     static let shared = FirebaseManager()
+    private init() {}
     let myAuth = Auth.auth()
     var myID: String? {
         UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey)

@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import ProgressHUD
 
 class PersonalProfileEditViewController: BaseViewController {
     enum Section: CaseIterable {
@@ -84,7 +83,6 @@ class PersonalProfileEditViewController: BaseViewController {
                             group.leave()
                             group.notify(queue: .main) {
                                 print(err)
-                                ProgressHUD.showError()
                             }
                         }
                     }
@@ -115,7 +113,6 @@ class PersonalProfileEditViewController: BaseViewController {
                     case .success:
                         group.leave()
                         group.notify(queue: .main) {
-                            ProgressHUD.showSucceed()
                             let mainStoryboard = UIStoryboard(
                                 name: StoryboardCategory.main.rawValue, bundle: nil)
                             guard let tabBarController = mainStoryboard.instantiateViewController(
@@ -131,7 +128,6 @@ class PersonalProfileEditViewController: BaseViewController {
                         group.leave()
                         group.notify(queue: .main) {
                             print(err)
-                            ProgressHUD.showError()
                         }
                     }
                 }

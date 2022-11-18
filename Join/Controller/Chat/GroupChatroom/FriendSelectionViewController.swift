@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import ProgressHUD
 
 class FriendSelectionViewController: BaseViewController {
     enum Source {
@@ -101,7 +100,6 @@ class FriendSelectionViewController: BaseViewController {
         firebaseManager.addNewGroupChatMembers(chatroomID: chatroomID, selectedMembers: newMembers) { [weak self] result in
             switch result {
             case .success:
-                ProgressHUD.showSucceed()
 
                 guard let chatroomVC = self?.navigationController?.viewControllers
                     .dropLast().dropLast().last! else {
@@ -110,7 +108,6 @@ class FriendSelectionViewController: BaseViewController {
                 self?.navigationController?.popToViewController(chatroomVC, animated: true)
 
             case .failure(let err):
-                ProgressHUD.showError()
                 print(err)
             }
         }

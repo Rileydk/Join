@@ -11,6 +11,9 @@ import FirebaseAuth
 // swiftlint:disable line_length
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
+    static let scene = UIApplication.shared.connectedScenes.first
+    static let shared = scene!.delegate as! SceneDelegate
+
     var window: UIWindow?
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
