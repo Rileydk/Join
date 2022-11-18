@@ -14,6 +14,8 @@ class OneSelectionCell: TableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         contentView.backgroundColor = .Gray5
+        selectionTitleLabel.textColor = .Gray1
+        selectImageView.tintColor = .Blue1
     }
 
     func layoutCell(interest: String, isSelected: Bool) {
