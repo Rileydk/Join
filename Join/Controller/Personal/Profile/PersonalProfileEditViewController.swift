@@ -165,11 +165,11 @@ extension PersonalProfileEditViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let section = Section.allCases[indexPath.section]
         if section == .thumbnail {
-            return 250
+            return 200
         } else if section == .basic {
             return 80
         } else if section == .introduction {
-            return 180
+            return 160
         } else {
             return 40
         }

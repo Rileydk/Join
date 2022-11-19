@@ -10,8 +10,8 @@ import UIKit
 class PersonalProfileViewController: BaseViewController {
     enum Section: CaseIterable {
         case person
-//        case buttons
-//        case introduction
+        case buttons
+        case introduction
 //        case skills
 //        case interests
 //        case portfolio
@@ -19,8 +19,8 @@ class PersonalProfileViewController: BaseViewController {
 
     enum Item: Hashable {
         case person(JUser)
-//        case buttons
-//        case introduction(String)
+        case buttons
+        case introduction(String)
 //        case skills([String])
 //        case interests([String])
 //        case portfolio(WorkItem)
@@ -42,6 +42,12 @@ class PersonalProfileViewController: BaseViewController {
                 UINib(nibName: PersonalMainThumbnailCollectionCell.identifier, bundle: nil),
                 forCellWithReuseIdentifier: PersonalMainThumbnailCollectionCell.identifier
             )
+            collectionView.register(
+                UINib(nibName: ProfileActionButtonsCell.identifier, bundle: nil),
+                forCellWithReuseIdentifier: ProfileActionButtonsCell.identifier)
+            collectionView.register(
+                UINib(nibName: SelfIntroductionCell.identifier, bundle: nil),
+                forCellWithReuseIdentifier: SelfIntroductionCell.identifier)
             collectionView.setCollectionViewLayout(createLayout(), animated: true)
             configureDatasource()
         }
@@ -54,9 +60,9 @@ class PersonalProfileViewController: BaseViewController {
 
     func layoutViews() {
         title = userData?.name
-        navigationItem.rightBarButtonItem = UIBarButtonItem(
-            image: UIImage(systemName: "pencil"), style: .plain,
-            target: self, action: #selector(editPersonalInfo))
+//        navigationItem.rightBarButtonItem = UIBarButtonItem(
+//            image: UIImage(systemName: "pencil"), style: .plain,
+//            target: self, action: #selector(editPersonalInfo))
     }
 
     func updateData() {
@@ -145,7 +151,41 @@ extension PersonalProfileViewController {
 
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1),
-            heightDimension: .absolute(210)
+            heightDimension: .absolute(180)
+        )
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+
+        let section = NSCollectionLayoutSection(group: group)
+        return section
+    }
+
+    func createActionButtonsSection() -> NSCollectionLayoutSection {
+        let itemSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1),
+            heightDimension: .fractionalHeight(1)
+        )
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+
+        let groupSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1),
+            heightDimension: .absolute(60)
+        )
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+
+        let section = NSCollectionLayoutSection(group: group)
+        return section
+    }
+
+    func createIntroductionSection() -> NSCollectionLayoutSection {
+        let itemSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1),
+            heightDimension: .estimated(100)
+        )
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+
+        let groupSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1),
+            heightDimension: .estimated(100)
         )
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
 
@@ -159,6 +199,10 @@ extension PersonalProfileViewController {
         switch section {
         case .person:
             return createPersonSection()
+        case .buttons:
+            return createActionButtonsSection()
+        case .introduction:
+            return createIntroductionSection()
         }
     }
 
@@ -183,13 +227,38 @@ extension PersonalProfileViewController {
     func createCell(collectionView: UICollectionView, indexPath: IndexPath, item: Item) -> UICollectionViewCell {
         switch item {
         case .person(let user):
-            // 更換為大張圖
             guard let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: PersonalMainThumbnailCollectionCell.identifier,
                 for: indexPath) as? PersonalMainThumbnailCollectionCell else {
                 fatalError("Cannot create person main thumbnail cell")
             }
             cell.layoutCell(user: user)
+            return cell
+
+        case .buttons:
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: ProfileActionButtonsCell.identifier,
+                for: indexPath) as? ProfileActionButtonsCell else {
+                fatalError("Cannot create person main thumbnail cell")
+            }
+            cell.editProfileHandler = { [weak self] in
+                let personalStoryboard = UIStoryboard(name: StoryboardCategory.personal.rawValue, bundle: nil)
+                guard let personalProfileEditVC = personalStoryboard.instantiateViewController(
+                    withIdentifier: PersonalProfileEditViewController.identifier
+                    ) as? PersonalProfileEditViewController else {
+                    fatalError("Cannot load personal profile edit vc")
+                }
+                self?.navigationController?.pushViewController(personalProfileEditVC, animated: true)
+            }
+            return cell
+
+        case .introduction(let introduction):
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: SelfIntroductionCell.identifier,
+                for: indexPath) as? SelfIntroductionCell else {
+                fatalError("Cannot create person main thumbnail cell")
+            }
+            cell.layoutCell(content: introduction)
             return cell
         }
     }
@@ -199,6 +268,10 @@ extension PersonalProfileViewController {
         snapshot.appendSections(Section.allCases)
         if let userData = userData {
             snapshot.appendItems([.person(userData)], toSection: .person)
+            snapshot.appendItems([.buttons], toSection: .buttons)
+        }
+        if let introduction = userData?.introduction, !introduction.isEmpty {
+            snapshot.appendItems([.introduction(introduction)], toSection: .introduction)
         }
 
         datasource.apply(snapshot, animatingDifferences: false)
