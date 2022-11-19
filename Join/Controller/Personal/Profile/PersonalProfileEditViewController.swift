@@ -11,16 +11,26 @@ class PersonalProfileEditViewController: BaseViewController {
     enum Section: CaseIterable {
         case thumbnail
         case basic
+        case introduction
         case interests
-        case portfolio
 //        case skills
+        case portfolio
     }
 
     @IBOutlet weak var tableView: UITableView! {
         didSet {
-            tableView.register(UINib(nibName: PersonalMainThumbnailCell.identifier, bundle: nil), forCellReuseIdentifier: PersonalMainThumbnailCell.identifier)
-            tableView.register(UINib(nibName: SingleLineInputCell.identifier, bundle: nil), forCellReuseIdentifier: SingleLineInputCell.identifier)
-            tableView.register(UINib(nibName: GoNextPageButtonCell.identifier, bundle: nil), forCellReuseIdentifier: GoNextPageButtonCell.identifier)
+            tableView.register(
+                UINib(nibName: PersonalMainThumbnailCell.identifier, bundle: nil),
+                forCellReuseIdentifier: PersonalMainThumbnailCell.identifier)
+            tableView.register(
+                UINib(nibName: SingleLineInputCell.identifier, bundle: nil),
+                forCellReuseIdentifier: SingleLineInputCell.identifier)
+            tableView.register(
+                UINib(nibName: MultilineInputCell.identifier, bundle: nil),
+                forCellReuseIdentifier: MultilineInputCell.identifier)
+            tableView.register(
+                UINib(nibName: GoNextPageButtonCell.identifier, bundle: nil),
+                forCellReuseIdentifier: GoNextPageButtonCell.identifier)
             tableView.delegate = self
             tableView.dataSource = self
         }
@@ -70,11 +80,16 @@ class PersonalProfileEditViewController: BaseViewController {
         }
 
         if !(user.name.isEmpty || user.email.isEmpty) {
+            JProgressHUD.shared.showSaving(view: self.view)
+
             firebaseManager.firebaseQueue.async { [weak self] in
+                guard let self = self else { return }
+                var shouldContinue = true
+
                 let group = DispatchGroup()
-                if let newImageData = self?.newImage?.jpeg(.lowest) {
+                if let newImageData = self.newImage?.jpeg(.lowest) {
                     group.enter()
-                    self?.firebaseManager.uploadImage(image: newImageData) { result in
+                    self.firebaseManager.uploadImage(image: newImageData) { result in
                         switch result {
                         case .success(let imageURL):
                             user.thumbnailURL = imageURL
@@ -82,7 +97,9 @@ class PersonalProfileEditViewController: BaseViewController {
                         case .failure(let err):
                             group.leave()
                             group.notify(queue: .main) {
-                                print(err)
+                                JProgressHUD.shared.showFailure(
+                                    text: err.localizedDescription,view: self.view)
+                                shouldContinue = false
                             }
                         }
                     }
@@ -93,41 +110,38 @@ class PersonalProfileEditViewController: BaseViewController {
                 }
 
                 group.enter()
-                guard let oldInfo = self?.oldUserInfo else { return }
-                self?.firebaseManager.updateAuthentication(oldInfo: oldInfo, newInfo: user) { result in
+                guard let oldInfo = self.oldUserInfo else { return }
+                self.firebaseManager.updateAuthentication(oldInfo: oldInfo, newInfo: user) { result in
                     switch result {
                     case .success:
                         group.leave()
                     case .failure(let err):
                         group.leave()
                         group.notify(queue: .main) {
-                            print(err)
+                            JProgressHUD.shared.showFailure(
+                                text: err.localizedDescription,view: self.view)
+                            shouldContinue = false
                         }
                     }
                 }
 
                 group.wait()
                 group.enter()
-                self?.firebaseManager.set(user: user) { result in
+                self.firebaseManager.set(user: user) { result in
                     switch result {
                     case .success:
                         group.leave()
                         group.notify(queue: .main) {
-                            let mainStoryboard = UIStoryboard(
-                                name: StoryboardCategory.main.rawValue, bundle: nil)
-                            guard let tabBarController = mainStoryboard.instantiateViewController(
-                                withIdentifier: TabBarController.identifier
-                                ) as? TabBarController else {
-                                fatalError("Cannot load tab bar controller")
+                            JProgressHUD.shared.showSuccess(view: self.view) {
+                                self.navigationController?.popViewController(animated: true)
                             }
-                            tabBarController.selectedIndex = 0
-                            tabBarController.modalPresentationStyle = .fullScreen
-                            self?.present(tabBarController, animated: true)
                         }
                     case .failure(let err):
                         group.leave()
                         group.notify(queue: .main) {
-                            print(err)
+                            JProgressHUD.shared.showFailure(
+                                text: err.localizedDescription,view: self.view)
+                            shouldContinue = false
                         }
                     }
                 }
@@ -154,6 +168,8 @@ extension PersonalProfileEditViewController: UITableViewDelegate {
             return 250
         } else if section == .basic {
             return 80
+        } else if section == .introduction {
+            return 180
         } else {
             return 40
         }
@@ -164,9 +180,7 @@ extension PersonalProfileEditViewController: UITableViewDelegate {
 extension PersonalProfileEditViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let section = Section.allCases[section]
-        if section == .thumbnail {
-            return 1
-        } else if section == .basic {
+        if section == .basic {
             return 2
         } else {
             return 1
@@ -198,6 +212,7 @@ extension PersonalProfileEditViewController: UITableViewDataSource {
                 self?.present(picker, animated: true)
             }
             return cell
+
         } else if section == .basic {
             guard let cell = tableView.dequeueReusableCell(
                 withIdentifier: SingleLineInputCell.identifier,
@@ -217,6 +232,17 @@ extension PersonalProfileEditViewController: UITableViewDataSource {
                 }
             }
             return cell
+
+        } else if section == .introduction {
+            guard let cell = tableView.dequeueReusableCell(
+                withIdentifier: MultilineInputCell.identifier,
+                for: indexPath) as? MultilineInputCell else {
+                fatalError("Cannot create personal main thumbnail cell")
+            }
+            cell.layoutCellForEditProfile(introduction: user.introduction ?? "")
+            cell.textView.delegate = self
+            return cell
+
         } else {
             guard let cell = tableView.dequeueReusableCell(
                 withIdentifier: GoNextPageButtonCell.identifier,
@@ -256,5 +282,12 @@ extension PersonalProfileEditViewController: UITableViewDataSource {
             }
             return cell
         }
+    }
+}
+
+// MARK: - Text View Delegate
+extension PersonalProfileEditViewController: UITextViewDelegate {
+    func textViewDidEndEditing(_ textView: UITextView) {
+        user?.introduction = textView.text
     }
 }

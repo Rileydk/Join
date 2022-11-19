@@ -200,7 +200,10 @@ extension FindPartnersBasicViewController: UITableViewDataSource {
                 for: indexPath) as? MultilineInputCell else {
                 fatalError("Cannot create single line input cell")
             }
-            cell.layoutCell(info: formState.items[indexPath.row])
+            cell.layoutCellForFindPartner(
+                title: formState.items[indexPath.row].name,
+                shouldFill: formState.items[indexPath.row].must,
+                instruction: formState.items[indexPath.row].instruction ?? "")
             cell.textView.delegate = self
             return cell
 

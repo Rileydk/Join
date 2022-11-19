@@ -31,6 +31,7 @@ struct JUser: Codable, Hashable {
     var name: String
     var email: String
     var thumbnailURL: URLString?
+    var introduction: String?
     var interests = [String]()
     var skills = [String]()
     var sentRequests = [UserID]()
@@ -42,8 +43,11 @@ struct JUser: Codable, Hashable {
             "name": name as Any,
             "email": email as Any,
             "thumbnailURL": thumbnailURL as Any,
+            "introduction": introduction as Any,
             "interests": interests as Any,
-            "skills": skills as Any
+            "skills": skills as Any,
+            "sentRequests": sentRequests as Any,
+            "receivedRequests": receivedRequests as Any
         ]
     }
 }
