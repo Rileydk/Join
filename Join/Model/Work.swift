@@ -10,7 +10,7 @@ import Foundation
 typealias WorkID = String
 typealias RecordID = String
 
-struct Work: Hashable {
+struct Work: Hashable, Decodable {
     var workID: WorkID
     var name: String
     var description: String?
@@ -30,7 +30,7 @@ struct Work: Hashable {
     }
 }
 
-struct WorkRecord: Hashable {
+struct WorkRecord: Hashable, Decodable {
     var recordID: RecordID
     var url: URLString
 

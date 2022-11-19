@@ -30,6 +30,7 @@ class PersonalProfileViewController: BaseViewController {
             layoutViews()
         }
     }
+    var workItems = [WorkItem]()
 
     @IBOutlet weak var collectionView: UICollectionView! {
         didSet {
@@ -58,17 +59,61 @@ class PersonalProfileViewController: BaseViewController {
         guard let myID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey) else {
             fatalError("Doesn't have user id")
         }
+
         JProgressHUD.shared.showLoading(view: self.view)
-        firebaseManager.getUserInfo(id: myID) { [weak self] result in
+
+        firebaseManager.firebaseQueue.async { [weak self] in
             guard let self = self else { return }
-            switch result {
-            case .success(let userData):
-                self.userData = userData
+            self.firebaseManager.getUserInfo(id: myID) { result in
+                switch result {
+                case .success(let userData):
+                    self.userData = userData
+                case .failure(let err):
+                    print(err)
+                    JProgressHUD.shared.showFailure(view: self.view)
+                }
+            }
+
+            let group = DispatchGroup()
+
+            var shouldContinue = true
+            group.enter()
+            self.firebaseManager.getMyWorks { result in
+                switch result {
+                case .success(let works):
+                    self.workItems = works.map {
+                        WorkItem(workID: $0.workID, name: $0.name,
+                                 description: $0.description,
+                                 latestUpdatedTime: $0.latestUpdatedTime, records: [])
+                    }
+                    group.leave()
+                case .failure(let err):
+                    JProgressHUD.shared.showFailure(text: err.localizedDescription, view: self.view)
+                    shouldContinue = false
+                    group.leave()
+                }
+            }
+
+            group.wait()
+            guard shouldContinue else { return }
+            for i in 0 ..< self.workItems.count {
+                guard shouldContinue else { return }
+                group.enter()
+                self.firebaseManager.getMyWorkRecords(by: self.workItems[i].workID) { result in
+                    switch result {
+                    case .success(let records):
+                        self.workItems[i].records = records
+                        group.leave()
+                    case .failure(let err):
+                        JProgressHUD.shared.showFailure(text: err.localizedDescription, view: self.view)
+                        shouldContinue = false
+                        group.leave()
+                    }
+                }
+            }
+            group.notify(queue: .main) {
                 self.updateDatasource()
                 JProgressHUD.shared.dismiss()
-            case .failure(let err):
-                print(err)
-                JProgressHUD.shared.showFailure(view: self.view)
             }
         }
     }

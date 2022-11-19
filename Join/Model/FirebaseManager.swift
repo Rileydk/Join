@@ -1124,6 +1124,48 @@ class FirebaseManager {
         }
     }
 
+    func getMyWorks(completion: @escaping (Result<[Work], Error>) -> Void) {
+        let ref = FirestoreMyDocumentEndpoint.myWorks.ref
+        ref.getDocuments { (snapshot, err) in
+            if let err = err {
+                completion(.failure(err))
+            }
+            if let snapshot = snapshot {
+                let works: [Work] = snapshot.documents.compactMap {
+                    do {
+                        return try $0.data(as: Work.self, decoder: FirebaseManager.decoder)
+                    } catch {
+                        return nil
+                    }
+                }
+                completion(.success(works))
+            } else {
+                completion(.failure(CommonError.noValidQuerysnapshot))
+            }
+        }
+    }
+
+    func getMyWorkRecords(by workID: WorkID, completion: @escaping (Result<[WorkRecord], Error>) -> Void) {
+        let ref = FirestoreMyDocumentEndpoint.myRecordsOfWork(workID).ref
+        ref.getDocuments { (snapshot, err) in
+            if let err = err {
+                completion(.failure(err))
+            }
+            if let snapshot = snapshot {
+                let workRecords: [WorkRecord] = snapshot.documents.compactMap {
+                    do {
+                        return try $0.data(as: WorkRecord.self, decoder: FirebaseManager.decoder)
+                    } catch {
+                        return nil
+                    }
+                }
+                completion(.success(workRecords))
+            } else {
+                completion(.failure(CommonError.noValidQuerysnapshot))
+            }
+        }
+    }
+
     func getAllApplicants(projectID: ProjectID, applicantID: UserID, completion: @escaping (Result<[UserID], Error>) -> Void) {
         let ref = FirestoreEndpoint.projects.ref
         ref.document(projectID).getDocument { (snapshot, err) in
