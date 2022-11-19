@@ -18,14 +18,14 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="3kW-06-YJK">
-                        <rect key="frame" x="110" y="70" width="100" height="100"/>
+                        <rect key="frame" x="110" y="30" width="100" height="100"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="100" id="NbG-DW-diq"/>
                             <constraint firstAttribute="width" secondItem="3kW-06-YJK" secondAttribute="height" multiplier="1:1" id="dUN-wb-Jwx"/>
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bdE-35-KQi">
-                        <rect key="frame" x="131.5" y="194" width="57" height="29"/>
+                        <rect key="frame" x="131.5" y="154" width="57" height="29"/>
                         <fontDescription key="fontDescription" type="system" pointSize="24"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
@@ -34,7 +34,7 @@
                 <constraints>
                     <constraint firstItem="bdE-35-KQi" firstAttribute="top" secondItem="3kW-06-YJK" secondAttribute="bottom" constant="24" id="IJ2-oM-HEv"/>
                     <constraint firstItem="3kW-06-YJK" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="rMj-f7-ctw"/>
-                    <constraint firstItem="3kW-06-YJK" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="70" id="wUr-Mg-ha5"/>
+                    <constraint firstItem="3kW-06-YJK" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="30" id="wUr-Mg-ha5"/>
                     <constraint firstItem="bdE-35-KQi" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="zD0-Wh-eK9"/>
                 </constraints>
             </tableViewCellContentView>

@@ -37,8 +37,8 @@ class PersonalMainThumbnailCell: TableViewCell {
 
         if isEditing {
             thumbnailImageView.isUserInteractionEnabled = true
-            let tapRecognizer = UITapGestureRecognizer(target: self,
-                                                       action: #selector(showSourceTypeActionSheet))
+            let tapRecognizer = UITapGestureRecognizer(
+                target: self, action: #selector(showSourceTypeActionSheet))
             thumbnailImageView.addGestureRecognizer(tapRecognizer)
         } else {
             thumbnailImageView.isUserInteractionEnabled = false

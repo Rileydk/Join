@@ -25,6 +25,8 @@
 		BF3D83652927A1B6009F903F /* KingFisherWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3D83642927A1B6009F903F /* KingFisherWrapper.swift */; };
 		BF3D83672927A5D8009F903F /* WorkHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3D83662927A5D8009F903F /* WorkHeaderView.swift */; };
 		BF3D83692927A609009F903F /* WorkHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF3D83682927A609009F903F /* WorkHeaderView.xib */; };
+		BF3D836F2928CDAF009F903F /* PersonalMainThumbnailCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3D836D2928CDAF009F903F /* PersonalMainThumbnailCollectionCell.swift */; };
+		BF3D83702928CDAF009F903F /* PersonalMainThumbnailCollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF3D836E2928CDAF009F903F /* PersonalMainThumbnailCollectionCell.xib */; };
 		BF42FA35290BE2AA00501789 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FA34290BE2AA00501789 /* AppDelegate.swift */; };
 		BF42FA37290BE2AA00501789 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FA36290BE2AA00501789 /* SceneDelegate.swift */; };
 		BF42FA39290BE2AA00501789 /* FindIdeasViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FA38290BE2AA00501789 /* FindIdeasViewController.swift */; };
@@ -144,6 +146,8 @@
 		BF3D83642927A1B6009F903F /* KingFisherWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KingFisherWrapper.swift; sourceTree = "<group>"; };
 		BF3D83662927A5D8009F903F /* WorkHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkHeaderView.swift; sourceTree = "<group>"; };
 		BF3D83682927A609009F903F /* WorkHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WorkHeaderView.xib; sourceTree = "<group>"; };
+		BF3D836D2928CDAF009F903F /* PersonalMainThumbnailCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalMainThumbnailCollectionCell.swift; sourceTree = "<group>"; };
+		BF3D836E2928CDAF009F903F /* PersonalMainThumbnailCollectionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PersonalMainThumbnailCollectionCell.xib; sourceTree = "<group>"; };
 		BF42FA31290BE2AA00501789 /* Join.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Join.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF42FA34290BE2AA00501789 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BF42FA36290BE2AA00501789 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -591,6 +595,8 @@
 				BF9A86752918FA7100BF934D /* FriendsList */,
 				BFF8A4C72913EE4C00ADC950 /* PersonalMainThumbnailCell.swift */,
 				BFF8A4C82913EE4C00ADC950 /* PersonalMainThumbnailCell.xib */,
+				BF3D836D2928CDAF009F903F /* PersonalMainThumbnailCollectionCell.swift */,
+				BF3D836E2928CDAF009F903F /* PersonalMainThumbnailCollectionCell.xib */,
 				BFF8A4CB2913F32600ADC950 /* GoNextPageButtonCell.swift */,
 				BFF8A4CC2913F32600ADC950 /* GoNextPageButtonCell.xib */,
 				BFF8A4D12914C79900ADC950 /* PersonBasicCell.swift */,
@@ -732,6 +738,7 @@
 				BF42FAAE290F6B8000501789 /* GoogleService-Info.plist in Resources */,
 				BF42FA82290D31EF00501789 /* GoSelectionCell.xib in Resources */,
 				BF42FA3C290BE2AA00501789 /* Main.storyboard in Resources */,
+				BF3D83702928CDAF009F903F /* PersonalMainThumbnailCollectionCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -806,6 +813,7 @@
 				BF42FABF290FF65300501789 /* MemberCell.swift in Sources */,
 				BFF8A4D62915009B00ADC950 /* OthersProfileViewController.swift in Sources */,
 				BF42FADC2912967900501789 /* IdeaCell.swift in Sources */,
+				BF3D836F2928CDAF009F903F /* PersonalMainThumbnailCollectionCell.swift in Sources */,
 				BF42FAC42910010000501789 /* AddNewCell.swift in Sources */,
 				BF3D83672927A5D8009F903F /* WorkHeaderView.swift in Sources */,
 				BFF8A4DF2916342E00ADC950 /* BaseViewController.swift in Sources */,

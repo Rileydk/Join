@@ -10,6 +10,8 @@ import UIKit
 class PersonalProfileViewController: BaseViewController {
     enum Section: CaseIterable {
         case person
+//        case buttons
+//        case introduction
 //        case skills
 //        case interests
 //        case portfolio
@@ -17,9 +19,11 @@ class PersonalProfileViewController: BaseViewController {
 
     enum Item: Hashable {
         case person(JUser)
+//        case buttons
+//        case introduction(String)
 //        case skills([String])
 //        case interests([String])
-//        case portfolio([Masterpiece])
+//        case portfolio(WorkItem)
     }
 
     typealias ProfileDatasource = UICollectionViewDiffableDataSource<Section, Item>
@@ -35,8 +39,8 @@ class PersonalProfileViewController: BaseViewController {
     @IBOutlet weak var collectionView: UICollectionView! {
         didSet {
             collectionView.register(
-                UINib(nibName: PersonBasicCell.identifier, bundle: nil),
-                forCellWithReuseIdentifier: PersonBasicCell.identifier
+                UINib(nibName: PersonalMainThumbnailCollectionCell.identifier, bundle: nil),
+                forCellWithReuseIdentifier: PersonalMainThumbnailCollectionCell.identifier
             )
             collectionView.setCollectionViewLayout(createLayout(), animated: true)
             configureDatasource()
@@ -141,7 +145,7 @@ extension PersonalProfileViewController {
 
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1),
-            heightDimension: .fractionalHeight(0.3)
+            heightDimension: .absolute(210)
         )
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
 
@@ -179,12 +183,13 @@ extension PersonalProfileViewController {
     func createCell(collectionView: UICollectionView, indexPath: IndexPath, item: Item) -> UICollectionViewCell {
         switch item {
         case .person(let user):
+            // 更換為大張圖
             guard let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: PersonBasicCell.identifier,
-                for: indexPath) as? PersonBasicCell else {
-                fatalError("Cannot create personal basic cell")
+                withReuseIdentifier: PersonalMainThumbnailCollectionCell.identifier,
+                for: indexPath) as? PersonalMainThumbnailCollectionCell else {
+                fatalError("Cannot create person main thumbnail cell")
             }
-            cell.layoutCell(withSelf: user)
+            cell.layoutCell(user: user)
             return cell
         }
     }

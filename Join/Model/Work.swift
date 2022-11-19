@@ -42,7 +42,7 @@ struct WorkRecord: Hashable, Decodable {
     }
 }
 
-struct WorkItem {
+struct WorkItem: Hashable {
     var workID: WorkID
     var name: String
     var description: String?
