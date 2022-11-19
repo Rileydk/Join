@@ -9,8 +9,9 @@ import UIKit
 
 class SingleLineInputCell: TableViewCell {
     enum InputType: String {
-        case name = "Name"
+        case name = "名稱"
         case email = "Email"
+        case workName = "作品名稱"
     }
 
     @IBOutlet weak var titleLabel: UILabel!
@@ -18,10 +19,14 @@ class SingleLineInputCell: TableViewCell {
     var type: InputType = .name
     var updateName: ((String) -> Void)?
     var updateEmail: ((String) -> Void)?
+    var updateWorkName: ((String) -> Void)?
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        contentView.backgroundColor = .Gray5
+        inputTextField.backgroundColor = .Gray5
+        inputTextField.addUnderline()
+        titleLabel.textColor = .Gray1
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -30,17 +35,21 @@ class SingleLineInputCell: TableViewCell {
         // Configure the view for the selected state
     }
 
-    func layoutCell(withTitle title: InputType, value: String) {
+    func layoutCell(withTitle title: InputType, value: String = "") {
         titleLabel.text = title.rawValue
         inputTextField.text = value
         type = title
     }
 
     @IBAction func editTextFieldText(_ sender: UITextField) {
-        if type == .name {
-            updateName?(sender.text ?? "")
-        } else {
-            updateEmail?(sender.text ?? "")
+        let text = sender.text ?? ""
+        switch type {
+        case .name:
+            updateName?(text)
+        case .email:
+            updateEmail?(text)
+        case .workName:
+            updateWorkName?(text)
         }
     }
 }

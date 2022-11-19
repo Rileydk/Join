@@ -12,17 +12,15 @@ class PersonalProfileEditViewController: BaseViewController {
         case thumbnail
         case basic
         case interests
+        case portfolio
 //        case skills
     }
 
     @IBOutlet weak var tableView: UITableView! {
         didSet {
-            tableView.register(UINib(nibName: PersonalMainThumbnailCell.identifier, bundle: nil),
-                               forCellReuseIdentifier: PersonalMainThumbnailCell.identifier)
-            tableView.register(UINib(nibName: SingleLineInputCell.identifier, bundle: nil),
-                               forCellReuseIdentifier: SingleLineInputCell.identifier)
-            tableView.register(UINib(nibName: GoNextPageButtonCell.identifier, bundle: nil),
-                               forCellReuseIdentifier: GoNextPageButtonCell.identifier)
+            tableView.register(UINib(nibName: PersonalMainThumbnailCell.identifier, bundle: nil), forCellReuseIdentifier: PersonalMainThumbnailCell.identifier)
+            tableView.register(UINib(nibName: SingleLineInputCell.identifier, bundle: nil), forCellReuseIdentifier: SingleLineInputCell.identifier)
+            tableView.register(UINib(nibName: GoNextPageButtonCell.identifier, bundle: nil), forCellReuseIdentifier: GoNextPageButtonCell.identifier)
             tableView.delegate = self
             tableView.dataSource = self
         }
@@ -220,14 +218,13 @@ extension PersonalProfileEditViewController: UITableViewDataSource {
             }
             return cell
         } else {
-            // if section == .interests
             guard let cell = tableView.dequeueReusableCell(
                 withIdentifier: GoNextPageButtonCell.identifier,
                 for: indexPath) as? GoNextPageButtonCell else {
                 fatalError("Cannot create personal main thumbnail cell")
             }
-            if indexPath.section == 2 {
-                cell.layoutCell(title: "Edit Skills")
+            if section == .interests {
+                cell.layoutCell(title: "編輯興趣類別")
                 cell.tapHandler = { [weak self] in
                     guard let self = self, let interests = self.user?.interests else {
                         fatalError("Cannot get interests")
@@ -241,6 +238,20 @@ extension PersonalProfileEditViewController: UITableViewDataSource {
                     }
                     personalInfoSelectionVC.selectedCategories = interests
                     self.navigationController?.pushViewController(personalInfoSelectionVC, animated: true)
+                }
+            }
+            if section == .portfolio {
+                cell.layoutCell(title: "新增作品集")
+                cell.tapHandler = { [weak self] in
+                    guard let self = self else { return }
+                    let personalStoryboard = UIStoryboard(
+                        name: StoryboardCategory.personal.rawValue, bundle: nil)
+                    guard let addPortfolioVC = personalStoryboard.instantiateViewController(
+                        withIdentifier: AddPortfolioViewController.identifier
+                    ) as? AddPortfolioViewController else {
+                        fatalError("Cannot load AddPortfolioViewController")
+                    }
+                    self.navigationController?.pushViewController(addPortfolioVC, animated: true)
                 }
             }
             return cell

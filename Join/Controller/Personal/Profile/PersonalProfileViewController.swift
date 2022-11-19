@@ -49,10 +49,9 @@ class PersonalProfileViewController: BaseViewController {
 
     func layoutViews() {
         title = userData?.name
-        navigationItem.rightBarButtonItems = [
-            UIBarButtonItem(image: UIImage(systemName: "pencil"), style: .plain, target: self, action: #selector(editPersonalInfo)),
-            UIBarButtonItem(image: UIImage(systemName: "plus.app"), style: .plain, target: self, action: #selector(addPortfolio))
-        ]
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            image: UIImage(systemName: "pencil"), style: .plain,
+            target: self, action: #selector(editPersonalInfo))
     }
 
     func updateData() {
@@ -76,15 +75,13 @@ class PersonalProfileViewController: BaseViewController {
 
     @objc func editPersonalInfo() {
         let personalStoryboard = UIStoryboard(name: StoryboardCategory.personal.rawValue, bundle: nil)
-        guard let personalProfileEditVC = personalStoryboard.instantiateViewController(withIdentifier: PersonalProfileEditViewController.identifier) as? PersonalProfileEditViewController else {
+        guard let personalProfileEditVC = personalStoryboard.instantiateViewController(
+            withIdentifier: PersonalProfileEditViewController.identifier
+            ) as? PersonalProfileEditViewController else {
             fatalError("Cannot load personal profile edit vc")
         }
-        
+
         navigationController?.pushViewController(personalProfileEditVC, animated: true)
-    }
-
-    @objc func addPortfolio() {
-
     }
 }
 

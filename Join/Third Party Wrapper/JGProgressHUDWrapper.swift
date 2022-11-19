@@ -17,7 +17,6 @@ class JProgressHUD {
 //    var view: UIView { SceneDelegate.shared.window!.rootViewController!.view }
 
     func showSuccess(text: String = "Success", view: UIView, completion: (() -> Void)? = nil) {
-        print("show success")
         if !Thread.isMainThread {
             DispatchQueue.main.async { [weak self] in
                 self?.showSuccess(text: text, view: view, completion: completion)
@@ -62,7 +61,6 @@ class JProgressHUD {
     }
 
     func showSaving(text: String = "Saving...", view: UIView) {
-        print("show saving")
         if !Thread.isMainThread {
             DispatchQueue.main.async { [weak self] in
                 self?.showSaving(text: text, view: view)

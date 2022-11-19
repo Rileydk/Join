@@ -328,6 +328,36 @@
             </objects>
             <point key="canvasLocation" x="5336" y="909"/>
         </scene>
+        <!--Add Portfolio View Controller-->
+        <scene sceneID="cFT-zO-gud">
+            <objects>
+                <viewController storyboardIdentifier="AddPortfolioViewController" id="Rol-fJ-iFZ" customClass="AddPortfolioViewController" customModule="Join" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="T5C-da-OPY">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="rvK-7H-OxU">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </tableView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="ENr-j0-BvP"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="ENr-j0-BvP" firstAttribute="trailing" secondItem="rvK-7H-OxU" secondAttribute="trailing" id="86P-bF-5Sq"/>
+                            <constraint firstItem="rvK-7H-OxU" firstAttribute="top" secondItem="T5C-da-OPY" secondAttribute="top" id="aOg-Ns-tuc"/>
+                            <constraint firstItem="rvK-7H-OxU" firstAttribute="leading" secondItem="ENr-j0-BvP" secondAttribute="leading" id="amE-R9-zII"/>
+                            <constraint firstAttribute="bottom" secondItem="rvK-7H-OxU" secondAttribute="bottom" id="yJP-mj-UkQ"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="tableView" destination="rvK-7H-OxU" id="Mtz-g1-CGJ"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="j0k-kp-8ok" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="6122" y="909"/>
+        </scene>
         <!--Item-->
         <scene sceneID="BFG-DT-NJj">
             <objects>

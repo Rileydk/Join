@@ -44,7 +44,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
-                                    <action selector="editTextFieldText:" destination="KGk-i7-Jjw" eventType="editingChanged" id="aU4-qR-pAw"/>
+                                    <action selector="editTextFieldText:" destination="KGk-i7-Jjw" eventType="editingDidEnd" id="ybg-Q0-BoX"/>
                                 </connections>
                             </textField>
                         </subviews>

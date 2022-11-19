@@ -18,6 +18,13 @@
 		BF3D835529273740009F903F /* OneSelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3D835329273740009F903F /* OneSelectionCell.swift */; };
 		BF3D835629273740009F903F /* OneSelectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF3D835429273740009F903F /* OneSelectionCell.xib */; };
 		BF3D835929275FD3009F903F /* JGProgressHUDWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3D835829275FD3009F903F /* JGProgressHUDWrapper.swift */; };
+		BF3D835B29278208009F903F /* Work.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3D835A29278208009F903F /* Work.swift */; };
+		BF3D835E2927873C009F903F /* AddPortfolioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3D835D2927873C009F903F /* AddPortfolioViewController.swift */; };
+		BF3D836229278D63009F903F /* WorkRecordCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3D836029278D63009F903F /* WorkRecordCell.swift */; };
+		BF3D836329278D63009F903F /* WorkRecordCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF3D836129278D63009F903F /* WorkRecordCell.xib */; };
+		BF3D83652927A1B6009F903F /* KingFisherWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3D83642927A1B6009F903F /* KingFisherWrapper.swift */; };
+		BF3D83672927A5D8009F903F /* WorkHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3D83662927A5D8009F903F /* WorkHeaderView.swift */; };
+		BF3D83692927A609009F903F /* WorkHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF3D83682927A609009F903F /* WorkHeaderView.xib */; };
 		BF42FA35290BE2AA00501789 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FA34290BE2AA00501789 /* AppDelegate.swift */; };
 		BF42FA37290BE2AA00501789 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FA36290BE2AA00501789 /* SceneDelegate.swift */; };
 		BF42FA39290BE2AA00501789 /* FindIdeasViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FA38290BE2AA00501789 /* FindIdeasViewController.swift */; };
@@ -130,6 +137,13 @@
 		BF3D835329273740009F903F /* OneSelectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneSelectionCell.swift; sourceTree = "<group>"; };
 		BF3D835429273740009F903F /* OneSelectionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OneSelectionCell.xib; sourceTree = "<group>"; };
 		BF3D835829275FD3009F903F /* JGProgressHUDWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JGProgressHUDWrapper.swift; sourceTree = "<group>"; };
+		BF3D835A29278208009F903F /* Work.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Work.swift; sourceTree = "<group>"; };
+		BF3D835D2927873C009F903F /* AddPortfolioViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPortfolioViewController.swift; sourceTree = "<group>"; };
+		BF3D836029278D63009F903F /* WorkRecordCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkRecordCell.swift; sourceTree = "<group>"; };
+		BF3D836129278D63009F903F /* WorkRecordCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WorkRecordCell.xib; sourceTree = "<group>"; };
+		BF3D83642927A1B6009F903F /* KingFisherWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KingFisherWrapper.swift; sourceTree = "<group>"; };
+		BF3D83662927A5D8009F903F /* WorkHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkHeaderView.swift; sourceTree = "<group>"; };
+		BF3D83682927A609009F903F /* WorkHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WorkHeaderView.xib; sourceTree = "<group>"; };
 		BF42FA31290BE2AA00501789 /* Join.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Join.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF42FA34290BE2AA00501789 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BF42FA36290BE2AA00501789 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -285,8 +299,28 @@
 			isa = PBXGroup;
 			children = (
 				BF3D835829275FD3009F903F /* JGProgressHUDWrapper.swift */,
+				BF3D83642927A1B6009F903F /* KingFisherWrapper.swift */,
 			);
 			path = "Third Party Wrapper";
+			sourceTree = "<group>";
+		};
+		BF3D835C292785A6009F903F /* Portfolio */ = {
+			isa = PBXGroup;
+			children = (
+				BF3D835D2927873C009F903F /* AddPortfolioViewController.swift */,
+			);
+			path = Portfolio;
+			sourceTree = "<group>";
+		};
+		BF3D835F29278D13009F903F /* Portfolio */ = {
+			isa = PBXGroup;
+			children = (
+				BF3D836029278D63009F903F /* WorkRecordCell.swift */,
+				BF3D836129278D63009F903F /* WorkRecordCell.xib */,
+				BF3D83662927A5D8009F903F /* WorkHeaderView.swift */,
+				BF3D83682927A609009F903F /* WorkHeaderView.xib */,
+			);
+			path = Portfolio;
 			sourceTree = "<group>";
 		};
 		BF42FA28290BE2AA00501789 = {
@@ -356,6 +390,7 @@
 				BF42FAB3290FAC5C00501789 /* JUser.swift */,
 				BFF8A4F029164FA200ADC950 /* Chat.swift */,
 				BF42FACA2911473A00501789 /* FirebaseManager.swift */,
+				BF3D835A29278208009F903F /* Work.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -538,6 +573,7 @@
 		BFF8A4C32913EC6000ADC950 /* Personal */ = {
 			isa = PBXGroup;
 			children = (
+				BF3D835C292785A6009F903F /* Portfolio */,
 				BF02714929238B97000EA2F8 /* Profile */,
 				BF9A8699291C9DAB00BF934D /* MyApplications */,
 				BF9A868F291BCF8700BF934D /* MyPosts */,
@@ -550,6 +586,7 @@
 		BFF8A4C62913EE1500ADC950 /* Personal */ = {
 			isa = PBXGroup;
 			children = (
+				BF3D835F29278D13009F903F /* Portfolio */,
 				BF9A8692291BD0F000BF934D /* MyPosts */,
 				BF9A86752918FA7100BF934D /* FriendsList */,
 				BFF8A4C72913EE4C00ADC950 /* PersonalMainThumbnailCell.swift */,
@@ -662,6 +699,7 @@
 				BF9A867E2918FB1800BF934D /* FriendCell.xib in Resources */,
 				BF42FA7E290D2ADB00501789 /* MultilineInputCell.xib in Resources */,
 				BF42FAC929111FD400501789 /* ImagePickerCell.xib in Resources */,
+				BF3D836329278D63009F903F /* WorkRecordCell.xib in Resources */,
 				BF42FA79290D264100501789 /* SingleLineDescriptionInputCell.xib in Resources */,
 				BF9A8698291BD13400BF934D /* MyApplicantCell.xib in Resources */,
 				BF42FA5D290CED7100501789 /* Chat.storyboard in Resources */,
@@ -682,6 +720,7 @@
 				BFF8A4CE2913F32600ADC950 /* GoNextPageButtonCell.xib in Resources */,
 				BFF8A4EF29164DCB00ADC950 /* MyMessageCell.xib in Resources */,
 				BF42FAC52910010000501789 /* AddNewCell.xib in Resources */,
+				BF3D83692927A609009F903F /* WorkHeaderView.xib in Resources */,
 				BF9A86AC291E19B300BF934D /* GroupMessageCell.xib in Resources */,
 				BFF8A4D42914C79900ADC950 /* PersonBasicCell.xib in Resources */,
 				BF9A86A4291CE06400BF934D /* GroupCreationHeaderCell.xib in Resources */,
@@ -768,6 +807,7 @@
 				BFF8A4D62915009B00ADC950 /* OthersProfileViewController.swift in Sources */,
 				BF42FADC2912967900501789 /* IdeaCell.swift in Sources */,
 				BF42FAC42910010000501789 /* AddNewCell.swift in Sources */,
+				BF3D83672927A5D8009F903F /* WorkHeaderView.swift in Sources */,
 				BFF8A4DF2916342E00ADC950 /* BaseViewController.swift in Sources */,
 				BF9A86AB291E19B300BF934D /* GroupMessageCell.swift in Sources */,
 				BF42FA67290D04EF00501789 /* FindPartnersFormSections.swift in Sources */,
@@ -777,6 +817,7 @@
 				BFF8A4CD2913F32600ADC950 /* GoNextPageButtonCell.swift in Sources */,
 				BF42FA7D290D2ADB00501789 /* MultilineInputCell.swift in Sources */,
 				BFF8A4EE29164DCB00ADC950 /* MyMessageCell.swift in Sources */,
+				BF3D836229278D63009F903F /* WorkRecordCell.swift in Sources */,
 				BF42FA39290BE2AA00501789 /* FindIdeasViewController.swift in Sources */,
 				BFF8A4E4291636EE00ADC950 /* MessageTypingView.swift in Sources */,
 				BF9A869F291CDE8300BF934D /* GroupCreationViewController.swift in Sources */,
@@ -794,6 +835,7 @@
 				BF42FACF2912557500501789 /* UIImage+Ext.swift in Sources */,
 				BF42FAB2290FAC2000501789 /* Project.swift in Sources */,
 				BF9A86742918FA3500BF934D /* FriendsListViewController.swift in Sources */,
+				BF3D83652927A1B6009F903F /* KingFisherWrapper.swift in Sources */,
 				BFF8A4FB2917FBF100ADC950 /* MockLoginViewController.swift in Sources */,
 				BFF8A4D32914C79900ADC950 /* PersonBasicCell.swift in Sources */,
 				BF42FACF2912557500501789 /* UIImage+Ext.swift in Sources */,
@@ -828,6 +870,7 @@
 				BF9A8697291BD13400BF934D /* MyApplicantCell.swift in Sources */,
 				BF42FA6E290D178400501789 /* UIView+Ext.swift in Sources */,
 				BF0271412920D093000EA2F8 /* UIColor+Ext.swift in Sources */,
+				BF3D835B29278208009F903F /* Work.swift in Sources */,
 				BF42FAD62912945F00501789 /* FriendProjectCell.swift in Sources */,
 				BF3D8352292736CD009F903F /* PersonalInfoSelectionViewController.swift in Sources */,
 				BF42FA71290D196200501789 /* SingleLineDescriptionInputCell.swift in Sources */,
@@ -841,6 +884,7 @@
 				BF42FA37290BE2AA00501789 /* SceneDelegate.swift in Sources */,
 				BFF8A4BF2913B46600ADC950 /* JoinButtonCell.swift in Sources */,
 				BFF8A4AE2913A92300ADC950 /* ProjectDetailsViewController.swift in Sources */,
+				BF3D835E2927873C009F903F /* AddPortfolioViewController.swift in Sources */,
 				BF42FA61290CEF4700501789 /* UIStoryboard+Ext.swift in Sources */,
 				BFF8A4F129164FA200ADC950 /* Chat.swift in Sources */,
 				BF42FACB2911473A00501789 /* FirebaseManager.swift in Sources */,

@@ -111,6 +111,8 @@ enum FirestoreMyDocumentEndpoint {
     case mySentRequests
     case myUnknownChat
     case myGroupChat
+    case myWorks
+    case myRecordsOfWork(WorkID)
 
     var ref: CollectionReference {
         let db = Firestore.firestore()
@@ -125,6 +127,8 @@ enum FirestoreMyDocumentEndpoint {
         let friends = "Friends"
         let unknownChat = "UnknownChat"
         let groupChats = "GroupChats"
+        let works = "Works"
+        let records = "Records"
 
         switch self {
         case .myPosts:
@@ -137,6 +141,10 @@ enum FirestoreMyDocumentEndpoint {
             return myDoc.collection(unknownChat)
         case .myGroupChat:
             return myDoc.collection(groupChats)
+        case .myWorks:
+            return myDoc.collection(works)
+        case .myRecordsOfWork(let workID):
+            return myDoc.collection(works).document(workID).collection(records)
         }
     }
 }
@@ -249,7 +257,6 @@ class FirebaseManager {
                     return
                 }
                 let urlString = "\(downloadURL)"
-                print("url: ", urlString)
                 completion(.success(urlString))
             }
         }
@@ -1054,6 +1061,66 @@ class FirebaseManager {
                 completion(.failure(err))
             }
             completion(.success("Success"))
+        }
+    }
+
+    func addNewWork(work: Work,completion: @escaping (Result<WorkID, Error>) -> Void ) {
+        let ref = FirestoreMyDocumentEndpoint.myWorks.ref
+        let workID = ref.document().documentID
+        var work = work
+        work.workID = workID
+        work.latestUpdatedTime = Date()
+
+        ref.document(workID).setData(work.toDict) { err in
+            if let err = err {
+                completion(.failure(err))
+                return
+            }
+            completion(.success(workID))
+        }
+    }
+
+    func addNewRecords(records: [WorkRecord],to myWorkID: WorkID, completion: @escaping (Result<[RecordID], Error>) -> Void) {
+        let ref = FirestoreMyDocumentEndpoint.myRecordsOfWork(myWorkID).ref
+        let recordID = ref.document().documentID
+
+        let group = DispatchGroup()
+        var shouldContinue = true
+        var recordsIDs = [RecordID]()
+        for record in records {
+            group.enter()
+            guard shouldContinue else { return }
+            let recordID = ref.document().documentID
+            var record = record
+            record.recordID = recordID
+            ref.document(recordID).setData(record.toDict) { err in
+                if let err = err {
+                    group.leave()
+                    group.notify(queue: .main) {
+                        completion(.failure(err))
+                    }
+                    shouldContinue = false
+                    return
+                }
+                recordsIDs.append(recordID)
+                group.leave()
+            }
+        }
+        group.notify(queue: .main) {
+            if shouldContinue {
+                completion(.success(recordsIDs))
+            }
+        }
+    }
+
+    func updateWorkRecordsOrder(of workID: WorkID, by ordersIDs: [RecordID], completion: @escaping (Result<String, Error>) -> Void) {
+        let ref = FirestoreMyDocumentEndpoint.myWorks.ref
+        ref.document(workID).updateData(["recordsOrder": ordersIDs]) { err in
+            if let err = err {
+                completion(.failure(err))
+                return
+            }
+            completion(.success(workID))
         }
     }
 
