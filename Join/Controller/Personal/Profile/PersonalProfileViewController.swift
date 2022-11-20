@@ -97,12 +97,18 @@ class PersonalProfileViewController: BaseViewController {
 
         firebaseManager.firebaseQueue.async { [weak self] in
             guard let self = self else { return }
+            group.enter()
             self.firebaseManager.getUserInfo(id: userID) { result in
                 switch result {
                 case .success(let userData):
                     self.userData = userData
+                    group.leave()
                 case .failure(let err):
-                    JProgressHUD.shared.showFailure(text: err.localizedDescription, view: self.view)
+                    group.leave()
+                    group.notify(queue: .main) {
+                        JProgressHUD.shared.showFailure(text: err.localizedDescription, view: self.view)
+                        shouldContinue = false
+                    }
                 }
             }
 
@@ -113,9 +119,11 @@ class PersonalProfileViewController: BaseViewController {
                     case .success:
                         group.leave()
                     case .failure(let err):
-                        JProgressHUD.shared.showFailure(text: err.localizedDescription, view: self.view)
                         group.leave()
-                        shouldContinue = false
+                        group.notify(queue: .main) {
+                            JProgressHUD.shared.showFailure(text: err.localizedDescription, view: self.view)
+                            shouldContinue = false
+                        }
                     }
                 }
             } else {

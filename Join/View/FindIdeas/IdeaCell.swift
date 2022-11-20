@@ -57,7 +57,7 @@ class IdeaCell: CollectionViewCell {
         savingButton.isHidden = true
         if !project.applicants.isEmpty {
             applicantsAmountLabelButton.isHidden = false
-            applicantsAmountLabelButton.setTitle("\(project.applicants.count)", for: .normal)
+            applicantsAmountLabelButton.setTitle("應徵數: \(project.applicants.count)", for: .normal)
         }
     }
 }
