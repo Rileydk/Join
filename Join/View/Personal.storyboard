@@ -298,10 +298,70 @@
             </objects>
             <point key="canvasLocation" x="4519" y="909"/>
         </scene>
+        <!--Personal Info Selection View Controller-->
+        <scene sceneID="fST-MP-yPv">
+            <objects>
+                <viewController storyboardIdentifier="PersonalInfoSelectionViewController" id="YsE-Zt-4z1" customClass="PersonalInfoSelectionViewController" customModule="Join" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="85i-NE-J5g">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="7Kb-sX-3Ii">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </tableView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="RZW-IQ-S3B"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="7Kb-sX-3Ii" firstAttribute="top" secondItem="85i-NE-J5g" secondAttribute="top" id="2VN-Lq-5j0"/>
+                            <constraint firstAttribute="bottom" secondItem="7Kb-sX-3Ii" secondAttribute="bottom" id="B0F-Lr-PZr"/>
+                            <constraint firstItem="RZW-IQ-S3B" firstAttribute="trailing" secondItem="7Kb-sX-3Ii" secondAttribute="trailing" id="Xrq-zH-KJv"/>
+                            <constraint firstItem="7Kb-sX-3Ii" firstAttribute="leading" secondItem="RZW-IQ-S3B" secondAttribute="leading" id="cje-cP-amC"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="tableView" destination="7Kb-sX-3Ii" id="qRk-nU-4Y6"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="MuQ-ZB-BWG" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5336" y="909"/>
+        </scene>
+        <!--Add Portfolio View Controller-->
+        <scene sceneID="cFT-zO-gud">
+            <objects>
+                <viewController storyboardIdentifier="AddPortfolioViewController" id="Rol-fJ-iFZ" customClass="AddPortfolioViewController" customModule="Join" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="T5C-da-OPY">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="rvK-7H-OxU">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </tableView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="ENr-j0-BvP"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="ENr-j0-BvP" firstAttribute="trailing" secondItem="rvK-7H-OxU" secondAttribute="trailing" id="86P-bF-5Sq"/>
+                            <constraint firstItem="rvK-7H-OxU" firstAttribute="top" secondItem="T5C-da-OPY" secondAttribute="top" id="aOg-Ns-tuc"/>
+                            <constraint firstItem="rvK-7H-OxU" firstAttribute="leading" secondItem="ENr-j0-BvP" secondAttribute="leading" id="amE-R9-zII"/>
+                            <constraint firstAttribute="bottom" secondItem="rvK-7H-OxU" secondAttribute="bottom" id="yJP-mj-UkQ"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="tableView" destination="rvK-7H-OxU" id="Mtz-g1-CGJ"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="j0k-kp-8ok" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="6122" y="909"/>
+        </scene>
         <!--Item-->
         <scene sceneID="BFG-DT-NJj">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="uve-gw-xmZ" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="uve-gw-xmZ" customClass="NavigationController" customModule="Join" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Item" id="3AH-AR-pyU"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="oPB-iE-apZ">

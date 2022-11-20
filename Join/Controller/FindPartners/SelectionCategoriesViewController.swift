@@ -26,7 +26,7 @@ class SelectionCategoriesViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        firebaseManager.getAllInterests { [weak self] result in
+        firebaseManager.getPersonalInfo(of: .interests) { [weak self] result in
             switch result {
             case .success(let interests):
                 self?.allCategories = interests

@@ -19,9 +19,16 @@ class MultilineInputCell: TableViewCell {
         textView.addUnderline()
     }
 
-    func layoutCell(info: ItemInfo) {
-        titleLabel.text = info.name
-        mustFillSignLabel.isHidden = !info.must
-        instructionLabel.text = info.instruction
+    func layoutCellForFindPartner(title: String, shouldFill: Bool, instruction: String) {
+        titleLabel.text = title
+        mustFillSignLabel.isHidden = !shouldFill
+        instructionLabel.text = instruction
+    }
+
+    func layoutCellForEditProfile(introduction: String) {
+        titleLabel.text = "請填寫個人簡介"
+        mustFillSignLabel.isHidden = true
+        instructionLabel.isHidden = true
+        textView.text = introduction
     }
 }

@@ -74,7 +74,7 @@ enum FirestoreEndpoint {
         let unknownChat = "UnknownChat"
         let messages = "Messages"
         let members = "Members"
-        let interests = "Categories"
+        let infoCategories = "Categories"
 
         switch self {
         case .projects:
@@ -100,7 +100,7 @@ enum FirestoreEndpoint {
         case .groupMembers(let chatroomID):
             return db.collection(groupChatrooms).document(chatroomID).collection(members)
         case .interests:
-            return db.collection(interests)
+            return db.collection(infoCategories)
         }
     }
 }
@@ -111,6 +111,8 @@ enum FirestoreMyDocumentEndpoint {
     case mySentRequests
     case myUnknownChat
     case myGroupChat
+    case myWorks
+    case myRecordsOfWork(WorkID)
 
     var ref: CollectionReference {
         let db = Firestore.firestore()
@@ -125,6 +127,8 @@ enum FirestoreMyDocumentEndpoint {
         let friends = "Friends"
         let unknownChat = "UnknownChat"
         let groupChats = "GroupChats"
+        let works = "Works"
+        let records = "Records"
 
         switch self {
         case .myPosts:
@@ -137,6 +141,10 @@ enum FirestoreMyDocumentEndpoint {
             return myDoc.collection(unknownChat)
         case .myGroupChat:
             return myDoc.collection(groupChats)
+        case .myWorks:
+            return myDoc.collection(works)
+        case .myRecordsOfWork(let workID):
+            return myDoc.collection(works).document(workID).collection(records)
         }
     }
 }
@@ -149,6 +157,7 @@ enum DocFieldName: String {
 // swiftlint:disable type_body_length
 class FirebaseManager {
     static let shared = FirebaseManager()
+    private init() {}
     let myAuth = Auth.auth()
     var myID: String? {
         UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey)
@@ -248,7 +257,6 @@ class FirebaseManager {
                     return
                 }
                 let urlString = "\(downloadURL)"
-                print("url: ", urlString)
                 completion(.success(urlString))
             }
         }
@@ -455,12 +463,15 @@ class FirebaseManager {
     }
 
     func sendFriendRequest(to id: UserID, completion: @escaping (Result<String, Error>) -> Void) {
+        guard let myID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey) else {
+            fatalError("Doesn't have user id")
+        }
+        let myDocRef = FirestoreEndpoint.users.ref.document(myID)
         firebaseQueue.async { [weak self] in
-            guard let strongSelf = self else { return }
             let group = DispatchGroup()
             group.enter()
             let objectDocRef = FirestoreEndpoint.users.ref.document(id)
-            objectDocRef.updateData(["receivedRequests": [id]]) { error in
+            objectDocRef.updateData(["receivedRequests": FieldValue.arrayUnion([myID])]) { error in
                 if let error = error {
                     group.leave()
                     group.notify(queue: .main) {
@@ -472,11 +483,7 @@ class FirebaseManager {
             }
 
             group.enter()
-            guard let myID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey) else {
-                fatalError("Doesn't have user id")
-            }
-            let myDocRef = FirestoreEndpoint.users.ref.document(myID)
-            myDocRef.updateData(["sentRequests": [myID]]) { error in
+            myDocRef.updateData(["sentRequests": FieldValue.arrayUnion([id])]) { error in
                 if let error = error {
                     group.leave()
                     group.notify(queue: .main) {
@@ -1024,9 +1031,9 @@ class FirebaseManager {
         }
     }
 
-    func getAllInterests(completion: @escaping (Result<[String], Error>) -> Void) {
+    func getPersonalInfo(of type: InfoType, completion: @escaping (Result<[String], Error>) -> Void) {
         let ref = FirestoreEndpoint.interests.ref
-        ref.document("interests").getDocument { (document, error) in
+        ref.document(type.rawValue).getDocument { (document, error) in
             if let error = error {
                 completion(.failure(error))
                 return
@@ -1034,11 +1041,126 @@ class FirebaseManager {
 
             if let document = document {
                 do {
-                    let interestsContainer = try document.data(as: Interest.self, decoder: FirebaseManager.decoder)
-                    completion(.success(interestsContainer.interests))
+                    let infoContainer = try document.data(as: PersonalInfoContainer.self, decoder: FirebaseManager.decoder)
+                    completion(.success(infoContainer.items))
                 } catch {
                     completion(.failure(error))
                 }
+            } else {
+                completion(.failure(CommonError.noValidQuerysnapshot))
+            }
+        }
+    }
+
+    func updatePersonalInfo(of type: InfoType, info: [String], completion: @escaping (Result<String, Error>) -> Void) {
+        guard let myID = myID else { fatalError("Doesn't have myID") }
+        let ref = FirestoreEndpoint.users.ref
+        ref.document(myID).updateData([type.rawValue: info]) { err in
+            if let err = err {
+                completion(.failure(err))
+            }
+            completion(.success("Success"))
+        }
+    }
+
+    func addNewWork(work: Work,completion: @escaping (Result<WorkID, Error>) -> Void ) {
+        let ref = FirestoreMyDocumentEndpoint.myWorks.ref
+        let workID = ref.document().documentID
+        var work = work
+        work.workID = workID
+        work.latestUpdatedTime = Date()
+
+        ref.document(workID).setData(work.toDict) { err in
+            if let err = err {
+                completion(.failure(err))
+                return
+            }
+            completion(.success(workID))
+        }
+    }
+
+    func addNewRecords(records: [WorkRecord],to myWorkID: WorkID, completion: @escaping (Result<[RecordID], Error>) -> Void) {
+        let ref = FirestoreMyDocumentEndpoint.myRecordsOfWork(myWorkID).ref
+        let recordID = ref.document().documentID
+
+        let group = DispatchGroup()
+        var shouldContinue = true
+        var recordsIDs = [RecordID]()
+        for record in records {
+            group.enter()
+            guard shouldContinue else { return }
+            let recordID = ref.document().documentID
+            var record = record
+            record.recordID = recordID
+            ref.document(recordID).setData(record.toDict) { err in
+                if let err = err {
+                    group.leave()
+                    group.notify(queue: .main) {
+                        completion(.failure(err))
+                    }
+                    shouldContinue = false
+                    return
+                }
+                recordsIDs.append(recordID)
+                group.leave()
+            }
+        }
+        group.notify(queue: .main) {
+            if shouldContinue {
+                completion(.success(recordsIDs))
+            }
+        }
+    }
+
+    func updateWorkRecordsOrder(of workID: WorkID, by ordersIDs: [RecordID], completion: @escaping (Result<String, Error>) -> Void) {
+        let ref = FirestoreMyDocumentEndpoint.myWorks.ref
+        ref.document(workID).updateData(["recordsOrder": ordersIDs]) { err in
+            if let err = err {
+                completion(.failure(err))
+                return
+            }
+            completion(.success(workID))
+        }
+    }
+
+    func getUserWorks(userID: UserID, completion: @escaping (Result<[Work], Error>) -> Void) {
+//        let ref = FirestoreMyDocumentEndpoint.myWorks.ref
+        let ref = FirestoreEndpoint.users.ref.document(userID).collection("Works")
+        ref.getDocuments { (snapshot, err) in
+            if let err = err {
+                completion(.failure(err))
+            }
+            if let snapshot = snapshot {
+                let works: [Work] = snapshot.documents.compactMap {
+                    do {
+                        return try $0.data(as: Work.self, decoder: FirebaseManager.decoder)
+                    } catch {
+                        return nil
+                    }
+                }
+                completion(.success(works))
+            } else {
+                completion(.failure(CommonError.noValidQuerysnapshot))
+            }
+        }
+    }
+
+    func getWorkRecords(userID: UserID, by workID: WorkID, completion: @escaping (Result<[WorkRecord], Error>) -> Void) {
+//        let ref = FirestoreMyDocumentEndpoint.myRecordsOfWork(workID).ref
+        let ref = FirestoreEndpoint.users.ref.document(userID).collection("Works").document(workID).collection("Records")
+        ref.getDocuments { (snapshot, err) in
+            if let err = err {
+                completion(.failure(err))
+            }
+            if let snapshot = snapshot {
+                let workRecords: [WorkRecord] = snapshot.documents.compactMap {
+                    do {
+                        return try $0.data(as: WorkRecord.self, decoder: FirebaseManager.decoder)
+                    } catch {
+                        return nil
+                    }
+                }
+                completion(.success(workRecords))
             } else {
                 completion(.failure(CommonError.noValidQuerysnapshot))
             }

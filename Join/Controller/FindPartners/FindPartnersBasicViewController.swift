@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import ProgressHUD
 import FirebaseAuth
 
 class FindPartnersBasicViewController: BaseViewController {
@@ -143,15 +142,12 @@ class FindPartnersBasicViewController: BaseViewController {
 
     func post() {
         firebaseManager.postNewProject(project: project, image: image) { [weak self] result in
-            ProgressHUD.dismiss()
             switch result {
             case .success:
                 // FIXME: - 順序不對，應該要在showSucceed結束後再跳轉
                 // FIXME: - 頁面沒有被清空
-                ProgressHUD.showSucceed()
                 self?.tabBarController?.selectedIndex = 0
             case .failure(let error):
-                ProgressHUD.showFailed()
                 print(error)
             }
         }
@@ -163,7 +159,7 @@ extension FindPartnersBasicViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let inputType = formState.items[indexPath.row].type
         if inputType == .goNextButton {
-            // 使用 TTGTag 似乎無法用 automaticDimension 推開 cell
+            // 使用 TTGTag 似乎無 法用 automaticDimension 推開 cell
             return 200
         } else if inputType == .addButton {
             return UITableView.automaticDimension
@@ -204,7 +200,10 @@ extension FindPartnersBasicViewController: UITableViewDataSource {
                 for: indexPath) as? MultilineInputCell else {
                 fatalError("Cannot create single line input cell")
             }
-            cell.layoutCell(info: formState.items[indexPath.row])
+            cell.layoutCellForFindPartner(
+                title: formState.items[indexPath.row].name,
+                shouldFill: formState.items[indexPath.row].must,
+                instruction: formState.items[indexPath.row].instruction ?? "")
             cell.textView.delegate = self
             return cell
 

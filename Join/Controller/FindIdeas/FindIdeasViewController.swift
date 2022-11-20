@@ -63,7 +63,7 @@ class FindIdeasViewController: BaseViewController {
 
     func layoutViews() {
         title = Tab.findIdeas.title
-        collectionView.backgroundColor = UIColor.Gray5
+        collectionView.backgroundColor = UIColor.Gray6
     }
 
     func getProjects() {

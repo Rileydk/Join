@@ -7,6 +7,12 @@
 
 import UIKit
 
+enum JImages: String {
+    // swiftlint:disable identifier_name
+    case Icons_24px_Back
+    case Icons_24px_Close
+}
+
 extension UIImage {
     enum ImageQuality: CGFloat {
         case lowest = 0

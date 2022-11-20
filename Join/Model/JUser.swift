@@ -13,6 +13,7 @@ enum Relationship: CaseIterable {
     case sentRequest
     case receivedRequest
     case unknown
+    case mySelf
 
     var title: String {
         switch self {
@@ -20,6 +21,7 @@ enum Relationship: CaseIterable {
         case .sentRequest: return "已送出邀請"
         case .receivedRequest: return "接受邀請"
         case .unknown: return "加為好友"
+        default: return ""
         }
     }
 }
@@ -31,6 +33,7 @@ struct JUser: Codable, Hashable {
     var name: String
     var email: String
     var thumbnailURL: URLString?
+    var introduction: String?
     var interests = [String]()
     var skills = [String]()
     var sentRequests = [UserID]()
@@ -42,8 +45,11 @@ struct JUser: Codable, Hashable {
             "name": name as Any,
             "email": email as Any,
             "thumbnailURL": thumbnailURL as Any,
+            "introduction": introduction as Any,
             "interests": interests as Any,
-            "skills": skills as Any
+            "skills": skills as Any,
+            "sentRequests": sentRequests as Any,
+            "receivedRequests": receivedRequests as Any
         ]
     }
 }

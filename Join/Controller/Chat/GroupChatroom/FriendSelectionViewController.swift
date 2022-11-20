@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import ProgressHUD
 
 class FriendSelectionViewController: BaseViewController {
     enum Source {
@@ -24,6 +23,8 @@ class FriendSelectionViewController: BaseViewController {
     var selectedIndexes = [Int]()
     var selectedFriends = [JUser]()
 
+    var searchController = UISearchController()
+    
     @IBOutlet weak var tableView: UITableView! {
         didSet {
             tableView.register(
@@ -34,11 +35,10 @@ class FriendSelectionViewController: BaseViewController {
             tableView.dataSource = self
             tableView.separatorStyle = .none
             tableView.allowsMultipleSelection = true
-            tableView.backgroundColor = .Gray5
+            tableView.backgroundColor = .Gray6
         }
     }
 
-    var searchController = UISearchController()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -100,7 +100,6 @@ class FriendSelectionViewController: BaseViewController {
         firebaseManager.addNewGroupChatMembers(chatroomID: chatroomID, selectedMembers: newMembers) { [weak self] result in
             switch result {
             case .success:
-                ProgressHUD.showSucceed()
 
                 guard let chatroomVC = self?.navigationController?.viewControllers
                     .dropLast().dropLast().last! else {
@@ -109,7 +108,6 @@ class FriendSelectionViewController: BaseViewController {
                 self?.navigationController?.popToViewController(chatroomVC, animated: true)
 
             case .failure(let err):
-                ProgressHUD.showError()
                 print(err)
             }
         }
@@ -151,7 +149,7 @@ extension FriendSelectionViewController: UITableViewDataSource {
         let friend = filteredFriends[indexPath.row]
         guard let cell = tableView.dequeueReusableCell(
             withIdentifier: FriendCell.identifier, for: indexPath
-        ) as? FriendCell else {
+            ) as? FriendCell else {
             fatalError("Cannot create friend cell")
         }
 

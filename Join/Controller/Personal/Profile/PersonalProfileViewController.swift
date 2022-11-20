@@ -10,48 +10,270 @@ import UIKit
 class PersonalProfileViewController: BaseViewController {
     enum Section: CaseIterable {
         case person
+        case buttons
+        case introduction
+        case skills
+//        case interests
+        case portfolio
     }
 
     enum Item: Hashable {
         case person(JUser)
+        case buttons(Relationship)
+        case introduction(String)
+        case skills(String)
+//        case interests(String)
+        case portfolio(WorkItem)
     }
 
     typealias ProfileDatasource = UICollectionViewDiffableDataSource<Section, Item>
     private var datasource: ProfileDatasource!
     let firebaseManager = FirebaseManager.shared
-    var userData: JUser?
+    let cellBackgroundColor: UIColor = .Gray6 ?? .white
+    var userID: UserID?
+    var userData: JUser? {
+        didSet {
+            layoutViews()
+        }
+    }
+    var relationship: Relationship?
+    var workItems = [WorkItem]()
 
     @IBOutlet weak var collectionView: UICollectionView! {
         didSet {
             collectionView.register(
-                UINib(nibName: PersonBasicCell.identifier, bundle: nil),
-                forCellWithReuseIdentifier: PersonBasicCell.identifier
+                UINib(nibName: PersonalMainThumbnailCollectionCell.identifier, bundle: nil),
+                forCellWithReuseIdentifier: PersonalMainThumbnailCollectionCell.identifier
             )
+            collectionView.register(
+                UINib(nibName: ProfileActionButtonsCell.identifier, bundle: nil),
+                forCellWithReuseIdentifier: ProfileActionButtonsCell.identifier)
+            collectionView.register(
+                UINib(nibName: RelationshipButtonsCell.identifier, bundle: nil),
+                forCellWithReuseIdentifier: RelationshipButtonsCell.identifier)
+            collectionView.register(
+                UINib(nibName: SelfIntroductionCell.identifier, bundle: nil),
+                forCellWithReuseIdentifier: SelfIntroductionCell.identifier)
+            collectionView.register(
+                UINib(nibName: TagCell.identifier, bundle: nil),
+                forCellWithReuseIdentifier: TagCell.identifier)
+            collectionView.register(
+                UINib(nibName: PortfolioCardCell.identifier, bundle: nil),
+                forCellWithReuseIdentifier: PortfolioCardCell.identifier)
+
             collectionView.setCollectionViewLayout(createLayout(), animated: true)
             configureDatasource()
+            collectionView.delegate = self
         }
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = userData?.name
+        navigationItem.setHidesBackButton(true, animated: false)
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         updateData()
+        print("relationship:", relationship)
+    }
+
+    func layoutViews() {
+        title = userData?.name
+        collectionView.backgroundColor = .Gray6
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            image: UIImage(named: JImages.Icons_24px_Back.rawValue), style: .plain,
+            target: self, action: #selector(backToPreviousPage))
     }
 
     func updateData() {
-        let myID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey) ?? ""
-        firebaseManager.getUserInfo(id: myID) { [weak self] result in
-            guard let id = self?.userData?.id else { return }
+        guard let userID = userID else {
+            fatalError("Doesn't have user id")
+        }
+
+        JProgressHUD.shared.showLoading(view: self.view)
+
+        let group = DispatchGroup()
+        var shouldContinue = true
+
+        firebaseManager.firebaseQueue.async { [weak self] in
+            guard let self = self else { return }
+            self.firebaseManager.getUserInfo(id: userID) { result in
+                switch result {
+                case .success(let userData):
+                    self.userData = userData
+                case .failure(let err):
+                    JProgressHUD.shared.showFailure(text: err.localizedDescription, view: self.view)
+                }
+            }
+
+            if userID != UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey) {
+                group.enter()
+                self.getRelationship { result in
+                    switch result {
+                    case .success:
+                        group.leave()
+                    case .failure(let err):
+                        JProgressHUD.shared.showFailure(text: err.localizedDescription, view: self.view)
+                        group.leave()
+                        shouldContinue = false
+                    }
+                }
+            } else {
+                self.relationship = .mySelf
+            }
+
+            group.enter()
+            guard shouldContinue else { return }
+            self.firebaseManager.getUserWorks(userID: userID) { result in
+                switch result {
+                case .success(let works):
+                    self.workItems = works.map {
+                        WorkItem(workID: $0.workID, name: $0.name,
+                                 description: $0.description,
+                                 latestUpdatedTime: $0.latestUpdatedTime, records: [])
+                    }
+                    group.leave()
+                case .failure(let err):
+                    JProgressHUD.shared.showFailure(text: err.localizedDescription, view: self.view)
+                    shouldContinue = false
+                    group.leave()
+                }
+            }
+
+            group.wait()
+            guard shouldContinue else { return }
+            for i in 0 ..< self.workItems.count {
+                guard shouldContinue else { return }
+                group.enter()
+                self.firebaseManager.getWorkRecords(userID: userID, by: self.workItems[i].workID) { result in
+                    switch result {
+                    case .success(let records):
+                        self.workItems[i].records = records
+                        group.leave()
+                    case .failure(let err):
+                        JProgressHUD.shared.showFailure(text: err.localizedDescription, view: self.view)
+                        shouldContinue = false
+                        group.leave()
+                    }
+                }
+            }
+            group.notify(queue: .main) {
+                self.updateDatasource()
+                JProgressHUD.shared.dismiss()
+            }
+        }
+    }
+
+    func getRelationship(completion: @escaping (Result<String, Error>) -> Void) {
+        firebaseManager.firebaseQueue.async { [weak self] in
+            var shouldContinue = true
+
+            let group = DispatchGroup()
+            group.enter()
+            guard let objectID = self?.userID else { return }
+            self?.firebaseManager.checkIsFriend(id: objectID) { result in
+                switch result {
+                case .success:
+                    self?.relationship = .friend
+                    group.leave()
+                    group.notify(queue: .main) {
+                        completion(.success("Success"))
+                    }
+                    shouldContinue = false
+                case .failure(let error):
+                    print(error)
+                    group.leave()
+                }
+            }
+
+            group.wait()
+            guard shouldContinue else { return }
+            group.enter()
+            let myID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey) ?? ""
+            self?.firebaseManager.getUserInfo(id: myID) { result in
+                switch result {
+                case .success(let myData):
+                    if myData.sentRequests.contains(objectID) {
+                        self?.relationship = .sentRequest
+                    } else if myData.receivedRequests.contains(objectID) {
+                        self?.relationship = .receivedRequest
+                    } else {
+                        self?.relationship = .unknown
+                    }
+                    group.leave()
+                    group.notify(queue: .main) {
+                        completion(.success("Success"))
+                    }
+                case .failure(let err):
+                    group.leave()
+                    group.notify(queue: .main) {
+                        completion(.failure(err))
+                    }
+                }
+            }
+        }
+    }
+
+    @objc func editPersonalInfo() {
+        let personalStoryboard = UIStoryboard(name: StoryboardCategory.personal.rawValue, bundle: nil)
+        guard let personalProfileEditVC = personalStoryboard.instantiateViewController(
+            withIdentifier: PersonalProfileEditViewController.identifier
+            ) as? PersonalProfileEditViewController else {
+            fatalError("Cannot load personal profile edit vc")
+        }
+
+        navigationController?.pushViewController(personalProfileEditVC, animated: true)
+    }
+
+    @objc func backToPreviousPage() {
+        navigationController?.popViewController(animated: true)
+    }
+
+    func sendFriendRequest(id: UserID?) {
+        guard let id = id else { fatalError("Cannot get userID") }
+        self.firebaseManager.sendFriendRequest(to: id) { [unowned self] result in
             switch result {
-            case .success(let userData):
-                self?.userData = userData
-                self?.updateDatasource()
-            case .failure(let err):
-                print(err)
+            case .success:
+                self.updateData()
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
+
+    func acceptFriendRequest(id: UserID?) {
+        guard let id = id else { fatalError("Cannot get userID") }
+        self.firebaseManager.acceptFriendRequest(from: id) { [unowned self] result in
+            switch result {
+            case .success:
+                self.updateData()
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
+
+    func goChatroom() {
+        guard let id = userID else { return }
+        firebaseManager.getChatroom(id: id) { [unowned self] result in
+            switch result {
+            case .success(let chatroomID):
+                let chatStoryboard = UIStoryboard(name: StoryboardCategory.chat.rawValue, bundle: nil)
+                guard let chatVC = chatStoryboard.instantiateViewController(
+                    withIdentifier: ChatroomViewController.identifier
+                ) as? ChatroomViewController else {
+                    fatalError("Cannot create chatroom vc")
+                }
+                chatVC.userData = userData
+                chatVC.chatroomID = chatroomID
+                self.hidesBottomBarWhenPushed = true
+                DispatchQueue.main.async { [unowned self] in
+                    self.hidesBottomBarWhenPushed = false
+                }
+                navigationController?.pushViewController(chatVC, animated: true)
+            case .failure(let error):
+                print(error)
             }
         }
     }
@@ -68,11 +290,93 @@ extension PersonalProfileViewController {
 
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1),
-            heightDimension: .fractionalHeight(0.3)
+            heightDimension: .absolute(180)
         )
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
 
         let section = NSCollectionLayoutSection(group: group)
+        return section
+    }
+
+    func createActionButtonsSection() -> NSCollectionLayoutSection {
+        let itemSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1),
+            heightDimension: .fractionalHeight(1)
+        )
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+
+        let groupSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1),
+            heightDimension: .absolute(60)
+        )
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+
+        let section = NSCollectionLayoutSection(group: group)
+        return section
+    }
+
+    func createIntroductionSection() -> NSCollectionLayoutSection {
+        let itemSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1),
+            heightDimension: .estimated(100)
+        )
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+
+        let groupSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1),
+            heightDimension: .estimated(100)
+        )
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+
+        let section = NSCollectionLayoutSection(group: group)
+        return section
+    }
+
+    func createSkillTagsSection() -> NSCollectionLayoutSection {
+        let itemSize = NSCollectionLayoutSize(
+            widthDimension: .estimated(100),
+            heightDimension: .absolute(24)
+        )
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+
+        let groupSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1),
+            heightDimension: itemSize.heightDimension
+        )
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+        group.interItemSpacing = .fixed(8)
+
+        let section = NSCollectionLayoutSection(group: group)
+        section.interGroupSpacing = 8
+        section.contentInsets = .init(top: 10, leading: 32, bottom: 10, trailing: 32)
+        return section
+    }
+
+    func createPortfolioSection() -> NSCollectionLayoutSection {
+        let itemSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1),
+            heightDimension: .fractionalHeight(1)
+        )
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+
+        let groupSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1),
+            heightDimension: .fractionalWidth(0.68)
+        )
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+
+        let section = NSCollectionLayoutSection(group: group)
+        section.interGroupSpacing = 12
+
+        let headerSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalHeight(1),
+            heightDimension: .absolute(60))
+        let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(
+            layoutSize: headerSize,
+            elementKind: UICollectionView.elementKindSectionHeader,
+            alignment: .topLeading)
+        section.boundarySupplementaryItems = [sectionHeader]
+
         return section
     }
 
@@ -82,6 +386,14 @@ extension PersonalProfileViewController {
         switch section {
         case .person:
             return createPersonSection()
+        case .buttons:
+            return createActionButtonsSection()
+        case .introduction:
+            return createIntroductionSection()
+        case .skills:
+            return createSkillTagsSection()
+        case .portfolio:
+            return createPortfolioSection()
         }
     }
 
@@ -99,6 +411,15 @@ extension PersonalProfileViewController {
         datasource = ProfileDatasource(collectionView: collectionView) { [weak self] (collectionView, indexPath, item) -> UICollectionViewCell? in
             return self?.createCell(collectionView: collectionView, indexPath: indexPath, item: item)
         }
+
+        let headerRegistration = UICollectionView
+            .SupplementaryRegistration<CollectionSimpleHeaderView>(
+                elementKind: UICollectionView.elementKindSectionHeader) { _, _, _ in }
+        datasource.supplementaryViewProvider = { [weak self] (_, _, index) in
+            self?.collectionView.dequeueConfiguredReusableSupplementary(
+                using: headerRegistration, for: index)
+        }
+
         updateDatasource()
     }
 
@@ -107,11 +428,76 @@ extension PersonalProfileViewController {
         switch item {
         case .person(let user):
             guard let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: PersonBasicCell.identifier,
-                for: indexPath) as? PersonBasicCell else {
-                fatalError("Cannot create personal basic cell")
+                withReuseIdentifier: PersonalMainThumbnailCollectionCell.identifier,
+                for: indexPath) as? PersonalMainThumbnailCollectionCell else {
+                fatalError("Cannot create person main thumbnail cell")
             }
-            cell.layoutCell(withSelf: user)
+            cell.layoutCell(user: user, backgroundColor: cellBackgroundColor)
+            return cell
+
+        case .buttons:
+            if userID == UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey) {
+                guard let cell = collectionView.dequeueReusableCell(
+                    withReuseIdentifier: ProfileActionButtonsCell.identifier,
+                    for: indexPath) as? ProfileActionButtonsCell else {
+                    fatalError("Cannot create person main thumbnail cell")
+                }
+                cell.layoutCell(backgroundColor: cellBackgroundColor)
+                cell.editProfileHandler = { [weak self] in
+                    let personalStoryboard = UIStoryboard(name: StoryboardCategory.personal.rawValue, bundle: nil)
+                    guard let personalProfileEditVC = personalStoryboard.instantiateViewController(
+                        withIdentifier: PersonalProfileEditViewController.identifier
+                        ) as? PersonalProfileEditViewController else {
+                        fatalError("Cannot load personal profile edit vc")
+                    }
+                    self?.navigationController?.pushViewController(personalProfileEditVC, animated: true)
+                }
+                return cell
+
+            } else {
+                guard let cell = collectionView.dequeueReusableCell(
+                    withReuseIdentifier: RelationshipButtonsCell.identifier,
+                    for: indexPath) as? RelationshipButtonsCell else {
+                    fatalError("Cannot create personal basic cell")
+                }
+                cell.layoutCell(with: relationship)
+                cell.sendFriendRequestHandler = { [weak self] in
+                    self?.sendFriendRequest(id: self?.userID)
+                }
+                cell.acceptFriendRequestHandler = { [weak self] in
+                    self?.acceptFriendRequest(id: self?.userID)
+                }
+                cell.goChatroomHandler = { [weak self] in
+                    self?.goChatroom()
+                }
+                return cell
+            }
+
+        case .introduction(let introduction):
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: SelfIntroductionCell.identifier,
+                for: indexPath) as? SelfIntroductionCell else {
+                fatalError("Cannot create person main thumbnail cell")
+            }
+            cell.layoutCell(content: introduction, backgroundColor: cellBackgroundColor)
+            return cell
+
+        case .skills(let item):
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: TagCell.identifier,
+                for: indexPath) as? TagCell else {
+                fatalError("Cannot create person main thumbnail cell")
+            }
+            cell.layoutCell(item: item)
+            return cell
+
+        case .portfolio(let workItem):
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: PortfolioCardCell.identifier,
+                for: indexPath) as? PortfolioCardCell else {
+                fatalError("Cannot create person main thumbnail cell")
+            }
+            cell.layoutCell(workItem: workItem)
             return cell
         }
     }
@@ -121,8 +507,29 @@ extension PersonalProfileViewController {
         snapshot.appendSections(Section.allCases)
         if let userData = userData {
             snapshot.appendItems([.person(userData)], toSection: .person)
+
+            if let relationship = relationship {
+                snapshot.appendItems([.buttons(relationship)], toSection: .buttons)
+            }
+
+            if !userData.skills.isEmpty {
+                snapshot.appendItems(userData.skills.map { .skills($0) }, toSection: .skills)
+            }
+            if let introduction = userData.introduction, !introduction.isEmpty {
+                snapshot.appendItems([.introduction(introduction)], toSection: .introduction)
+            }
+            if !workItems.isEmpty {
+                snapshot.appendItems(workItems.map { .portfolio($0) }, toSection: .portfolio)
+            }
         }
 
         datasource.apply(snapshot, animatingDifferences: false)
+    }
+}
+
+// MARK: - Collection View Delegate
+extension PersonalProfileViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print("see work detail")
     }
 }

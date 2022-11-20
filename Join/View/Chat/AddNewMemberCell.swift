@@ -17,7 +17,7 @@ class AddNewMemberCell: TableViewCell {
         super.awakeFromNib()
         addButton.layer.borderWidth = 1
         addButton.layer.borderColor = UIColor.Gray3?.cgColor
-        contentView.backgroundColor = .Gray5
+        contentView.backgroundColor = .Gray6
     }
 
     override func layoutSubviews() {

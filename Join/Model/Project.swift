@@ -79,6 +79,6 @@ struct OpenPosition: Hashable, Codable {
     }
 }
 
-struct Interest: Codable {
-    var interests = [String]()
+struct PersonalInfoContainer: Codable {
+    var items = [String]()
 }

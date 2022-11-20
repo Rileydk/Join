@@ -26,7 +26,7 @@ class ChatListCell: TableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         unreadMessagesAmountButton.isHidden = true
-        contentView.backgroundColor = .Gray5
+        contentView.backgroundColor = .Gray6
         nameLabel.text = ""
         latestMessageLabel.text = ""
     }

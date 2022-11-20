@@ -94,7 +94,7 @@
         <!--Item-->
         <scene sceneID="sdM-tg-TIK">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="1Sn-Vs-PDV" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="1Sn-Vs-PDV" customClass="NavigationController" customModule="Join" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Item" id="zpj-R2-94n"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="0Vf-5W-BzB">

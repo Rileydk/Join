@@ -13,11 +13,6 @@ let newMemberID = "Pb4yAKffHnXcyIUq9Yp"
 let passengerID = "qvHLIRigbf5UnExgyr8t"
 
 class MockLoginViewController: BaseViewController {
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        print("mock login view will appear", UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey))
-    }
-
     @IBAction func chooseRiley(_ sender: UIButton) {
         saveToUserDefaults(userID: rileyID) { [weak self] result in
             switch result {

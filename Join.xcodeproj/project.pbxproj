@@ -14,6 +14,33 @@
 		BF02714C29238D42000EA2F8 /* SingleLineInputCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF02714A29238D42000EA2F8 /* SingleLineInputCell.swift */; };
 		BF02714D29238D42000EA2F8 /* SingleLineInputCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF02714B29238D42000EA2F8 /* SingleLineInputCell.xib */; };
 		BF0271592924E3D8000EA2F8 /* UserDefaults+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF0271582924E3D8000EA2F8 /* UserDefaults+Ext.swift */; };
+		BF12943E2929D7E800AA631E /* CollectionSimpleHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF12943D2929D7E800AA631E /* CollectionSimpleHeaderView.swift */; };
+		BF1294402929D85B00AA631E /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF12943F2929D85B00AA631E /* Constants.swift */; };
+		BF1294432929E7FA00AA631E /* TagCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1294412929E7FA00AA631E /* TagCell.swift */; };
+		BF1294442929E7FA00AA631E /* TagCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF1294422929E7FA00AA631E /* TagCell.xib */; };
+		BF1294462929EB2500AA631E /* PaddingableLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1294452929EB2500AA631E /* PaddingableLabel.swift */; };
+		BF1294482929FEDA00AA631E /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1294472929FEDA00AA631E /* NavigationController.swift */; };
+		BF12944B292A0AA200AA631E /* RelationshipButtonsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF129449292A0AA200AA631E /* RelationshipButtonsCell.swift */; };
+		BF12944C292A0AA200AA631E /* RelationshipButtonsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF12944A292A0AA200AA631E /* RelationshipButtonsCell.xib */; };
+		BF3D8352292736CD009F903F /* PersonalInfoSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3D8351292736CD009F903F /* PersonalInfoSelectionViewController.swift */; };
+		BF3D835529273740009F903F /* OneSelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3D835329273740009F903F /* OneSelectionCell.swift */; };
+		BF3D835629273740009F903F /* OneSelectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF3D835429273740009F903F /* OneSelectionCell.xib */; };
+		BF3D835929275FD3009F903F /* JGProgressHUDWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3D835829275FD3009F903F /* JGProgressHUDWrapper.swift */; };
+		BF3D835B29278208009F903F /* Work.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3D835A29278208009F903F /* Work.swift */; };
+		BF3D835E2927873C009F903F /* AddPortfolioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3D835D2927873C009F903F /* AddPortfolioViewController.swift */; };
+		BF3D836229278D63009F903F /* WorkRecordCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3D836029278D63009F903F /* WorkRecordCell.swift */; };
+		BF3D836329278D63009F903F /* WorkRecordCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF3D836129278D63009F903F /* WorkRecordCell.xib */; };
+		BF3D83652927A1B6009F903F /* KingFisherWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3D83642927A1B6009F903F /* KingFisherWrapper.swift */; };
+		BF3D83672927A5D8009F903F /* WorkHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3D83662927A5D8009F903F /* WorkHeaderView.swift */; };
+		BF3D83692927A609009F903F /* WorkHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF3D83682927A609009F903F /* WorkHeaderView.xib */; };
+		BF3D836F2928CDAF009F903F /* PersonalMainThumbnailCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3D836D2928CDAF009F903F /* PersonalMainThumbnailCollectionCell.swift */; };
+		BF3D83702928CDAF009F903F /* PersonalMainThumbnailCollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF3D836E2928CDAF009F903F /* PersonalMainThumbnailCollectionCell.xib */; };
+		BF3D83742928D11D009F903F /* ProfileActionButtonsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3D83722928D11D009F903F /* ProfileActionButtonsCell.swift */; };
+		BF3D83752928D11D009F903F /* ProfileActionButtonsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF3D83732928D11D009F903F /* ProfileActionButtonsCell.xib */; };
+		BF3D83782928D9B8009F903F /* SelfIntroductionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3D83762928D9B8009F903F /* SelfIntroductionCell.swift */; };
+		BF3D83792928D9B8009F903F /* SelfIntroductionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF3D83772928D9B8009F903F /* SelfIntroductionCell.xib */; };
+		BF3D837C2928E231009F903F /* PortfolioCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3D837A2928E231009F903F /* PortfolioCardCell.swift */; };
+		BF3D837D2928E231009F903F /* PortfolioCardCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF3D837B2928E231009F903F /* PortfolioCardCell.xib */; };
 		BF42FA35290BE2AA00501789 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FA34290BE2AA00501789 /* AppDelegate.swift */; };
 		BF42FA37290BE2AA00501789 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FA36290BE2AA00501789 /* SceneDelegate.swift */; };
 		BF42FA39290BE2AA00501789 /* FindIdeasViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FA38290BE2AA00501789 /* FindIdeasViewController.swift */; };
@@ -122,6 +149,33 @@
 		BF02714A29238D42000EA2F8 /* SingleLineInputCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleLineInputCell.swift; sourceTree = "<group>"; };
 		BF02714B29238D42000EA2F8 /* SingleLineInputCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SingleLineInputCell.xib; sourceTree = "<group>"; };
 		BF0271582924E3D8000EA2F8 /* UserDefaults+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+Ext.swift"; sourceTree = "<group>"; };
+		BF12943D2929D7E800AA631E /* CollectionSimpleHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionSimpleHeaderView.swift; sourceTree = "<group>"; };
+		BF12943F2929D85B00AA631E /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		BF1294412929E7FA00AA631E /* TagCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagCell.swift; sourceTree = "<group>"; };
+		BF1294422929E7FA00AA631E /* TagCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TagCell.xib; sourceTree = "<group>"; };
+		BF1294452929EB2500AA631E /* PaddingableLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddingableLabel.swift; sourceTree = "<group>"; };
+		BF1294472929FEDA00AA631E /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
+		BF129449292A0AA200AA631E /* RelationshipButtonsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RelationshipButtonsCell.swift; sourceTree = "<group>"; };
+		BF12944A292A0AA200AA631E /* RelationshipButtonsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RelationshipButtonsCell.xib; sourceTree = "<group>"; };
+		BF3D8351292736CD009F903F /* PersonalInfoSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalInfoSelectionViewController.swift; sourceTree = "<group>"; };
+		BF3D835329273740009F903F /* OneSelectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneSelectionCell.swift; sourceTree = "<group>"; };
+		BF3D835429273740009F903F /* OneSelectionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OneSelectionCell.xib; sourceTree = "<group>"; };
+		BF3D835829275FD3009F903F /* JGProgressHUDWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JGProgressHUDWrapper.swift; sourceTree = "<group>"; };
+		BF3D835A29278208009F903F /* Work.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Work.swift; sourceTree = "<group>"; };
+		BF3D835D2927873C009F903F /* AddPortfolioViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPortfolioViewController.swift; sourceTree = "<group>"; };
+		BF3D836029278D63009F903F /* WorkRecordCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkRecordCell.swift; sourceTree = "<group>"; };
+		BF3D836129278D63009F903F /* WorkRecordCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WorkRecordCell.xib; sourceTree = "<group>"; };
+		BF3D83642927A1B6009F903F /* KingFisherWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KingFisherWrapper.swift; sourceTree = "<group>"; };
+		BF3D83662927A5D8009F903F /* WorkHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkHeaderView.swift; sourceTree = "<group>"; };
+		BF3D83682927A609009F903F /* WorkHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WorkHeaderView.xib; sourceTree = "<group>"; };
+		BF3D836D2928CDAF009F903F /* PersonalMainThumbnailCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalMainThumbnailCollectionCell.swift; sourceTree = "<group>"; };
+		BF3D836E2928CDAF009F903F /* PersonalMainThumbnailCollectionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PersonalMainThumbnailCollectionCell.xib; sourceTree = "<group>"; };
+		BF3D83722928D11D009F903F /* ProfileActionButtonsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileActionButtonsCell.swift; sourceTree = "<group>"; };
+		BF3D83732928D11D009F903F /* ProfileActionButtonsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProfileActionButtonsCell.xib; sourceTree = "<group>"; };
+		BF3D83762928D9B8009F903F /* SelfIntroductionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfIntroductionCell.swift; sourceTree = "<group>"; };
+		BF3D83772928D9B8009F903F /* SelfIntroductionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SelfIntroductionCell.xib; sourceTree = "<group>"; };
+		BF3D837A2928E231009F903F /* PortfolioCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortfolioCardCell.swift; sourceTree = "<group>"; };
+		BF3D837B2928E231009F903F /* PortfolioCardCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PortfolioCardCell.xib; sourceTree = "<group>"; };
 		BF42FA31290BE2AA00501789 /* Join.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Join.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF42FA34290BE2AA00501789 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BF42FA36290BE2AA00501789 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -268,8 +322,73 @@
 				BFF8A4CF2914C2E300ADC950 /* PersonalProfileViewController.swift */,
 				BFF8A4D52915009B00ADC950 /* OthersProfileViewController.swift */,
 				BF02714729238B8F000EA2F8 /* PersonalProfileEditViewController.swift */,
+				BF3D8351292736CD009F903F /* PersonalInfoSelectionViewController.swift */,
 			);
 			path = Profile;
+			sourceTree = "<group>";
+		};
+		BF3D835729275FA9009F903F /* Third Party Wrapper */ = {
+			isa = PBXGroup;
+			children = (
+				BF3D835829275FD3009F903F /* JGProgressHUDWrapper.swift */,
+				BF3D83642927A1B6009F903F /* KingFisherWrapper.swift */,
+			);
+			path = "Third Party Wrapper";
+			sourceTree = "<group>";
+		};
+		BF3D835C292785A6009F903F /* Portfolio */ = {
+			isa = PBXGroup;
+			children = (
+				BF3D835D2927873C009F903F /* AddPortfolioViewController.swift */,
+			);
+			path = Portfolio;
+			sourceTree = "<group>";
+		};
+		BF3D835F29278D13009F903F /* Portfolio */ = {
+			isa = PBXGroup;
+			children = (
+				BF3D836029278D63009F903F /* WorkRecordCell.swift */,
+				BF3D836129278D63009F903F /* WorkRecordCell.xib */,
+				BF3D83662927A5D8009F903F /* WorkHeaderView.swift */,
+				BF3D83682927A609009F903F /* WorkHeaderView.xib */,
+			);
+			path = Portfolio;
+			sourceTree = "<group>";
+		};
+		BF3D83712928D0CF009F903F /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				BF3D837E2928E242009F903F /* Edit */,
+				BFF8A4C72913EE4C00ADC950 /* PersonalMainThumbnailCell.swift */,
+				BFF8A4C82913EE4C00ADC950 /* PersonalMainThumbnailCell.xib */,
+				BF3D836D2928CDAF009F903F /* PersonalMainThumbnailCollectionCell.swift */,
+				BF3D836E2928CDAF009F903F /* PersonalMainThumbnailCollectionCell.xib */,
+				BF3D83722928D11D009F903F /* ProfileActionButtonsCell.swift */,
+				BF3D83732928D11D009F903F /* ProfileActionButtonsCell.xib */,
+				BF129449292A0AA200AA631E /* RelationshipButtonsCell.swift */,
+				BF12944A292A0AA200AA631E /* RelationshipButtonsCell.xib */,
+				BF3D83762928D9B8009F903F /* SelfIntroductionCell.swift */,
+				BF3D83772928D9B8009F903F /* SelfIntroductionCell.xib */,
+				BF1294412929E7FA00AA631E /* TagCell.swift */,
+				BF1294422929E7FA00AA631E /* TagCell.xib */,
+				BF3D837A2928E231009F903F /* PortfolioCardCell.swift */,
+				BF3D837B2928E231009F903F /* PortfolioCardCell.xib */,
+				BFF8A4D12914C79900ADC950 /* PersonBasicCell.swift */,
+				BFF8A4D22914C79900ADC950 /* PersonBasicCell.xib */,
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
+		BF3D837E2928E242009F903F /* Edit */ = {
+			isa = PBXGroup;
+			children = (
+				BF3D835F29278D13009F903F /* Portfolio */,
+				BFF8A4CB2913F32600ADC950 /* GoNextPageButtonCell.swift */,
+				BFF8A4CC2913F32600ADC950 /* GoNextPageButtonCell.xib */,
+				BF3D835329273740009F903F /* OneSelectionCell.swift */,
+				BF3D835429273740009F903F /* OneSelectionCell.xib */,
+			);
+			path = Edit;
 			sourceTree = "<group>";
 		};
 		BF42FA28290BE2AA00501789 = {
@@ -300,6 +419,7 @@
 				BF42FA34290BE2AA00501789 /* AppDelegate.swift */,
 				BF42FA36290BE2AA00501789 /* SceneDelegate.swift */,
 				BF42FA5F290CEF2C00501789 /* Extension */,
+				BF3D835729275FA9009F903F /* Third Party Wrapper */,
 				BF42FA51290CE5D400501789 /* Resources */,
 			);
 			path = Join;
@@ -338,6 +458,7 @@
 				BF42FAB3290FAC5C00501789 /* JUser.swift */,
 				BFF8A4F029164FA200ADC950 /* Chat.swift */,
 				BF42FACA2911473A00501789 /* FirebaseManager.swift */,
+				BF3D835A29278208009F903F /* Work.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -387,6 +508,7 @@
 			children = (
 				BF42FA66290D04EF00501789 /* FindPartnersFormSections.swift */,
 				BFF8A4C12913C6F700ADC950 /* SegueIdentifier.swift */,
+				BF12943F2929D85B00AA631E /* Constants.swift */,
 			);
 			path = Constant;
 			sourceTree = "<group>";
@@ -428,6 +550,9 @@
 				BF42FA72290D197000501789 /* TableViewCell.swift */,
 				BF42FAD82912960D00501789 /* CollectionViewCell.swift */,
 				BFF8A4BB2913B39900ADC950 /* TableViewHeaderFooterView.swift */,
+				BF12943D2929D7E800AA631E /* CollectionSimpleHeaderView.swift */,
+				BF1294452929EB2500AA631E /* PaddingableLabel.swift */,
+				BF1294472929FEDA00AA631E /* NavigationController.swift */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -520,6 +645,7 @@
 		BFF8A4C32913EC6000ADC950 /* Personal */ = {
 			isa = PBXGroup;
 			children = (
+				BF3D835C292785A6009F903F /* Portfolio */,
 				BF02714929238B97000EA2F8 /* Profile */,
 				BF9A8699291C9DAB00BF934D /* MyApplications */,
 				BF9A868F291BCF8700BF934D /* MyPosts */,
@@ -532,14 +658,9 @@
 		BFF8A4C62913EE1500ADC950 /* Personal */ = {
 			isa = PBXGroup;
 			children = (
+				BF3D83712928D0CF009F903F /* Profile */,
 				BF9A8692291BD0F000BF934D /* MyPosts */,
 				BF9A86752918FA7100BF934D /* FriendsList */,
-				BFF8A4C72913EE4C00ADC950 /* PersonalMainThumbnailCell.swift */,
-				BFF8A4C82913EE4C00ADC950 /* PersonalMainThumbnailCell.xib */,
-				BFF8A4CB2913F32600ADC950 /* GoNextPageButtonCell.swift */,
-				BFF8A4CC2913F32600ADC950 /* GoNextPageButtonCell.xib */,
-				BFF8A4D12914C79900ADC950 /* PersonBasicCell.swift */,
-				BFF8A4D22914C79900ADC950 /* PersonBasicCell.xib */,
 			);
 			path = Personal;
 			sourceTree = "<group>";
@@ -640,13 +761,18 @@
 				BF42FADD2912967900501789 /* IdeaCell.xib in Resources */,
 				BFF8A4E2291636D800ADC950 /* MessageTypingView.xib in Resources */,
 				BF9A867E2918FB1800BF934D /* FriendCell.xib in Resources */,
+				BF1294442929E7FA00AA631E /* TagCell.xib in Resources */,
 				BF42FA7E290D2ADB00501789 /* MultilineInputCell.xib in Resources */,
+				BF12944C292A0AA200AA631E /* RelationshipButtonsCell.xib in Resources */,
 				BF42FAC929111FD400501789 /* ImagePickerCell.xib in Resources */,
+				BF3D836329278D63009F903F /* WorkRecordCell.xib in Resources */,
 				BF42FA79290D264100501789 /* SingleLineDescriptionInputCell.xib in Resources */,
 				BF9A8698291BD13400BF934D /* MyApplicantCell.xib in Resources */,
+				BF3D837D2928E231009F903F /* PortfolioCardCell.xib in Resources */,
 				BF42FA5D290CED7100501789 /* Chat.storyboard in Resources */,
 				BF42FAD72912945F00501789 /* FriendProjectCell.xib in Resources */,
 				BFF8A4C02913B46600ADC950 /* JoinButtonCell.xib in Resources */,
+				BF3D83752928D11D009F903F /* ProfileActionButtonsCell.xib in Resources */,
 				BF02714D29238D42000EA2F8 /* SingleLineInputCell.xib in Resources */,
 				BFF8A4CA2913EE4C00ADC950 /* PersonalMainThumbnailCell.xib in Resources */,
 				BF42FA41290BE2AC00501789 /* LaunchScreen.storyboard in Resources */,
@@ -654,6 +780,7 @@
 				BFF8A4BA2913AE9D00ADC950 /* DetailTitleHeaderView.xib in Resources */,
 				BF9A86B2291E3AE800BF934D /* AddNewMemberCell.xib in Resources */,
 				BFF8A4DA2915036000ADC950 /* ContactCell.xib in Resources */,
+				BF3D835629273740009F903F /* OneSelectionCell.xib in Resources */,
 				BFF8A4DA2915036000ADC950 /* ContactCell.xib in Resources */,
 				BF42FA58290CEA5900501789 /* FindIdeas.storyboard in Resources */,
 				BFF8A4F72917992000ADC950 /* ChatListCell.xib in Resources */,
@@ -661,10 +788,12 @@
 				BFF8A4CE2913F32600ADC950 /* GoNextPageButtonCell.xib in Resources */,
 				BFF8A4EF29164DCB00ADC950 /* MyMessageCell.xib in Resources */,
 				BF42FAC52910010000501789 /* AddNewCell.xib in Resources */,
+				BF3D83692927A609009F903F /* WorkHeaderView.xib in Resources */,
 				BF9A86AC291E19B300BF934D /* GroupMessageCell.xib in Resources */,
 				BFF8A4D42914C79900ADC950 /* PersonBasicCell.xib in Resources */,
 				BF9A86A4291CE06400BF934D /* GroupCreationHeaderCell.xib in Resources */,
 				BFF8A4B42913AD3000ADC950 /* BigImageCell.xib in Resources */,
+				BF3D83792928D9B8009F903F /* SelfIntroductionCell.xib in Resources */,
 				BF42FA5C290CED6C00501789 /* FindPartners.storyboard in Resources */,
 				BF42FAB8290FBE2D00501789 /* AddNewLineSectionCell.xib in Resources */,
 				BF42FA3E290BE2AC00501789 /* Assets.xcassets in Resources */,
@@ -672,6 +801,7 @@
 				BF42FAAE290F6B8000501789 /* GoogleService-Info.plist in Resources */,
 				BF42FA82290D31EF00501789 /* GoSelectionCell.xib in Resources */,
 				BF42FA3C290BE2AA00501789 /* Main.storyboard in Resources */,
+				BF3D83702928CDAF009F903F /* PersonalMainThumbnailCollectionCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -742,13 +872,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				BF02714C29238D42000EA2F8 /* SingleLineInputCell.swift in Sources */,
+				BF12943E2929D7E800AA631E /* CollectionSimpleHeaderView.swift in Sources */,
 				BF42FAB0290F7E9000501789 /* SelectionCategoriesViewController.swift in Sources */,
 				BF42FABF290FF65300501789 /* MemberCell.swift in Sources */,
 				BFF8A4D62915009B00ADC950 /* OthersProfileViewController.swift in Sources */,
+				BF12944B292A0AA200AA631E /* RelationshipButtonsCell.swift in Sources */,
 				BF42FADC2912967900501789 /* IdeaCell.swift in Sources */,
+				BF3D836F2928CDAF009F903F /* PersonalMainThumbnailCollectionCell.swift in Sources */,
 				BF42FAC42910010000501789 /* AddNewCell.swift in Sources */,
+				BF3D83672927A5D8009F903F /* WorkHeaderView.swift in Sources */,
 				BFF8A4DF2916342E00ADC950 /* BaseViewController.swift in Sources */,
 				BF9A86AB291E19B300BF934D /* GroupMessageCell.swift in Sources */,
+				BF1294482929FEDA00AA631E /* NavigationController.swift in Sources */,
 				BF42FA67290D04EF00501789 /* FindPartnersFormSections.swift in Sources */,
 				BF42FACD291154B500501789 /* Date+Ext.swift in Sources */,
 				BF42FA56290CE89500501789 /* TabBarController.swift in Sources */,
@@ -756,9 +891,11 @@
 				BFF8A4CD2913F32600ADC950 /* GoNextPageButtonCell.swift in Sources */,
 				BF42FA7D290D2ADB00501789 /* MultilineInputCell.swift in Sources */,
 				BFF8A4EE29164DCB00ADC950 /* MyMessageCell.swift in Sources */,
+				BF3D836229278D63009F903F /* WorkRecordCell.swift in Sources */,
 				BF42FA39290BE2AA00501789 /* FindIdeasViewController.swift in Sources */,
 				BFF8A4E4291636EE00ADC950 /* MessageTypingView.swift in Sources */,
 				BF9A869F291CDE8300BF934D /* GroupCreationViewController.swift in Sources */,
+				BF1294432929E7FA00AA631E /* TagCell.swift in Sources */,
 				BFF8A4B32913AD3000ADC950 /* BigImageCell.swift in Sources */,
 				BF9A86B1291E3AE800BF934D /* AddNewMemberCell.swift in Sources */,
 				BF42FAD92912960D00501789 /* CollectionViewCell.swift in Sources */,
@@ -773,6 +910,7 @@
 				BF42FACF2912557500501789 /* UIImage+Ext.swift in Sources */,
 				BF42FAB2290FAC2000501789 /* Project.swift in Sources */,
 				BF9A86742918FA3500BF934D /* FriendsListViewController.swift in Sources */,
+				BF3D83652927A1B6009F903F /* KingFisherWrapper.swift in Sources */,
 				BFF8A4FB2917FBF100ADC950 /* MockLoginViewController.swift in Sources */,
 				BFF8A4D32914C79900ADC950 /* PersonBasicCell.swift in Sources */,
 				BF42FACF2912557500501789 /* UIImage+Ext.swift in Sources */,
@@ -795,6 +933,7 @@
 				BF42FAB4290FAC5C00501789 /* JUser.swift in Sources */,
 				BF42FAC1290FF73B00501789 /* RecruitingCell.swift in Sources */,
 				BF42FA35290BE2AA00501789 /* AppDelegate.swift in Sources */,
+				BF3D835929275FD3009F903F /* JGProgressHUDWrapper.swift in Sources */,
 				BFF8A4EA29164BF500ADC950 /* MessageCell.swift in Sources */,
 				BFF8A4C22913C6F700ADC950 /* SegueIdentifier.swift in Sources */,
 				BF9A8685291A020300BF934D /* DropdownEmptyAlertCell.swift in Sources */,
@@ -802,22 +941,31 @@
 				BFF8A4BC2913B39900ADC950 /* TableViewHeaderFooterView.swift in Sources */,
 				BF42FAB7290FBE2D00501789 /* AddNewLineSectionCell.swift in Sources */,
 				BFF8A4D02914C2E300ADC950 /* PersonalProfileViewController.swift in Sources */,
+				BF3D83782928D9B8009F903F /* SelfIntroductionCell.swift in Sources */,
 				BF42FA76290D1CD800501789 /* FindPartnersBasicViewController.swift in Sources */,
 				BF9A8697291BD13400BF934D /* MyApplicantCell.swift in Sources */,
 				BF42FA6E290D178400501789 /* UIView+Ext.swift in Sources */,
+				BF1294402929D85B00AA631E /* Constants.swift in Sources */,
 				BF0271412920D093000EA2F8 /* UIColor+Ext.swift in Sources */,
+				BF3D835B29278208009F903F /* Work.swift in Sources */,
 				BF42FAD62912945F00501789 /* FriendProjectCell.swift in Sources */,
+				BF3D8352292736CD009F903F /* PersonalInfoSelectionViewController.swift in Sources */,
 				BF42FA71290D196200501789 /* SingleLineDescriptionInputCell.swift in Sources */,
 				BFF8A4DD2916341D00ADC950 /* ChatroomViewController.swift in Sources */,
 				BF0271592924E3D8000EA2F8 /* UserDefaults+Ext.swift in Sources */,
 				BFF8A4C52913EDB800ADC950 /* PersonalEntryViewController.swift in Sources */,
+				BF3D837C2928E231009F903F /* PortfolioCardCell.swift in Sources */,
 				BF9A86A6291D1A6100BF934D /* GroupChatroomViewController.swift in Sources */,
 				BF42FAC829111FD400501789 /* ImagePickerCell.swift in Sources */,
+				BF3D835529273740009F903F /* OneSelectionCell.swift in Sources */,
 				BF9A86AE291E356C00BF934D /* GroupMembersViewController.swift in Sources */,
+				BF3D83742928D11D009F903F /* ProfileActionButtonsCell.swift in Sources */,
 				BF42FA37290BE2AA00501789 /* SceneDelegate.swift in Sources */,
 				BFF8A4BF2913B46600ADC950 /* JoinButtonCell.swift in Sources */,
 				BFF8A4AE2913A92300ADC950 /* ProjectDetailsViewController.swift in Sources */,
+				BF3D835E2927873C009F903F /* AddPortfolioViewController.swift in Sources */,
 				BF42FA61290CEF4700501789 /* UIStoryboard+Ext.swift in Sources */,
+				BF1294462929EB2500AA631E /* PaddingableLabel.swift in Sources */,
 				BFF8A4F129164FA200ADC950 /* Chat.swift in Sources */,
 				BF42FACB2911473A00501789 /* FirebaseManager.swift in Sources */,
 				BFF8A4B82913AE8400ADC950 /* DetailTitleHeaderView.swift in Sources */,

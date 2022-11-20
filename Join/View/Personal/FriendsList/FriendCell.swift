@@ -26,8 +26,8 @@ class FriendCell: TableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        backgroundColor = .Gray5
-        contentView.backgroundColor = .Gray5
+        backgroundColor = .Gray6
+        contentView.backgroundColor = .Gray6
     }
 
     override func layoutSubviews() {
@@ -60,7 +60,6 @@ class FriendCell: TableViewCell {
         layoutCell(friend: friend, source: source)
 
         if isMember {
-            print("isMember")
             selectImageView.isHidden = true
             thumbnailImageView.alpha = 0.5
             nameLabel.textColor = .lightGray

@@ -9,7 +9,7 @@ import UIKit
 import FirebaseCore
 import IQKeyboardManagerSwift
 
-//swiftlint:disable line_length
+// swiftlint:disable line_length
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 

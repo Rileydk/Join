@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import ProgressHUD
 
 class GroupCreationViewController: BaseViewController {
     enum Section: CaseIterable {
@@ -27,7 +26,7 @@ class GroupCreationViewController: BaseViewController {
             )
             collectionView.setCollectionViewLayout(createLayout(), animated: true)
             configureDatasource()
-            collectionView.backgroundColor = .Gray5
+            collectionView.backgroundColor = .Gray6
         }
     }
 
@@ -123,8 +122,6 @@ class GroupCreationViewController: BaseViewController {
             }
 
             group.notify(queue: .main) {
-                ProgressHUD.showSuccess()
-
                 let chatStoryboard = UIStoryboard(name: StoryboardCategory.chat.rawValue, bundle: nil)
                 guard let chatroomVC =  chatStoryboard.instantiateViewController(
                     withIdentifier: GroupChatroomViewController.identifier

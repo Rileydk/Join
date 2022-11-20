@@ -187,12 +187,20 @@ extension ProjectDetailsViewController {
             cell.layoutCell(user: user, from: .projectDetails)
             cell.tapHandler = { [weak self] in
                 let personalStoryboard = UIStoryboard(name: StoryboardCategory.personal.rawValue, bundle: nil)
+//                guard let profileVC = personalStoryboard.instantiateViewController(
+//                    withIdentifier: OthersProfileViewController.identifier
+//                ) as? OthersProfileViewController else {
+//                    fatalError("Cannot create others profile vc")
+//                }
+//                profileVC.objectData = self?.userData
+
                 guard let profileVC = personalStoryboard.instantiateViewController(
-                    withIdentifier: OthersProfileViewController.identifier
-                ) as? OthersProfileViewController else {
+                    withIdentifier: PersonalProfileViewController.identifier
+                ) as? PersonalProfileViewController else {
                     fatalError("Cannot create others profile vc")
                 }
-                profileVC.objectData = self?.userData
+                profileVC.userID = self?.userData?.id
+
                 self?.navigationController?.pushViewController(profileVC, animated: true)
             }
             cell.messageHandler = { [weak self] in

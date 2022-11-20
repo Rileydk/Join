@@ -22,7 +22,7 @@ class FriendsListViewController: BaseViewController {
             tableView.delegate = self
             tableView.dataSource = self
             tableView.separatorStyle = .none
-            tableView.backgroundColor = .Gray5
+            tableView.backgroundColor = .Gray6
         }
     }
 
@@ -46,7 +46,7 @@ class FriendsListViewController: BaseViewController {
     }
 
     func layoutViews() {
-        view.backgroundColor = .Gray5
+        view.backgroundColor = .Gray6
 
         searchController.searchResultsUpdater = self
         navigationItem.searchController = searchController

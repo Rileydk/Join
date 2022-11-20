@@ -47,6 +47,7 @@ class PersonalEntryViewController: UIViewController {
                 ) as? PersonalProfileViewController else {
                 fatalError("Cannot create personal profile vc")
             }
+            profileVC.userID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey)
             navigationController?.pushViewController(profileVC, animated: true)
         }
 
@@ -102,7 +103,7 @@ class PersonalEntryViewController: UIViewController {
 extension PersonalEntryViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.section == 0 {
-            return 250
+            return 210
         } else {
             return 60
         }
