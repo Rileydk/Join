@@ -11,30 +11,30 @@ class ProjectDetailsViewController: BaseViewController {
     enum Section: CaseIterable {
         case bigImage
         case projectName
-        //        case categories
+        // case categories
         case recruiting
         case skills
         case deadline
         case essentialLocation
         case description
-//        case group
+        // case group
         case contact
-//        case location
+        // case location
         case joinButton
     }
 
     enum Item: Hashable {
         case bigImage(URLString)
         case projectName(String)
-//        case categories
+        // case categories
         case recruiting(Project)
         case skills(Project)
         case deadline(Project)
         case essentialLocation(Project)
         case description(Project)
-//        case group
+        // case group
         case contact(JUser)
-//        case location
+        // case location
         case joinButton(Project)
     }
 
@@ -89,6 +89,10 @@ class ProjectDetailsViewController: BaseViewController {
         super.viewWillAppear(animated)
 
         JProgressHUD.shared.showLoading(view: self.view)
+        getContactInfo()
+    }
+
+    func getContactInfo() {
         if let userID = project?.contact {
             firebaseManager.getUserInfo(id: userID) { [weak self] result in
                 guard let self = self else { return }
@@ -96,7 +100,7 @@ class ProjectDetailsViewController: BaseViewController {
                 case .success(let user):
                     self.userData = user
                     self.updateDatasource()
-                    JProgressHUD.shared.showSuccess(view: self.view)
+                    JProgressHUD.shared.dismiss()
                 case .failure(let error):
                     print(error)
                     JProgressHUD.shared.showFailure(text: error.localizedDescription, view: self.view)
@@ -219,11 +223,11 @@ extension ProjectDetailsViewController {
             cell.layoutCell(imageURL: imageURL)
             return cell
 
-        case .projectName(let recruitingTitle):
+        case .projectName(let projectName):
             guard let cell = tableView.dequeueReusableCell(withIdentifier: ProjectTitleCell.identifier, for: indexPath) as? ProjectTitleCell else {
                 fatalError("Cannot create recruiting title cell")
             }
-            cell.layoutCell(title: project?.name)
+            cell.layoutCell(title: projectName)
             return cell
 
         case .recruiting(let project):

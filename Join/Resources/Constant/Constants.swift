@@ -15,6 +15,7 @@ struct Constant {
         static let essentialLocationColumn = "合作地點"
         static let descriptionSectionTitle = "About"
         static let contactSectionTitle = "聯絡人"
+        static let applicantsSectionTitle = "應徵者"
     }
 
     struct Portfolio {

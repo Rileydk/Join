@@ -10,7 +10,8 @@ import UIKit
 class ContactCell: TableViewCell {
     enum Source {
         case projectDetails
-        case myPosts
+        case myPostContact
+        case myPostApplicant
     }
 
     @IBOutlet weak var thumbnailImageView: UIImageView!
@@ -39,17 +40,18 @@ class ContactCell: TableViewCell {
     }
 
     func layoutCell(user: JUser, from source: Source) {
-        firebaseManager.downloadImage(urlString: user.thumbnailURL ?? FindPartnersFormSections.placeholderImageURL) { [weak self] result in
-            switch result {
-            case .success(let image):
-                self?.thumbnailImageView.image = image
-            case .failure(let error):
-                print(error)
-            }
-        }
+        thumbnailImageView.loadImage(user.thumbnailURL ?? FindPartnersFormSections.placeholderImageURL)
+//        firebaseManager.downloadImage(urlString: user.thumbnailURL ?? FindPartnersFormSections.placeholderImageURL) { [weak self] result in
+//            switch result {
+//            case .success(let image):
+//                self?.thumbnailImageView.image = image
+//            case .failure(let error):
+//                print(error)
+//            }
+//        }
         nameButton.setTitle(user.name, for: .normal)
         let myID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey) ?? ""
-        if source == .myPosts || user.id == myID {
+        if source == .myPostContact || (source == .projectDetails && user.id == myID) {
             messageButton.isHidden = true
         } else {
             messageButton.isHidden = false

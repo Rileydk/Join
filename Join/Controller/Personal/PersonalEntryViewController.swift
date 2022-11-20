@@ -88,7 +88,6 @@ class PersonalEntryViewController: UIViewController {
         UserDefaults.standard.setValue(nil, forKey: UserDefaults.UserKey.userNameKey)
         UserDefaults.standard.setValue(nil, forKey: UserDefaults.UserKey.userInterestsKey)
         completion(.success("Successfully signed out"))
-        print("signed out:", UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey))
 
 //        do {
 //            try firebaseManager.myAuth.signOut()

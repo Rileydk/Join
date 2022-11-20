@@ -10,21 +10,27 @@ import UIKit
 class MyPostsDetailViewController: BaseViewController {
     enum Section: CaseIterable {
         case bigImage
-        //        case categories
-        //        case deadline
-        //        case essentialLocation
-        //        case description
-        //        case group
-        //        case location
+        case projectName
+        // case categories
+        case recruiting
+        case skills
+        case deadline
+        case essentialLocation
+        case description
+        // case group
+        // case location
         case applicants
     }
 
     enum Item: Hashable {
         case bigImage(URLString)
+        case projectName(String)
         //        case categories
-        //        case deadline
-        //        case essentialLocation
-        //        case description
+        case recruiting(Project)
+        case skills(Project)
+        case deadline(Project)
+        case essentialLocation(Project)
+        case description(Project)
         //        case group
         //        case location
         case applicant(JUser)
@@ -43,6 +49,15 @@ class MyPostsDetailViewController: BaseViewController {
                 forCellReuseIdentifier: BigImageCell.identifier
             )
             tableView.register(
+                UINib(nibName: ProjectTitleCell.identifier, bundle: nil),
+                forCellReuseIdentifier: ProjectTitleCell.identifier)
+            tableView.register(
+                UINib(nibName: ProjectItemCell.identifier, bundle: nil),
+                forCellReuseIdentifier: ProjectItemCell.identifier)
+            tableView.register(
+                UINib(nibName: MultilineCell.identifier, bundle: nil),
+                forCellReuseIdentifier: MultilineCell.identifier)
+            tableView.register(
                 UINib(nibName: ContactCell.identifier, bundle: nil),
                 forCellReuseIdentifier: ContactCell.identifier
             )
@@ -50,10 +65,16 @@ class MyPostsDetailViewController: BaseViewController {
                 UINib(nibName: DetailTitleHeaderView.identifier, bundle: nil),
                 forHeaderFooterViewReuseIdentifier: DetailTitleHeaderView.identifier
             )
-            tableView.sectionHeaderHeight = UITableView.automaticDimension
-            tableView.estimatedSectionHeaderHeight = 80
             tableView.delegate = self
             configureDatasource()
+
+            tableView.separatorStyle = .none
+            tableView.allowsSelection = false
+            tableView.rowHeight = UITableView.automaticDimension
+            tableView.estimatedRowHeight = 80
+            if #available(iOS 15, *) {
+                tableView.sectionHeaderTopPadding = 0
+            }
         }
     }
 
@@ -68,13 +89,16 @@ class MyPostsDetailViewController: BaseViewController {
     }
 
     func getAllApplicants(applicantsID: [UserID]) {
+        JProgressHUD.shared.showLoading(view: self.view)
         firebaseManager.getAllMatchedUsersDetail(usersID: applicantsID) { [weak self] result in
+            guard let self = self else { return }
             switch result {
             case .success(let applicants):
-                self?.applicants = applicants
-                self?.updateDatasource()
+                self.applicants = applicants
+                self.updateDatasource()
+                JProgressHUD.shared.dismiss()
             case .failure(let err):
-                print(err)
+                JProgressHUD.shared.showFailure(text: err.localizedDescription,view: self.view)
             }
         }
     }
@@ -82,31 +106,32 @@ class MyPostsDetailViewController: BaseViewController {
 
 // MARK: - Table View Delegate
 extension MyPostsDetailViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.section == 0 {
-            return 180
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        let section = Section.allCases[section]
+        if section == .description || section == .applicants {
+            return 60
         } else {
-            return 100
+            return 0
         }
     }
 
-//    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-//        let section = Section.allCases[section]
-//        if section ==  {
-//            guard let headerView = tableView.dequeueReusableHeaderFooterView(
-//                withIdentifier: DetailTitleHeaderView.identifier) as? DetailTitleHeaderView else {
-//                return nil
-//            }
-//            if let project = project {
-//                headerView.layoutHeaderView(project: project)
-//                return headerView
-//            } else {
-//                return nil
-//            }
-//        } else {
-//            return nil
-//        }
-//    }
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let section = Section.allCases[section]
+        if section == .description || section == .applicants  {
+            guard let headerView = tableView.dequeueReusableHeaderFooterView(
+                withIdentifier: DetailTitleHeaderView.identifier) as? DetailTitleHeaderView else {
+                return nil
+            }
+            if section == .description {
+                headerView.layoutHeaderView(title: Constant.FindIdeas.descriptionSectionTitle)
+            } else {
+                headerView.layoutHeaderView(title: Constant.FindIdeas.applicantsSectionTitle)
+            }
+            return headerView
+        } else {
+            return nil
+        }
+    }
 }
 
 // MARK: - Table View Datasource
@@ -119,6 +144,7 @@ extension MyPostsDetailViewController {
         updateDatasource()
     }
 
+    // swiftlint:disable cyclomatic_complexity
     func createCell(tableView: UITableView, indexPath: IndexPath, item: Item) -> UITableViewCell {
         switch item {
         case .bigImage(let imageURL):
@@ -129,22 +155,88 @@ extension MyPostsDetailViewController {
             }
             cell.layoutCell(imageURL: imageURL)
             return cell
+
+        case .projectName(let projectName):
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: ProjectTitleCell.identifier, for: indexPath) as? ProjectTitleCell else {
+                fatalError("Cannot create recruiting title cell")
+            }
+            cell.layoutCell(title: projectName)
+            return cell
+
+        case .recruiting(let project):
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: ProjectItemCell.identifier, for: indexPath) as? ProjectItemCell else {
+                fatalError("Cannot create recruiting title cell")
+            }
+            cell.layoutCellWithPosition(project: project)
+            return cell
+
+        case .skills(let project):
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: ProjectItemCell.identifier, for: indexPath) as? ProjectItemCell else {
+                fatalError("Cannot create skills cell")
+            }
+            cell.layoutCellWithSkills(project: project)
+            return cell
+
+        case .deadline(let project):
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: ProjectItemCell.identifier, for: indexPath) as? ProjectItemCell else {
+                fatalError("Cannot create deadline cell")
+            }
+            cell.layoutCellWithDeadline(project: project)
+            return cell
+
+        case .essentialLocation(let project):
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: ProjectItemCell.identifier, for: indexPath) as? ProjectItemCell else {
+                fatalError("Cannot create essential location cell")
+            }
+            cell.layoutCellWithEssentialLocation(project: project)
+            return cell
+
+        case .description(let project):
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: MultilineCell.identifier, for: indexPath) as? MultilineCell else {
+                fatalError("Cannot create multiline cell")
+            }
+            cell.layoutCell(project: project)
+            return cell
+
         case .applicant(let applicant):
             guard let cell = tableView.dequeueReusableCell(
                 withIdentifier: ContactCell.identifier, for: indexPath
-                ) as? ContactCell else {
+            ) as? ContactCell else {
                 fatalError("Cannot create contact cell")
             }
-            cell.layoutCell(user: applicant, from: .myPosts)
+            cell.layoutCell(user: applicant, from: .myPostApplicant)
             cell.tapHandler = { [weak self] in
                 let personalStoryboard = UIStoryboard(name: StoryboardCategory.personal.rawValue, bundle: nil)
                 guard let profileVC = personalStoryboard.instantiateViewController(
-                    withIdentifier: OthersProfileViewController.identifier
-                ) as? OthersProfileViewController else {
+                    withIdentifier: PersonalProfileViewController.identifier
+                ) as? PersonalProfileViewController else {
                     fatalError("Cannot create others profile vc")
                 }
-                profileVC.objectData = self?.applicants[indexPath.row]
+                profileVC.userID = applicant.id
+
                 self?.navigationController?.pushViewController(profileVC, animated: true)
+            }
+            cell.messageHandler = { [weak self] in
+                self?.firebaseManager.getChatroom(id: applicant.id) { [unowned self] result in
+                    switch result {
+                    case .success(let chatroomID):
+                        let chatStoryboard = UIStoryboard(name: StoryboardCategory.chat.rawValue, bundle: nil)
+                        guard let chatVC = chatStoryboard.instantiateViewController(
+                            withIdentifier: ChatroomViewController.identifier
+                        ) as? ChatroomViewController else {
+                            fatalError("Cannot create chatroom vc")
+                        }
+                        chatVC.userData = applicant
+                        chatVC.chatroomID = chatroomID
+                        self?.hidesBottomBarWhenPushed = true
+                        DispatchQueue.main.async { [unowned self] in
+                            self?.hidesBottomBarWhenPushed = false
+                        }
+                        self?.navigationController?.pushViewController(chatVC, animated: true)
+                    case .failure(let error):
+                        print(error)
+                    }
+                }
             }
             return cell
         }
@@ -159,7 +251,16 @@ extension MyPostsDetailViewController {
         if let urlString = project.imageURL {
             snapshot.appendItems([.bigImage(urlString)], toSection: .bigImage)
         }
-        snapshot.appendItems(applicants.map { .applicant($0) }, toSection: .applicants)
+        snapshot.appendItems([.projectName(project.name)], toSection: .projectName)
+        snapshot.appendItems([.recruiting(project)], toSection: .recruiting)
+        snapshot.appendItems([.skills(project)], toSection: .skills)
+        snapshot.appendItems([.deadline(project)], toSection: .deadline)
+        snapshot.appendItems([.essentialLocation(project)], toSection: .essentialLocation)
+        snapshot.appendItems([.description(project)], toSection: .description)
+        if !applicants.isEmpty {
+            snapshot.appendItems(applicants.map { .applicant($0) }, toSection: .applicants)
+        }
+
         datasource.apply(snapshot, animatingDifferences: false)
     }
 }
