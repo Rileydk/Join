@@ -18,7 +18,7 @@
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cpt-ZI-dVn">
-                        <rect key="frame" x="32" y="4" width="350" height="66"/>
+                        <rect key="frame" x="32" y="4" width="350" height="92"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
@@ -28,7 +28,7 @@
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
             <constraints>
                 <constraint firstItem="cpt-ZI-dVn" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="32" id="DFK-ur-nzd"/>
-                <constraint firstAttribute="bottom" secondItem="cpt-ZI-dVn" secondAttribute="bottom" constant="30" id="LxZ-WV-Gmo"/>
+                <constraint firstAttribute="bottom" secondItem="cpt-ZI-dVn" secondAttribute="bottom" constant="4" id="LxZ-WV-Gmo"/>
                 <constraint firstItem="cpt-ZI-dVn" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="4" id="d0U-uC-wqG"/>
                 <constraint firstAttribute="trailing" secondItem="cpt-ZI-dVn" secondAttribute="trailing" constant="32" id="d8s-Uc-m6b"/>
             </constraints>

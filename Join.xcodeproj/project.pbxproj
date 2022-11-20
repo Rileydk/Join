@@ -16,6 +16,9 @@
 		BF0271592924E3D8000EA2F8 /* UserDefaults+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF0271582924E3D8000EA2F8 /* UserDefaults+Ext.swift */; };
 		BF12943E2929D7E800AA631E /* CollectionSimpleHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF12943D2929D7E800AA631E /* CollectionSimpleHeaderView.swift */; };
 		BF1294402929D85B00AA631E /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF12943F2929D85B00AA631E /* Constants.swift */; };
+		BF1294432929E7FA00AA631E /* TagCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1294412929E7FA00AA631E /* TagCell.swift */; };
+		BF1294442929E7FA00AA631E /* TagCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF1294422929E7FA00AA631E /* TagCell.xib */; };
+		BF1294462929EB2500AA631E /* PaddingableLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1294452929EB2500AA631E /* PaddingableLabel.swift */; };
 		BF3D8352292736CD009F903F /* PersonalInfoSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3D8351292736CD009F903F /* PersonalInfoSelectionViewController.swift */; };
 		BF3D835529273740009F903F /* OneSelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3D835329273740009F903F /* OneSelectionCell.swift */; };
 		BF3D835629273740009F903F /* OneSelectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF3D835429273740009F903F /* OneSelectionCell.xib */; };
@@ -145,6 +148,9 @@
 		BF0271582924E3D8000EA2F8 /* UserDefaults+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+Ext.swift"; sourceTree = "<group>"; };
 		BF12943D2929D7E800AA631E /* CollectionSimpleHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionSimpleHeaderView.swift; sourceTree = "<group>"; };
 		BF12943F2929D85B00AA631E /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		BF1294412929E7FA00AA631E /* TagCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagCell.swift; sourceTree = "<group>"; };
+		BF1294422929E7FA00AA631E /* TagCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TagCell.xib; sourceTree = "<group>"; };
+		BF1294452929EB2500AA631E /* PaddingableLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddingableLabel.swift; sourceTree = "<group>"; };
 		BF3D8351292736CD009F903F /* PersonalInfoSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalInfoSelectionViewController.swift; sourceTree = "<group>"; };
 		BF3D835329273740009F903F /* OneSelectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneSelectionCell.swift; sourceTree = "<group>"; };
 		BF3D835429273740009F903F /* OneSelectionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OneSelectionCell.xib; sourceTree = "<group>"; };
@@ -355,6 +361,8 @@
 				BF3D83732928D11D009F903F /* ProfileActionButtonsCell.xib */,
 				BF3D83762928D9B8009F903F /* SelfIntroductionCell.swift */,
 				BF3D83772928D9B8009F903F /* SelfIntroductionCell.xib */,
+				BF1294412929E7FA00AA631E /* TagCell.swift */,
+				BF1294422929E7FA00AA631E /* TagCell.xib */,
 				BF3D837A2928E231009F903F /* PortfolioCardCell.swift */,
 				BF3D837B2928E231009F903F /* PortfolioCardCell.xib */,
 				BFF8A4D12914C79900ADC950 /* PersonBasicCell.swift */,
@@ -535,6 +543,7 @@
 				BF42FAD82912960D00501789 /* CollectionViewCell.swift */,
 				BFF8A4BB2913B39900ADC950 /* TableViewHeaderFooterView.swift */,
 				BF12943D2929D7E800AA631E /* CollectionSimpleHeaderView.swift */,
+				BF1294452929EB2500AA631E /* PaddingableLabel.swift */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -743,6 +752,7 @@
 				BF42FADD2912967900501789 /* IdeaCell.xib in Resources */,
 				BFF8A4E2291636D800ADC950 /* MessageTypingView.xib in Resources */,
 				BF9A867E2918FB1800BF934D /* FriendCell.xib in Resources */,
+				BF1294442929E7FA00AA631E /* TagCell.xib in Resources */,
 				BF42FA7E290D2ADB00501789 /* MultilineInputCell.xib in Resources */,
 				BF42FAC929111FD400501789 /* ImagePickerCell.xib in Resources */,
 				BF3D836329278D63009F903F /* WorkRecordCell.xib in Resources */,
@@ -873,6 +883,7 @@
 				BF42FA39290BE2AA00501789 /* FindIdeasViewController.swift in Sources */,
 				BFF8A4E4291636EE00ADC950 /* MessageTypingView.swift in Sources */,
 				BF9A869F291CDE8300BF934D /* GroupCreationViewController.swift in Sources */,
+				BF1294432929E7FA00AA631E /* TagCell.swift in Sources */,
 				BFF8A4B32913AD3000ADC950 /* BigImageCell.swift in Sources */,
 				BF9A86B1291E3AE800BF934D /* AddNewMemberCell.swift in Sources */,
 				BF42FAD92912960D00501789 /* CollectionViewCell.swift in Sources */,
@@ -942,6 +953,7 @@
 				BFF8A4AE2913A92300ADC950 /* ProjectDetailsViewController.swift in Sources */,
 				BF3D835E2927873C009F903F /* AddPortfolioViewController.swift in Sources */,
 				BF42FA61290CEF4700501789 /* UIStoryboard+Ext.swift in Sources */,
+				BF1294462929EB2500AA631E /* PaddingableLabel.swift in Sources */,
 				BFF8A4F129164FA200ADC950 /* Chat.swift in Sources */,
 				BF42FACB2911473A00501789 /* FirebaseManager.swift in Sources */,
 				BFF8A4B82913AE8400ADC950 /* DetailTitleHeaderView.swift in Sources */,

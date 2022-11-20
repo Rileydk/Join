@@ -12,7 +12,7 @@ class PersonalProfileViewController: BaseViewController {
         case person
         case buttons
         case introduction
-//        case skills
+        case skills
 //        case interests
         case portfolio
     }
@@ -21,8 +21,8 @@ class PersonalProfileViewController: BaseViewController {
         case person(JUser)
         case buttons
         case introduction(String)
-//        case skills([String])
-//        case interests([String])
+        case skills(String)
+//        case interests(String)
         case portfolio(WorkItem)
     }
 
@@ -49,6 +49,9 @@ class PersonalProfileViewController: BaseViewController {
             collectionView.register(
                 UINib(nibName: SelfIntroductionCell.identifier, bundle: nil),
                 forCellWithReuseIdentifier: SelfIntroductionCell.identifier)
+            collectionView.register(
+                UINib(nibName: TagCell.identifier, bundle: nil),
+                forCellWithReuseIdentifier: TagCell.identifier)
             collectionView.register(
                 UINib(nibName: PortfolioCardCell.identifier, bundle: nil),
                 forCellWithReuseIdentifier: PortfolioCardCell.identifier)
@@ -199,6 +202,26 @@ extension PersonalProfileViewController {
         return section
     }
 
+    func createSkillTagsSection() -> NSCollectionLayoutSection {
+        let itemSize = NSCollectionLayoutSize(
+            widthDimension: .estimated(100),
+            heightDimension: .absolute(24)
+        )
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+
+        let groupSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1),
+            heightDimension: itemSize.heightDimension
+        )
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+        group.interItemSpacing = .fixed(8)
+
+        let section = NSCollectionLayoutSection(group: group)
+        section.interGroupSpacing = 8
+        section.contentInsets = .init(top: 10, leading: 32, bottom: 10, trailing: 32)
+        return section
+    }
+
     func createPortfolioSection() -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1),
@@ -237,6 +260,8 @@ extension PersonalProfileViewController {
             return createActionButtonsSection()
         case .introduction:
             return createIntroductionSection()
+        case .skills:
+            return createSkillTagsSection()
         case .portfolio:
             return createPortfolioSection()
         }
@@ -306,6 +331,15 @@ extension PersonalProfileViewController {
             cell.layoutCell(content: introduction, backgroundColor: cellBackgroundColor)
             return cell
 
+        case .skills(let item):
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: TagCell.identifier,
+                for: indexPath) as? TagCell else {
+                fatalError("Cannot create person main thumbnail cell")
+            }
+            cell.layoutCell(item: item)
+            return cell
+
         case .portfolio(let workItem):
             guard let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: PortfolioCardCell.identifier,
@@ -323,6 +357,9 @@ extension PersonalProfileViewController {
         if let userData = userData {
             snapshot.appendItems([.person(userData)], toSection: .person)
             snapshot.appendItems([.buttons], toSection: .buttons)
+            if !userData.skills.isEmpty {
+                snapshot.appendItems(userData.skills.map { .skills($0) }, toSection: .skills)
+            }
         }
         if let introduction = userData?.introduction, !introduction.isEmpty {
             snapshot.appendItems([.introduction(introduction)], toSection: .introduction)

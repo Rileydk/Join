@@ -21,7 +21,8 @@ enum JColor: String {
     case Blue3
     case Blue4
     case Red
-    case Yellow
+    case Yellow1
+    case Yellow2
 }
 
 extension UIColor {
@@ -36,7 +37,8 @@ extension UIColor {
     static let Blue3 = JColor(.Blue3)
     static let Blue4 = JColor(.Blue4)
     static let Red = JColor(.Red)
-    static let Yellow = JColor(.Yellow)
+    static let Yellow1 = JColor(.Yellow1)
+    static let Yellow2 = JColor(.Yellow2)
 
     static func JColor(_ color: JColor) -> UIColor? {
         UIColor(named: color.rawValue)

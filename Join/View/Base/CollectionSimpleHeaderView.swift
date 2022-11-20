@@ -27,12 +27,11 @@ class CollectionSimpleHeaderView: UICollectionReusableView {
     }
 
     func layoutViews() {
-        print("layoutViews")
         addSubview(label)
         label.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             label.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-            label.topAnchor.constraint(equalTo: topAnchor, constant: 8)
+            label.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
     }
 }
