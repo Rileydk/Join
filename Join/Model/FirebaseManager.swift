@@ -1124,8 +1124,9 @@ class FirebaseManager {
         }
     }
 
-    func getMyWorks(completion: @escaping (Result<[Work], Error>) -> Void) {
-        let ref = FirestoreMyDocumentEndpoint.myWorks.ref
+    func getUserWorks(userID: UserID, completion: @escaping (Result<[Work], Error>) -> Void) {
+//        let ref = FirestoreMyDocumentEndpoint.myWorks.ref
+        let ref = FirestoreEndpoint.users.ref.document(userID).collection("Works")
         ref.getDocuments { (snapshot, err) in
             if let err = err {
                 completion(.failure(err))
@@ -1145,8 +1146,9 @@ class FirebaseManager {
         }
     }
 
-    func getMyWorkRecords(by workID: WorkID, completion: @escaping (Result<[WorkRecord], Error>) -> Void) {
-        let ref = FirestoreMyDocumentEndpoint.myRecordsOfWork(workID).ref
+    func getWorkRecords(userID: UserID, by workID: WorkID, completion: @escaping (Result<[WorkRecord], Error>) -> Void) {
+//        let ref = FirestoreMyDocumentEndpoint.myRecordsOfWork(workID).ref
+        let ref = FirestoreEndpoint.users.ref.document(userID).collection("Works").document(workID).collection("Records")
         ref.getDocuments { (snapshot, err) in
             if let err = err {
                 completion(.failure(err))

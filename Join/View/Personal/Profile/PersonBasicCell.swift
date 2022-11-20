@@ -69,6 +69,8 @@ class PersonBasicCell: CollectionViewCell {
                 self.relationshipButton.isEnabled = true
                 self.relationshipButton.setTitle(Relationship.unknown.title, for: .normal)
                 self.relationshipButton.tag = 3
+            default:
+                break
             }
         }
     }

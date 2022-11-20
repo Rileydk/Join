@@ -20,6 +20,8 @@
 		BF1294442929E7FA00AA631E /* TagCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF1294422929E7FA00AA631E /* TagCell.xib */; };
 		BF1294462929EB2500AA631E /* PaddingableLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1294452929EB2500AA631E /* PaddingableLabel.swift */; };
 		BF1294482929FEDA00AA631E /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1294472929FEDA00AA631E /* NavigationController.swift */; };
+		BF12944B292A0AA200AA631E /* RelationshipButtonsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF129449292A0AA200AA631E /* RelationshipButtonsCell.swift */; };
+		BF12944C292A0AA200AA631E /* RelationshipButtonsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF12944A292A0AA200AA631E /* RelationshipButtonsCell.xib */; };
 		BF3D8352292736CD009F903F /* PersonalInfoSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3D8351292736CD009F903F /* PersonalInfoSelectionViewController.swift */; };
 		BF3D835529273740009F903F /* OneSelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3D835329273740009F903F /* OneSelectionCell.swift */; };
 		BF3D835629273740009F903F /* OneSelectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF3D835429273740009F903F /* OneSelectionCell.xib */; };
@@ -153,6 +155,8 @@
 		BF1294422929E7FA00AA631E /* TagCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TagCell.xib; sourceTree = "<group>"; };
 		BF1294452929EB2500AA631E /* PaddingableLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddingableLabel.swift; sourceTree = "<group>"; };
 		BF1294472929FEDA00AA631E /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
+		BF129449292A0AA200AA631E /* RelationshipButtonsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RelationshipButtonsCell.swift; sourceTree = "<group>"; };
+		BF12944A292A0AA200AA631E /* RelationshipButtonsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RelationshipButtonsCell.xib; sourceTree = "<group>"; };
 		BF3D8351292736CD009F903F /* PersonalInfoSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalInfoSelectionViewController.swift; sourceTree = "<group>"; };
 		BF3D835329273740009F903F /* OneSelectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneSelectionCell.swift; sourceTree = "<group>"; };
 		BF3D835429273740009F903F /* OneSelectionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OneSelectionCell.xib; sourceTree = "<group>"; };
@@ -361,6 +365,8 @@
 				BF3D836E2928CDAF009F903F /* PersonalMainThumbnailCollectionCell.xib */,
 				BF3D83722928D11D009F903F /* ProfileActionButtonsCell.swift */,
 				BF3D83732928D11D009F903F /* ProfileActionButtonsCell.xib */,
+				BF129449292A0AA200AA631E /* RelationshipButtonsCell.swift */,
+				BF12944A292A0AA200AA631E /* RelationshipButtonsCell.xib */,
 				BF3D83762928D9B8009F903F /* SelfIntroductionCell.swift */,
 				BF3D83772928D9B8009F903F /* SelfIntroductionCell.xib */,
 				BF1294412929E7FA00AA631E /* TagCell.swift */,
@@ -757,6 +763,7 @@
 				BF9A867E2918FB1800BF934D /* FriendCell.xib in Resources */,
 				BF1294442929E7FA00AA631E /* TagCell.xib in Resources */,
 				BF42FA7E290D2ADB00501789 /* MultilineInputCell.xib in Resources */,
+				BF12944C292A0AA200AA631E /* RelationshipButtonsCell.xib in Resources */,
 				BF42FAC929111FD400501789 /* ImagePickerCell.xib in Resources */,
 				BF3D836329278D63009F903F /* WorkRecordCell.xib in Resources */,
 				BF42FA79290D264100501789 /* SingleLineDescriptionInputCell.xib in Resources */,
@@ -869,6 +876,7 @@
 				BF42FAB0290F7E9000501789 /* SelectionCategoriesViewController.swift in Sources */,
 				BF42FABF290FF65300501789 /* MemberCell.swift in Sources */,
 				BFF8A4D62915009B00ADC950 /* OthersProfileViewController.swift in Sources */,
+				BF12944B292A0AA200AA631E /* RelationshipButtonsCell.swift in Sources */,
 				BF42FADC2912967900501789 /* IdeaCell.swift in Sources */,
 				BF3D836F2928CDAF009F903F /* PersonalMainThumbnailCollectionCell.swift in Sources */,
 				BF42FAC42910010000501789 /* AddNewCell.swift in Sources */,

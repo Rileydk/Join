@@ -47,6 +47,7 @@ class PersonalEntryViewController: UIViewController {
                 ) as? PersonalProfileViewController else {
                 fatalError("Cannot create personal profile vc")
             }
+            profileVC.userID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey)
             navigationController?.pushViewController(profileVC, animated: true)
         }
 

@@ -104,16 +104,6 @@ class OthersProfileViewController: BaseViewController {
                 }
             }
         }
-
-        //        let ref = FirestoreEndpoint.mySentRequests.ref
-        //        firebaseManager.getSingleDocument(from: ref, match: DocFieldName.id, with: userData?.id) { (result: Result<UserID, Error>) -> Void in
-        //            switch result {
-        //            case .success(let userID):
-        //                print("userID", userID)
-        //            case .failure(let err):
-        //                print(err)
-        //            }
-        //        }
     }
 
     func sendFriendRequest(id: UserID) {

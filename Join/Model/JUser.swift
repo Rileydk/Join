@@ -9,6 +9,7 @@ import Foundation
 import FirebaseAuth
 
 enum Relationship: CaseIterable {
+    case mySelf
     case friend
     case sentRequest
     case receivedRequest
@@ -20,6 +21,7 @@ enum Relationship: CaseIterable {
         case .sentRequest: return "已送出邀請"
         case .receivedRequest: return "接受邀請"
         case .unknown: return "加為好友"
+        default: return ""
         }
     }
 }
