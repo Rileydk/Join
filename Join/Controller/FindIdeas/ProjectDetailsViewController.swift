@@ -10,10 +10,13 @@ import UIKit
 class ProjectDetailsViewController: BaseViewController {
     enum Section: CaseIterable {
         case bigImage
-//        case categories
-//        case deadline
-//        case essentialLocation
-//        case description
+        case projectName
+        //        case categories
+        case recruiting
+        case skills
+        case deadline
+        case essentialLocation
+        case description
 //        case group
         case contact
 //        case location
@@ -22,10 +25,13 @@ class ProjectDetailsViewController: BaseViewController {
 
     enum Item: Hashable {
         case bigImage(URLString)
+        case projectName(String)
 //        case categories
-//        case deadline
-//        case essentialLocation
-//        case description
+        case recruiting(Project)
+        case skills(Project)
+        case deadline(Project)
+        case essentialLocation(Project)
+        case description(Project)
 //        case group
         case contact(JUser)
 //        case location
@@ -46,34 +52,54 @@ class ProjectDetailsViewController: BaseViewController {
                 forCellReuseIdentifier: BigImageCell.identifier
             )
             tableView.register(
-                UINib(nibName: JoinButtonCell.identifier, bundle: nil),
-                forCellReuseIdentifier: JoinButtonCell.identifier
-            )
+                UINib(nibName: ProjectTitleCell.identifier, bundle: nil),
+                forCellReuseIdentifier: ProjectTitleCell.identifier)
+            tableView.register(
+                UINib(nibName: ProjectItemCell.identifier, bundle: nil),
+                forCellReuseIdentifier: ProjectItemCell.identifier)
+            tableView.register(
+                UINib(nibName: MultilineCell.identifier, bundle: nil),
+                forCellReuseIdentifier: MultilineCell.identifier)
             tableView.register(
                 UINib(nibName: ContactCell.identifier, bundle: nil),
                 forCellReuseIdentifier: ContactCell.identifier
             )
             tableView.register(
+                UINib(nibName: JoinButtonCell.identifier, bundle: nil),
+                forCellReuseIdentifier: JoinButtonCell.identifier
+            )
+            tableView.register(
                 UINib(nibName: DetailTitleHeaderView.identifier, bundle: nil),
                 forHeaderFooterViewReuseIdentifier: DetailTitleHeaderView.identifier
             )
-            tableView.sectionHeaderHeight = UITableView.automaticDimension
-            tableView.estimatedSectionHeaderHeight = 80
             tableView.delegate = self
             configureDatasource()
+
+            tableView.separatorStyle = .none
+            tableView.allowsSelection = false
+            tableView.rowHeight = UITableView.automaticDimension
+            tableView.estimatedRowHeight = 80
+            if #available(iOS 15, *) {
+                tableView.sectionHeaderTopPadding = 0
+            }
         }
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
+        JProgressHUD.shared.showLoading(view: self.view)
         if let userID = project?.contact {
             firebaseManager.getUserInfo(id: userID) { [weak self] result in
+                guard let self = self else { return }
                 switch result {
                 case .success(let user):
-                    self?.userData = user
-                    self?.updateDatasource()
+                    self.userData = user
+                    self.updateDatasource()
+                    JProgressHUD.shared.showSuccess(view: self.view)
                 case .failure(let error):
                     print(error)
+                    JProgressHUD.shared.showFailure(text: error.localizedDescription, view: self.view)
                 }
             }
         }
@@ -81,14 +107,14 @@ class ProjectDetailsViewController: BaseViewController {
 
     func checkAlreadyApplied(project: Project) {
         firebaseManager.firebaseQueue.async { [weak self] in
-            guard let strongSelf = self else { return }
-            strongSelf.firebaseManager.getAllApplicants(projectID: project.projectID, applicantID: strongSelf.myID) { [weak self] result in
+            guard let self = self else { return }
+            self.firebaseManager.getAllApplicants(projectID: project.projectID, applicantID: self.myID) { result in
                 switch result {
                 case .success(let applicants):
-                    if applicants.contains(strongSelf.myID) {
-                        self?.alertAlreadyApplied()
+                    if applicants.contains(self.myID) {
+                        self.alertAlreadyApplied()
                     } else {
-                        self?.alertCheckApplication(project: project)
+                        self.alertCheckApplication(project: project)
                     }
                 case .failure(let err):
                     print(err)
@@ -132,26 +158,39 @@ class ProjectDetailsViewController: BaseViewController {
 
 // MARK: - Table View Delegate
 extension ProjectDetailsViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.section == 0 {
-            return 180
+//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+//        let section = Section.allCases[indexPath.section]
+//        if section == .bigImage {
+//            return 200
+//        } else if section == . {
+//
+//        } else {
+//            return 100
+//        }
+//    }
+//
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        let section = Section.allCases[section]
+        if section == .description || section == .contact {
+            return 60
         } else {
-            return 100
+            return 0
         }
     }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        if section == 1 {
+        let section = Section.allCases[section]
+        if section == .description || section == .contact  {
             guard let headerView = tableView.dequeueReusableHeaderFooterView(
                 withIdentifier: DetailTitleHeaderView.identifier) as? DetailTitleHeaderView else {
                 return nil
             }
-            if let project = project {
-                headerView.layoutHeaderView(project: project)
-                return headerView
+            if section == .description {
+                headerView.layoutHeaderView(title: Constant.FindIdeas.descriptionSectionTitle)
             } else {
-                return nil
+                headerView.layoutHeaderView(title: Constant.FindIdeas.contactSectionTitle)
             }
+            return headerView
         } else {
             return nil
         }
@@ -168,6 +207,7 @@ extension ProjectDetailsViewController {
         updateDatasource()
     }
 
+    // swiftlint:disable cyclomatic_complexity
     func createCell(tableView: UITableView, indexPath: IndexPath, item: Item) -> UITableViewCell {
         switch item {
         case .bigImage(let imageURL):
@@ -178,6 +218,49 @@ extension ProjectDetailsViewController {
             }
             cell.layoutCell(imageURL: imageURL)
             return cell
+
+        case .projectName(let recruitingTitle):
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: ProjectTitleCell.identifier, for: indexPath) as? ProjectTitleCell else {
+                fatalError("Cannot create recruiting title cell")
+            }
+            cell.layoutCell(title: project?.name)
+            return cell
+
+        case .recruiting(let project):
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: ProjectItemCell.identifier, for: indexPath) as? ProjectItemCell else {
+                fatalError("Cannot create recruiting title cell")
+            }
+            cell.layoutCellWithPosition(project: project)
+            return cell
+
+        case .skills(let project):
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: ProjectItemCell.identifier, for: indexPath) as? ProjectItemCell else {
+                fatalError("Cannot create skills cell")
+            }
+            cell.layoutCellWithSkills(project: project)
+            return cell
+
+        case .deadline(let project):
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: ProjectItemCell.identifier, for: indexPath) as? ProjectItemCell else {
+                fatalError("Cannot create deadline cell")
+            }
+            cell.layoutCellWithDeadline(project: project)
+            return cell
+
+        case .essentialLocation(let project):
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: ProjectItemCell.identifier, for: indexPath) as? ProjectItemCell else {
+                fatalError("Cannot create essential location cell")
+            }
+            cell.layoutCellWithEssentialLocation(project: project)
+            return cell
+
+        case .description(let project):
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: MultilineCell.identifier, for: indexPath) as? MultilineCell else {
+                fatalError("Cannot create multiline cell")
+            }
+            cell.layoutCell(project: project)
+            return cell
+
         case .contact(let user):
             guard let cell = tableView.dequeueReusableCell(
                 withIdentifier: ContactCell.identifier,
@@ -187,13 +270,6 @@ extension ProjectDetailsViewController {
             cell.layoutCell(user: user, from: .projectDetails)
             cell.tapHandler = { [weak self] in
                 let personalStoryboard = UIStoryboard(name: StoryboardCategory.personal.rawValue, bundle: nil)
-//                guard let profileVC = personalStoryboard.instantiateViewController(
-//                    withIdentifier: OthersProfileViewController.identifier
-//                ) as? OthersProfileViewController else {
-//                    fatalError("Cannot create others profile vc")
-//                }
-//                profileVC.objectData = self?.userData
-
                 guard let profileVC = personalStoryboard.instantiateViewController(
                     withIdentifier: PersonalProfileViewController.identifier
                 ) as? PersonalProfileViewController else {
@@ -266,6 +342,12 @@ extension ProjectDetailsViewController {
         if let urlString = project.imageURL {
             snapshot.appendItems([.bigImage(urlString)], toSection: .bigImage)
         }
+        snapshot.appendItems([.projectName(project.name)], toSection: .projectName)
+        snapshot.appendItems([.recruiting(project)], toSection: .recruiting)
+        snapshot.appendItems([.skills(project)], toSection: .skills)
+        snapshot.appendItems([.deadline(project)], toSection: .deadline)
+        snapshot.appendItems([.essentialLocation(project)], toSection: .essentialLocation)
+        snapshot.appendItems([.description(project)], toSection: .description)
         if let userData = userData {
             snapshot.appendItems([.contact(userData)], toSection: .contact)
         }
