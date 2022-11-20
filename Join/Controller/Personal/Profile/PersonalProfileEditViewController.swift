@@ -12,8 +12,8 @@ class PersonalProfileEditViewController: BaseViewController {
         case thumbnail
         case basic
         case introduction
+        case skills
         case interests
-//        case skills
         case portfolio
     }
 
@@ -249,8 +249,27 @@ extension PersonalProfileEditViewController: UITableViewDataSource {
                 for: indexPath) as? GoNextPageButtonCell else {
                 fatalError("Cannot create personal main thumbnail cell")
             }
+            if section == .skills {
+                cell.layoutCell(title: Constant.Edit.editSkills)
+                cell.tapHandler = { [weak self] in
+                    guard let self = self, let skills = self.user?.skills else {
+                        fatalError("Cannot get skills")
+                    }
+                    let personalStoryboard = UIStoryboard(
+                        name: StoryboardCategory.personal.rawValue, bundle: nil)
+                    guard let personalInfoSelectionVC = personalStoryboard.instantiateViewController(
+                        withIdentifier: PersonalInfoSelectionViewController.identifier
+                    ) as? PersonalInfoSelectionViewController else {
+                        fatalError("Cannot load PersonalInfoSelectionViewController")
+                    }
+                    personalInfoSelectionVC.type = .skills
+                    personalInfoSelectionVC.selectedCategories = skills
+                    self.navigationController?.pushViewController(personalInfoSelectionVC, animated: true)
+                }
+            }
+
             if section == .interests {
-                cell.layoutCell(title: "編輯興趣類別")
+                cell.layoutCell(title: Constant.Edit.editInterests)
                 cell.tapHandler = { [weak self] in
                     guard let self = self, let interests = self.user?.interests else {
                         fatalError("Cannot get interests")
@@ -259,15 +278,17 @@ extension PersonalProfileEditViewController: UITableViewDataSource {
                         name: StoryboardCategory.personal.rawValue, bundle: nil)
                     guard let personalInfoSelectionVC = personalStoryboard.instantiateViewController(
                         withIdentifier: PersonalInfoSelectionViewController.identifier
-                        ) as? PersonalInfoSelectionViewController else {
+                    ) as? PersonalInfoSelectionViewController else {
                         fatalError("Cannot load PersonalInfoSelectionViewController")
                     }
+                    personalInfoSelectionVC.type = .interests
                     personalInfoSelectionVC.selectedCategories = interests
                     self.navigationController?.pushViewController(personalInfoSelectionVC, animated: true)
                 }
             }
+
             if section == .portfolio {
-                cell.layoutCell(title: "新增作品集")
+                cell.layoutCell(title: Constant.Edit.addPortfolio)
                 cell.tapHandler = { [weak self] in
                     guard let self = self else { return }
                     let personalStoryboard = UIStoryboard(

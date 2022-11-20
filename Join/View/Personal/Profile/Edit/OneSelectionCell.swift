@@ -18,8 +18,8 @@ class OneSelectionCell: TableViewCell {
         selectImageView.tintColor = .Blue1
     }
 
-    func layoutCell(interest: String, isSelected: Bool) {
-        selectionTitleLabel.text = interest
+    func layoutCell(info: String, isSelected: Bool) {
+        selectionTitleLabel.text = info
         if isSelected {
             selectImageView.image = UIImage(systemName: "checkmark.circle.fill")
         } else {

@@ -74,7 +74,7 @@ enum FirestoreEndpoint {
         let unknownChat = "UnknownChat"
         let messages = "Messages"
         let members = "Members"
-        let interests = "Categories"
+        let infoCategories = "Categories"
 
         switch self {
         case .projects:
@@ -100,7 +100,7 @@ enum FirestoreEndpoint {
         case .groupMembers(let chatroomID):
             return db.collection(groupChatrooms).document(chatroomID).collection(members)
         case .interests:
-            return db.collection(interests)
+            return db.collection(infoCategories)
         }
     }
 }
@@ -1032,9 +1032,9 @@ class FirebaseManager {
         }
     }
 
-    func getAllInterests(completion: @escaping (Result<[String], Error>) -> Void) {
+    func getPersonalInfo(of type: InfoType, completion: @escaping (Result<[String], Error>) -> Void) {
         let ref = FirestoreEndpoint.interests.ref
-        ref.document("interests").getDocument { (document, error) in
+        ref.document(type.rawValue).getDocument { (document, error) in
             if let error = error {
                 completion(.failure(error))
                 return
@@ -1042,8 +1042,8 @@ class FirebaseManager {
 
             if let document = document {
                 do {
-                    let interestsContainer = try document.data(as: Interest.self, decoder: FirebaseManager.decoder)
-                    completion(.success(interestsContainer.interests))
+                    let infoContainer = try document.data(as: PersonalInfoContainer.self, decoder: FirebaseManager.decoder)
+                    completion(.success(infoContainer.items))
                 } catch {
                     completion(.failure(error))
                 }
@@ -1053,10 +1053,10 @@ class FirebaseManager {
         }
     }
 
-    func updateMyInterests(interests: [String], completion: @escaping (Result<String, Error>) -> Void) {
+    func updatePersonalInfo(of type: InfoType, info: [String], completion: @escaping (Result<String, Error>) -> Void) {
         guard let myID = myID else { fatalError("Doesn't have myID") }
         let ref = FirestoreEndpoint.users.ref
-        ref.document(myID).updateData(["interests": interests]) { err in
+        ref.document(myID).updateData([type.rawValue: info]) { err in
             if let err = err {
                 completion(.failure(err))
             }

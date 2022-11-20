@@ -8,7 +8,13 @@
 import UIKit
 import JGProgressHUD
 
+enum InfoType: String {
+    case skills
+    case interests
+}
+
 class PersonalInfoSelectionViewController: BaseViewController {
+
     @IBOutlet weak var tableView: UITableView! {
         didSet {
             tableView.register(UINib(nibName: OneSelectionCell.identifier, bundle: nil),
@@ -22,6 +28,7 @@ class PersonalInfoSelectionViewController: BaseViewController {
     }
 
     let firebaseManager = FirebaseManager.shared
+    var type: InfoType = .skills
     var categories = [String]() {
         didSet {
             tableView.reloadData()
@@ -36,7 +43,7 @@ class PersonalInfoSelectionViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.rightBarButtonItem = UIBarButtonItem(
-            title: "Save", style: .done, target: self, action: #selector(updateInterests))
+            title: "Save", style: .done, target: self, action: #selector(updatePersonalInfo))
         navigationItem.leftBarButtonItem = UIBarButtonItem(
             title: "Discard", style: .plain, target: self, action: #selector(backToPreviousPage))
     }
@@ -44,11 +51,11 @@ class PersonalInfoSelectionViewController: BaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         JProgressHUD.shared.showLoading(view: self.view)
-        firebaseManager.getAllInterests { [weak self] result in
+        firebaseManager.getPersonalInfo(of: type) { [weak self] result in
             guard let self = self else { return }
             switch result {
-            case .success(let interests):
-                self.categories = interests
+            case .success(let allCategories):
+                self.categories = allCategories
                 JProgressHUD.shared.dismiss()
             case .failure(let err):
                 print(err)
@@ -57,10 +64,10 @@ class PersonalInfoSelectionViewController: BaseViewController {
         }
     }
 
-    @objc func updateInterests() {
+    @objc func updatePersonalInfo() {
         JProgressHUD.shared.showSaving(view: view)
 
-        firebaseManager.updateMyInterests(interests: selectedCategories) { [weak self] result in
+        firebaseManager.updatePersonalInfo(of: type, info: selectedCategories) { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success:
@@ -117,7 +124,7 @@ extension PersonalInfoSelectionViewController: UITableViewDataSource {
             as? OneSelectionCell else {
             fatalError("Cannot load one selection cell")
         }
-        cell.layoutCell(interest: item, isSelected: isSelected)
+        cell.layoutCell(info: item, isSelected: isSelected)
         return cell
     }
 }
