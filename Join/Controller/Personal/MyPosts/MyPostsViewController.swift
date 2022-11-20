@@ -80,8 +80,11 @@ class MyPostsViewController: BaseViewController {
                     }
                     group.leave()
                 case .failure(let err):
-                    JProgressHUD.shared.showFailure(text: err.localizedDescription, view: self.view)
                     group.leave()
+                    group.notify(queue: .main) {
+                        JProgressHUD.shared.showFailure(text: err.localizedDescription, view: self.view)
+                        shouldContinue = false
+                    }
                 }
             }
             group.wait()
@@ -97,6 +100,7 @@ class MyPostsViewController: BaseViewController {
                         JProgressHUD.shared.dismiss()
                     }
                 case .failure(let err):
+                    group.leave()
                     group.notify(queue: .main) {
                         JProgressHUD.shared.showFailure(text: err.localizedDescription, view: self.view)
                     }

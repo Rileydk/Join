@@ -131,7 +131,6 @@ class PersonalProfileViewController: BaseViewController {
             }
 
             group.enter()
-            guard shouldContinue else { return }
             self.firebaseManager.getUserWorks(userID: userID) { result in
                 switch result {
                 case .success(let works):
@@ -142,16 +141,18 @@ class PersonalProfileViewController: BaseViewController {
                     }
                     group.leave()
                 case .failure(let err):
-                    JProgressHUD.shared.showFailure(text: err.localizedDescription, view: self.view)
-                    shouldContinue = false
                     group.leave()
+                    group.notify(queue: .main) {
+                        JProgressHUD.shared.showFailure(text: err.localizedDescription, view: self.view)
+                        shouldContinue = false
+                    }
                 }
             }
 
             group.wait()
             guard shouldContinue else { return }
             for i in 0 ..< self.workItems.count {
-                guard shouldContinue else { return }
+                guard shouldContinue else { break }
                 group.enter()
                 self.firebaseManager.getWorkRecords(userID: userID, by: self.workItems[i].workID) { result in
                     switch result {
@@ -159,15 +160,19 @@ class PersonalProfileViewController: BaseViewController {
                         self.workItems[i].records = records
                         group.leave()
                     case .failure(let err):
-                        JProgressHUD.shared.showFailure(text: err.localizedDescription, view: self.view)
+                        print(err)
                         shouldContinue = false
                         group.leave()
                     }
                 }
             }
             group.notify(queue: .main) {
-                self.updateDatasource()
-                JProgressHUD.shared.dismiss()
+                if shouldContinue {
+                    self.updateDatasource()
+                    JProgressHUD.shared.dismiss()
+                } else {
+                    JProgressHUD.shared.showFailure(view: self.view)
+                }
             }
         }
     }
@@ -183,11 +188,11 @@ class PersonalProfileViewController: BaseViewController {
                 switch result {
                 case .success:
                     self?.relationship = .friend
+                    shouldContinue = false
                     group.leave()
                     group.notify(queue: .main) {
                         completion(.success("Success"))
                     }
-                    shouldContinue = false
                 case .failure(let error):
                     print(error)
                     group.leave()
