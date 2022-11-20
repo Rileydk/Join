@@ -10,11 +10,13 @@ import UIKit
 class WorkRecordCell: TableViewCell {
     @IBOutlet weak var recordImageView: UIImageView!
     @IBOutlet weak var deleteButton: UIButton!
-
+    @IBOutlet weak var recordImageViewTrailingConstraint: NSLayoutConstraint!
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         deleteButton.tintColor = .Red
-        contentView.backgroundColor = .Gray5
+        contentView.backgroundColor = .Gray6
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

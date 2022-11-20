@@ -13,7 +13,7 @@ class OneSelectionCell: TableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        contentView.backgroundColor = .Gray5
+        contentView.backgroundColor = .Gray6
         selectionTitleLabel.textColor = .Gray1
         selectImageView.tintColor = .Blue1
     }

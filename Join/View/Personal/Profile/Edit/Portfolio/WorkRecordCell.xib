@@ -17,12 +17,6 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="200"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="zCR-1B-Ybc">
-                        <rect key="frame" x="16" y="23.5" width="260" height="153"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="153" id="Gs9-sk-Mxg"/>
-                        </constraints>
-                    </imageView>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="A7Q-HW-8Cc">
                         <rect key="frame" x="284" y="89" width="20" height="22"/>
                         <constraints>
@@ -32,6 +26,12 @@
                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                         <state key="normal" image="trash" catalog="system"/>
                     </button>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="zCR-1B-Ybc">
+                        <rect key="frame" x="16" y="23.5" width="260" height="153"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="153" id="Gs9-sk-Mxg"/>
+                        </constraints>
+                    </imageView>
                 </subviews>
                 <constraints>
                     <constraint firstItem="A7Q-HW-8Cc" firstAttribute="centerY" secondItem="zCR-1B-Ybc" secondAttribute="centerY" id="04P-W7-CfR"/>
@@ -45,6 +45,7 @@
             <connections>
                 <outlet property="deleteButton" destination="A7Q-HW-8Cc" id="vD6-fa-SNT"/>
                 <outlet property="recordImageView" destination="zCR-1B-Ybc" id="kDi-hw-kJ2"/>
+                <outlet property="recordImageViewWidthConstraint" destination="xV1-fn-ADi" id="4rs-YG-dEa"/>
             </connections>
             <point key="canvasLocation" x="137.68115942028987" y="88.392857142857139"/>
         </tableViewCell>
