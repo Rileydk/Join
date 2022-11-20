@@ -61,33 +61,41 @@ class ChatListViewController: BaseViewController {
             tabSegmentedControl.setTitle(types[i].buttonTitle, forSegmentAt: i)
         }
         tabSegmentedControl.selectedSegmentIndex = types.firstIndex(of: .friend)!
+        addGroupChatroomBarButton.tintColor = .Blue3
     }
 
     func getMessageList() {
+        self.messageList = []
+        JProgressHUD.shared.showLoading(view: self.view)
+
         if type == .group {
             firebaseManager.getAllGroupMessages { [weak self] result in
+                guard let self = self else { return }
                 switch result {
                 case .success(let groupMessagesList):
-                    var listItem = groupMessagesList.sorted(by: {
+                    let listItem = groupMessagesList.sorted(by: {
                         $0.messages.first?.time ?? $0.chatroom.createdTime > $1.messages.first?.time ?? $0.chatroom.createdTime
                     })
-                    self?.groupMessageList = listItem
+                    self.groupMessageList = listItem
+                    JProgressHUD.shared.dismiss()
                 case .failure(let err):
-                    print(err)
+                    JProgressHUD.shared.showFailure(text: err.localizedDescription, view: self.view)
                 }
             }
 
         } else {
-            firebaseManager.getAllMessagesCombinedWithSender(type: type) { [unowned self] result in
+            firebaseManager.getAllMessagesCombinedWithSender(type: type) { [weak self] result in
+                guard let self = self else { return }
                 switch result {
                 case .success(let listItem):
-                    var listItem = listItem.sorted(by: {
+                    let listItem = listItem.sorted(by: {
                         $0.messages.first!.time > $1.messages.first!.time
                     })
                     self.messageList = listItem
-                case .failure(let error):
+                    JProgressHUD.shared.dismiss()
+                case .failure(let err):
                     self.messageList = []
-                    print(error)
+                    JProgressHUD.shared.showFailure(text: err.localizedDescription, view: self.view)
                 }
             }
         }

@@ -22,6 +22,7 @@ class GroupMembersViewController: BaseViewController {
             tableView.delegate = self
             tableView.dataSource = self
             tableView.backgroundColor = .Gray6
+            tableView.separatorStyle = .none
         }
     }
 
@@ -61,12 +62,17 @@ class GroupMembersViewController: BaseViewController {
             print("No chatroom id")
             return
         }
+
+        JProgressHUD.shared.showLoading(view: self.view)
         var currentMembersIDs = [UserID]()
 
         firebaseManager.firebaseQueue.async { [weak self] in
+            guard let self = self else { return }
+            var shouldContinue = true
+
             let group = DispatchGroup()
             group.enter()
-            self?.firebaseManager.getAllCurrentGroupChatMembers(chatroomID: chatroomID) { result in
+            self.firebaseManager.getAllCurrentGroupChatMembers(chatroomID: chatroomID) { result in
                 switch result {
                 case .success(let membersIDs):
                     currentMembersIDs = membersIDs
@@ -74,31 +80,33 @@ class GroupMembersViewController: BaseViewController {
                 case .failure(let err):
                     group.leave()
                     group.notify(queue: .main) {
-                        print(err)
+                        JProgressHUD.shared.showFailure(text: err.localizedDescription, view: self.view)
+                        shouldContinue = false
                     }
                 }
             }
 
             group.wait()
+            guard shouldContinue else { return }
             group.enter()
-            self?.firebaseManager.getAllMatchedUsersDetail(usersID: currentMembersIDs) { [weak self] result in
-                guard let strongSelf = self else { return }
+            self.firebaseManager.getAllMatchedUsersDetail(usersID: currentMembersIDs) { result in
                 switch result {
                 case .success(let members):
                     group.leave()
                     group.notify(queue: .main) {
                         var members = members
-                        if let member = members.first(where: { $0.id == strongSelf.myID }),
+                        if let member = members.first(where: { $0.id == self.myID }),
                             let index = members.firstIndex(of: member),
                            index != 0 {
                             members.swapAt(0, index)
                         }
-                        self?.members = members
+                        self.members = members
+                        JProgressHUD.shared.dismiss()
                     }
                 case .failure(let err):
                     group.leave()
                     group.notify(queue: .main) {
-                        print(err)
+                        JProgressHUD.shared.showFailure(text: err.localizedDescription, view: self.view)
                     }
                 }
             }
@@ -169,11 +177,11 @@ extension GroupMembersViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let personalStoryboard = UIStoryboard(name: StoryboardCategory.personal.rawValue, bundle: nil)
         guard let profileVC = personalStoryboard.instantiateViewController(
-            withIdentifier: OthersProfileViewController.identifier
-        ) as? OthersProfileViewController else {
+            withIdentifier: PersonalProfileViewController.identifier
+        ) as? PersonalProfileViewController else {
             fatalError("Cannot create others profile vc")
         }
-        profileVC.objectData = members[indexPath.row - 1]
+        profileVC.userID = members[indexPath.row - 1].id
         navigationController?.pushViewController(profileVC, animated: true)
     }
 
@@ -234,18 +242,20 @@ extension GroupMembersViewController: UITableViewDataSource {
                 print("No chatroom id")
                 return
             }
+            JProgressHUD.shared.showSaving(view: self.view)
             firebaseManager.updateGroupChatroomMemberStatus(setTo: .exit, membersIDs: [members[indexPath.row - 1].id], chatroomID: chatroomID) { [weak self] result in
+                guard let self = self else { return }
                 switch result {
                 case .success:
-                    self?.shouldReload = false
-                    self?.members.remove(at: indexPath.row - 1)
-                    self?.tableView.deleteRows(at: [indexPath], with: .automatic)
-                    self?.shouldReload = true
+                    self.shouldReload = false
+                    self.members.remove(at: indexPath.row - 1)
+                    self.tableView.deleteRows(at: [indexPath], with: .automatic)
+                    self.shouldReload = true
+                    JProgressHUD.shared.showSuccess(view: self.view)
                 case .failure(let err):
-                    print(err)
+                    JProgressHUD.shared.showFailure(text: err.localizedDescription, view: self.view)
                 }
             }
-
         }
     }
 }

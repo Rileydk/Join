@@ -50,7 +50,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="DAu-Py-tgo">
                         <barButtonItem key="rightBarButtonItem" title="Item" image="plus.message" catalog="system" id="0ds-7h-Qdn">
-                            <color key="tintColor" name="Blue1"/>
+                            <color key="tintColor" name="AccentColor"/>
                             <connections>
                                 <action selector="addGroupChatroom:" destination="xzF-Dt-Vic" id="dNV-5a-Ibc"/>
                             </connections>
@@ -269,6 +269,9 @@
     </scenes>
     <resources>
         <image name="plus.message" catalog="system" width="128" height="113"/>
+        <namedColor name="AccentColor">
+            <color red="0.0" green="0.46000000000000002" blue="0.89000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="Blue1">
             <color red="0.0" green="0.22352941176470589" blue="0.38823529411764707" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

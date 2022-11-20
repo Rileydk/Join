@@ -9,6 +9,7 @@ import UIKit
 
 class MyMessageCell: TableViewCell {
     @IBOutlet weak var messageTextView: UITextView!
+    @IBOutlet weak var timeLabel: UILabel!
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -23,7 +24,8 @@ class MyMessageCell: TableViewCell {
         messageTextView.isScrollEnabled = false
     }
 
-    func layoutCell(message: String) {
-        messageTextView.text = message
+    func layoutCell(message: Message) {
+        messageTextView.text = message.content
+        timeLabel.text = message.time.formattedTime
     }
 }
