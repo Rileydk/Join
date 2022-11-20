@@ -8,6 +8,10 @@
 import Foundation
 
 struct Constant {
+    struct Placeholder {
+        static let coverURLString = "https://firebasestorage.googleapis.com:443/v0/b/join-82f54.appspot.com/o/F5986CC3-D3EF-4408-AC79-D9D7FC1F8450?alt=media&token=44e11625-5d08-46c7-a8ac-90737e656591"
+    }
+
     struct FindIdeas {
         static let recruitingColumn = "招募中"
         static let skillsColumn = "技術需求"
