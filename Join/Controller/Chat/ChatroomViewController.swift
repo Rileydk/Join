@@ -145,7 +145,7 @@ extension ChatroomViewController: UITableViewDataSource {
                 ) as? MyMessageCell else {
                 fatalError("Cannot create my message cell")
             }
-            cell.layoutCell(message: message.content)
+            cell.layoutCell(message: message)
             return cell
 
         } else {
@@ -154,7 +154,7 @@ extension ChatroomViewController: UITableViewDataSource {
                 ) as? MessageCell else {
                 fatalError("Cannot create message cell")
             }
-            cell.layoutCell(imageURL: userData?.thumbnailURL, message: message.content)
+            cell.layoutCell(imageURL: userData?.thumbnailURL, message: message)
             cell.tapHandler = { [weak self] in
                 let personalStoryboard = UIStoryboard(name: StoryboardCategory.personal.rawValue, bundle: nil)
                 guard let profileVC = personalStoryboard.instantiateViewController(

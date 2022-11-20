@@ -26,17 +26,26 @@
                         <fontDescription key="fontDescription" type="system" pointSize="18"/>
                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                     </textView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="24:59" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eqa-EQ-Opx">
+                        <rect key="frame" x="80" y="43.5" width="34" height="14.5"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <color key="textColor" name="Gray3"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
                 <constraints>
+                    <constraint firstAttribute="bottom" secondItem="eqa-EQ-Opx" secondAttribute="bottom" constant="2" id="Jzx-TH-Y3C"/>
                     <constraint firstItem="C37-jr-2EC" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="2" id="PKa-Kb-abZ"/>
                     <constraint firstItem="C37-jr-2EC" firstAttribute="width" relation="lessThanOrEqual" secondItem="H2p-sc-9uM" secondAttribute="width" multiplier="0.6" id="QyM-p9-G3y"/>
                     <constraint firstAttribute="bottom" secondItem="C37-jr-2EC" secondAttribute="bottom" constant="2" id="WEB-Uf-f6A"/>
+                    <constraint firstItem="C37-jr-2EC" firstAttribute="leading" secondItem="eqa-EQ-Opx" secondAttribute="trailing" constant="4" id="nrN-ul-8KV"/>
                     <constraint firstAttribute="trailing" secondItem="C37-jr-2EC" secondAttribute="trailing" constant="12" id="rkU-J4-NSE"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
                 <outlet property="messageTextView" destination="C37-jr-2EC" id="ire-X6-PEK"/>
+                <outlet property="timeLabel" destination="eqa-EQ-Opx" id="jYe-Hy-1oj"/>
             </connections>
             <point key="canvasLocation" x="137.68115942028987" y="81.696428571428569"/>
         </tableViewCell>
@@ -45,8 +54,11 @@
         <namedColor name="Blue2">
             <color red="0.0" green="0.50588235294117645" blue="0.77254901960784317" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
+        <namedColor name="Gray3">
+            <color red="0.53333333333333333" green="0.53333333333333333" blue="0.53333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="Gray5">
-            <color red="0.94117647058823528" green="0.94117647058823528" blue="0.94117647058823528" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.8784313725490196" green="0.8784313725490196" blue="0.8784313725490196" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>

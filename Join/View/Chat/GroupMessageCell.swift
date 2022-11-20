@@ -11,7 +11,8 @@ class GroupMessageCell: TableViewCell {
     @IBOutlet weak var senderThumbnailImageView: UIImageView!
     @IBOutlet weak var senderNameLabel: UILabel!
     @IBOutlet weak var messageTextView: UITextView!
-
+    @IBOutlet weak var timeLabel: UILabel!
+    
     let firebaseManager = FirebaseManager.shared
     var tapHandler: (() -> Void)?
 
@@ -45,17 +46,20 @@ class GroupMessageCell: TableViewCell {
     }
 
     func layoutCell(message: WholeInfoMessage) {
-        firebaseManager.downloadImage(urlString: message.sender.thumbnailURL ?? FindPartnersFormSections.placeholderImageURL) { [unowned self] result in
-            switch result {
-            case .success(let image):
-                self.senderThumbnailImageView.image = image
-            case .failure(let err):
-                print(err)
-            }
-        }
+//        firebaseManager.downloadImage(urlString: message.sender.thumbnailURL ?? FindPartnersFormSections.placeholderImageURL) { [unowned self] result in
+//            switch result {
+//            case .success(let image):
+//                self.senderThumbnailImageView.image = image
+//            case .failure(let err):
+//                print(err)
+//            }
+//        }
 
+
+        senderThumbnailImageView.loadImage(message.sender.thumbnailURL ?? Constant.Placeholder.coverURLString)
         senderNameLabel.text = message.sender.name
         messageTextView.text = message.message.content
+        timeLabel.text = message.message.time.formattedTime
     }
 
     @objc func thumbnailGetTapped() {

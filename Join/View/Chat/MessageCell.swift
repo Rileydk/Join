@@ -11,6 +11,7 @@ class MessageCell: TableViewCell {
 
     @IBOutlet weak var thumbnailImageView: UIImageView!
     @IBOutlet weak var messageTextView: UITextView!
+    @IBOutlet weak var timeLabel: UILabel!
 
     let firebaseManager = FirebaseManager.shared
     var tapHandler: (() -> Void)?
@@ -29,8 +30,7 @@ class MessageCell: TableViewCell {
             bottom: inset, right: inset
         )
         messageTextView.layer.cornerRadius = 12
-        messageTextView.layer.borderWidth = 0.5
-        messageTextView.layer.borderColor = UIColor.Gray3?.cgColor
+        messageTextView.backgroundColor = .White
         messageTextView.isUserInteractionEnabled = false
         messageTextView.isScrollEnabled = false
 
@@ -44,10 +44,10 @@ class MessageCell: TableViewCell {
         thumbnailImageView.layer.cornerRadius = thumbnailImageView.frame.size.width / 2
     }
 
-    func layoutCell(imageURL: URLString?, message: String) {
-        guard let imageURL = URL(string: imageURL!) else { return }
-        thumbnailImageView.kf.setImage(with: imageURL)
-        messageTextView.text = message
+    func layoutCell(imageURL: URLString?, message: Message) {
+        thumbnailImageView.loadImage(imageURL ?? Constant.Placeholder.coverURLString)
+        messageTextView.text = message.content
+        timeLabel.text = message.time.formattedTime
     }
 
     @objc func thumbnailGetTapped() {

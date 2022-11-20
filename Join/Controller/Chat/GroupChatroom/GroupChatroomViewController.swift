@@ -227,7 +227,7 @@ extension GroupChatroomViewController: UITableViewDataSource {
             ) as? MyMessageCell else {
                 fatalError("Cannot create my message cell")
             }
-            cell.layoutCell(message: wholeInfoMessages[indexPath.row].message.content)
+            cell.layoutCell(message: wholeInfoMessages[indexPath.row].message)
             return cell
 
         } else {
