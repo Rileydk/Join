@@ -75,7 +75,6 @@ class PersonalProfileViewController: BaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         updateData()
-        print("relationship:", relationship)
     }
 
     func layoutViews() {

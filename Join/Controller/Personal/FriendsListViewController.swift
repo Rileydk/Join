@@ -33,14 +33,17 @@ class FriendsListViewController: BaseViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        firebaseManager.getAllFriendsInfo { [unowned self] result in
+        JProgressHUD.shared.showLoading(view: self.view)
+        firebaseManager.getAllFriendsInfo { [weak self] result in
+            guard let self = self else { return }
             switch result {
             case .success(let friends):
                 self.friends = friends
                 self.filteredFriends = friends
-                tableView.reloadData()
+                self.tableView.reloadData()
+                JProgressHUD.shared.dismiss()
             case .failure(let error):
-                print(error)
+                JProgressHUD.shared.showFailure(text: error.localizedDescription, view: self.view)
             }
         }
     }
@@ -48,6 +51,7 @@ class FriendsListViewController: BaseViewController {
     func layoutViews() {
         view.backgroundColor = .Gray6
 
+        searchController.searchBar.searchTextField.backgroundColor = .White
         searchController.searchResultsUpdater = self
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = false
@@ -63,11 +67,11 @@ extension FriendsListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let personalStoryboard = UIStoryboard(name: StoryboardCategory.personal.rawValue, bundle: nil)
         guard let profileVC = personalStoryboard.instantiateViewController(
-            withIdentifier: OthersProfileViewController.identifier
-        ) as? OthersProfileViewController else {
+            withIdentifier: PersonalProfileViewController.identifier
+        ) as? PersonalProfileViewController else {
             fatalError("Cannot create others profile vc")
         }
-        profileVC.objectData = filteredFriends[indexPath.row]
+        profileVC.userID = filteredFriends[indexPath.row].id
         navigationController?.pushViewController(profileVC, animated: true)
     }
 }

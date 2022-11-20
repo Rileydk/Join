@@ -15,12 +15,24 @@ class IdeaCell: CollectionViewCell {
     @IBOutlet weak var positionLabel: UILabel!
     @IBOutlet weak var numberLabel: UILabel!
     @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var savingButton: UIButton!
+    @IBOutlet weak var applicantsAmountLabelButton: UIButton!
 
     let firebaseManager = FirebaseManager.shared
 
     override func prepareForReuse() {
         super.prepareForReuse()
         imageView.image = nil
+    }
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        applicantsAmountLabelButton.isEnabled = false
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        applicantsAmountLabelButton.layer.cornerRadius = applicantsAmountLabelButton.frame.size.height / 2
     }
 
     func layoutCell(project: Project) {
@@ -30,19 +42,22 @@ class IdeaCell: CollectionViewCell {
         locationLabel.text = project.location
         positionLabel.text = project.recruiting.first!.role
         numberLabel.text = "* \(project.recruiting.first!.number)"
+        applicantsAmountLabelButton.isHidden = true
 
         if let imageURLString = project.imageURL {
             imageView.isHidden = false
-            firebaseManager.downloadImage(urlString: imageURLString) { [weak self] result in
-                switch result {
-                case .success(let image):
-                    self?.imageView.image = image
-                case .failure(let error):
-                    print(error)
-                }
-            }
+            imageView.loadImage(imageURLString)
         } else {
             imageView.isHidden = true
+        }
+    }
+
+    func layoutCellWithApplicants(project: Project) {
+        layoutCell(project: project)
+        savingButton.isHidden = true
+        if !project.applicants.isEmpty {
+            applicantsAmountLabelButton.isHidden = false
+            applicantsAmountLabelButton.setTitle("\(project.applicants.count)", for: .normal)
         }
     }
 }

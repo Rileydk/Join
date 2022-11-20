@@ -19,7 +19,8 @@ class MyPostsViewController: BaseViewController {
     @IBOutlet weak var collectionView: UICollectionView! {
         didSet {
             collectionView.register(
-                UINib(nibName: IdeaCell.identifier, bundle: nil), forCellWithReuseIdentifier: IdeaCell.identifier
+                UINib(nibName: IdeaCell.identifier, bundle: nil),
+                forCellWithReuseIdentifier: IdeaCell.identifier
             )
             collectionView.setCollectionViewLayout(createLayout(), animated: false)
             collectionView.delegate = self
@@ -57,26 +58,49 @@ class MyPostsViewController: BaseViewController {
     }
 
     func getProjects() {
-        firebaseManager.getAllMyProjectsID { [weak self] result in
-            switch result {
-            case .success(let postsItems):
-                let projectsID = postsItems.map { $0.projectID }
-                guard !projectsID.isEmpty else {
-                    print("No projects")
-                    return
+        JProgressHUD.shared.showLoading(view: self.view)
+
+        firebaseManager.firebaseQueue.async { [weak self] in
+            guard let self = self else { return }
+            var shouldContinue = true
+            var projectsID = [ProjectID]()
+
+            let group = DispatchGroup()
+            group.enter()
+            self.firebaseManager.getAllMyProjectsID { result in
+                switch result {
+                case .success(let postsItems):
+                    projectsID = postsItems.map { $0.projectID }
+                    guard !projectsID.isEmpty else {
+                        // TODO: - 改為顯示提示畫面
+                        print("No projects")
+                        shouldContinue = false
+                        group.leave()
+                        return
+                    }
+                    group.leave()
+                case .failure(let err):
+                    JProgressHUD.shared.showFailure(text: err.localizedDescription, view: self.view)
+                    group.leave()
                 }
-                self?.firebaseManager.getAllMyProjects(projectsID: projectsID) { [weak self] result in
-                    switch result {
-                    case .success(let posts):
-                        self?.myPosts = posts
-                        self?.updateDatasource()
-                    case .failure(let err):
-                        print(err)
+            }
+            group.wait()
+            guard shouldContinue else { return }
+            group.enter()
+            self.firebaseManager.getAllMyProjects(projectsID: projectsID) { result in
+                switch result {
+                case .success(let posts):
+                    group.leave()
+                    group.notify(queue: .main) {
+                        self.myPosts = posts
+                        self.updateDatasource()
+                        JProgressHUD.shared.dismiss()
+                    }
+                case .failure(let err):
+                    group.notify(queue: .main) {
+                        JProgressHUD.shared.showFailure(text: err.localizedDescription, view: self.view)
                     }
                 }
-            case .failure(let err):
-                print("failed")
-                print(err)
             }
         }
     }
@@ -135,7 +159,7 @@ extension MyPostsViewController {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: IdeaCell.identifier, for: indexPath) as? IdeaCell else {
                 fatalError("Cannot create Idea Cell")
             }
-            cell.layoutCell(project: project)
+            cell.layoutCellWithApplicants(project: project)
             return cell
         }
     }

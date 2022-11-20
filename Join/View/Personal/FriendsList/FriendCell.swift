@@ -41,14 +41,15 @@ class FriendCell: TableViewCell {
 
     func layoutCell(friend: JUser, source: Source) {
         nameLabel.text = friend.name
-        firebaseManager.downloadImage(urlString: friend.thumbnailURL ?? FindPartnersFormSections.placeholderImageURL) { [weak self] result in
-            switch result {
-            case .success(let image):
-                self?.thumbnailImageView.image = image
-            case .failure(let error):
-                print(error)
-            }
-        }
+        thumbnailImageView.loadImage(friend.thumbnailURL ?? Constant.Placeholder.coverURLString)
+//        firebaseManager.downloadImage(urlString: friend.thumbnailURL ?? FindPartnersFormSections.placeholderImageURL) { [weak self] result in
+//            switch result {
+//            case .success(let image):
+//                self?.thumbnailImageView.image = image
+//            case .failure(let error):
+//                print(error)
+//            }
+//        }
         if source == .friendSelection {
             selectImageView.isHidden = false
         } else {
