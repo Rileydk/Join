@@ -111,12 +111,12 @@ class PersonalProfileViewController: BaseViewController {
                 group.enter()
                 self.getRelationship { result in
                     switch result {
+                    case .success:
+                        group.leave()
                     case .failure(let err):
                         JProgressHUD.shared.showFailure(text: err.localizedDescription, view: self.view)
                         group.leave()
                         shouldContinue = false
-                    default:
-                        group.leave()
                     }
                 }
             } else {
@@ -447,7 +447,7 @@ extension PersonalProfileViewController {
                     let personalStoryboard = UIStoryboard(name: StoryboardCategory.personal.rawValue, bundle: nil)
                     guard let personalProfileEditVC = personalStoryboard.instantiateViewController(
                         withIdentifier: PersonalProfileEditViewController.identifier
-                    ) as? PersonalProfileEditViewController else {
+                        ) as? PersonalProfileEditViewController else {
                         fatalError("Cannot load personal profile edit vc")
                     }
                     self?.navigationController?.pushViewController(personalProfileEditVC, animated: true)

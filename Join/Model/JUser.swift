@@ -9,11 +9,11 @@ import Foundation
 import FirebaseAuth
 
 enum Relationship: CaseIterable {
-    case mySelf
     case friend
     case sentRequest
     case receivedRequest
     case unknown
+    case mySelf
 
     var title: String {
         switch self {

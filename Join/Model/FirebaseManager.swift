@@ -463,12 +463,15 @@ class FirebaseManager {
     }
 
     func sendFriendRequest(to id: UserID, completion: @escaping (Result<String, Error>) -> Void) {
+        guard let myID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey) else {
+            fatalError("Doesn't have user id")
+        }
+        let myDocRef = FirestoreEndpoint.users.ref.document(myID)
         firebaseQueue.async { [weak self] in
-            guard let strongSelf = self else { return }
             let group = DispatchGroup()
             group.enter()
             let objectDocRef = FirestoreEndpoint.users.ref.document(id)
-            objectDocRef.updateData(["receivedRequests": [id]]) { error in
+            objectDocRef.updateData(["receivedRequests": FieldValue.arrayUnion([myID])]) { error in
                 if let error = error {
                     group.leave()
                     group.notify(queue: .main) {
@@ -480,11 +483,7 @@ class FirebaseManager {
             }
 
             group.enter()
-            guard let myID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey) else {
-                fatalError("Doesn't have user id")
-            }
-            let myDocRef = FirestoreEndpoint.users.ref.document(myID)
-            myDocRef.updateData(["sentRequests": [myID]]) { error in
+            myDocRef.updateData(["sentRequests": FieldValue.arrayUnion([id])]) { error in
                 if let error = error {
                     group.leave()
                     group.notify(queue: .main) {
