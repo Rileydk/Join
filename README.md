@@ -7,3 +7,7 @@
 2. Go to Firebase, create a new project, and add the generated GoogleService-Info.plist under "Join/Resources" directory.
 
 3. Create Firestore inside your Firebase project.
+
+## Credit
+
+- "Icon made by [Pixel perfect](https://www.flaticon.com/authors/pixel-perfect) from [www.flaticon.com](https://www.flaticon.com/)"

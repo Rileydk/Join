@@ -61,6 +61,11 @@ class PersonalProfileViewController: BaseViewController {
         }
     }
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        navigationItem.setHidesBackButton(true, animated: false)
+    }
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         updateData()
@@ -69,9 +74,9 @@ class PersonalProfileViewController: BaseViewController {
     func layoutViews() {
         title = userData?.name
         collectionView.backgroundColor = .Gray6
-//        navigationItem.rightBarButtonItem = UIBarButtonItem(
-//            image: UIImage(systemName: "pencil"), style: .plain,
-//            target: self, action: #selector(editPersonalInfo))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            image: UIImage(named: JImages.Icons_24px_Back.rawValue), style: .plain,
+            target: self, action: #selector(backToPreviousPage))
     }
 
     func updateData() {
@@ -146,6 +151,10 @@ class PersonalProfileViewController: BaseViewController {
         }
 
         navigationController?.pushViewController(personalProfileEditVC, animated: true)
+    }
+
+    @objc func backToPreviousPage() {
+        navigationController?.popViewController(animated: true)
     }
 }
 
@@ -289,6 +298,7 @@ extension PersonalProfileViewController {
             self?.collectionView.dequeueConfiguredReusableSupplementary(
                 using: headerRegistration, for: index)
         }
+
         updateDatasource()
     }
 
@@ -360,12 +370,12 @@ extension PersonalProfileViewController {
             if !userData.skills.isEmpty {
                 snapshot.appendItems(userData.skills.map { .skills($0) }, toSection: .skills)
             }
-        }
-        if let introduction = userData?.introduction, !introduction.isEmpty {
-            snapshot.appendItems([.introduction(introduction)], toSection: .introduction)
-        }
-        if !workItems.isEmpty {
-            snapshot.appendItems(workItems.map { .portfolio($0) }, toSection: .portfolio)
+            if let introduction = userData.introduction, !introduction.isEmpty {
+                snapshot.appendItems([.introduction(introduction)], toSection: .introduction)
+            }
+            if !workItems.isEmpty {
+                snapshot.appendItems(workItems.map { .portfolio($0) }, toSection: .portfolio)
+            }
         }
 
         datasource.apply(snapshot, animatingDifferences: false)

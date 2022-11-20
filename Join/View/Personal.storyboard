@@ -361,7 +361,7 @@
         <!--Item-->
         <scene sceneID="BFG-DT-NJj">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="uve-gw-xmZ" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="uve-gw-xmZ" customClass="NavigationController" customModule="Join" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Item" id="3AH-AR-pyU"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="oPB-iE-apZ">

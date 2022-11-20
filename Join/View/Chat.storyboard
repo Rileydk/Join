@@ -250,7 +250,7 @@
         <!--Item-->
         <scene sceneID="XYW-fG-2wx">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="o5g-e8-NES" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="o5g-e8-NES" customClass="NavigationController" customModule="Join" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Item" id="UTv-XY-eIO"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="6Rq-dA-cYr">
