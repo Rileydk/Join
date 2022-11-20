@@ -21,7 +21,7 @@ class GroupMembersViewController: BaseViewController {
             )
             tableView.delegate = self
             tableView.dataSource = self
-            tableView.backgroundColor = .Gray5
+            tableView.backgroundColor = .Gray6
         }
     }
 

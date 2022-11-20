@@ -19,7 +19,7 @@ class ChatListViewController: BaseViewController {
             tableView.delegate = self
             tableView.dataSource = self
             tableView.separatorStyle = .none
-            tableView.backgroundColor = .Gray5
+            tableView.backgroundColor = .Gray6
         }
     }
 
@@ -54,7 +54,7 @@ class ChatListViewController: BaseViewController {
     }
 
     func layoutViews() {
-        view.backgroundColor = .Gray5
+        view.backgroundColor = .Gray6
 
         let types = ChatroomType.allCases
         for i in 0 ..< types.count {

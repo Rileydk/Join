@@ -6,3 +6,9 @@
 //
 
 import Foundation
+
+struct Constant {
+    struct Portfolio {
+        static let sectionHeader = "Portfolio"
+    }
+}

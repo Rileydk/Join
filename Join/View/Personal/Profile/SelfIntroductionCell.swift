@@ -16,7 +16,8 @@ class SelfIntroductionCell: CollectionViewCell {
         introductionLabel.textAlignment = .center
     }
 
-    func layoutCell(content: String) {
+    func layoutCell(content: String, backgroundColor: UIColor) {
         introductionLabel.text = content
+        contentView.backgroundColor = backgroundColor
     }
 }

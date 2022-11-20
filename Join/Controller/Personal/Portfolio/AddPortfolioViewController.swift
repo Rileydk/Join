@@ -34,7 +34,7 @@ class AddPortfolioViewController: BaseViewController {
             tableView.delegate = self
             configureDatasource()
             tableView.separatorStyle = .none
-            tableView.backgroundColor = .Gray5
+            tableView.backgroundColor = .Gray6
         }
     }
 

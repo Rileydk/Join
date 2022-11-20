@@ -14,7 +14,7 @@ class PersonalProfileViewController: BaseViewController {
         case introduction
 //        case skills
 //        case interests
-//        case portfolio
+        case portfolio
     }
 
     enum Item: Hashable {
@@ -23,12 +23,13 @@ class PersonalProfileViewController: BaseViewController {
         case introduction(String)
 //        case skills([String])
 //        case interests([String])
-//        case portfolio(WorkItem)
+        case portfolio(WorkItem)
     }
 
     typealias ProfileDatasource = UICollectionViewDiffableDataSource<Section, Item>
     private var datasource: ProfileDatasource!
     let firebaseManager = FirebaseManager.shared
+    let cellBackgroundColor: UIColor = .Gray6 ?? .white
     var userData: JUser? {
         didSet {
             layoutViews()
@@ -48,8 +49,12 @@ class PersonalProfileViewController: BaseViewController {
             collectionView.register(
                 UINib(nibName: SelfIntroductionCell.identifier, bundle: nil),
                 forCellWithReuseIdentifier: SelfIntroductionCell.identifier)
+            collectionView.register(
+                UINib(nibName: PortfolioCardCell.identifier, bundle: nil),
+                forCellWithReuseIdentifier: PortfolioCardCell.identifier)
             collectionView.setCollectionViewLayout(createLayout(), animated: true)
             configureDatasource()
+            collectionView.delegate = self
         }
     }
 
@@ -60,6 +65,7 @@ class PersonalProfileViewController: BaseViewController {
 
     func layoutViews() {
         title = userData?.name
+        collectionView.backgroundColor = .Gray6
 //        navigationItem.rightBarButtonItem = UIBarButtonItem(
 //            image: UIImage(systemName: "pencil"), style: .plain,
 //            target: self, action: #selector(editPersonalInfo))
@@ -193,6 +199,34 @@ extension PersonalProfileViewController {
         return section
     }
 
+    func createPortfolioSection() -> NSCollectionLayoutSection {
+        let itemSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1),
+            heightDimension: .fractionalHeight(1)
+        )
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+
+        let groupSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1),
+            heightDimension: .fractionalWidth(0.68)
+        )
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+
+        let section = NSCollectionLayoutSection(group: group)
+        section.interGroupSpacing = 12
+
+        let headerSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalHeight(1),
+            heightDimension: .absolute(60))
+        let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(
+            layoutSize: headerSize,
+            elementKind: UICollectionView.elementKindSectionHeader,
+            alignment: .topLeading)
+        section.boundarySupplementaryItems = [sectionHeader]
+
+        return section
+    }
+
     func sectionFor(index: Int, environment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection {
         let section = datasource.snapshot().sectionIdentifiers[index]
 
@@ -203,6 +237,8 @@ extension PersonalProfileViewController {
             return createActionButtonsSection()
         case .introduction:
             return createIntroductionSection()
+        case .portfolio:
+            return createPortfolioSection()
         }
     }
 
@@ -220,6 +256,14 @@ extension PersonalProfileViewController {
         datasource = ProfileDatasource(collectionView: collectionView) { [weak self] (collectionView, indexPath, item) -> UICollectionViewCell? in
             return self?.createCell(collectionView: collectionView, indexPath: indexPath, item: item)
         }
+
+        let headerRegistration = UICollectionView
+            .SupplementaryRegistration<CollectionSimpleHeaderView>(
+                elementKind: UICollectionView.elementKindSectionHeader) { _, _, _ in }
+        datasource.supplementaryViewProvider = { [weak self] (_, _, index) in
+            self?.collectionView.dequeueConfiguredReusableSupplementary(
+                using: headerRegistration, for: index)
+        }
         updateDatasource()
     }
 
@@ -232,7 +276,7 @@ extension PersonalProfileViewController {
                 for: indexPath) as? PersonalMainThumbnailCollectionCell else {
                 fatalError("Cannot create person main thumbnail cell")
             }
-            cell.layoutCell(user: user)
+            cell.layoutCell(user: user, backgroundColor: cellBackgroundColor)
             return cell
 
         case .buttons:
@@ -241,6 +285,7 @@ extension PersonalProfileViewController {
                 for: indexPath) as? ProfileActionButtonsCell else {
                 fatalError("Cannot create person main thumbnail cell")
             }
+            cell.layoutCell(backgroundColor: cellBackgroundColor)
             cell.editProfileHandler = { [weak self] in
                 let personalStoryboard = UIStoryboard(name: StoryboardCategory.personal.rawValue, bundle: nil)
                 guard let personalProfileEditVC = personalStoryboard.instantiateViewController(
@@ -258,7 +303,16 @@ extension PersonalProfileViewController {
                 for: indexPath) as? SelfIntroductionCell else {
                 fatalError("Cannot create person main thumbnail cell")
             }
-            cell.layoutCell(content: introduction)
+            cell.layoutCell(content: introduction, backgroundColor: cellBackgroundColor)
+            return cell
+
+        case .portfolio(let workItem):
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: PortfolioCardCell.identifier,
+                for: indexPath) as? PortfolioCardCell else {
+                fatalError("Cannot create person main thumbnail cell")
+            }
+            cell.layoutCell(workItem: workItem)
             return cell
         }
     }
@@ -273,7 +327,17 @@ extension PersonalProfileViewController {
         if let introduction = userData?.introduction, !introduction.isEmpty {
             snapshot.appendItems([.introduction(introduction)], toSection: .introduction)
         }
+        if !workItems.isEmpty {
+            snapshot.appendItems(workItems.map { .portfolio($0) }, toSection: .portfolio)
+        }
 
         datasource.apply(snapshot, animatingDifferences: false)
+    }
+}
+
+// MARK: - Collection View Delegate
+extension PersonalProfileViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print("see work detail")
     }
 }

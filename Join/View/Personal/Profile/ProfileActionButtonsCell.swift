@@ -22,4 +22,8 @@ class ProfileActionButtonsCell: CollectionViewCell {
     @IBAction func editProfile(_ sender: Any) {
         editProfileHandler?()
     }
+
+    func layoutCell(backgroundColor: UIColor) {
+        contentView.backgroundColor = backgroundColor
+    }
 }

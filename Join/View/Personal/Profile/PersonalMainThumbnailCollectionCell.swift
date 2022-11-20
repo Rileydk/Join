@@ -20,15 +20,20 @@ class PersonalMainThumbnailCollectionCell: CollectionViewCell {
         thumbnailImageView.image = nil
     }
 
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        nameLabel.textColor = .Blue1
+    }
+
     override func layoutSubviews() {
         super.layoutSubviews()
         thumbnailImageView.layer.cornerRadius = thumbnailImageView.frame.size.width / 2
     }
 
-    func layoutCell(user: JUser) {
+    func layoutCell(user: JUser, backgroundColor: UIColor) {
         nameLabel.text = user.name
-        let imageURL = URL(string: user.thumbnailURL!)
-        thumbnailImageView.kf.setImage(with: imageURL)
+        thumbnailImageView.loadImage(user.thumbnailURL)
+        contentView.backgroundColor = backgroundColor
     }
 
 }

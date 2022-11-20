@@ -23,8 +23,8 @@ class SingleLineInputCell: TableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        contentView.backgroundColor = .Gray5
-        inputTextField.backgroundColor = .Gray5
+        contentView.backgroundColor = .Gray6
+        inputTextField.backgroundColor = .Gray6
         inputTextField.addUnderline()
         titleLabel.textColor = .Gray1
     }

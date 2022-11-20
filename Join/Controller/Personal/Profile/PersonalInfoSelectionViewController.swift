@@ -17,7 +17,7 @@ class PersonalInfoSelectionViewController: BaseViewController {
             tableView.dataSource = self
             tableView.separatorStyle = .none
             tableView.allowsMultipleSelection = true
-            tableView.backgroundColor = .Gray5
+            tableView.backgroundColor = .Gray6
         }
     }
 
