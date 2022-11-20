@@ -62,6 +62,7 @@ class FriendSelectionViewController: BaseViewController {
     func layoutViews() {
         title = "選擇群組成員"
 
+        searchController.searchBar.searchTextField.backgroundColor = .White
         searchController.searchResultsUpdater = self
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = false
@@ -97,18 +98,21 @@ class FriendSelectionViewController: BaseViewController {
             )
         }
         // swiftlint:disable line_length
+        JProgressHUD.shared.showSaving(view: self.view)
         firebaseManager.addNewGroupChatMembers(chatroomID: chatroomID, selectedMembers: newMembers) { [weak self] result in
+            guard let self = self else { return }
             switch result {
             case .success:
 
-                guard let chatroomVC = self?.navigationController?.viewControllers
+                guard let chatroomVC = self.navigationController?.viewControllers
                     .dropLast().dropLast().last! else {
                     fatalError("Cannot go back to chatroom vc")
                 }
-                self?.navigationController?.popToViewController(chatroomVC, animated: true)
-
+                JProgressHUD.shared.showSuccess(view: self.view) {
+                    self.navigationController?.popToViewController(chatroomVC, animated: true)
+                }
             case .failure(let err):
-                print(err)
+                JProgressHUD.shared.showFailure(text: err.localizedDescription, view: self.view)
             }
         }
     }
