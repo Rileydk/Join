@@ -22,6 +22,12 @@
 		BF1294482929FEDA00AA631E /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1294472929FEDA00AA631E /* NavigationController.swift */; };
 		BF12944B292A0AA200AA631E /* RelationshipButtonsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF129449292A0AA200AA631E /* RelationshipButtonsCell.swift */; };
 		BF12944C292A0AA200AA631E /* RelationshipButtonsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF12944A292A0AA200AA631E /* RelationshipButtonsCell.xib */; };
+		BF12944F292A303800AA631E /* ProjectTitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF12944D292A303800AA631E /* ProjectTitleCell.swift */; };
+		BF129450292A303800AA631E /* ProjectTitleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF12944E292A303800AA631E /* ProjectTitleCell.xib */; };
+		BF129454292A3C4B00AA631E /* ProjectItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF129452292A3C4B00AA631E /* ProjectItemCell.swift */; };
+		BF129455292A3C4B00AA631E /* ProjectItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF129453292A3C4B00AA631E /* ProjectItemCell.xib */; };
+		BF129458292A51A700AA631E /* MultilineCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF129456292A51A700AA631E /* MultilineCell.swift */; };
+		BF129459292A51A700AA631E /* MultilineCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF129457292A51A700AA631E /* MultilineCell.xib */; };
 		BF3D8352292736CD009F903F /* PersonalInfoSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3D8351292736CD009F903F /* PersonalInfoSelectionViewController.swift */; };
 		BF3D835529273740009F903F /* OneSelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3D835329273740009F903F /* OneSelectionCell.swift */; };
 		BF3D835629273740009F903F /* OneSelectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF3D835429273740009F903F /* OneSelectionCell.xib */; };
@@ -157,6 +163,12 @@
 		BF1294472929FEDA00AA631E /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
 		BF129449292A0AA200AA631E /* RelationshipButtonsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RelationshipButtonsCell.swift; sourceTree = "<group>"; };
 		BF12944A292A0AA200AA631E /* RelationshipButtonsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RelationshipButtonsCell.xib; sourceTree = "<group>"; };
+		BF12944D292A303800AA631E /* ProjectTitleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectTitleCell.swift; sourceTree = "<group>"; };
+		BF12944E292A303800AA631E /* ProjectTitleCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProjectTitleCell.xib; sourceTree = "<group>"; };
+		BF129452292A3C4B00AA631E /* ProjectItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectItemCell.swift; sourceTree = "<group>"; };
+		BF129453292A3C4B00AA631E /* ProjectItemCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProjectItemCell.xib; sourceTree = "<group>"; };
+		BF129456292A51A700AA631E /* MultilineCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultilineCell.swift; sourceTree = "<group>"; };
+		BF129457292A51A700AA631E /* MultilineCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MultilineCell.xib; sourceTree = "<group>"; };
 		BF3D8351292736CD009F903F /* PersonalInfoSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalInfoSelectionViewController.swift; sourceTree = "<group>"; };
 		BF3D835329273740009F903F /* OneSelectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneSelectionCell.swift; sourceTree = "<group>"; };
 		BF3D835429273740009F903F /* OneSelectionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OneSelectionCell.xib; sourceTree = "<group>"; };
@@ -327,6 +339,14 @@
 			path = Profile;
 			sourceTree = "<group>";
 		};
+		BF129451292A30D400AA631E /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				BF12943D2929D7E800AA631E /* CollectionSimpleHeaderView.swift */,
+			);
+			path = Util;
+			sourceTree = "<group>";
+		};
 		BF3D835729275FA9009F903F /* Third Party Wrapper */ = {
 			isa = PBXGroup;
 			children = (
@@ -418,6 +438,7 @@
 				BF42FA53290CE64300501789 /* View */,
 				BF42FA34290BE2AA00501789 /* AppDelegate.swift */,
 				BF42FA36290BE2AA00501789 /* SceneDelegate.swift */,
+				BF129451292A30D400AA631E /* Util */,
 				BF42FA5F290CEF2C00501789 /* Extension */,
 				BF3D835729275FA9009F903F /* Third Party Wrapper */,
 				BF42FA51290CE5D400501789 /* Resources */,
@@ -550,7 +571,6 @@
 				BF42FA72290D197000501789 /* TableViewCell.swift */,
 				BF42FAD82912960D00501789 /* CollectionViewCell.swift */,
 				BFF8A4BB2913B39900ADC950 /* TableViewHeaderFooterView.swift */,
-				BF12943D2929D7E800AA631E /* CollectionSimpleHeaderView.swift */,
 				BF1294452929EB2500AA631E /* PaddingableLabel.swift */,
 				BF1294472929FEDA00AA631E /* NavigationController.swift */,
 			);
@@ -586,6 +606,12 @@
 				BF42FADB2912967900501789 /* IdeaCell.xib */,
 				BFF8A4B12913AD3000ADC950 /* BigImageCell.swift */,
 				BFF8A4B22913AD3000ADC950 /* BigImageCell.xib */,
+				BF12944D292A303800AA631E /* ProjectTitleCell.swift */,
+				BF12944E292A303800AA631E /* ProjectTitleCell.xib */,
+				BF129452292A3C4B00AA631E /* ProjectItemCell.swift */,
+				BF129453292A3C4B00AA631E /* ProjectItemCell.xib */,
+				BF129456292A51A700AA631E /* MultilineCell.swift */,
+				BF129457292A51A700AA631E /* MultilineCell.xib */,
 				BFF8A4B72913AE8400ADC950 /* DetailTitleHeaderView.swift */,
 				BFF8A4B92913AE9D00ADC950 /* DetailTitleHeaderView.xib */,
 				BFF8A4BD2913B46600ADC950 /* JoinButtonCell.swift */,
@@ -763,6 +789,7 @@
 				BF9A867E2918FB1800BF934D /* FriendCell.xib in Resources */,
 				BF1294442929E7FA00AA631E /* TagCell.xib in Resources */,
 				BF42FA7E290D2ADB00501789 /* MultilineInputCell.xib in Resources */,
+				BF129450292A303800AA631E /* ProjectTitleCell.xib in Resources */,
 				BF12944C292A0AA200AA631E /* RelationshipButtonsCell.xib in Resources */,
 				BF42FAC929111FD400501789 /* ImagePickerCell.xib in Resources */,
 				BF3D836329278D63009F903F /* WorkRecordCell.xib in Resources */,
@@ -791,6 +818,7 @@
 				BF3D83692927A609009F903F /* WorkHeaderView.xib in Resources */,
 				BF9A86AC291E19B300BF934D /* GroupMessageCell.xib in Resources */,
 				BFF8A4D42914C79900ADC950 /* PersonBasicCell.xib in Resources */,
+				BF129455292A3C4B00AA631E /* ProjectItemCell.xib in Resources */,
 				BF9A86A4291CE06400BF934D /* GroupCreationHeaderCell.xib in Resources */,
 				BFF8A4B42913AD3000ADC950 /* BigImageCell.xib in Resources */,
 				BF3D83792928D9B8009F903F /* SelfIntroductionCell.xib in Resources */,
@@ -801,6 +829,7 @@
 				BF42FAAE290F6B8000501789 /* GoogleService-Info.plist in Resources */,
 				BF42FA82290D31EF00501789 /* GoSelectionCell.xib in Resources */,
 				BF42FA3C290BE2AA00501789 /* Main.storyboard in Resources */,
+				BF129459292A51A700AA631E /* MultilineCell.xib in Resources */,
 				BF3D83702928CDAF009F903F /* PersonalMainThumbnailCollectionCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -895,6 +924,7 @@
 				BF42FA39290BE2AA00501789 /* FindIdeasViewController.swift in Sources */,
 				BFF8A4E4291636EE00ADC950 /* MessageTypingView.swift in Sources */,
 				BF9A869F291CDE8300BF934D /* GroupCreationViewController.swift in Sources */,
+				BF129454292A3C4B00AA631E /* ProjectItemCell.swift in Sources */,
 				BF1294432929E7FA00AA631E /* TagCell.swift in Sources */,
 				BFF8A4B32913AD3000ADC950 /* BigImageCell.swift in Sources */,
 				BF9A86B1291E3AE800BF934D /* AddNewMemberCell.swift in Sources */,
@@ -902,6 +932,7 @@
 				BF02714829238B90000EA2F8 /* PersonalProfileEditViewController.swift in Sources */,
 				BF42FABC290FF32300501789 /* MemberCardViewController.swift in Sources */,
 				BF027145292273E5000EA2F8 /* LoginViewController.swift in Sources */,
+				BF129458292A51A700AA631E /* MultilineCell.swift in Sources */,
 				BFF8A4D92915036000ADC950 /* ContactCell.swift in Sources */,
 				BF9A869D291CC9D000BF934D /* FriendSelectionViewController.swift in Sources */,
 				BFF8A4F32917982B00ADC950 /* ChatListViewController.swift in Sources */,
@@ -959,6 +990,7 @@
 				BF42FAC829111FD400501789 /* ImagePickerCell.swift in Sources */,
 				BF3D835529273740009F903F /* OneSelectionCell.swift in Sources */,
 				BF9A86AE291E356C00BF934D /* GroupMembersViewController.swift in Sources */,
+				BF12944F292A303800AA631E /* ProjectTitleCell.swift in Sources */,
 				BF3D83742928D11D009F903F /* ProfileActionButtonsCell.swift in Sources */,
 				BF42FA37290BE2AA00501789 /* SceneDelegate.swift in Sources */,
 				BFF8A4BF2913B46600ADC950 /* JoinButtonCell.swift in Sources */,

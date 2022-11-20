@@ -13,13 +13,6 @@ class BigImageCell: TableViewCell {
     @IBOutlet weak var bigImageView: UIImageView!
 
     func layoutCell(imageURL: URLString) {
-        firebaseManager.downloadImage(urlString: imageURL) { [weak self] result in
-            switch result {
-            case .success(let image):
-                self?.bigImageView.image = image
-            case .failure(let error):
-                print(error)
-            }
-        }
+        bigImageView.loadImage(imageURL)
     }
 }

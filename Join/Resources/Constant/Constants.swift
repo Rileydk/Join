@@ -8,6 +8,15 @@
 import Foundation
 
 struct Constant {
+    struct FindIdeas {
+        static let recruitingColumn = "招募中"
+        static let skillsColumn = "技術需求"
+        static let deadlineColumn = "截止時間"
+        static let essentialLocationColumn = "合作地點"
+        static let descriptionSectionTitle = "About"
+        static let contactSectionTitle = "聯絡人"
+    }
+
     struct Portfolio {
         static let sectionHeader = "Portfolio"
     }

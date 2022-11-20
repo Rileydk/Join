@@ -12,7 +12,7 @@ class DetailTitleHeaderView: TableViewHeaderFooterView {
     @IBOutlet weak var shareLinkButton: UIButton!
     @IBOutlet weak var bookMarkButton: UIButton!
 
-    func layoutHeaderView(project: Project) {
-        titleLabel.text = project.name
+    func layoutHeaderView(title: String) {
+        titleLabel.text = title
     }
 }
