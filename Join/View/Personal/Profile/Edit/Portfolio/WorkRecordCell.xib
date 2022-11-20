@@ -45,7 +45,6 @@
             <connections>
                 <outlet property="deleteButton" destination="A7Q-HW-8Cc" id="vD6-fa-SNT"/>
                 <outlet property="recordImageView" destination="zCR-1B-Ybc" id="kDi-hw-kJ2"/>
-                <outlet property="recordImageViewWidthConstraint" destination="xV1-fn-ADi" id="4rs-YG-dEa"/>
             </connections>
             <point key="canvasLocation" x="137.68115942028987" y="88.392857142857139"/>
         </tableViewCell>
