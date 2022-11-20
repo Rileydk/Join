@@ -83,11 +83,16 @@ class GroupChatroomViewController: BaseViewController {
     }
 
     func getNecessaryInfo() {
-        firebaseManager.firebaseQueue.async { [unowned self] in
+        JProgressHUD.shared.showLoading(view: self.view)
+
+        firebaseManager.firebaseQueue.async { [weak self] in
+            guard let self = self else { return }
+            var shouldContinue = true
+
             let group = DispatchGroup()
             group.enter()
             guard let chatroomID = self.chatroomID else { return }
-            firebaseManager.getGroupChatroomInfo(chatroomID: chatroomID) { [unowned self] result in
+            self.firebaseManager.getGroupChatroomInfo(chatroomID: chatroomID) { [unowned self] result in
                 switch result {
                 case .success(let chatroomInfo):
                     self.chatroomInfo = chatroomInfo
@@ -96,17 +101,26 @@ class GroupChatroomViewController: BaseViewController {
                 case .failure(let err):
                     group.leave()
                     group.notify(queue: .main) {
-                        print(err)
+                        JProgressHUD.shared.showFailure(text: err.localizedDescription, view: self.view)
+                        shouldContinue = false
                     }
                 }
             }
 
-            firebaseManager.getAllGroupChatMembersIncludingExit(chatroomID: chatroomID) { result in
+            group.wait()
+            guard shouldContinue else { return }
+            group.enter()
+            self.firebaseManager.getAllGroupChatMembersIncludingExit(chatroomID: chatroomID) { result in
                 switch result {
                 case .success(let membersInfos):
                     self.membersInfos = membersInfos
+                    group.leave()
                 case .failure(let err):
-                    print(err)
+                    group.leave()
+                    group.notify(queue: .main) {
+                        JProgressHUD.shared.showFailure(text: err.localizedDescription, view: self.view)
+                        shouldContinue = false
+                    }
                 }
             }
 
@@ -119,38 +133,40 @@ class GroupChatroomViewController: BaseViewController {
                 case .failure(let err):
                     group.leave()
                     group.notify(queue: .main) {
-                        print(err)
+                        JProgressHUD.shared.showFailure(text: err.localizedDescription, view: self.view)
+                        shouldContinue = false
                     }
                 }
             }
 
             group.wait()
+            guard shouldContinue else { return }
             group.enter()
             guard let chatroomInfo = self.chatroomInfo else { return }
-            let membersUserIDs = membersInfos.map { $0.userID }
+            let membersUserIDs = self.membersInfos.map { $0.userID }
             self.firebaseManager.getAllMatchedUsersDetail(usersID: membersUserIDs) { result in
                 switch result {
                 case .success(let members):
                     self.members = members
                     group.leave()
+                    group.notify(queue: .main) { [unowned self] in
+                        var messages = [WholeInfoMessage]()
+                        for message in self.messages {
+                            if let sender = self.members.first(where: { message.sender == $0.id }) {
+                                messages.append(WholeInfoMessage(sender: sender, message: message))
+                            } else {
+                                print("No such member")
+                            }
+                        }
+                        self.wholeInfoMessages = messages
+                        JProgressHUD.shared.dismiss()
+                    }
                 case .failure(let err):
                     group.leave()
                     group.notify(queue: .main) {
-                        print(err)
+                        JProgressHUD.shared.showFailure(text: err.localizedDescription, view: self.view)
                     }
                 }
-            }
-
-            group.notify(queue: .main) { [unowned self] in
-                var messages = [WholeInfoMessage]()
-                for message in self.messages {
-                    if let sender = self.members.first(where: { message.sender == $0.id }) {
-                        messages.append(WholeInfoMessage(sender: sender, message: message))
-                    } else {
-                        print("No such member")
-                    }
-                }
-                wholeInfoMessages = messages
             }
         }
     }

@@ -61,12 +61,17 @@ class GroupMembersViewController: BaseViewController {
             print("No chatroom id")
             return
         }
+
+        JProgressHUD.shared.showLoading(view: self.view)
         var currentMembersIDs = [UserID]()
 
         firebaseManager.firebaseQueue.async { [weak self] in
+            guard let self = self else { return }
+            var shouldContinue = true
+
             let group = DispatchGroup()
             group.enter()
-            self?.firebaseManager.getAllCurrentGroupChatMembers(chatroomID: chatroomID) { result in
+            self.firebaseManager.getAllCurrentGroupChatMembers(chatroomID: chatroomID) { result in
                 switch result {
                 case .success(let membersIDs):
                     currentMembersIDs = membersIDs
@@ -74,31 +79,33 @@ class GroupMembersViewController: BaseViewController {
                 case .failure(let err):
                     group.leave()
                     group.notify(queue: .main) {
-                        print(err)
+                        JProgressHUD.shared.showFailure(text: err.localizedDescription, view: self.view)
+                        shouldContinue = false
                     }
                 }
             }
 
             group.wait()
+            guard shouldContinue else { return }
             group.enter()
-            self?.firebaseManager.getAllMatchedUsersDetail(usersID: currentMembersIDs) { [weak self] result in
-                guard let strongSelf = self else { return }
+            self.firebaseManager.getAllMatchedUsersDetail(usersID: currentMembersIDs) { result in
                 switch result {
                 case .success(let members):
                     group.leave()
                     group.notify(queue: .main) {
                         var members = members
-                        if let member = members.first(where: { $0.id == strongSelf.myID }),
+                        if let member = members.first(where: { $0.id == self.myID }),
                             let index = members.firstIndex(of: member),
                            index != 0 {
                             members.swapAt(0, index)
                         }
-                        self?.members = members
+                        self.members = members
+                        JProgressHUD.shared.dismiss()
                     }
                 case .failure(let err):
                     group.leave()
                     group.notify(queue: .main) {
-                        print(err)
+                        JProgressHUD.shared.showFailure(text: err.localizedDescription, view: self.view)
                     }
                 }
             }
