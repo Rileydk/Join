@@ -129,13 +129,27 @@
                             </imageView>
                         </subviews>
                     </stackView>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FUD-oX-wSo">
+                        <rect key="frame" x="353" y="20" width="45" height="20"/>
+                        <color key="backgroundColor" name="Red"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="20" id="Ft3-hE-osS"/>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="20" id="c6n-F1-wLk"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="14"/>
+                        <inset key="contentEdgeInsets" minX="4" minY="4" maxX="4" maxY="4"/>
+                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                        <state key="normal" title="999+"/>
+                    </button>
                 </subviews>
             </view>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
             <constraints>
+                <constraint firstAttribute="trailing" secondItem="FUD-oX-wSo" secondAttribute="trailing" constant="16" id="Rg5-50-fHW"/>
                 <constraint firstAttribute="trailing" secondItem="tib-H7-9w9" secondAttribute="trailing" constant="16" id="TZq-f0-HXg"/>
                 <constraint firstItem="eIn-ZT-RoF" firstAttribute="top" secondItem="f5U-t7-mMv" secondAttribute="bottom" constant="8" id="Viw-cm-INI"/>
                 <constraint firstItem="eIn-ZT-RoF" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="16" id="csc-yc-rp0"/>
+                <constraint firstItem="FUD-oX-wSo" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="20" id="hRR-0N-gK1"/>
                 <constraint firstItem="f5U-t7-mMv" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="16" id="mSy-0s-qQG"/>
                 <constraint firstItem="tib-H7-9w9" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="16" id="tyZ-tb-XgW"/>
                 <constraint firstItem="9PQ-0q-vtM" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="20" id="wE3-Vw-jcG"/>
@@ -145,11 +159,13 @@
             </constraints>
             <size key="customSize" width="414" height="191"/>
             <connections>
+                <outlet property="applicantsAmountLabelButton" destination="FUD-oX-wSo" id="NFC-BN-pGF"/>
                 <outlet property="deadlineLabel" destination="5uK-Vi-F0t" id="IEC-Iw-Scp"/>
                 <outlet property="imageView" destination="8oS-aI-VM5" id="Gu7-3m-jaQ"/>
                 <outlet property="locationLabel" destination="w9Q-Yo-ALf" id="cQp-YD-OTa"/>
                 <outlet property="numberLabel" destination="E80-uX-Kqx" id="n1C-qw-DEb"/>
                 <outlet property="positionLabel" destination="ApZ-3J-nbG" id="4to-yw-bRC"/>
+                <outlet property="savingButton" destination="9PQ-0q-vtM" id="KVY-fH-Kda"/>
                 <outlet property="tagLabel" destination="eIn-ZT-RoF" id="BDb-XB-9cG"/>
                 <outlet property="titleLabel" destination="f5U-t7-mMv" id="6SC-5h-B4I"/>
             </connections>
@@ -170,6 +186,9 @@
         </namedColor>
         <namedColor name="Gray3">
             <color red="0.53333333333333333" green="0.53333333333333333" blue="0.53333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="Red">
+            <color red="0.81999999284744263" green="0.28600001335144043" blue="0.35699999332427979" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="Yellow1">
             <color red="1" green="0.71764705882352942" blue="0.011764705882352941" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

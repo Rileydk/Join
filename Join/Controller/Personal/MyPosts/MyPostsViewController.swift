@@ -159,7 +159,7 @@ extension MyPostsViewController {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: IdeaCell.identifier, for: indexPath) as? IdeaCell else {
                 fatalError("Cannot create Idea Cell")
             }
-            cell.layoutCell(project: project)
+            cell.layoutCellWithApplicants(project: project)
             return cell
         }
     }
