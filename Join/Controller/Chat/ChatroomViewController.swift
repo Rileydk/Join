@@ -69,8 +69,6 @@ class ChatroomViewController: BaseViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        tabBarController?.tabBar.isHidden = true
-
         updateUserData()
         guard let chatroomID = chatroomID else { return }
         updateMessages(chatroomID: chatroomID)
@@ -79,7 +77,6 @@ class ChatroomViewController: BaseViewController {
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        tabBarController?.tabBar.isHidden = false
         updateInoutStatus(to: .out)
     }
 
