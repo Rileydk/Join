@@ -37,6 +37,7 @@
 		BF326C1A292C7E5B00898444 /* ProjectCategoryListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF326C18292C7E5B00898444 /* ProjectCategoryListCell.swift */; };
 		BF326C1B292C7E5B00898444 /* ProjectCategoryListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF326C19292C7E5B00898444 /* ProjectCategoryListCell.xib */; };
 		BF326C1D292C92B500898444 /* PillButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF326C1C292C92B500898444 /* PillButton.swift */; };
+		BF326C1F292CABB400898444 /* LightNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF326C1E292CABB400898444 /* LightNavigationController.swift */; };
 		BF3D8352292736CD009F903F /* PersonalInfoSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3D8351292736CD009F903F /* PersonalInfoSelectionViewController.swift */; };
 		BF3D835529273740009F903F /* OneSelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3D835329273740009F903F /* OneSelectionCell.swift */; };
 		BF3D835629273740009F903F /* OneSelectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF3D835429273740009F903F /* OneSelectionCell.xib */; };
@@ -187,6 +188,7 @@
 		BF326C18292C7E5B00898444 /* ProjectCategoryListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectCategoryListCell.swift; sourceTree = "<group>"; };
 		BF326C19292C7E5B00898444 /* ProjectCategoryListCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProjectCategoryListCell.xib; sourceTree = "<group>"; };
 		BF326C1C292C92B500898444 /* PillButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PillButton.swift; sourceTree = "<group>"; };
+		BF326C1E292CABB400898444 /* LightNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightNavigationController.swift; sourceTree = "<group>"; };
 		BF3D8351292736CD009F903F /* PersonalInfoSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalInfoSelectionViewController.swift; sourceTree = "<group>"; };
 		BF3D835329273740009F903F /* OneSelectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneSelectionCell.swift; sourceTree = "<group>"; };
 		BF3D835429273740009F903F /* OneSelectionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OneSelectionCell.xib; sourceTree = "<group>"; };
@@ -598,6 +600,7 @@
 				BFF8A4BB2913B39900ADC950 /* TableViewHeaderFooterView.swift */,
 				BF1294452929EB2500AA631E /* PaddingableLabel.swift */,
 				BF1294472929FEDA00AA631E /* NavigationController.swift */,
+				BF326C1E292CABB400898444 /* LightNavigationController.swift */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -988,6 +991,7 @@
 				BF42FACF2912557500501789 /* UIImage+Ext.swift in Sources */,
 				BF42FAB2290FAC2000501789 /* Project.swift in Sources */,
 				BF9A8691291BCF9F00BF934D /* MyPostsDetailViewController.swift in Sources */,
+				BF326C1F292CABB400898444 /* LightNavigationController.swift in Sources */,
 				BF9A86742918FA3500BF934D /* FriendsListViewController.swift in Sources */,
 				BFF8A4FB2917FBF100ADC950 /* MockLoginViewController.swift in Sources */,
 				BF42FA73290D197000501789 /* TableViewCell.swift in Sources */,

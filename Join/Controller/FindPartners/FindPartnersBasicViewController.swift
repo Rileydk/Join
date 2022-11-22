@@ -81,6 +81,11 @@ class FindPartnersBasicViewController: BaseViewController {
         rightBarButton!.addTarget(self, action: #selector(goNextPage), for: .touchUpInside)
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: rightBarButton!)
         checkCanGoNextPage()
+
+        if formState == FindPartnersFormSections.groupSection {
+            navigationItem.leftBarButtonItem = UIBarButtonItem(
+                image: UIImage(named: JImages.Icons_24px_Back.rawValue), style: .plain, target: self, action: #selector(backToPreviousPage))
+        }
     }
 
     func checkCanGoNextPage() {
@@ -108,7 +113,6 @@ class FindPartnersBasicViewController: BaseViewController {
             ) as? FindPartnersBasicViewController else {
                 fatalError("Cannot load FindPartnersBasicVC from storyboard.")
             }
-            print("project:", project)
             nextVC.project = project
             nextVC.formState = FindPartnersFormSections.groupSection
             nextVC.view.backgroundColor = .white
@@ -173,6 +177,17 @@ class FindPartnersBasicViewController: BaseViewController {
             case .failure(let error):
                 print(error)
             }
+        }
+    }
+
+    @objc func backToPreviousPage() {
+        if formState == FindPartnersFormSections.groupSection {
+            guard let basicVC = navigationController?.viewControllers.dropLast().first as? FindPartnersBasicViewController,
+                basicVC.formState == FindPartnersFormSections.basicSection else {
+                fatalError("Cannot load find partners basic vc basic part")
+            }
+            basicVC.project = project
+            navigationController?.popViewController(animated: true)
         }
     }
 }

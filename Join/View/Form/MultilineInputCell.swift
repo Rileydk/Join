@@ -28,11 +28,11 @@ class MultilineInputCell: TableViewCell {
         if value.isEmpty {
             textView.contentType = .placeholder
             textView.text = Constant.FindPartners.projectDescription
-            textView.textColor = UIColor.Gray3!.withAlphaComponent(0.7)
+            textView.textColor = (UIColor.Gray3 ?? .lightGray).withAlphaComponent(0.7)
         } else {
             textView.contentType = .userInput
             textView.text = value
-            textView.textColor = UIColor.Gray3!.withAlphaComponent(0.7)
+            textView.textColor = UIColor.Gray2
         }
     }
 
