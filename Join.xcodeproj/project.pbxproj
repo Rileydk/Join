@@ -36,6 +36,7 @@
 		BF326C17292C5C2900898444 /* PaddingableTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF326C16292C5C2900898444 /* PaddingableTextView.swift */; };
 		BF326C1A292C7E5B00898444 /* ProjectCategoryListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF326C18292C7E5B00898444 /* ProjectCategoryListCell.swift */; };
 		BF326C1B292C7E5B00898444 /* ProjectCategoryListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF326C19292C7E5B00898444 /* ProjectCategoryListCell.xib */; };
+		BF326C1D292C92B500898444 /* PillButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF326C1C292C92B500898444 /* PillButton.swift */; };
 		BF3D8352292736CD009F903F /* PersonalInfoSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3D8351292736CD009F903F /* PersonalInfoSelectionViewController.swift */; };
 		BF3D835529273740009F903F /* OneSelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3D835329273740009F903F /* OneSelectionCell.swift */; };
 		BF3D835629273740009F903F /* OneSelectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF3D835429273740009F903F /* OneSelectionCell.xib */; };
@@ -185,6 +186,7 @@
 		BF326C16292C5C2900898444 /* PaddingableTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddingableTextView.swift; sourceTree = "<group>"; };
 		BF326C18292C7E5B00898444 /* ProjectCategoryListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectCategoryListCell.swift; sourceTree = "<group>"; };
 		BF326C19292C7E5B00898444 /* ProjectCategoryListCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProjectCategoryListCell.xib; sourceTree = "<group>"; };
+		BF326C1C292C92B500898444 /* PillButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PillButton.swift; sourceTree = "<group>"; };
 		BF3D8351292736CD009F903F /* PersonalInfoSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalInfoSelectionViewController.swift; sourceTree = "<group>"; };
 		BF3D835329273740009F903F /* OneSelectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneSelectionCell.swift; sourceTree = "<group>"; };
 		BF3D835429273740009F903F /* OneSelectionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OneSelectionCell.xib; sourceTree = "<group>"; };
@@ -365,6 +367,7 @@
 				BF326C0E292BB5E200898444 /* BottomLinedTextView.swift */,
 				BF326C16292C5C2900898444 /* PaddingableTextView.swift */,
 				BF326C12292BBC3600898444 /* TableViewSimpleHeaderView.xib */,
+				BF326C1C292C92B500898444 /* PillButton.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -1010,6 +1013,7 @@
 				BF42FA6E290D178400501789 /* UIView+Ext.swift in Sources */,
 				BF1294402929D85B00AA631E /* Constants.swift in Sources */,
 				BF0271412920D093000EA2F8 /* UIColor+Ext.swift in Sources */,
+				BF326C1D292C92B500898444 /* PillButton.swift in Sources */,
 				BF3D835B29278208009F903F /* Work.swift in Sources */,
 				BF42FAD62912945F00501789 /* FriendProjectCell.swift in Sources */,
 				BF3D8352292736CD009F903F /* PersonalInfoSelectionViewController.swift in Sources */,
@@ -1108,7 +1112,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1162,7 +1166,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;

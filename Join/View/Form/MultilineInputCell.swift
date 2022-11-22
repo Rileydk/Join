@@ -16,20 +16,24 @@ class MultilineInputCell: TableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         contentView.backgroundColor = .White
-//        textView.backgroundColor = .Gray5
     }
 
     override func layoutSubviews() {
         super.layoutSubviews()
-        
-//        textView.addUnderline()
     }
 
-    func layoutCellForFindPartner(title: String, shouldFill: Bool) {
+    func layoutCellForFindPartnerProjectDescription(title: String, value: String, shouldFill: Bool) {
         titleLabel.text = title
         mustFillSignLabel.isHidden = !shouldFill
-        textView.text = Constant.FindPartners.projectDescription
-//        textView.textColor = .Gray3
+        if value.isEmpty {
+            textView.contentType = .placeholder
+            textView.text = Constant.FindPartners.projectDescription
+            textView.textColor = UIColor.Gray3!.withAlphaComponent(0.7)
+        } else {
+            textView.contentType = .userInput
+            textView.text = value
+            textView.textColor = UIColor.Gray3!.withAlphaComponent(0.7)
+        }
     }
 
     func layoutCellForEditProfile(introduction: String) {

@@ -38,13 +38,14 @@ class SingleLineInputCell: TableViewCell {
 
     override func layoutSubviews() {
         super.layoutSubviews()
-//        inputTextField.layer.cornerRadius = inputTextField.frame.size.height / 2
     }
 
     func layoutCell(withTitle title: InputType, value: String = "") {
         titleLabel.text = title.rawValue
-        inputTextField.attributedPlaceholder = NSAttributedString(string: value,
-             attributes: [NSAttributedString.Key.foregroundColor: (UIColor.Gray3 ?? .lightGray).cgColor])
+        inputTextField.attributedPlaceholder = NSAttributedString(
+            string: value, attributes: [
+                NSAttributedString.Key.foregroundColor: (UIColor.Gray3?.withAlphaComponent(0.7) ?? .lightGray).cgColor
+            ])
         type = title
     }
 

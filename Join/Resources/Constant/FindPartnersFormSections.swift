@@ -12,7 +12,7 @@ struct FindPartnersFormSections {
 
     static let basicSection = SectionInfo(
         title: "專案資訊",
-        buttonTitle: "下一步",
+        buttonTitle: "Next",
         items: [
             ItemInfo(
                 name: "專案名稱", instruction: "至少5個字",

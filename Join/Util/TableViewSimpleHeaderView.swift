@@ -9,7 +9,7 @@ import UIKit
 
 class TableViewSimpleHeaderView: TableViewHeaderFooterView {
     @IBOutlet weak var titleLabel: UILabel!
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
         layoutViews()

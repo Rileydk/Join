@@ -9,8 +9,14 @@ import UIKit
 import FirebaseAuth
 
 class FindPartnersBasicViewController: BaseViewController {
+    var rightBarButton: PillButton?
+
     let firebaseManager = FirebaseManager.shared
-    var project = Project(contact: UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey) ?? "")
+    var project = Project(contact: UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey) ?? "") {
+        didSet {
+            checkCanGoNextPage()
+        }
+    }
     var image: UIImage?
     var formState = FindPartnersFormSections.basicSection
     var selectedCategories = [String]() {
@@ -68,34 +74,47 @@ class FindPartnersBasicViewController: BaseViewController {
     func layoutView() {
         title = Tab.findPartners.title
         tableView.backgroundColor = .White
-        navigationItem.rightBarButtonItem = UIBarButtonItem(
-            title: formState.buttonTitle, style: .done,
-            target: self, action: #selector(goNextPage)
-        )
+
+        let config = UIButton.Configuration.filled()
+        rightBarButton = PillButton(configuration: config)
+        rightBarButton!.setTitle(formState.buttonTitle, for: .normal)
+        rightBarButton!.addTarget(self, action: #selector(goNextPage), for: .touchUpInside)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: rightBarButton!)
+        checkCanGoNextPage()
+    }
+
+    func checkCanGoNextPage() {
+        if formState == FindPartnersFormSections.basicSection && (project.name.isEmpty || project.description.isEmpty || project.categories.isEmpty) {
+            navigationItem.rightBarButtonItem?.isEnabled = false
+        } else if formState == FindPartnersFormSections.groupSection,
+                  project.recruiting.isEmpty {
+            navigationItem.rightBarButtonItem?.isEnabled = false
+        } else if formState == FindPartnersFormSections.groupSection,
+                  project.recruiting.isEmpty {
+            navigationItem.rightBarButtonItem?.isEnabled = false
+        } else {
+            navigationItem.rightBarButtonItem?.isEnabled = true
+        }
     }
 
     @objc func goNextPage() {
         if formState == FindPartnersFormSections.basicSection {
             project.categories = selectedCategories
-            if !(project.name.isEmpty || project.description.isEmpty || project.categories.isEmpty) {
-                let findPartnersStoryboard = UIStoryboard(
-                    name: StoryboardCategory.findPartners.rawValue, bundle: nil
-                )
-                guard let nextVC = findPartnersStoryboard.instantiateViewController(
-                    identifier: FindPartnersBasicViewController.identifier
-                ) as? FindPartnersBasicViewController else {
-                    fatalError("Cannot load FindPartnersBasicVC from storyboard.")
-                }
-                nextVC.project = project
-                nextVC.formState = FindPartnersFormSections.groupSection
-                nextVC.view.backgroundColor = .white
-                navigationController?.pushViewController(nextVC, animated: true)
-            } else {
-                alertUserToFillColumns()
+            let findPartnersStoryboard = UIStoryboard(
+                name: StoryboardCategory.findPartners.rawValue, bundle: nil
+            )
+            guard let nextVC = findPartnersStoryboard.instantiateViewController(
+                identifier: FindPartnersBasicViewController.identifier
+            ) as? FindPartnersBasicViewController else {
+                fatalError("Cannot load FindPartnersBasicVC from storyboard.")
             }
+            print("project:", project)
+            nextVC.project = project
+            nextVC.formState = FindPartnersFormSections.groupSection
+            nextVC.view.backgroundColor = .white
+            navigationController?.pushViewController(nextVC, animated: true)
 
-        } else if formState == FindPartnersFormSections.groupSection,
-                  !project.recruiting.isEmpty {
+        } else if formState == FindPartnersFormSections.groupSection {
             let findPartnersStoryboard = UIStoryboard(
                 name: StoryboardCategory.findPartners.rawValue, bundle: nil
             )
@@ -113,20 +132,18 @@ class FindPartnersBasicViewController: BaseViewController {
                   project.deadline != nil && !project.location.isEmpty {
             post()
 
-        } else {
-            alertUserToFillColumns()
         }
     }
 
-    func alertUserToFillColumns() {
-        let alert = UIAlertController(
-            title: FindPartnersFormSections.findPartnersNotFilledAlertTitle,
-            message: nil, preferredStyle: .alert
-        )
-        let action = UIAlertAction(title: FindPartnersFormSections.alertActionTitle, style: .default)
-        alert.addAction(action)
-        present(alert, animated: true)
-    }
+//    func alertUserToFillColumns() {
+//        let alert = UIAlertController(
+//            title: FindPartnersFormSections.findPartnersNotFilledAlertTitle,
+//            message: nil, preferredStyle: .alert
+//        )
+//        let action = UIAlertAction(title: FindPartnersFormSections.alertActionTitle, style: .default)
+//        alert.addAction(action)
+//        present(alert, animated: true)
+//    }
 
     func goSelectCategories() {
         let personalStoryboard = UIStoryboard(
@@ -141,6 +158,7 @@ class FindPartnersBasicViewController: BaseViewController {
         personalInfoSelectionVC.selectedCategories = self.selectedCategories
         personalInfoSelectionVC.passingHandler = { [weak self] selectedCategories in
             self?.selectedCategories = selectedCategories
+            self?.project.categories = selectedCategories
         }
         navigationController?.pushViewController(personalInfoSelectionVC, animated: true)
     }
@@ -200,6 +218,8 @@ extension FindPartnersBasicViewController: UITableViewDataSource {
         formState.items.count + selectedCategories.count
     }
 
+    // swiftlint:disable function_body_length
+    // swiftlint:disable cyclomatic_complexity
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.row < formState.items.count {
             let inputType = formState.items[indexPath.row].type
@@ -209,7 +229,11 @@ extension FindPartnersBasicViewController: UITableViewDataSource {
                     for: indexPath) as? SingleLineInputCell else {
                     fatalError("Cannot create single line input cell")
                 }
-                cell.layoutCell(withTitle: .projectName, value: "請輸入專案名稱")
+                if formState == FindPartnersFormSections.basicSection {
+                    cell.layoutCell(withTitle: .projectName, value: "請輸入專案名稱")
+                } else {
+                    cell.layoutCell(withTitle: .projectName, value: "")
+                }
                 cell.updateProjectName = { [weak self] projectName in
                     self?.project.name = projectName
                 }
@@ -221,9 +245,13 @@ extension FindPartnersBasicViewController: UITableViewDataSource {
                     for: indexPath) as? MultilineInputCell else {
                     fatalError("Cannot create single line input cell")
                 }
-                cell.layoutCellForFindPartner(
-                    title: formState.items[indexPath.row].name,
-                    shouldFill: formState.items[indexPath.row].must)
+                if formState == FindPartnersFormSections.basicSection {
+                    cell.layoutCellForFindPartnerProjectDescription(
+                        title: formState.items[indexPath.row].name,
+                        value: project.description,
+                        shouldFill: formState.items[indexPath.row].must
+                    )
+                }
                 cell.textView.delegate = self
                 return cell
 
@@ -346,19 +374,31 @@ extension FindPartnersBasicViewController: UITextFieldDelegate {
 // MARK: - Text View Delegate
 extension FindPartnersBasicViewController: UITextViewDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
-        if textView.textColor == .Gray3 {
+        guard let textView = textView as? PaddingableTextView else {
+            return
+        }
+        if textView.contentType == .placeholder {
             textView.text = nil
             textView.textColor = .Gray2
+            textView.contentType = .userInput
         }
     }
 
     func textViewDidEndEditing(_ textView: UITextView) {
+        guard let textView = textView as? PaddingableTextView else {
+            return
+        }
         if textView.text.isEmpty {
-            textView.text = Constant.FindPartners.projectDescription
-            textView.textColor = .Gray3
+            textView.contentType = .placeholder
+            if formState == FindPartnersFormSections.basicSection {
+                textView.text = Constant.FindPartners.projectDescription
+            }
+            textView.textColor = UIColor.Gray3!.withAlphaComponent(0.7)
         }
 
-        project.description = textView.text
+        if textView.contentType == .userInput {
+            project.description = textView.text
+        }
     }
 }
 
