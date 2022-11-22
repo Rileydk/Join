@@ -80,13 +80,12 @@ class FindPartnersBasicViewController: BaseViewController {
     }
 
     func layoutView() {
-        title = Tab.findPartners.title
         if formState == FindPartnersFormSections.basicSection {
-            title! += " (1/3)"
+            navigationItem.title = "\(Tab.findPartners.title) (1/3)"
         } else if formState == FindPartnersFormSections.groupSection {
-            title! += " (2/3)"
+            navigationItem.title = "\(Tab.findPartners.title) (2/3)"
         } else if formState == FindPartnersFormSections.detailSection {
-            title! += " (3/3)"
+            navigationItem.title = "\(Tab.findPartners.title) (3/3)"
         }
         tableView.backgroundColor = .White
 
