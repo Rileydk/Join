@@ -15,7 +15,7 @@ class FindPartnersBasicViewController: BaseViewController {
     var formState = FindPartnersFormSections.basicSection
     var selectedCategories = [String]() {
         didSet {
-            tableView.reloadRows(at: [IndexPath(row: 2, section: 0)], with: .none)
+            tableView.reloadData()
         }
     }
 
@@ -33,6 +33,9 @@ class FindPartnersBasicViewController: BaseViewController {
                 UINib(nibName: GoSelectionCell.identifier, bundle: nil),
                 forCellReuseIdentifier: GoSelectionCell.identifier
             )
+            tableView.register(
+                UINib(nibName: ProjectCategoryListCell.identifier, bundle: nil),
+                forCellReuseIdentifier: ProjectCategoryListCell.identifier)
             tableView.register(
                 UINib(nibName: AddNewLineSectionCell.identifier, bundle: nil),
                 forCellReuseIdentifier: AddNewLineSectionCell.identifier
@@ -126,22 +129,20 @@ class FindPartnersBasicViewController: BaseViewController {
     }
 
     func goSelectCategories() {
-        let selectCategoriesVC = SelectionCategoriesViewController(
-            selectedCategories: self.selectedCategories
-        )
-        selectCategoriesVC.view.backgroundColor = .white
-        selectCategoriesVC.modalPresentationStyle = .pageSheet
-
-        if #available(iOS 15.0, *) {
-            selectCategoriesVC.sheetPresentationController?.detents = [.medium(), .large()]
-            selectCategoriesVC.sheetPresentationController?.prefersGrabberVisible = true
+        let personalStoryboard = UIStoryboard(
+            name: StoryboardCategory.personal.rawValue, bundle: nil)
+        guard let personalInfoSelectionVC = personalStoryboard.instantiateViewController(
+            withIdentifier: PersonalInfoSelectionViewController.identifier
+        ) as? PersonalInfoSelectionViewController else {
+            fatalError("Cannot load PersonalInfoSelectionViewController")
         }
-
-        selectCategoriesVC.passingHandler = { [weak self] newSelectCategories in
-            self?.selectedCategories = newSelectCategories
+        personalInfoSelectionVC.sourceType = .postCategories
+        personalInfoSelectionVC.type = .interests
+        personalInfoSelectionVC.selectedCategories = self.selectedCategories
+        personalInfoSelectionVC.passingHandler = { [weak self] selectedCategories in
+            self?.selectedCategories = selectedCategories
         }
-
-        self.present(selectCategoriesVC, animated: true)
+        navigationController?.pushViewController(personalInfoSelectionVC, animated: true)
     }
 
     func post() {
@@ -161,20 +162,24 @@ class FindPartnersBasicViewController: BaseViewController {
 // MARK: - Table View Delegate
 extension FindPartnersBasicViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let inputType = formState.items[indexPath.row].type
-        if inputType == .goNextButton {
-            // 使用 TTGTag 似乎無 法用 automaticDimension 推開 cell
-            return 200
-        } else if inputType == .addButton {
-            return UITableView.automaticDimension
-        } else if inputType == .textField {
-            return 120
-        } else if inputType == .textView {
-            return 300
-        } else if inputType == .uploadImage {
-            return 300
+        if indexPath.row < formState.items.count {
+            let inputType = formState.items[indexPath.row].type
+            if inputType == .goNextButton {
+                return 80
+            } else if inputType == .addButton {
+                return UITableView.automaticDimension
+            } else if inputType == .textField {
+                return 120
+            } else if inputType == .textView {
+                return 300
+            } else if inputType == .uploadImage {
+                return 300
+            } else {
+                return 100
+            }
         } else {
-            return 100
+            // basic 中的 category cell
+            return 44
         }
     }
 
@@ -192,147 +197,143 @@ extension FindPartnersBasicViewController: UITableViewDelegate {
 // MARK: - Table View Data Source
 extension FindPartnersBasicViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        formState.items.count
+        formState.items.count + selectedCategories.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        // TODO: - 有沒有辦法用 Protocol 簡化 cell 的 deque 過程？
-        let inputType = formState.items[indexPath.row].type
-        if inputType == .textField {
-//            guard let cell = tableView.dequeueReusableCell(
-//                withIdentifier: SingleLineDescriptionInputCell.identifier,
-//                for: indexPath) as? SingleLineDescriptionInputCell else {
-//                fatalError("Cannot create single line input cell")
-//            }
-//            cell.layoutCell(info: formState.items[indexPath.row])
-//            cell.textField.delegate = self
-//            return cell
-            guard let cell = tableView.dequeueReusableCell(
-                withIdentifier: SingleLineInputCell.identifier,
-                for: indexPath) as? SingleLineInputCell else {
-                fatalError("Cannot create single line input cell")
-            }
-            cell.layoutCell(withTitle: .projectName, value: "請輸入專案名稱")
-            cell.updateProjectName = { [weak self] projectName in
-                self?.project.name = projectName
-            }
-//            cell.inputTextField.delegate = self
-            return cell
-
-        } else if inputType == .textView {
-            guard let cell = tableView.dequeueReusableCell(
-                withIdentifier: MultilineInputCell.identifier,
-                for: indexPath) as? MultilineInputCell else {
-                fatalError("Cannot create single line input cell")
-            }
-            cell.layoutCellForFindPartner(
-                title: formState.items[indexPath.row].name,
-                shouldFill: formState.items[indexPath.row].must)
-            cell.textView.delegate = self
-            return cell
-
-        } else if inputType == .goNextButton && formState == FindPartnersFormSections.basicSection {
-            guard let cell = tableView.dequeueReusableCell(
-                withIdentifier: GoSelectionCell.identifier,
-                for: indexPath) as? GoSelectionCell else {
-                fatalError("Cannot create single line input cell")
-            }
-            cell.layoutCell(
-                info: formState.items[indexPath.row],
-                tags: selectedCategories
-            )
-            cell.tapHandler = { [weak self] in
-                self?.goSelectCategories()
-            }
-            return cell
-
-        } else if inputType == .goNextButton &&
-            formState.items[indexPath.row].name == FindPartnersFormSections.detailSection.items[0].name {
-            guard let cell = tableView.dequeueReusableCell(
-                withIdentifier: GoSelectionCell.identifier,
-                for: indexPath) as? GoSelectionCell else {
-                fatalError("Cannot create single line input cell")
-            }
-            cell.layoutCellWithDatePicker(info: formState.items[indexPath.row])
-            cell.delegate = self
-            return cell
-
-        } else if inputType == .goNextButton &&
-            formState.items[indexPath.row].name == FindPartnersFormSections.detailSection.items[1].name {
-            guard let cell = tableView.dequeueReusableCell(
-                withIdentifier: GoSelectionCell.identifier,
-                for: indexPath) as? GoSelectionCell else {
-                fatalError("Cannot create single line input cell")
-            }
-            cell.layoutCellWithTextField(info: formState.items[indexPath.row])
-            cell.delegate = self
-            return cell
-
-        } else if inputType == .addButton {
-            guard let cell = tableView.dequeueReusableCell(
-                withIdentifier: AddNewLineSectionCell.identifier,
-                for: indexPath) as? AddNewLineSectionCell else {
-                fatalError("Cannot create add new line cell")
-            }
-
-            let findPartnersStoryboard = UIStoryboard(
-                name: StoryboardCategory.findPartners.rawValue,
-                bundle: nil
-            )
-
-            let membersTitle = FindPartnersFormSections.groupSection.items[0].name
-            let recruitingTitle = FindPartnersFormSections.groupSection.items[1].name
-            let title = formState.items[indexPath.row].name
-
-            guard let memberVC = findPartnersStoryboard.instantiateViewController(
-                withIdentifier: MemberCardViewController.identifier
-            ) as? MemberCardViewController else {
-                fatalError("Cannot load member card VC from storyboard")
-            }
-            memberVC.title = title
-            memberVC.delegate = self
-
-            if title == membersTitle {
-                cell.layoutCell(info: formState.items[indexPath.row], members: project.members)
-                cell.tapHandler = { [weak self] in
-                    memberVC.type = .member
-                    self?.navigationController?.pushViewController(memberVC, animated: true)
+        if indexPath.row < formState.items.count {
+            let inputType = formState.items[indexPath.row].type
+            if inputType == .textField {
+                guard let cell = tableView.dequeueReusableCell(
+                    withIdentifier: SingleLineInputCell.identifier,
+                    for: indexPath) as? SingleLineInputCell else {
+                    fatalError("Cannot create single line input cell")
                 }
-            } else if title == recruitingTitle {
-                cell.layoutCell(info: formState.items[indexPath.row], recruiting: project.recruiting)
-                cell.tapHandler = { [weak self] in
-                    memberVC.type = .recruiting
-                    self?.navigationController?.pushViewController(memberVC, animated: true)
+                cell.layoutCell(withTitle: .projectName, value: "請輸入專案名稱")
+                cell.updateProjectName = { [weak self] projectName in
+                    self?.project.name = projectName
                 }
+                return cell
+
+            } else if inputType == .textView {
+                guard let cell = tableView.dequeueReusableCell(
+                    withIdentifier: MultilineInputCell.identifier,
+                    for: indexPath) as? MultilineInputCell else {
+                    fatalError("Cannot create single line input cell")
+                }
+                cell.layoutCellForFindPartner(
+                    title: formState.items[indexPath.row].name,
+                    shouldFill: formState.items[indexPath.row].must)
+                cell.textView.delegate = self
+                return cell
+
+            } else if inputType == .goNextButton && formState == FindPartnersFormSections.basicSection {
+                guard let cell = tableView.dequeueReusableCell(
+                    withIdentifier: GoSelectionCell.identifier,
+                    for: indexPath) as? GoSelectionCell else {
+                    fatalError("Cannot create single line input cell")
+                }
+                cell.layoutCell(info: formState.items[indexPath.row])
+                cell.tapHandler = { [weak self] in
+                    self?.goSelectCategories()
+                }
+                return cell
+
+            } else if inputType == .goNextButton &&
+                formState.items[indexPath.row].name == FindPartnersFormSections.detailSection.items[0].name {
+                guard let cell = tableView.dequeueReusableCell(
+                    withIdentifier: GoSelectionCell.identifier,
+                    for: indexPath) as? GoSelectionCell else {
+                    fatalError("Cannot create single line input cell")
+                }
+                cell.layoutCellWithDatePicker(info: formState.items[indexPath.row])
+                cell.delegate = self
+                return cell
+
+            } else if inputType == .goNextButton &&
+                formState.items[indexPath.row].name == FindPartnersFormSections.detailSection.items[1].name {
+                guard let cell = tableView.dequeueReusableCell(
+                    withIdentifier: GoSelectionCell.identifier,
+                    for: indexPath) as? GoSelectionCell else {
+                    fatalError("Cannot create single line input cell")
+                }
+                cell.layoutCellWithTextField(info: formState.items[indexPath.row])
+                cell.delegate = self
+                return cell
+
+            } else if inputType == .addButton {
+                guard let cell = tableView.dequeueReusableCell(
+                    withIdentifier: AddNewLineSectionCell.identifier,
+                    for: indexPath) as? AddNewLineSectionCell else {
+                    fatalError("Cannot create add new line cell")
+                }
+
+                let findPartnersStoryboard = UIStoryboard(
+                    name: StoryboardCategory.findPartners.rawValue,
+                    bundle: nil
+                )
+
+                let membersTitle = FindPartnersFormSections.groupSection.items[0].name
+                let recruitingTitle = FindPartnersFormSections.groupSection.items[1].name
+                let title = formState.items[indexPath.row].name
+
+                guard let memberVC = findPartnersStoryboard.instantiateViewController(
+                    withIdentifier: MemberCardViewController.identifier
+                ) as? MemberCardViewController else {
+                    fatalError("Cannot load member card VC from storyboard")
+                }
+                memberVC.title = title
+                memberVC.delegate = self
+
+                if title == membersTitle {
+                    cell.layoutCell(info: formState.items[indexPath.row], members: project.members)
+                    cell.tapHandler = { [weak self] in
+                        memberVC.type = .member
+                        self?.navigationController?.pushViewController(memberVC, animated: true)
+                    }
+                } else if title == recruitingTitle {
+                    cell.layoutCell(info: formState.items[indexPath.row], recruiting: project.recruiting)
+                    cell.tapHandler = { [weak self] in
+                        memberVC.type = .recruiting
+                        self?.navigationController?.pushViewController(memberVC, animated: true)
+                    }
+                }
+
+                return cell
+
+            } else if inputType == .uploadImage {
+                guard let cell = tableView.dequeueReusableCell(
+                    withIdentifier: ImagePickerCell.identifier,
+                    for: indexPath) as? ImagePickerCell else {
+                    fatalError("Cannot create add image picker cell")
+                }
+                cell.layoutCell(info: formState.items[indexPath.row])
+                cell.delegate = self
+                cell.alertPresentHandler = { [weak self] alert in
+                    self?.present(alert, animated: true)
+                }
+                cell.cameraPresentHandler = { [weak self] controller in
+                    self?.present(controller, animated: true)
+                }
+                cell.libraryPresentHandler = { [weak self] picker in
+                    self?.present(picker, animated: true)
+                }
+                return cell
+
+            } else {
+                fatalError("Shouldn't have this type")
             }
-
-            return cell
-
         } else {
-            // if inputType == .uploadImage
+            // basic 中的 category cell
             guard let cell = tableView.dequeueReusableCell(
-                withIdentifier: ImagePickerCell.identifier,
-                for: indexPath) as? ImagePickerCell else {
-                fatalError("Cannot create add image picker cell")
+                withIdentifier: ProjectCategoryListCell.identifier, for: indexPath
+                ) as? ProjectCategoryListCell else {
+                fatalError("Cannot load One Selection Cell")
             }
-            cell.layoutCell(info: formState.items[indexPath.row])
-            cell.delegate = self
-            cell.alertPresentHandler = { [weak self] alert in
-                self?.present(alert, animated: true)
-            }
-            cell.cameraPresentHandler = { [weak self] controller in
-                self?.present(controller, animated: true)
-            }
-            cell.libraryPresentHandler = { [weak self] picker in
-                self?.present(picker, animated: true)
-            }
+            cell.layoutCell(content: selectedCategories[indexPath.row - 3])
             return cell
         }
     }
-
-//    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-//        formState.title
-//    }
 }
 
 // MARK: - Text Field Delegate

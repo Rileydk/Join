@@ -24,7 +24,7 @@ class TableViewSimpleHeaderView: TableViewHeaderFooterView {
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 26),
             titleLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
     }

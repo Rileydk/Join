@@ -38,7 +38,7 @@ class SingleLineInputCell: TableViewCell {
 
     override func layoutSubviews() {
         super.layoutSubviews()
-        inputTextField.layer.cornerRadius = inputTextField.frame.size.height / 2
+//        inputTextField.layer.cornerRadius = inputTextField.frame.size.height / 2
     }
 
     func layoutCell(withTitle title: InputType, value: String = "") {

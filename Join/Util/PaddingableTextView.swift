@@ -12,7 +12,7 @@ class PaddingableTextView: UITextView {
         super.awakeFromNib()
         self.backgroundColor = .Gray5
         self.textColor = .Gray3
-        self.layer.cornerRadius = 18
+        self.layer.cornerRadius = 8
 
         let verticalInset: CGFloat = 12
         let horizontalInset: CGFloat = 15

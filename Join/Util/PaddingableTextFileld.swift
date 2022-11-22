@@ -18,6 +18,7 @@ class PaddingableTextField: UITextField {
         super.awakeFromNib()
         self.borderStyle = .none
         self.backgroundColor = .Gray5
+        self.layer.cornerRadius = 8
     }
 
     override func textRect(forBounds bounds: CGRect) -> CGRect {
