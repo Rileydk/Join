@@ -24,6 +24,7 @@ class FindPartnersBasicViewController: BaseViewController {
             if tableView != nil {
                 tableView.reloadData()
             }
+            checkCanGoNextPage()
         }
     }
     var position = OpenPosition(role: "", skills: "", number: "") {
@@ -118,7 +119,7 @@ class FindPartnersBasicViewController: BaseViewController {
 
     func checkCanGoNextPage() {
         if formState == FindPartnersFormSections.basicSection &&
-            (project.name.isEmpty || project.description.isEmpty || project.categories.isEmpty) {
+            (project.name.isEmpty || project.description.isEmpty || selectedCategories.isEmpty) {
             navigationItem.rightBarButtonItem?.isEnabled = false
         } else if formState == FindPartnersFormSections.groupSection &&
                     (position.role.isEmpty || position.number.isEmpty || position.skills.isEmpty) {
@@ -152,6 +153,7 @@ class FindPartnersBasicViewController: BaseViewController {
 
         } else if formState == FindPartnersFormSections.groupSection {
             project.recruiting = [position]
+            project.members = members.map { Member(id: $0.id, role: "empty", skills: "empty") }
             let findPartnersStoryboard = UIStoryboard(
                 name: StoryboardCategory.findPartners.rawValue, bundle: nil
             )
@@ -211,7 +213,6 @@ class FindPartnersBasicViewController: BaseViewController {
         friendSelectionVC.source = .addMembersToFindPartners
         friendSelectionVC.selectedFriends = members
         friendSelectionVC.addToFindPartnersHandler = { [weak self] groupMembers in
-            self?.project.members = groupMembers.map { Member(id: $0.id, role: "empty", skills: "empty") }
             self?.members = groupMembers
         }
         navigationController?.pushViewController(friendSelectionVC, animated: true)
@@ -285,6 +286,25 @@ extension FindPartnersBasicViewController: UITableViewDelegate {
         }
         header.titleLabel.text = formState.title
         return header
+    }
+
+//    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+//        if indexPath.row < formState.items.count {
+//            return false
+//        } else {
+//            return true
+//        }
+//    }
+
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            if formState == FindPartnersFormSections.basicSection {
+                selectedCategories.remove(at: indexPath.row - 3)
+            }
+            if formState == FindPartnersFormSections.groupSection {
+                members.remove(at: indexPath.row - 3)
+            }
+        }
     }
 }
 

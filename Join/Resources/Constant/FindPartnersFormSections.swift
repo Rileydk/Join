@@ -43,7 +43,7 @@ struct FindPartnersFormSections {
             ),
             ItemInfo(
                 name: "團隊成員", subtitle: "選取團隊成員", instruction: nil,
-                note: "選取專案團隊成員，在我的專案快速建立工作群組", must: false, type: .goNextButton
+                note: "讓其他人更了解你的團隊，並能快速建立工作群組", must: false, type: .goNextButton
             )
         ]
     )
