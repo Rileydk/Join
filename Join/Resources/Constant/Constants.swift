@@ -22,6 +22,11 @@ struct Constant {
         static let applicantsSectionTitle = "應徵者"
     }
 
+    struct FindPartners {
+        static let projectDescription = "請輸入專案詳細描述，讓申請者更了解你的專案"
+        static let projectBasicSection = "專案基本資訊"
+    }
+
     struct Portfolio {
         static let sectionHeader = "Portfolio"
     }

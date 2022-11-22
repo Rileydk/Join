@@ -11,24 +11,30 @@ class MultilineInputCell: TableViewCell {
 
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var mustFillSignLabel: UILabel!
-    @IBOutlet weak var instructionLabel: UILabel!
-    @IBOutlet weak var textView: UITextView!
+    @IBOutlet weak var textView: PaddingableTextView!
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        contentView.backgroundColor = .White
+//        textView.backgroundColor = .Gray5
+    }
 
     override func layoutSubviews() {
         super.layoutSubviews()
-        textView.addUnderline()
+        
+//        textView.addUnderline()
     }
 
-    func layoutCellForFindPartner(title: String, shouldFill: Bool, instruction: String) {
+    func layoutCellForFindPartner(title: String, shouldFill: Bool) {
         titleLabel.text = title
         mustFillSignLabel.isHidden = !shouldFill
-        instructionLabel.text = instruction
+        textView.text = Constant.FindPartners.projectDescription
+//        textView.textColor = .Gray3
     }
 
     func layoutCellForEditProfile(introduction: String) {
         titleLabel.text = "請填寫個人簡介"
         mustFillSignLabel.isHidden = true
-        instructionLabel.isHidden = true
         textView.text = introduction
     }
 }

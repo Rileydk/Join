@@ -8,7 +8,7 @@
 import UIKit
 
 extension UIView {
-    func addUnderline(color: UIColor = .black, width: CGFloat = 1) {
+    func addUnderline(color: UIColor = (.Gray1 ?? UIColor.black), width: CGFloat = 1) {
         let underline = UIView(
             frame: CGRect(
                 x: self.frame.minX, y: self.frame.maxY,

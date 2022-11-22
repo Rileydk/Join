@@ -12,32 +12,39 @@ class SingleLineInputCell: TableViewCell {
         case name = "名稱"
         case email = "Email"
         case workName = "作品名稱"
+        case projectName = "專案名稱"
+
+        var textFieldValue: String {
+            switch self {
+            case .projectName: return "請輸入專案名稱"
+            default: return ""
+            }
+        }
     }
 
     @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var inputTextField: UITextField!
+    @IBOutlet weak var inputTextField: PaddingableTextField!
     var type: InputType = .name
     var updateName: ((String) -> Void)?
     var updateEmail: ((String) -> Void)?
     var updateWorkName: ((String) -> Void)?
+    var updateProjectName: ((String) -> Void)?
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        contentView.backgroundColor = .Gray6
-        inputTextField.backgroundColor = .Gray6
-        inputTextField.addUnderline()
+        contentView.backgroundColor = .White
         titleLabel.textColor = .Gray1
     }
 
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        inputTextField.layer.cornerRadius = inputTextField.frame.size.height / 2
     }
 
     func layoutCell(withTitle title: InputType, value: String = "") {
         titleLabel.text = title.rawValue
-        inputTextField.text = value
+        inputTextField.attributedPlaceholder = NSAttributedString(string: value,
+             attributes: [NSAttributedString.Key.foregroundColor: (UIColor.Gray3 ?? .lightGray).cgColor])
         type = title
     }
 
@@ -50,6 +57,8 @@ class SingleLineInputCell: TableViewCell {
             updateEmail?(text)
         case .workName:
             updateWorkName?(text)
+        case .projectName:
+            updateProjectName?(text)
         }
     }
 }

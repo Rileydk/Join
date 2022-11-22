@@ -22,8 +22,8 @@ class FindPartnersBasicViewController: BaseViewController {
     @IBOutlet weak var tableView: UITableView! {
         didSet {
             tableView.register(
-                UINib(nibName: SingleLineDescriptionInputCell.identifier, bundle: nil),
-                forCellReuseIdentifier: SingleLineDescriptionInputCell.identifier
+                UINib(nibName: SingleLineInputCell.identifier, bundle: nil),
+                forCellReuseIdentifier: SingleLineInputCell.identifier
             )
             tableView.register(
                 UINib(nibName: MultilineInputCell.identifier, bundle: nil),
@@ -41,6 +41,9 @@ class FindPartnersBasicViewController: BaseViewController {
                 UINib(nibName: ImagePickerCell.identifier, bundle: nil),
                 forCellReuseIdentifier: ImagePickerCell.identifier
             )
+            tableView.register(
+                UINib(nibName: TableViewSimpleHeaderView.identifier, bundle: nil),
+                forHeaderFooterViewReuseIdentifier: TableViewSimpleHeaderView.identifier)
             tableView.delegate = self
             tableView.dataSource = self
             tableView.separatorStyle = .none
@@ -61,6 +64,7 @@ class FindPartnersBasicViewController: BaseViewController {
 
     func layoutView() {
         title = Tab.findPartners.title
+        tableView.backgroundColor = .White
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             title: formState.buttonTitle, style: .done,
             target: self, action: #selector(goNextPage)
@@ -166,12 +170,22 @@ extension FindPartnersBasicViewController: UITableViewDelegate {
         } else if inputType == .textField {
             return 120
         } else if inputType == .textView {
-            return 250
+            return 300
         } else if inputType == .uploadImage {
             return 300
         } else {
             return 100
         }
+    }
+
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard let header = tableView.dequeueReusableHeaderFooterView(
+            withIdentifier: TableViewSimpleHeaderView.identifier
+            ) as? TableViewSimpleHeaderView else {
+            fatalError("Cannot load Table View Simple Header View")
+        }
+        header.titleLabel.text = formState.title
+        return header
     }
 }
 
@@ -185,13 +199,24 @@ extension FindPartnersBasicViewController: UITableViewDataSource {
         // TODO: - 有沒有辦法用 Protocol 簡化 cell 的 deque 過程？
         let inputType = formState.items[indexPath.row].type
         if inputType == .textField {
+//            guard let cell = tableView.dequeueReusableCell(
+//                withIdentifier: SingleLineDescriptionInputCell.identifier,
+//                for: indexPath) as? SingleLineDescriptionInputCell else {
+//                fatalError("Cannot create single line input cell")
+//            }
+//            cell.layoutCell(info: formState.items[indexPath.row])
+//            cell.textField.delegate = self
+//            return cell
             guard let cell = tableView.dequeueReusableCell(
-                withIdentifier: SingleLineDescriptionInputCell.identifier,
-                for: indexPath) as? SingleLineDescriptionInputCell else {
+                withIdentifier: SingleLineInputCell.identifier,
+                for: indexPath) as? SingleLineInputCell else {
                 fatalError("Cannot create single line input cell")
             }
-            cell.layoutCell(info: formState.items[indexPath.row])
-            cell.textField.delegate = self
+            cell.layoutCell(withTitle: .projectName, value: "請輸入專案名稱")
+            cell.updateProjectName = { [weak self] projectName in
+                self?.project.name = projectName
+            }
+//            cell.inputTextField.delegate = self
             return cell
 
         } else if inputType == .textView {
@@ -202,8 +227,7 @@ extension FindPartnersBasicViewController: UITableViewDataSource {
             }
             cell.layoutCellForFindPartner(
                 title: formState.items[indexPath.row].name,
-                shouldFill: formState.items[indexPath.row].must,
-                instruction: formState.items[indexPath.row].instruction ?? "")
+                shouldFill: formState.items[indexPath.row].must)
             cell.textView.delegate = self
             return cell
 
@@ -306,9 +330,9 @@ extension FindPartnersBasicViewController: UITableViewDataSource {
         }
     }
 
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        formState.title
-    }
+//    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+//        formState.title
+//    }
 }
 
 // MARK: - Text Field Delegate
@@ -320,7 +344,19 @@ extension FindPartnersBasicViewController: UITextFieldDelegate {
 
 // MARK: - Text View Delegate
 extension FindPartnersBasicViewController: UITextViewDelegate {
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if textView.textColor == .Gray3 {
+            textView.text = nil
+            textView.textColor = .Gray2
+        }
+    }
+
     func textViewDidEndEditing(_ textView: UITextView) {
+        if textView.text.isEmpty {
+            textView.text = Constant.FindPartners.projectDescription
+            textView.textColor = .Gray3
+        }
+
         project.description = textView.text
     }
 }
