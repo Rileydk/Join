@@ -23,9 +23,10 @@ class FriendSelectionViewController: BaseViewController {
     var filteredFriends = [JUser]()
     var selectedIndexes = [Int]()
     var selectedFriends = [JUser]()
+    var addToFindPartnersHandler: (([JUser]) -> Void)?
 
     var searchController = UISearchController()
-    
+
     @IBOutlet weak var tableView: UITableView! {
         didSet {
             tableView.register(
@@ -39,7 +40,6 @@ class FriendSelectionViewController: BaseViewController {
             tableView.backgroundColor = .Gray6
         }
     }
-
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -61,7 +61,12 @@ class FriendSelectionViewController: BaseViewController {
     }
 
     func layoutViews() {
-        title = "選擇群組成員"
+        switch source {
+        case .addNewMembers, .createNewGroupChat:
+            title = "選擇群組成員"
+        case .addMembersToFindPartners:
+            title = "選擇團隊成員"
+        }
 
         searchController.searchBar.searchTextField.backgroundColor = .White
         searchController.searchResultsUpdater = self
@@ -76,11 +81,17 @@ class FriendSelectionViewController: BaseViewController {
             navigationItem.rightBarButtonItem = UIBarButtonItem(
                 title: "Invite", style: .done, target: self, action: #selector(addNewMembers)
             )
+        } else if source == .addMembersToFindPartners {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(
+                title: "Add", style: .done, target: self, action: #selector(addToFindPartners)
+            )
         } else {
             navigationItem.rightBarButtonItem = UIBarButtonItem(
                 title: "Add", style: .done, target: self, action: #selector(addNewMembers)
             )
         }
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            title: "Discard", style: .plain, target: self, action: #selector(backToPreviousPage))
     }
 
     @objc func prepareGroupChatroom() {
@@ -120,6 +131,15 @@ class FriendSelectionViewController: BaseViewController {
                 JProgressHUD.shared.showFailure(text: err.localizedDescription, view: self.view)
             }
         }
+    }
+
+    @objc func addToFindPartners() {
+        addToFindPartnersHandler?(selectedFriends)
+        backToPreviousPage()
+    }
+
+    @objc func backToPreviousPage() {
+        navigationController?.popViewController(animated: true)
     }
 }
 

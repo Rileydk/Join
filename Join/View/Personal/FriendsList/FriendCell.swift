@@ -11,6 +11,7 @@ class FriendCell: TableViewCell {
     enum Source {
         case friendList
         case friendSelection
+        case projectGroupMemberSelection
     }
 
     let firebaseManager = FirebaseManager.shared

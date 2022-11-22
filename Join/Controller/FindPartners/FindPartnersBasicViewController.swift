@@ -21,12 +21,21 @@ class FindPartnersBasicViewController: BaseViewController {
     var formState = FindPartnersFormSections.basicSection
     var selectedCategories = [String]() {
         didSet {
-            tableView.reloadData()
+            if tableView != nil {
+                tableView.reloadData()
+            }
         }
     }
     var position = OpenPosition(role: "", skills: "", number: "") {
         didSet {
             checkCanGoNextPage()
+        }
+    }
+    var members = [JUser]() {
+        didSet {
+            if tableView != nil {
+                tableView.reloadData()
+            }
         }
     }
 
@@ -47,6 +56,9 @@ class FindPartnersBasicViewController: BaseViewController {
                 UINib(nibName: GoSelectionCell.identifier, bundle: nil),
                 forCellReuseIdentifier: GoSelectionCell.identifier
             )
+            tableView.register(
+                UINib(nibName: FriendCell.identifier, bundle: nil),
+                forCellReuseIdentifier: FriendCell.identifier)
             tableView.register(
                 UINib(nibName: ProjectCategoryListCell.identifier, bundle: nil),
                 forCellReuseIdentifier: ProjectCategoryListCell.identifier)
@@ -98,7 +110,9 @@ class FindPartnersBasicViewController: BaseViewController {
 
         if formState == FindPartnersFormSections.groupSection {
             navigationItem.leftBarButtonItem = UIBarButtonItem(
-                image: UIImage(named: JImages.Icons_24px_Back.rawValue), style: .plain, target: self, action: #selector(backToPreviousPage))
+                image: UIImage(
+                    named: JImages.Icons_24px_Back.rawValue),
+                    style: .plain, target: self, action: #selector(backToPreviousPage))
         }
     }
 
@@ -113,7 +127,6 @@ class FindPartnersBasicViewController: BaseViewController {
                   project.recruiting.isEmpty {
             navigationItem.rightBarButtonItem?.isEnabled = false
         } else {
-            print("skills", position.skills)
             navigationItem.rightBarButtonItem?.isEnabled = true
         }
     }
@@ -132,6 +145,7 @@ class FindPartnersBasicViewController: BaseViewController {
             }
             nextVC.project = project
             nextVC.position = position
+            nextVC.members = members
             nextVC.formState = FindPartnersFormSections.groupSection
             nextVC.view.backgroundColor = .white
             navigationController?.pushViewController(nextVC, animated: true)
@@ -194,6 +208,12 @@ class FindPartnersBasicViewController: BaseViewController {
             ) as? FriendSelectionViewController else {
             fatalError("Cannot load friend selection vc")
         }
+        friendSelectionVC.source = .addMembersToFindPartners
+        friendSelectionVC.selectedFriends = members
+        friendSelectionVC.addToFindPartnersHandler = { [weak self] groupMembers in
+            self?.project.members = groupMembers.map { Member(id: $0.id, role: "empty", skills: "empty") }
+            self?.members = groupMembers
+        }
         navigationController?.pushViewController(friendSelectionVC, animated: true)
     }
 
@@ -218,7 +238,10 @@ class FindPartnersBasicViewController: BaseViewController {
             }
             basicVC.project = project
             basicVC.position = position
+            basicVC.members = members
             navigationController?.popViewController(animated: true)
+        } else if formState == FindPartnersFormSections.detailSection {
+
         }
     }
 }
@@ -244,8 +267,13 @@ extension FindPartnersBasicViewController: UITableViewDelegate {
                 return 100
             }
         } else {
-            // basic 中的 category cell
-            return 44
+            if formState == FindPartnersFormSections.basicSection {
+                // basic 中的 category cell
+                return 44
+            } else {
+                // if formState == FindPartnersFormSections.groupSection
+                return 70
+            }
         }
     }
 
@@ -266,7 +294,7 @@ extension FindPartnersBasicViewController: UITableViewDataSource {
         if formState == FindPartnersFormSections.basicSection {
             return formState.items.count + selectedCategories.count
         } else if formState == FindPartnersFormSections.groupSection {
-            return formState.items.count
+            return formState.items.count + members.count
         } else {
             // if formState == FindPartnersFormSections.detailSection
             return formState.items.count
@@ -450,14 +478,27 @@ extension FindPartnersBasicViewController: UITableViewDataSource {
                 fatalError("Shouldn't have this type")
             }
         } else {
-            // basic 中的 category cell
-            guard let cell = tableView.dequeueReusableCell(
-                withIdentifier: ProjectCategoryListCell.identifier, for: indexPath
+            if formState == FindPartnersFormSections.basicSection {
+                // basic 中的 category cell
+                guard let cell = tableView.dequeueReusableCell(
+                    withIdentifier: ProjectCategoryListCell.identifier, for: indexPath
                 ) as? ProjectCategoryListCell else {
-                fatalError("Cannot load One Selection Cell")
+                    fatalError("Cannot load One Selection Cell")
+                }
+                cell.layoutCell(content: selectedCategories[indexPath.row - 3])
+                return cell
+            } else {
+                // if formState == FindPartnersFormSections.groupSection
+                let member = members[indexPath.row - 3]
+                guard let cell = tableView.dequeueReusableCell(
+                    withIdentifier: FriendCell.identifier, for: indexPath
+                ) as? FriendCell else {
+                    fatalError("Cannot create friend cell")
+                }
+                cell.layoutCell(friend: member, source: .projectGroupMemberSelection)
+                cell.contentView.backgroundColor = .White
+                return cell
             }
-            cell.layoutCell(content: selectedCategories[indexPath.row - 3])
-            return cell
         }
     }
 }
