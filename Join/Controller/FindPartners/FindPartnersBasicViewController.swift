@@ -24,6 +24,11 @@ class FindPartnersBasicViewController: BaseViewController {
             tableView.reloadData()
         }
     }
+    var position = OpenPosition(role: "", skills: "", number: "") {
+        didSet {
+            checkCanGoNextPage()
+        }
+    }
 
     @IBOutlet weak var tableView: UITableView! {
         didSet {
@@ -35,6 +40,9 @@ class FindPartnersBasicViewController: BaseViewController {
                 UINib(nibName: MultilineInputCell.identifier, bundle: nil),
                 forCellReuseIdentifier: MultilineInputCell.identifier
             )
+            tableView.register(
+                UINib(nibName: TextFieldComboAmountFieldCell.identifier, bundle: nil),
+                forCellReuseIdentifier: TextFieldComboAmountFieldCell.identifier)
             tableView.register(
                 UINib(nibName: GoSelectionCell.identifier, bundle: nil),
                 forCellReuseIdentifier: GoSelectionCell.identifier
@@ -73,6 +81,13 @@ class FindPartnersBasicViewController: BaseViewController {
 
     func layoutView() {
         title = Tab.findPartners.title
+        if formState == FindPartnersFormSections.basicSection {
+            title! += " (1/3)"
+        } else if formState == FindPartnersFormSections.groupSection {
+            title! += " (2/3)"
+        } else if formState == FindPartnersFormSections.detailSection {
+            title! += " (3/3)"
+        }
         tableView.backgroundColor = .White
 
         let config = UIButton.Configuration.filled()
@@ -89,15 +104,17 @@ class FindPartnersBasicViewController: BaseViewController {
     }
 
     func checkCanGoNextPage() {
-        if formState == FindPartnersFormSections.basicSection && (project.name.isEmpty || project.description.isEmpty || project.categories.isEmpty) {
+        if formState == FindPartnersFormSections.basicSection &&
+            (project.name.isEmpty || project.description.isEmpty || project.categories.isEmpty) {
             navigationItem.rightBarButtonItem?.isEnabled = false
-        } else if formState == FindPartnersFormSections.groupSection,
-                  project.recruiting.isEmpty {
+        } else if formState == FindPartnersFormSections.groupSection &&
+                    (position.role.isEmpty || position.number.isEmpty || position.skills.isEmpty) {
             navigationItem.rightBarButtonItem?.isEnabled = false
         } else if formState == FindPartnersFormSections.groupSection,
                   project.recruiting.isEmpty {
             navigationItem.rightBarButtonItem?.isEnabled = false
         } else {
+            print("skills", position.skills)
             navigationItem.rightBarButtonItem?.isEnabled = true
         }
     }
@@ -105,6 +122,7 @@ class FindPartnersBasicViewController: BaseViewController {
     @objc func goNextPage() {
         if formState == FindPartnersFormSections.basicSection {
             project.categories = selectedCategories
+            project.recruiting = [position]
             let findPartnersStoryboard = UIStoryboard(
                 name: StoryboardCategory.findPartners.rawValue, bundle: nil
             )
@@ -114,11 +132,13 @@ class FindPartnersBasicViewController: BaseViewController {
                 fatalError("Cannot load FindPartnersBasicVC from storyboard.")
             }
             nextVC.project = project
+            nextVC.position = position
             nextVC.formState = FindPartnersFormSections.groupSection
             nextVC.view.backgroundColor = .white
             navigationController?.pushViewController(nextVC, animated: true)
 
         } else if formState == FindPartnersFormSections.groupSection {
+            project.recruiting = [position]
             let findPartnersStoryboard = UIStoryboard(
                 name: StoryboardCategory.findPartners.rawValue, bundle: nil
             )
@@ -167,6 +187,17 @@ class FindPartnersBasicViewController: BaseViewController {
         navigationController?.pushViewController(personalInfoSelectionVC, animated: true)
     }
 
+    func goSelectGroupMembers() {
+        let chatroomStoryboard = UIStoryboard(
+            name: StoryboardCategory.chat.rawValue, bundle: nil)
+        guard let friendSelectionVC = chatroomStoryboard.instantiateViewController(
+            withIdentifier: FriendSelectionViewController.identifier
+            ) as? FriendSelectionViewController else {
+            fatalError("Cannot load friend selection vc")
+        }
+        navigationController?.pushViewController(friendSelectionVC, animated: true)
+    }
+
     func post() {
         firebaseManager.postNewProject(project: project, image: image) { [weak self] result in
             switch result {
@@ -187,6 +218,7 @@ class FindPartnersBasicViewController: BaseViewController {
                 fatalError("Cannot load find partners basic vc basic part")
             }
             basicVC.project = project
+            basicVC.position = position
             navigationController?.popViewController(animated: true)
         }
     }
@@ -198,13 +230,15 @@ extension FindPartnersBasicViewController: UITableViewDelegate {
         if indexPath.row < formState.items.count {
             let inputType = formState.items[indexPath.row].type
             if inputType == .goNextButton {
-                return 80
+                return 118
             } else if inputType == .addButton {
                 return UITableView.automaticDimension
             } else if inputType == .textField {
-                return 120
+                return 112
+            } else if inputType == .textFieldComboAmountPicker {
+                return 112
             } else if inputType == .textView {
-                return 300
+                return 242
             } else if inputType == .uploadImage {
                 return 300
             } else {
@@ -230,7 +264,14 @@ extension FindPartnersBasicViewController: UITableViewDelegate {
 // MARK: - Table View Data Source
 extension FindPartnersBasicViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        formState.items.count + selectedCategories.count
+        if formState == FindPartnersFormSections.basicSection {
+            return formState.items.count + selectedCategories.count
+        } else if formState == FindPartnersFormSections.groupSection {
+            return formState.items.count
+        } else {
+            // if formState == FindPartnersFormSections.detailSection
+            return formState.items.count
+        }
     }
 
     // swiftlint:disable function_body_length
@@ -245,12 +286,14 @@ extension FindPartnersBasicViewController: UITableViewDataSource {
                     fatalError("Cannot create single line input cell")
                 }
                 if formState == FindPartnersFormSections.basicSection {
-                    cell.layoutCell(withTitle: .projectName, value: "請輸入專案名稱")
-                } else {
-                    cell.layoutCell(withTitle: .projectName, value: "")
-                }
-                cell.updateProjectName = { [weak self] projectName in
-                    self?.project.name = projectName
+                    cell.layoutCell(withTitle: .projectName,
+                                    value: project.name.isEmpty
+                                           ? Constant.FindPartners.projectNamePlaceholder
+                                           : project.name
+                    )
+                    cell.updateProjectName = { [weak self] projectName in
+                        self?.project.name = projectName
+                    }
                 }
                 return cell
 
@@ -261,9 +304,18 @@ extension FindPartnersBasicViewController: UITableViewDataSource {
                     fatalError("Cannot create single line input cell")
                 }
                 if formState == FindPartnersFormSections.basicSection {
-                    cell.layoutCellForFindPartnerProjectDescription(
+                    cell.sourceType = .findPartnersDescription
+                    cell.layoutCellForFindPartner(
                         title: formState.items[indexPath.row].name,
                         value: project.description,
+                        shouldFill: formState.items[indexPath.row].must
+                    )
+                }
+                if formState == FindPartnersFormSections.groupSection {
+                    cell.sourceType = .findPartnersSkill
+                    cell.layoutCellForFindPartner(
+                        title: formState.items[indexPath.row].name,
+                        value: position.skills.isEmpty ?  "" : position.skills,
                         shouldFill: formState.items[indexPath.row].must
                     )
                 }
@@ -281,7 +333,17 @@ extension FindPartnersBasicViewController: UITableViewDataSource {
                     self?.goSelectCategories()
                 }
                 return cell
-
+            } else if inputType == .goNextButton && formState == FindPartnersFormSections.groupSection {
+                guard let cell = tableView.dequeueReusableCell(
+                    withIdentifier: GoSelectionCell.identifier,
+                    for: indexPath) as? GoSelectionCell else {
+                    fatalError("Cannot create single line input cell")
+                }
+                cell.layoutCell(info: formState.items[indexPath.row])
+                cell.tapHandler = { [weak self] in
+                    self?.goSelectGroupMembers()
+                }
+                return cell
             } else if inputType == .goNextButton &&
                 formState.items[indexPath.row].name == FindPartnersFormSections.detailSection.items[0].name {
                 guard let cell = tableView.dequeueReusableCell(
@@ -362,6 +424,28 @@ extension FindPartnersBasicViewController: UITableViewDataSource {
                     self?.present(picker, animated: true)
                 }
                 return cell
+            } else if inputType == .textFieldComboAmountPicker {
+                guard let cell = tableView.dequeueReusableCell(
+                    withIdentifier: TextFieldComboAmountFieldCell.identifier, for: indexPath
+                    ) as? TextFieldComboAmountFieldCell else {
+                    fatalError("Cannot create text field combo amount picker cell")
+                }
+
+                cell.layoutCell(
+                    longFieldTitle: Constant.FindPartners.recruitingFieldTitle,
+                    longFieldValue: position.role.isEmpty ? "" : position.role,
+                    longFieldPlaceholder: Constant.FindPartners.recruitingRolePlaceholder,
+                    shortFieldTitle: Constant.FindPartners.recruitingNumberFieldTitle,
+                    shortFieldValue: position.number.isEmpty ? "" : position.number,
+                    shortFieldPlaceholder: ""
+                )
+                cell.updateRecruitingRole = { [weak self] role in
+                    self?.position.role = role
+                }
+                cell.updateRecruitingNumber = { [weak self] number in
+                    self?.position.number = number
+                }
+                return cell
 
             } else {
                 fatalError("Shouldn't have this type")
@@ -403,17 +487,26 @@ extension FindPartnersBasicViewController: UITextViewDelegate {
         guard let textView = textView as? PaddingableTextView else {
             return
         }
+        if textView.contentType == .userInput {
+            if formState == FindPartnersFormSections.basicSection {
+                project.description = textView.text
+            }
+            if formState == FindPartnersFormSections.groupSection {
+                position.skills = textView.text
+            }
+        }
+
         if textView.text.isEmpty {
             textView.contentType = .placeholder
             if formState == FindPartnersFormSections.basicSection {
                 textView.text = Constant.FindPartners.projectDescription
             }
+            if formState == FindPartnersFormSections.groupSection {
+                textView.text = Constant.FindPartners.recruitingSkillsPlaceholder
+            }
             textView.textColor = UIColor.Gray3!.withAlphaComponent(0.7)
         }
 
-        if textView.contentType == .userInput {
-            project.description = textView.text
-        }
     }
 }
 

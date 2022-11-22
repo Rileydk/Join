@@ -11,6 +11,7 @@ class FriendSelectionViewController: BaseViewController {
     enum Source {
         case createNewGroupChat
         case addNewMembers
+        case addMembersToFindPartners
     }
 
     let firebaseManager = FirebaseManager.shared
@@ -71,9 +72,13 @@ class FriendSelectionViewController: BaseViewController {
             navigationItem.rightBarButtonItem = UIBarButtonItem(
                 title: "Next", style: .done, target: self, action: #selector(prepareGroupChatroom)
             )
-        } else {
+        } else if source == .addNewMembers {
             navigationItem.rightBarButtonItem = UIBarButtonItem(
                 title: "Invite", style: .done, target: self, action: #selector(addNewMembers)
+            )
+        } else {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(
+                title: "Add", style: .done, target: self, action: #selector(addNewMembers)
             )
         }
     }

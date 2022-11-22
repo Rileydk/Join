@@ -23,23 +23,27 @@ struct FindPartnersFormSections {
                 must: true, type: .textView
             ),
             ItemInfo(
-                name: "專案類別", instruction: nil,
-                must: true, type: .goNextButton
+                name: "專案類別", subtitle: "選取專案類別", instruction: nil,
+                note: "仔細挑選專案類別，幫助我們推薦給感興趣的人", must: true, type: .goNextButton
             )
         ]
     )
 
     static let groupSection = SectionInfo(
-        title: "團隊與招募資訊",
-        buttonTitle: "下一步",
+        title: "招募與團隊資訊",
+        buttonTitle: "Next",
         items: [
             ItemInfo(
-                name: "團隊成員", instruction: nil,
-                must: false, type: .addButton
+                name: "招募對象", instruction: nil,
+                must: true, type: .textFieldComboAmountPicker
             ),
             ItemInfo(
-                name: "招募需求", instruction: nil,
-                must: true, type: .addButton
+                name: "技術需求", instruction: nil,
+                must: true, type: .textView
+            ),
+            ItemInfo(
+                name: "團隊成員", subtitle: "選取團隊成員", instruction: nil,
+                note: "選取團隊成員，可在我的專案一鍵建立群組", must: false, type: .goNextButton
             )
         ]
     )
@@ -101,7 +105,9 @@ struct SectionInfo: Equatable {
 
 struct ItemInfo {
     let name: String
+    var subtitle: String? = nil
     let instruction: String?
+    var note: String? = nil
     let must: Bool
     let type: InputType
 }
@@ -109,6 +115,7 @@ struct ItemInfo {
 enum InputType {
     case textField
     case textView
+    case textFieldComboAmountPicker
     case collapse
     case addButton
     case goNextButton

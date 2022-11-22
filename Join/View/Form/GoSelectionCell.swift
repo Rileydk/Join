@@ -16,8 +16,10 @@ protocol GoSelectionCellDelegate: AnyObject {
 class GoSelectionCell: TableViewCell {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var mustFillSignLabel: UILabel!
+    @IBOutlet weak var subtitleLabel: UILabel!
     @IBOutlet weak var button: UIButton!
     @IBOutlet weak var goNextPageImageView: UIButton!
+    @IBOutlet weak var noteLabel: UILabel!
 
     let datePicker = UIDatePicker()
     let textField = UITextField()
@@ -36,6 +38,8 @@ class GoSelectionCell: TableViewCell {
     }
     func layoutCell(info: ItemInfo) {
         titleLabel.text = info.name
+        subtitleLabel.text = info.subtitle ?? ""
+        noteLabel.text = info.note ?? ""
         mustFillSignLabel.isHidden = !info.must
     }
 

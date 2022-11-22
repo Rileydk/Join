@@ -8,10 +8,17 @@
 import UIKit
 
 class MultilineInputCell: TableViewCell {
+    enum SourceType {
+        case findPartnersDescription
+        case findPartnersSkill
+        case personalEditIntroduction
+    }
 
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var mustFillSignLabel: UILabel!
     @IBOutlet weak var textView: PaddingableTextView!
+
+    var sourceType: SourceType = .findPartnersDescription
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -22,12 +29,17 @@ class MultilineInputCell: TableViewCell {
         super.layoutSubviews()
     }
 
-    func layoutCellForFindPartnerProjectDescription(title: String, value: String, shouldFill: Bool) {
+    func layoutCellForFindPartner(title: String, value: String, shouldFill: Bool) {
         titleLabel.text = title
         mustFillSignLabel.isHidden = !shouldFill
         if value.isEmpty {
             textView.contentType = .placeholder
-            textView.text = Constant.FindPartners.projectDescription
+            if sourceType == .findPartnersDescription {
+                textView.text = Constant.FindPartners.projectDescription
+            }
+            if sourceType == .findPartnersSkill {
+                textView.text = Constant.FindPartners.recruitingSkillsPlaceholder
+            }
             textView.textColor = (UIColor.Gray3 ?? .lightGray).withAlphaComponent(0.7)
         } else {
             textView.contentType = .userInput
@@ -37,7 +49,7 @@ class MultilineInputCell: TableViewCell {
     }
 
     func layoutCellForEditProfile(introduction: String) {
-        titleLabel.text = "請填寫個人簡介"
+        titleLabel.text = Constant.Edit.editIntroduction
         mustFillSignLabel.isHidden = true
         textView.text = introduction
     }

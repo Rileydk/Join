@@ -38,6 +38,8 @@
 		BF326C1B292C7E5B00898444 /* ProjectCategoryListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF326C19292C7E5B00898444 /* ProjectCategoryListCell.xib */; };
 		BF326C1D292C92B500898444 /* PillButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF326C1C292C92B500898444 /* PillButton.swift */; };
 		BF326C1F292CABB400898444 /* LightNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF326C1E292CABB400898444 /* LightNavigationController.swift */; };
+		BF326C22292CB21600898444 /* TextFieldComboAmountFieldCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF326C20292CB21600898444 /* TextFieldComboAmountFieldCell.swift */; };
+		BF326C23292CB21600898444 /* TextFieldComboAmountFieldCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF326C21292CB21600898444 /* TextFieldComboAmountFieldCell.xib */; };
 		BF3D8352292736CD009F903F /* PersonalInfoSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3D8351292736CD009F903F /* PersonalInfoSelectionViewController.swift */; };
 		BF3D835529273740009F903F /* OneSelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3D835329273740009F903F /* OneSelectionCell.swift */; };
 		BF3D835629273740009F903F /* OneSelectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF3D835429273740009F903F /* OneSelectionCell.xib */; };
@@ -189,6 +191,8 @@
 		BF326C19292C7E5B00898444 /* ProjectCategoryListCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProjectCategoryListCell.xib; sourceTree = "<group>"; };
 		BF326C1C292C92B500898444 /* PillButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PillButton.swift; sourceTree = "<group>"; };
 		BF326C1E292CABB400898444 /* LightNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightNavigationController.swift; sourceTree = "<group>"; };
+		BF326C20292CB21600898444 /* TextFieldComboAmountFieldCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldComboAmountFieldCell.swift; sourceTree = "<group>"; };
+		BF326C21292CB21600898444 /* TextFieldComboAmountFieldCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TextFieldComboAmountFieldCell.xib; sourceTree = "<group>"; };
 		BF3D8351292736CD009F903F /* PersonalInfoSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalInfoSelectionViewController.swift; sourceTree = "<group>"; };
 		BF3D835329273740009F903F /* OneSelectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneSelectionCell.swift; sourceTree = "<group>"; };
 		BF3D835429273740009F903F /* OneSelectionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OneSelectionCell.xib; sourceTree = "<group>"; };
@@ -578,6 +582,8 @@
 				BF42FAC729111FD400501789 /* ImagePickerCell.xib */,
 				BF02714A29238D42000EA2F8 /* SingleLineInputCell.swift */,
 				BF02714B29238D42000EA2F8 /* SingleLineInputCell.xib */,
+				BF326C20292CB21600898444 /* TextFieldComboAmountFieldCell.swift */,
+				BF326C21292CB21600898444 /* TextFieldComboAmountFieldCell.xib */,
 			);
 			path = Form;
 			sourceTree = "<group>";
@@ -838,6 +844,7 @@
 				BFF8A4EB29164BF500ADC950 /* MessageCell.xib in Resources */,
 				BFF8A4BA2913AE9D00ADC950 /* DetailTitleHeaderView.xib in Resources */,
 				BF9A86B2291E3AE800BF934D /* AddNewMemberCell.xib in Resources */,
+				BF326C23292CB21600898444 /* TextFieldComboAmountFieldCell.xib in Resources */,
 				BFF8A4DA2915036000ADC950 /* ContactCell.xib in Resources */,
 				BF3D835629273740009F903F /* OneSelectionCell.xib in Resources */,
 				BFF8A4DA2915036000ADC950 /* ContactCell.xib in Resources */,
@@ -936,6 +943,7 @@
 				BF12943E2929D7E800AA631E /* CollectionSimpleHeaderView.swift in Sources */,
 				BF42FAB0290F7E9000501789 /* SelectionCategoriesViewController.swift in Sources */,
 				BF42FABF290FF65300501789 /* MemberCell.swift in Sources */,
+				BF326C22292CB21600898444 /* TextFieldComboAmountFieldCell.swift in Sources */,
 				BFF8A4D62915009B00ADC950 /* OthersProfileViewController.swift in Sources */,
 				BF12944B292A0AA200AA631E /* RelationshipButtonsCell.swift in Sources */,
 				BF42FADC2912967900501789 /* IdeaCell.swift in Sources */,
