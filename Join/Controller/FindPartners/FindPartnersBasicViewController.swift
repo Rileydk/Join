@@ -17,7 +17,11 @@ class FindPartnersBasicViewController: BaseViewController {
             checkCanGoNextPage()
         }
     }
-    var image: UIImage?
+    var image: UIImage? {
+        didSet {
+            checkCanGoNextPage()
+        }
+    }
     var formState = FindPartnersFormSections.basicSection
     var selectedCategories = [String]() {
         didSet {
@@ -27,7 +31,7 @@ class FindPartnersBasicViewController: BaseViewController {
             checkCanGoNextPage()
         }
     }
-    var position = OpenPosition(role: "", skills: "", number: "") {
+    var position = OpenPosition(role: "", skills: "", number: "1") {
         didSet {
             checkCanGoNextPage()
         }
@@ -61,12 +65,11 @@ class FindPartnersBasicViewController: BaseViewController {
                 UINib(nibName: FriendCell.identifier, bundle: nil),
                 forCellReuseIdentifier: FriendCell.identifier)
             tableView.register(
+                UINib(nibName: DatePickerCell.identifier, bundle: nil),
+                forCellReuseIdentifier: DatePickerCell.identifier)
+            tableView.register(
                 UINib(nibName: ProjectCategoryListCell.identifier, bundle: nil),
                 forCellReuseIdentifier: ProjectCategoryListCell.identifier)
-            tableView.register(
-                UINib(nibName: AddNewLineSectionCell.identifier, bundle: nil),
-                forCellReuseIdentifier: AddNewLineSectionCell.identifier
-            )
             tableView.register(
                 UINib(nibName: ImagePickerCell.identifier, bundle: nil),
                 forCellReuseIdentifier: ImagePickerCell.identifier
@@ -109,7 +112,8 @@ class FindPartnersBasicViewController: BaseViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: rightBarButton!)
         checkCanGoNextPage()
 
-        if formState == FindPartnersFormSections.groupSection {
+        if formState == FindPartnersFormSections.groupSection ||
+           formState == FindPartnersFormSections.detailSection {
             navigationItem.leftBarButtonItem = UIBarButtonItem(
                 image: UIImage(
                     named: JImages.Icons_24px_Back.rawValue),
@@ -125,7 +129,7 @@ class FindPartnersBasicViewController: BaseViewController {
                     (position.role.isEmpty || position.number.isEmpty || position.skills.isEmpty) {
             navigationItem.rightBarButtonItem?.isEnabled = false
         } else if formState == FindPartnersFormSections.detailSection &&
-                    (project.deadline == nil || project.location.isEmpty) {
+                    (project.deadline == nil || project.location.isEmpty || image == nil) {
             navigationItem.rightBarButtonItem?.isEnabled = false
         } else {
             navigationItem.rightBarButtonItem?.isEnabled = true
@@ -163,27 +167,16 @@ class FindPartnersBasicViewController: BaseViewController {
                 fatalError("Cannot load FindPartnersBasicVC from storyboard.")
             }
             nextVC.project = project
+            nextVC.position = position
+            nextVC.members = members
             nextVC.formState = FindPartnersFormSections.detailSection
             nextVC.view.backgroundColor = .white
             navigationController?.pushViewController(nextVC, animated: true)
 
-        } else if formState == FindPartnersFormSections.detailSection,
-                  project.deadline != nil && !project.location.isEmpty {
+        } else if formState == FindPartnersFormSections.detailSection {
             post()
-
         }
     }
-
-//    func alertUserToFillColumns() {
-//        let alert = UIAlertController(
-//            title: FindPartnersFormSections.findPartnersNotFilledAlertTitle,
-//            message: nil, preferredStyle: .alert
-//        )
-//        let action = UIAlertAction(title: FindPartnersFormSections.alertActionTitle, style: .default)
-//        alert.addAction(action)
-//        present(alert, animated: true)
-//    }
-
     func goSelectCategories() {
         let personalStoryboard = UIStoryboard(
             name: StoryboardCategory.personal.rawValue, bundle: nil)
@@ -218,32 +211,48 @@ class FindPartnersBasicViewController: BaseViewController {
         navigationController?.pushViewController(friendSelectionVC, animated: true)
     }
 
+    func alertDeadlineError() {
+        let alert = UIAlertController(
+            title: FindPartnersFormSections.findPartnersNotFilledAlertTitle,
+            message: nil, preferredStyle: .alert
+        )
+        let action = UIAlertAction(title: FindPartnersFormSections.alertActionTitle, style: .default)
+        alert.addAction(action)
+        present(alert, animated: true)
+    }
+
     func post() {
+        JProgressHUD.shared.showLoading(text: "Posting", view: self.view)
+
         firebaseManager.postNewProject(project: project, image: image) { [weak self] result in
+            guard let self = self else { return }
             switch result {
             case .success:
-                // FIXME: - 順序不對，應該要在showSucceed結束後再跳轉
-                // FIXME: - 頁面沒有被清空
-                self?.tabBarController?.selectedIndex = 0
-            case .failure(let error):
-                print(error)
+                JProgressHUD.shared.showSuccess(view: self.view) {
+                    let findPartnerStoryboard = UIStoryboard(name: StoryboardCategory.findPartners.rawValue, bundle: nil)
+                    guard let basicVC = findPartnerStoryboard.instantiateViewController(
+                        withIdentifier: FindPartnersBasicViewController.identifier
+                        ) as? FindPartnersBasicViewController else {
+                        fatalError("Cannot load find partners basic vc basic part")
+                    }
+                    self.navigationController?.setViewControllers([basicVC], animated: false)
+                    basicVC.tabBarController?.selectedIndex = 0
+                }
+            case .failure(let err):
+                JProgressHUD.shared.showFailure(text: err.localizedDescription, view: self.view)
             }
         }
     }
 
     @objc func backToPreviousPage() {
-        if formState == FindPartnersFormSections.groupSection {
-            guard let basicVC = navigationController?.viewControllers.dropLast().first as? FindPartnersBasicViewController,
-                basicVC.formState == FindPartnersFormSections.basicSection else {
-                fatalError("Cannot load find partners basic vc basic part")
-            }
-            basicVC.project = project
-            basicVC.position = position
-            basicVC.members = members
-            navigationController?.popViewController(animated: true)
-        } else if formState == FindPartnersFormSections.detailSection {
-
+        guard let basicVC = navigationController?.viewControllers.dropLast().first as? FindPartnersBasicViewController,
+            basicVC.formState == FindPartnersFormSections.basicSection else {
+            fatalError("Cannot load find partners basic vc basic part")
         }
+        basicVC.project = project
+        basicVC.position = position
+        basicVC.members = members
+        navigationController?.popViewController(animated: true)
     }
 }
 
@@ -252,20 +261,14 @@ extension FindPartnersBasicViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.row < formState.items.count {
             let inputType = formState.items[indexPath.row].type
-            if inputType == .goNextButton {
-                return 118
-            } else if inputType == .addButton {
-                return UITableView.automaticDimension
-            } else if inputType == .textField {
-                return 112
-            } else if inputType == .textFieldComboAmountPicker {
-                return 112
-            } else if inputType == .textView {
-                return 242
-            } else if inputType == .uploadImage {
-                return 300
-            } else {
-                return 100
+            switch inputType {
+            case .textField: return 112
+            case .textView: return 242
+            case .textFieldComboAmountPicker: return 112
+            case .goNextButton: return 118
+            case .datePicker: return 120
+            case .uploadImage: return 300
+            default: return 100
             }
         } else {
             if formState == FindPartnersFormSections.basicSection {
@@ -287,14 +290,6 @@ extension FindPartnersBasicViewController: UITableViewDelegate {
         header.titleLabel.text = formState.title
         return header
     }
-
-//    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-//        if indexPath.row < formState.items.count {
-//            return false
-//        } else {
-//            return true
-//        }
-//    }
 
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
@@ -337,6 +332,13 @@ extension FindPartnersBasicViewController: UITableViewDataSource {
 
                     cell.updateProjectName = { [weak self] projectName in
                         self?.project.name = projectName
+                    }
+                }
+                if formState == FindPartnersFormSections.detailSection {
+                    print("project location:", project.location)
+                    cell.layoutCell(withTitle: .location, value: project.location)
+                    cell.updateLocation = { [weak self] location in
+                        self?.project.location = location
                     }
                 }
                 return cell
@@ -388,27 +390,16 @@ extension FindPartnersBasicViewController: UITableViewDataSource {
                     self?.goSelectGroupMembers()
                 }
                 return cell
-            } else if inputType == .goNextButton &&
-                formState.items[indexPath.row].name == FindPartnersFormSections.detailSection.items[0].name {
-                guard let cell = tableView.dequeueReusableCell(
-                    withIdentifier: GoSelectionCell.identifier,
-                    for: indexPath) as? GoSelectionCell else {
-                    fatalError("Cannot create single line input cell")
-                }
-                cell.layoutCellWithDatePicker(info: formState.items[indexPath.row])
-                cell.delegate = self
-                return cell
-
-            } else if inputType == .goNextButton &&
-                formState.items[indexPath.row].name == FindPartnersFormSections.detailSection.items[1].name {
-                guard let cell = tableView.dequeueReusableCell(
-                    withIdentifier: GoSelectionCell.identifier,
-                    for: indexPath) as? GoSelectionCell else {
-                    fatalError("Cannot create single line input cell")
-                }
-                cell.layoutCellWithTextField(info: formState.items[indexPath.row])
-                cell.delegate = self
-                return cell
+//            } else if inputType == .goNextButton &&
+//                formState.items[indexPath.row].name == FindPartnersFormSections.detailSection.items[1].name {
+//                guard let cell = tableView.dequeueReusableCell(
+//                    withIdentifier: GoSelectionCell.identifier,
+//                    for: indexPath) as? GoSelectionCell else {
+//                    fatalError("Cannot create single line input cell")
+//                }
+//                cell.layoutCellWithTextField(info: formState.items[indexPath.row])
+//                cell.delegate = self
+//                return cell
 
             } else if inputType == .addButton {
                 guard let cell = tableView.dequeueReusableCell(
@@ -488,7 +479,17 @@ extension FindPartnersBasicViewController: UITableViewDataSource {
                     self?.position.number = number
                 }
                 return cell
-
+            } else if inputType == .datePicker {
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: DatePickerCell.identifier, for: indexPath) as? DatePickerCell else {
+                    fatalError("Cannot create date picker cell")
+                }
+                print("project deadline:", project.deadline)
+                cell.layoutCell(item: formState.items[indexPath.row], deadline: project.deadline)
+                project.deadline = cell.datePicker.date
+                cell.updateDateHandler = { [weak self] deadline in
+                    self?.project.deadline = deadline
+                }
+                return cell
             } else {
                 fatalError("Shouldn't have this type")
             }
@@ -570,18 +571,6 @@ extension FindPartnersBasicViewController: MemberCardDelegate {
     // swiftlint:disable line_length
     func memberCardViewController(_ controller: MemberCardViewController, didSetRecruiting recruiting: [OpenPosition]) {
         project.recruiting = recruiting
-    }
-}
-
-// MARK: - Go Selection Cell Delegate
-extension FindPartnersBasicViewController: GoSelectionCellDelegate {
-    func cell(_ cell: GoSelectionCell, didSetDate date: Date) {
-        // project.deadline = date.millisecondsSince1970
-        project.deadline = date
-    }
-
-    func cell(_ cell: GoSelectionCell, didSetLocation location: String) {
-        project.location = location
     }
 }
 

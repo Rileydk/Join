@@ -54,16 +54,16 @@ struct FindPartnersFormSections {
         buttonTitle: "Post",
         items: [
             ItemInfo(
-                name: "截止時間", instruction: nil,
-                must: true, type: .goNextButton
+                name: "截止時間", instruction: nil, note: "截止時間最晚為現在時間 1 小時後",
+                must: true, type: .datePicker
             ),
             ItemInfo(
                 name: "地點", instruction: nil,
-                must: true, type: .goNextButton
+                must: true, type: .textField
             ),
             ItemInfo(
                 name: "上傳封面照片", instruction: "<1MB",
-                must: false, type: .uploadImage
+                must: true, type: .uploadImage
             )
         ]
     )
@@ -116,4 +116,5 @@ enum InputType {
     case addButton
     case goNextButton
     case uploadImage
+    case datePicker
 }

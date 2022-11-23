@@ -13,10 +13,15 @@ class SingleLineInputCell: TableViewCell {
         case email = "Email"
         case workName = "作品名稱"
         case projectName = "專案名稱"
+        case location = "地點"
 
-        var textFieldValue: String {
+        var placeholder: String {
             switch self {
+            case .name: return "請輸入您的名稱"
+            case .email: return "請輸入 email"
+            case .workName: return "請輸入作品名稱"
             case .projectName: return "請輸入專案名稱"
+            case .location: return "線上/地址"
             default: return ""
             }
         }
@@ -29,40 +34,26 @@ class SingleLineInputCell: TableViewCell {
     var updateEmail: ((String) -> Void)?
     var updateWorkName: ((String) -> Void)?
     var updateProjectName: ((String) -> Void)?
+    var updateLocation: ((String) -> Void)?
 
     override func awakeFromNib() {
         super.awakeFromNib()
         contentView.backgroundColor = .White
         titleLabel.textColor = .Gray1
-        inputTextField.addTarget(self, action: #selector(textChanged123), for: .editingChanged)
     }
 
     override func layoutSubviews() {
         super.layoutSubviews()
     }
 
-    func layoutCell(withTitle title: InputType, value: String) {
-        titleLabel.text = title.rawValue
+    func layoutCell(withTitle type: InputType, value: String) {
+        titleLabel.text = type.rawValue
         inputTextField.text = value
         inputTextField.attributedPlaceholder = NSAttributedString(
-            string: Constant.FindPartners.projectNamePlaceholder, attributes: [
+            string: type.placeholder, attributes: [
                 NSAttributedString.Key.foregroundColor: (UIColor.Gray3?.withAlphaComponent(0.7) ?? .lightGray).cgColor
             ])
-        type = title
-    }
-
-    @objc func textChanged123(sender: UITextField) {
-        let text = sender.text ?? ""
-        switch type {
-        case .name:
-            updateName?(text)
-        case .email:
-            updateEmail?(text)
-        case .workName:
-            updateWorkName?(text)
-        case .projectName:
-            updateProjectName?(text)
-        }
+        self.type = type
     }
 
     @IBAction func editTextFieldText(_ sender: UITextField) {
@@ -77,6 +68,8 @@ class SingleLineInputCell: TableViewCell {
             updateWorkName?(text)
         case .projectName:
             updateProjectName?(text)
+        case .location:
+            updateLocation?(text)
         }
     }
 }

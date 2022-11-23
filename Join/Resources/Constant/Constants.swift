@@ -31,6 +31,7 @@ struct Constant {
         static let recruitingNumberFieldTitle = "人數"
         static let recruitingSkillsFieldTitle = "技術需求"
         static let recruitingSkillsPlaceholder = "清楚描述團隊需要的技術，是找到所需人才的秘訣"
+        static let deadlineError = "截止時間不可晚於現在的 1 小時後"
     }
 
     struct Portfolio {

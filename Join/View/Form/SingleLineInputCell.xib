@@ -42,6 +42,9 @@
                                 <color key="textColor" name="Gray2"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                 <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <action selector="editTextFieldText:" destination="KGk-i7-Jjw" eventType="editingChanged" id="3cO-3z-5dD"/>
+                                </connections>
                             </textField>
                         </subviews>
                         <constraints>
