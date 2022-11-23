@@ -390,16 +390,6 @@ extension FindPartnersBasicViewController: UITableViewDataSource {
                     self?.goSelectGroupMembers()
                 }
                 return cell
-//            } else if inputType == .goNextButton &&
-//                formState.items[indexPath.row].name == FindPartnersFormSections.detailSection.items[1].name {
-//                guard let cell = tableView.dequeueReusableCell(
-//                    withIdentifier: GoSelectionCell.identifier,
-//                    for: indexPath) as? GoSelectionCell else {
-//                    fatalError("Cannot create single line input cell")
-//                }
-//                cell.layoutCellWithTextField(info: formState.items[indexPath.row])
-//                cell.delegate = self
-//                return cell
 
             } else if inputType == .addButton {
                 guard let cell = tableView.dequeueReusableCell(
