@@ -116,23 +116,27 @@ class FindIdeasViewController: BaseViewController {
                     interestProjects = self.projects.filter { project in
                         user.interests.contains { interest in
                             project.categories.contains { category in
-                                interest == category
+                                interest == category && project.contact != id
                             }
                         }
                     }
                     group.leave()
                     group.notify(queue: .main) { [unowned self] in
-                        recommendedProjects = friendsProjects
-                        recommendedProjects += interestProjects.filter { interestProject in
-                            !recommendedProjects.contains { recommendedProject in
-                                interestProject.projectID == recommendedProject.projectID
-                            }
-                        }
-                        restProjects = projects.filter { project in
-                            !recommendedProjects.contains { recommendedProject in
-                                project.projectID == recommendedProject.projectID
-                            }
-                        }
+                        recommendedProjects = interestProjects
+                        print("recommended:", recommendedProjects)
+                        restProjects = projects
+
+//                        recommendedProjects = friendsProjects
+//                        recommendedProjects += interestProjects.filter { interestProject in
+//                            !recommendedProjects.contains { recommendedProject in
+//                                interestProject.projectID == recommendedProject.projectID
+//                            }
+//                        }
+//                        restProjects = projects.filter { project in
+//                            !recommendedProjects.contains { recommendedProject in
+//                                project.projectID == recommendedProject.projectID
+//                            }
+//                        }
                         self.updateDatasource()
                     }
                 case .failure(let err):
@@ -239,8 +243,14 @@ extension FindIdeasViewController {
 
     func updateDatasource() {
         var snapshot = NSDiffableDataSourceSnapshot<Section, Item>()
-        snapshot.appendSections(Section.allCases)
-        snapshot.appendItems(recommendedProjects.map { .recommendation($0) }, toSection: .recommendations)
+
+        if !recommendedProjects.isEmpty {
+            snapshot.appendSections(Section.allCases)
+            snapshot.appendItems(recommendedProjects.map { .recommendation($0) }, toSection: .recommendations)
+        } else {
+            let sections = Array(Section.allCases[1 ..< Section.allCases.count])
+            snapshot.appendSections(sections)
+        }
         snapshot.appendItems(restProjects.map { .newIdeas($0) }, toSection: .newIdeas)
 
         datasource.apply(snapshot, animatingDifferences: false)
