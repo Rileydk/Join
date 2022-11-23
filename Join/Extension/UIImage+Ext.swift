@@ -15,6 +15,7 @@ enum JImages: String {
     case Icons_24px_GoNext
     case Icons_24px_Hourglass
     case Icons_24px_Location
+    case Icons_24px_More
     case Icons_24px_Tools
     case Icons_24px_Person
 }

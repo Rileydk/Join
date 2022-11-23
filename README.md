@@ -10,5 +10,5 @@
 
 ## Credit
 
-- "Icon made by [Pixel perfect](https://www.flaticon.com/authors/pixel-perfect) from [www.flaticon.com](https://www.flaticon.com/)"
-- "Icon made by [Freepik](https://www.freepik.com) from [www.flaticon.com](https://www.flaticon.com/)"
+- "Icon made by [Pixel perfect](https://www.flaticon.com/authors/pixel-perfect) , [Freepik](https://www.freepik.com) , Kirill Kazachek(https://www.iconfinder.com/kirill.kazachek) from [www.flaticon.com](https://www.flaticon.com/)"
+

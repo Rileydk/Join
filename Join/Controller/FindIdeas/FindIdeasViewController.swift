@@ -28,8 +28,8 @@ class FindIdeasViewController: BaseViewController {
     @IBOutlet weak var collectionView: UICollectionView! {
         didSet {
             collectionView.register(
-                UINib(nibName: FriendProjectCell.identifier, bundle: nil),
-                forCellWithReuseIdentifier: FriendProjectCell.identifier
+                UINib(nibName: RecommendedProjectCell.identifier, bundle: nil),
+                forCellWithReuseIdentifier: RecommendedProjectCell.identifier
             )
             collectionView.register(
                 UINib(nibName: IdeaCell.identifier, bundle: nil),
@@ -123,7 +123,6 @@ class FindIdeasViewController: BaseViewController {
                     group.leave()
                     group.notify(queue: .main) { [unowned self] in
                         recommendedProjects = interestProjects
-                        print("recommended:", recommendedProjects)
                         restProjects = projects
 
 //                        recommendedProjects = friendsProjects
@@ -167,7 +166,7 @@ extension FindIdeasViewController {
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 3)
 
         let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = .init(top: 20, leading: 16, bottom: 20, trailing: 16)
+        section.contentInsets = .init(top: 16, leading: 16, bottom: 20, trailing: 16)
         section.orthogonalScrollingBehavior = .groupPaging
 
         return section
@@ -176,19 +175,19 @@ extension FindIdeasViewController {
     func createNewIdeasSection() -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1),
-            heightDimension: .fractionalHeight(1)
+            heightDimension: .estimated(150)
         )
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
 
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1),
-            heightDimension: .estimated(190)
+            heightDimension: .estimated(140)
         )
         let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
-        group.interItemSpacing = .fixed(28)
 
         let section = NSCollectionLayoutSection(group: group)
-//        section.contentInsets = .init(top: 0, leading: 16, bottom: 20, trailing: 16)
+        section.interGroupSpacing = 28
+        section.contentInsets = .init(top: 24, leading: 16, bottom: 20, trailing: 16)
         return section
     }
 
@@ -226,8 +225,8 @@ extension FindIdeasViewController {
         switch item {
         case .recommendation(let data):
             guard let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: FriendProjectCell.identifier,
-                for: indexPath) as? FriendProjectCell else {
+                withReuseIdentifier: RecommendedProjectCell.identifier,
+                for: indexPath) as? RecommendedProjectCell else {
                 fatalError("Cannot create Recommendation Cell")
             }
             cell.layoutCell(project: data)
@@ -259,8 +258,14 @@ extension FindIdeasViewController {
 
 // MARK: - Collection View Delegate
 extension FindIdeasViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        let radius = cell.contentView.layer.cornerRadius
+        cell.layer.shadowPath = UIBezierPath(roundedRect: cell.bounds, cornerRadius: radius).cgPath
+        cell.contentView.layer.masksToBounds = true
+    }
+
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let section = Section.allCases[indexPath.section]
+        let section = recommendedProjects.isEmpty ? Array(Section.allCases[1 ..< Section.allCases.count])[indexPath.section] : Section.allCases[indexPath.section]
         switch section {
         case .recommendations:
             performSegue(withIdentifier: SegueIdentifier.GoProjectDetailPage, sender: recommendedProjects[indexPath.row])
