@@ -27,33 +27,27 @@ class TextFieldComboAmountFieldCell: TableViewCell {
         // Configure the view for the selected state
     }
 
-    func layoutCell(longFieldTitle: String, longFieldValue: String, longFieldPlaceholder: String, shortFieldTitle: String, shortFieldValue: String, shortFieldPlaceholder: String) {
+    func layoutCell(longFieldTitle: String, longFieldValue: String, shortFieldTitle: String, shortFieldValue: String) {
         longTextFieldTitleLabel.text = longFieldTitle
-        if longFieldValue.isEmpty {
-            longTextField.attributedPlaceholder = NSAttributedString(
-                string: longFieldPlaceholder, attributes: [
-                    NSAttributedString.Key.foregroundColor: (UIColor.Gray3?.withAlphaComponent(0.7) ?? .lightGray).cgColor
-                ])
-        } else {
-            longTextField.text = longFieldValue
-        }
+        longTextField.text = longFieldValue
+        longTextField.attributedPlaceholder = NSAttributedString(
+            string: Constant.FindPartners.recruitingRolePlaceholder, attributes: [
+                NSAttributedString.Key.foregroundColor: (UIColor.Gray3?.withAlphaComponent(0.7) ?? .lightGray).cgColor
+            ])
 
         shortTextFieldTitleLabel.text = shortFieldTitle
-        if shortFieldValue.isEmpty {
-            shortTextField.attributedPlaceholder = NSAttributedString(
-                string: shortFieldPlaceholder, attributes: [
-                    NSAttributedString.Key.foregroundColor: (UIColor.Gray3?.withAlphaComponent(0.7) ?? .lightGray).cgColor
-                ])
-        } else {
-            shortTextField.text = shortFieldValue
-        }
+        shortTextField.text = shortFieldValue.isEmpty ? "1" : shortFieldValue
     }
 
     @IBAction func editingRole(_ sender: PaddingableTextField) {
-        updateRecruitingRole?(sender.text ?? "")
+        var text = sender.text ?? ""
+        text = text.trimmingCharacters(in: .whitespaces)
+        updateRecruitingRole?(text)
     }
 
     @IBAction func editingNumber(_ sender: PaddingableTextField) {
-        updateRecruitingNumber?(sender.text ?? "")
+        var text = sender.text ?? ""
+        text = text.trimmingCharacters(in: .whitespaces)
+        updateRecruitingNumber?(text)
     }
 }

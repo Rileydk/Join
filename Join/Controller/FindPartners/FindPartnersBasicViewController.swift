@@ -124,8 +124,8 @@ class FindPartnersBasicViewController: BaseViewController {
         } else if formState == FindPartnersFormSections.groupSection &&
                     (position.role.isEmpty || position.number.isEmpty || position.skills.isEmpty) {
             navigationItem.rightBarButtonItem?.isEnabled = false
-        } else if formState == FindPartnersFormSections.groupSection,
-                  project.recruiting.isEmpty {
+        } else if formState == FindPartnersFormSections.detailSection &&
+                    (project.deadline == nil || project.location.isEmpty) {
             navigationItem.rightBarButtonItem?.isEnabled = false
         } else {
             navigationItem.rightBarButtonItem?.isEnabled = true
@@ -333,11 +333,8 @@ extension FindPartnersBasicViewController: UITableViewDataSource {
                     fatalError("Cannot create single line input cell")
                 }
                 if formState == FindPartnersFormSections.basicSection {
-                    cell.layoutCell(withTitle: .projectName,
-                                    value: project.name.isEmpty
-                                           ? Constant.FindPartners.projectNamePlaceholder
-                                           : project.name
-                    )
+                    cell.layoutCell(withTitle: .projectName, value: project.name)
+
                     cell.updateProjectName = { [weak self] projectName in
                         self?.project.name = projectName
                     }
@@ -480,14 +477,12 @@ extension FindPartnersBasicViewController: UITableViewDataSource {
 
                 cell.layoutCell(
                     longFieldTitle: Constant.FindPartners.recruitingFieldTitle,
-                    longFieldValue: position.role.isEmpty ? "" : position.role,
-                    longFieldPlaceholder: Constant.FindPartners.recruitingRolePlaceholder,
+                    longFieldValue: position.role,
                     shortFieldTitle: Constant.FindPartners.recruitingNumberFieldTitle,
-                    shortFieldValue: position.number.isEmpty ? "" : position.number,
-                    shortFieldPlaceholder: ""
+                    shortFieldValue: position.number
                 )
                 cell.updateRecruitingRole = { [weak self] role in
-                    self?.position.role = role
+                    self?.position.role = role.trimmingCharacters(in: .whitespaces)
                 }
                 cell.updateRecruitingNumber = { [weak self] number in
                     self?.position.number = number
@@ -523,13 +518,6 @@ extension FindPartnersBasicViewController: UITableViewDataSource {
     }
 }
 
-// MARK: - Text Field Delegate
-extension FindPartnersBasicViewController: UITextFieldDelegate {
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        project.name = textField.text ?? ""
-    }
-}
-
 // MARK: - Text View Delegate
 extension FindPartnersBasicViewController: UITextViewDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
@@ -547,16 +535,19 @@ extension FindPartnersBasicViewController: UITextViewDelegate {
         guard let textView = textView as? PaddingableTextView else {
             return
         }
+
         if textView.contentType == .userInput {
             if formState == FindPartnersFormSections.basicSection {
-                project.description = textView.text
+                project.description = textView.text.replacingOccurrences(of: "\\s+$", with: "",
+                                                                         options: .regularExpression)
             }
             if formState == FindPartnersFormSections.groupSection {
-                position.skills = textView.text
+                position.skills = textView.text.replacingOccurrences(of: "\\s+$", with: "",
+                                                                     options: .regularExpression)
             }
         }
 
-        if textView.text.isEmpty {
+        if textView.text.replacingOccurrences(of: "\\s+$", with: "", options: .regularExpression).isEmpty {
             textView.contentType = .placeholder
             if formState == FindPartnersFormSections.basicSection {
                 textView.text = Constant.FindPartners.projectDescription

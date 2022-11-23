@@ -34,23 +34,40 @@ class SingleLineInputCell: TableViewCell {
         super.awakeFromNib()
         contentView.backgroundColor = .White
         titleLabel.textColor = .Gray1
+        inputTextField.addTarget(self, action: #selector(textChanged123), for: .editingChanged)
     }
 
     override func layoutSubviews() {
         super.layoutSubviews()
     }
 
-    func layoutCell(withTitle title: InputType, value: String = "") {
+    func layoutCell(withTitle title: InputType, value: String) {
         titleLabel.text = title.rawValue
+        inputTextField.text = value
         inputTextField.attributedPlaceholder = NSAttributedString(
-            string: value, attributes: [
+            string: Constant.FindPartners.projectNamePlaceholder, attributes: [
                 NSAttributedString.Key.foregroundColor: (UIColor.Gray3?.withAlphaComponent(0.7) ?? .lightGray).cgColor
             ])
         type = title
     }
 
-    @IBAction func editTextFieldText(_ sender: UITextField) {
+    @objc func textChanged123(sender: UITextField) {
         let text = sender.text ?? ""
+        switch type {
+        case .name:
+            updateName?(text)
+        case .email:
+            updateEmail?(text)
+        case .workName:
+            updateWorkName?(text)
+        case .projectName:
+            updateProjectName?(text)
+        }
+    }
+
+    @IBAction func editTextFieldText(_ sender: UITextField) {
+        var text = sender.text ?? ""
+        text = text.trimmingCharacters(in: .whitespaces)
         switch type {
         case .name:
             updateName?(text)

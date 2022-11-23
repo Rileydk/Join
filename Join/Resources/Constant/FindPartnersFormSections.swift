@@ -24,7 +24,7 @@ struct FindPartnersFormSections {
             ),
             ItemInfo(
                 name: "專案類別", subtitle: "選取專案類別", instruction: nil,
-                note: "仔細挑選專案類別，幫助我們推薦給感興趣的人", must: true, type: .goNextButton
+                note: "精準的專案類別，幫助我們推薦給感興趣的人", must: true, type: .goNextButton
             )
         ]
     )
@@ -51,7 +51,7 @@ struct FindPartnersFormSections {
     static let detailSection = SectionInfo(
         title: "最後一步了",
         // TODO: - 未來改為"預覽"
-        buttonTitle: "發佈",
+        buttonTitle: "Post",
         items: [
             ItemInfo(
                 name: "截止時間", instruction: nil,
@@ -64,10 +64,6 @@ struct FindPartnersFormSections {
             ItemInfo(
                 name: "上傳封面照片", instruction: "<1MB",
                 must: false, type: .uploadImage
-            ),
-            ItemInfo(
-                name: "相關檔案或連結", instruction: nil,
-                must: false, type: .addButton
             )
         ]
     )
