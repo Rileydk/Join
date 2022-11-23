@@ -34,7 +34,7 @@ class AddPortfolioViewController: BaseViewController {
             tableView.delegate = self
             configureDatasource()
             tableView.separatorStyle = .none
-            tableView.backgroundColor = .Gray6
+            tableView.backgroundColor = .White
         }
     }
 
@@ -43,13 +43,12 @@ class AddPortfolioViewController: BaseViewController {
     let firebaseManager = FirebaseManager.shared
     var work = Work(
         workID: "", name: "", latestUpdatedTime: Date(),
-        creator: UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey)!) {
-        didSet {
-            updateDatasource()
-        }
-    }
+        creator: UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey)!)
+
     var recordsImages = [UIImage]() {
         didSet {
+            // FIXME: - 暫時不能上傳多張照片，需要在上傳過且刪除已選照片前停止加入新照片，且 table view diffable 沒有包含 header，因此同時使用 reload data
+            tableView.reloadData()
             updateDatasource()
         }
     }
@@ -132,13 +131,13 @@ class AddPortfolioViewController: BaseViewController {
                 switch result {
                 case .success:
                     group.notify(queue: .main) {
-                        JProgressHUD.shared.showSuccess(view: self.view)
-                        self.navigationController?.popViewController(animated: true)
+                        JProgressHUD.shared.showSuccess(view: self.view) {
+                            self.navigationController?.popViewController(animated: true)
+                        }
                     }
                 case .failure(let err):
                     group.notify(queue: .main) {
-                        JProgressHUD.shared.showFailure(view: self.view)
-                        print(err)
+                        JProgressHUD.shared.showFailure(text: err.localizedDescription, view: self.view)
                     }
 
                 }
@@ -167,8 +166,8 @@ extension AddPortfolioViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let section = Section.allCases[indexPath.section]
         switch section {
-        case .name: return 80
-        case .file: return 200
+        case .name: return 100
+        case .file: return 250
         }
     }
 
@@ -176,7 +175,7 @@ extension AddPortfolioViewController: UITableViewDelegate {
         let section = Section.allCases[section]
         switch section {
         case .name: return 0
-        case .file: return 80
+        case .file: return 70
         }
     }
 
@@ -188,6 +187,7 @@ extension AddPortfolioViewController: UITableViewDelegate {
                 ) as? WorkHeaderView else {
                 fatalError("Cannot load Work Header View")
             }
+            header.layoutHeader(addButtonShouldEnabled: recordsImages.isEmpty)
             header.delegate = self
             header.alertPresentHandler = { [weak self] alert in
                 self?.present(alert, animated: true)

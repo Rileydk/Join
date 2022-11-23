@@ -23,6 +23,7 @@ class ImagePickerCell: TableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
+        contentView.backgroundColor = .White
         imagePickerView.isUserInteractionEnabled = true
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(addPhoto))
         imagePickerView.addGestureRecognizer(tapGestureRecognizer)

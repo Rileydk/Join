@@ -24,16 +24,16 @@
                                 <rect key="frame" x="0.0" y="0.0" width="258.5" height="84"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CEC-UY-bHl">
-                                        <rect key="frame" x="0.0" y="0.0" width="49" height="24"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="45" height="21.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="標題" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2o9-fz-LQM">
-                                                <rect key="frame" x="0.0" y="0.0" width="41" height="24"/>
-                                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="37" height="21.5"/>
+                                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="18"/>
                                                 <color key="textColor" name="Gray1"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="*" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aiE-Lt-B2f">
-                                                <rect key="frame" x="41" y="0.0" width="8" height="24"/>
+                                                <rect key="frame" x="37" y="0.0" width="8" height="21.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <color key="textColor" name="Red"/>
                                                 <nil key="highlightedColor"/>
@@ -41,7 +41,7 @@
                                         </subviews>
                                     </stackView>
                                     <textField opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="sD1-gZ-BrO" customClass="PaddingableTextField" customModule="Join" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="36" width="258.5" height="48"/>
+                                        <rect key="frame" x="0.0" y="33.5" width="258.5" height="50.5"/>
                                         <color key="textColor" name="Gray2"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                         <textInputTraits key="textInputTraits"/>
@@ -59,16 +59,16 @@
                                 <rect key="frame" x="270.5" y="0.0" width="91.5" height="84"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pTp-hl-rpQ">
-                                        <rect key="frame" x="0.0" y="0.0" width="49" height="24"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="45" height="21.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="標題" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cIa-aJ-sX0">
-                                                <rect key="frame" x="0.0" y="0.0" width="41" height="24"/>
-                                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="37" height="21.5"/>
+                                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="18"/>
                                                 <color key="textColor" name="Gray1"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="*" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YyE-kz-6um">
-                                                <rect key="frame" x="41" y="0.0" width="8" height="24"/>
+                                                <rect key="frame" x="37" y="0.0" width="8" height="21.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <color key="textColor" name="Red"/>
                                                 <nil key="highlightedColor"/>
@@ -76,7 +76,7 @@
                                         </subviews>
                                     </stackView>
                                     <textField opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="h9V-Tp-1c3" customClass="PaddingableTextField" customModule="Join" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="36" width="91.5" height="48"/>
+                                        <rect key="frame" x="0.0" y="33.5" width="91.5" height="50.5"/>
                                         <color key="textColor" name="Gray2"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                         <textInputTraits key="textInputTraits" keyboardType="numberPad"/>

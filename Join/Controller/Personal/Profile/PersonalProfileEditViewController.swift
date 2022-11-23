@@ -29,10 +29,11 @@ class PersonalProfileEditViewController: BaseViewController {
                 UINib(nibName: MultilineInputCell.identifier, bundle: nil),
                 forCellReuseIdentifier: MultilineInputCell.identifier)
             tableView.register(
-                UINib(nibName: GoNextPageButtonCell.identifier, bundle: nil),
-                forCellReuseIdentifier: GoNextPageButtonCell.identifier)
+                UINib(nibName: GoNextPageCell.identifier, bundle: nil),
+                forCellReuseIdentifier: GoNextPageCell.identifier)
             tableView.delegate = self
             tableView.dataSource = self
+            tableView.separatorStyle = .none
         }
     }
 
@@ -165,13 +166,13 @@ extension PersonalProfileEditViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let section = Section.allCases[indexPath.section]
         if section == .thumbnail {
-            return 200
+            return 180
         } else if section == .basic {
-            return 80
+            return 90
         } else if section == .introduction {
             return 160
         } else {
-            return 40
+            return 50
         }
     }
 }
@@ -239,14 +240,15 @@ extension PersonalProfileEditViewController: UITableViewDataSource {
                 for: indexPath) as? MultilineInputCell else {
                 fatalError("Cannot create personal main thumbnail cell")
             }
+            cell.sourceType = .personalEditIntroduction
             cell.layoutCellForEditProfile(introduction: user.introduction ?? "")
             cell.textView.delegate = self
             return cell
 
         } else {
             guard let cell = tableView.dequeueReusableCell(
-                withIdentifier: GoNextPageButtonCell.identifier,
-                for: indexPath) as? GoNextPageButtonCell else {
+                withIdentifier: GoNextPageCell.identifier,
+                for: indexPath) as? GoNextPageCell else {
                 fatalError("Cannot create personal main thumbnail cell")
             }
             if section == .skills {

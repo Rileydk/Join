@@ -14,7 +14,7 @@ class WorkRecordCell: TableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         deleteButton.tintColor = .Red
-        contentView.backgroundColor = .Gray6
+        contentView.backgroundColor = .White
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

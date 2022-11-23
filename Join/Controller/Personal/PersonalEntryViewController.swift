@@ -102,7 +102,7 @@ class PersonalEntryViewController: UIViewController {
 extension PersonalEntryViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.section == 0 {
-            return 210
+            return 190
         } else {
             return 60
         }

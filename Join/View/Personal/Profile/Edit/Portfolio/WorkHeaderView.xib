@@ -2,7 +2,6 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -17,16 +16,16 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="njS-m1-cov">
-                    <rect key="frame" x="16" y="25" width="103" height="20.5"/>
+                    <rect key="frame" x="26" y="24.5" width="113" height="21.5"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Section Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fXf-vg-vud">
-                            <rect key="frame" x="0.0" y="0.0" width="95" height="20.5"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <rect key="frame" x="0.0" y="0.0" width="105" height="21.5"/>
+                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="18"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="*" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xV8-ly-32e">
-                            <rect key="frame" x="95" y="0.0" width="8" height="20.5"/>
+                            <rect key="frame" x="105" y="0.0" width="8" height="21.5"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <color key="textColor" systemColor="systemPinkColor"/>
                             <nil key="highlightedColor"/>
@@ -34,7 +33,7 @@
                     </subviews>
                 </stackView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tkP-QC-Hb4">
-                    <rect key="frame" x="376" y="24" width="22" height="22"/>
+                    <rect key="frame" x="366" y="24" width="22" height="22"/>
                     <constraints>
                         <constraint firstAttribute="width" secondItem="tkP-QC-Hb4" secondAttribute="height" multiplier="1:1" id="aWt-l8-faD"/>
                         <constraint firstAttribute="width" constant="22" id="b2g-Ou-6d5"/>
@@ -51,9 +50,9 @@
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="tkP-QC-Hb4" secondAttribute="trailing" constant="16" id="01e-NV-DnM"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="tkP-QC-Hb4" secondAttribute="trailing" constant="26" id="01e-NV-DnM"/>
                 <constraint firstItem="tkP-QC-Hb4" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="HY8-jN-vgS"/>
-                <constraint firstItem="njS-m1-cov" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="jPZ-kP-Kqu"/>
+                <constraint firstItem="njS-m1-cov" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="26" id="jPZ-kP-Kqu"/>
                 <constraint firstItem="njS-m1-cov" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="mZt-up-0ZJ"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>

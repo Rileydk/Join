@@ -18,16 +18,16 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vmb-Gy-dZm">
-                        <rect key="frame" x="26" y="24" width="49" height="24"/>
+                        <rect key="frame" x="26" y="24" width="45" height="21.5"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="標題" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CcV-ut-Sn3">
-                                <rect key="frame" x="0.0" y="0.0" width="41" height="24"/>
-                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
+                                <rect key="frame" x="0.0" y="0.0" width="37" height="21.5"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="18"/>
                                 <color key="textColor" name="Gray1"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="*" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WaR-1o-iZS">
-                                <rect key="frame" x="41" y="0.0" width="8" height="24"/>
+                                <rect key="frame" x="37" y="0.0" width="8" height="21.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" name="Red"/>
                                 <nil key="highlightedColor"/>
@@ -35,13 +35,13 @@
                         </subviews>
                     </stackView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="備註" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cl1-A6-6sl">
-                        <rect key="frame" x="26" y="104" width="268" height="17"/>
+                        <rect key="frame" x="26" y="101.5" width="268" height="17"/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <color key="textColor" name="Gray3"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" style="compact" translatesAutoresizingMaskIntoConstraints="NO" id="ceL-UV-8sE">
-                        <rect key="frame" x="0.0" y="58" width="300" height="38"/>
+                        <rect key="frame" x="0.0" y="55.5" width="300" height="38"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="38" id="h64-Bi-AVp"/>
                             <constraint firstAttribute="width" constant="300" id="ioK-I8-Hpp"/>
