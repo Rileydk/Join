@@ -19,6 +19,11 @@ class PersonalMainThumbnailCell: TableViewCell {
     var cameraPresentHandler: ((UIImagePickerController) -> Void)?
     var libraryPresentHandler: ((PHPickerViewController) -> Void)?
 
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        contentView.backgroundColor = .White
+    }
+
     override func prepareForReuse() {
         super.prepareForReuse()
         thumbnailImageView.image = nil

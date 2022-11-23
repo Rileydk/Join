@@ -42,6 +42,8 @@
 		BF326C23292CB21600898444 /* TextFieldComboAmountFieldCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF326C21292CB21600898444 /* TextFieldComboAmountFieldCell.xib */; };
 		BF326C26292DE7FC00898444 /* DatePickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF326C24292DE7FC00898444 /* DatePickerCell.swift */; };
 		BF326C27292DE7FC00898444 /* DatePickerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF326C25292DE7FC00898444 /* DatePickerCell.xib */; };
+		BF326C2D292E1C3500898444 /* GoNextPageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF326C2B292E1C3500898444 /* GoNextPageCell.swift */; };
+		BF326C2E292E1C3500898444 /* GoNextPageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF326C2C292E1C3500898444 /* GoNextPageCell.xib */; };
 		BF3D8352292736CD009F903F /* PersonalInfoSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3D8351292736CD009F903F /* PersonalInfoSelectionViewController.swift */; };
 		BF3D835529273740009F903F /* OneSelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3D835329273740009F903F /* OneSelectionCell.swift */; };
 		BF3D835629273740009F903F /* OneSelectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF3D835429273740009F903F /* OneSelectionCell.xib */; };
@@ -197,6 +199,8 @@
 		BF326C21292CB21600898444 /* TextFieldComboAmountFieldCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TextFieldComboAmountFieldCell.xib; sourceTree = "<group>"; };
 		BF326C24292DE7FC00898444 /* DatePickerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerCell.swift; sourceTree = "<group>"; };
 		BF326C25292DE7FC00898444 /* DatePickerCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DatePickerCell.xib; sourceTree = "<group>"; };
+		BF326C2B292E1C3500898444 /* GoNextPageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoNextPageCell.swift; sourceTree = "<group>"; };
+		BF326C2C292E1C3500898444 /* GoNextPageCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GoNextPageCell.xib; sourceTree = "<group>"; };
 		BF3D8351292736CD009F903F /* PersonalInfoSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalInfoSelectionViewController.swift; sourceTree = "<group>"; };
 		BF3D835329273740009F903F /* OneSelectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneSelectionCell.swift; sourceTree = "<group>"; };
 		BF3D835429273740009F903F /* OneSelectionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OneSelectionCell.xib; sourceTree = "<group>"; };
@@ -590,6 +594,8 @@
 				BF326C21292CB21600898444 /* TextFieldComboAmountFieldCell.xib */,
 				BF326C24292DE7FC00898444 /* DatePickerCell.swift */,
 				BF326C25292DE7FC00898444 /* DatePickerCell.xib */,
+				BF326C2B292E1C3500898444 /* GoNextPageCell.swift */,
+				BF326C2C292E1C3500898444 /* GoNextPageCell.xib */,
 			);
 			path = Form;
 			sourceTree = "<group>";
@@ -851,6 +857,7 @@
 				BFF8A4EB29164BF500ADC950 /* MessageCell.xib in Resources */,
 				BFF8A4BA2913AE9D00ADC950 /* DetailTitleHeaderView.xib in Resources */,
 				BF9A86B2291E3AE800BF934D /* AddNewMemberCell.xib in Resources */,
+				BF326C2E292E1C3500898444 /* GoNextPageCell.xib in Resources */,
 				BF326C23292CB21600898444 /* TextFieldComboAmountFieldCell.xib in Resources */,
 				BFF8A4DA2915036000ADC950 /* ContactCell.xib in Resources */,
 				BF3D835629273740009F903F /* OneSelectionCell.xib in Resources */,
@@ -947,6 +954,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BF02714C29238D42000EA2F8 /* SingleLineInputCell.swift in Sources */,
+				BF326C2D292E1C3500898444 /* GoNextPageCell.swift in Sources */,
 				BF12943E2929D7E800AA631E /* CollectionSimpleHeaderView.swift in Sources */,
 				BF42FAB0290F7E9000501789 /* SelectionCategoriesViewController.swift in Sources */,
 				BF42FABF290FF65300501789 /* MemberCell.swift in Sources */,

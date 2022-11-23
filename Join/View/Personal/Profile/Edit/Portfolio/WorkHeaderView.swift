@@ -23,9 +23,20 @@ class WorkHeaderView: TableViewHeaderFooterView {
 
     override func awakeFromNib() {
         super.awakeFromNib()
+        contentView.backgroundColor = .White
         titleLabel.text = "上傳檔案"
         titleLabel.textColor = .Gray1
         addButton.tintColor = .Blue1
+    }
+
+    func layoutHeader(addButtonShouldEnabled: Bool) {
+        if addButtonShouldEnabled {
+            addButton.isEnabled = true
+            addButton.tintColor = .Blue1
+        } else {
+            addButton.isEnabled = false
+            addButton.tintColor = .Gray3
+        }
     }
 
     @IBAction func addNewFile(_ sender: UIButton) {

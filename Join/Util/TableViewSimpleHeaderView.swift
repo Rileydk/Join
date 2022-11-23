@@ -19,7 +19,7 @@ class TableViewSimpleHeaderView: TableViewHeaderFooterView {
         contentView.backgroundColor = .White
         titleLabel.text = Constant.Portfolio.sectionHeader
         titleLabel.textColor = .Blue1
-        titleLabel.font = UIFont.systemFont(ofSize: 24, weight: .semibold)
+        titleLabel.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
 
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false

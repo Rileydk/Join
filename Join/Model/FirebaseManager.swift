@@ -1095,9 +1095,6 @@ class FirebaseManager {
             ref.document(recordID).setData(record.toDict) { err in
                 if let err = err {
                     group.leave()
-                    group.notify(queue: .main) {
-                        completion(.failure(err))
-                    }
                     shouldContinue = false
                     return
                 }
@@ -1108,6 +1105,8 @@ class FirebaseManager {
         group.notify(queue: .main) {
             if shouldContinue {
                 completion(.success(recordsIDs))
+            } else {
+//                completion(.failure(err))
             }
         }
     }
