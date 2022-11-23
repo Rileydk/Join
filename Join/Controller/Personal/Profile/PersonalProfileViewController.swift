@@ -227,7 +227,7 @@ class PersonalProfileViewController: BaseViewController {
         }
     }
 
-    @objc func editPersonalInfo() {
+    func editPersonalInfo() {
         let personalStoryboard = UIStoryboard(name: StoryboardCategory.personal.rawValue, bundle: nil)
         guard let personalProfileEditVC = personalStoryboard.instantiateViewController(
             withIdentifier: PersonalProfileEditViewController.identifier
@@ -456,13 +456,14 @@ extension PersonalProfileViewController {
                 }
                 cell.layoutCell(backgroundColor: cellBackgroundColor)
                 cell.editProfileHandler = { [weak self] in
-                    let personalStoryboard = UIStoryboard(name: StoryboardCategory.personal.rawValue, bundle: nil)
-                    guard let personalProfileEditVC = personalStoryboard.instantiateViewController(
-                        withIdentifier: PersonalProfileEditViewController.identifier
-                        ) as? PersonalProfileEditViewController else {
-                        fatalError("Cannot load personal profile edit vc")
-                    }
-                    self?.navigationController?.pushViewController(personalProfileEditVC, animated: true)
+                    self?.editPersonalInfo()
+//                    let personalStoryboard = UIStoryboard(name: StoryboardCategory.personal.rawValue, bundle: nil)
+//                    guard let personalProfileEditVC = personalStoryboard.instantiateViewController(
+//                        withIdentifier: PersonalProfileEditViewController.identifier
+//                        ) as? PersonalProfileEditViewController else {
+//                        fatalError("Cannot load personal profile edit vc")
+//                    }
+//                    self?.navigationController?.pushViewController(personalProfileEditVC, animated: true)
                 }
                 return cell
 

@@ -16,7 +16,7 @@ class SingleLineDescriptionInputCell: TableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        textField.borderStyle = .none
+//        textField.borderStyle = .none
     }
 
     override func layoutSubviews() {

@@ -14,6 +14,10 @@ enum InfoType: String {
 }
 
 class PersonalInfoSelectionViewController: BaseViewController {
+    enum SourceType {
+        case personalInfo
+        case postCategories
+    }
 
     @IBOutlet weak var tableView: UITableView! {
         didSet {
@@ -28,6 +32,8 @@ class PersonalInfoSelectionViewController: BaseViewController {
     }
 
     let firebaseManager = FirebaseManager.shared
+    var sourceType: SourceType = .personalInfo
+    var passingHandler: (([String]) -> Void)?
     var type: InfoType = .skills
     var categories = [String]() {
         didSet {
@@ -43,7 +49,7 @@ class PersonalInfoSelectionViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.rightBarButtonItem = UIBarButtonItem(
-            title: "Save", style: .done, target: self, action: #selector(updatePersonalInfo))
+            title: "Save", style: .done, target: self, action: #selector(tapSave))
         navigationItem.leftBarButtonItem = UIBarButtonItem(
             title: "Discard", style: .plain, target: self, action: #selector(backToPreviousPage))
     }
@@ -64,7 +70,15 @@ class PersonalInfoSelectionViewController: BaseViewController {
         }
     }
 
-    @objc func updatePersonalInfo() {
+    @objc func tapSave() {
+        if sourceType == .personalInfo {
+            updatePersonalInfo()
+        } else {
+            saveProjectCategories()
+        }
+    }
+
+    func updatePersonalInfo() {
         JProgressHUD.shared.showSaving(view: view)
 
         firebaseManager.updatePersonalInfo(of: type, info: selectedCategories) { [weak self] result in
@@ -80,6 +94,14 @@ class PersonalInfoSelectionViewController: BaseViewController {
                 }
                 print(err)
             }
+        }
+    }
+
+    func saveProjectCategories() {
+        JProgressHUD.shared.showSaving(view: self.view)
+        passingHandler?(selectedCategories)
+        JProgressHUD.shared.showSuccess(view: self.view) { [weak self] in
+            self?.navigationController?.popViewController(animated: true)
         }
     }
 
@@ -105,7 +127,6 @@ extension PersonalInfoSelectionViewController: UITableViewDelegate {
             selectedCategories.append(categories[indexPath.row])
             cell .selectImageView.image = UIImage(systemName: "checkmark.circle.fill")
         }
-        print("selected:", selectedCategories)
         tableView.reloadRows(at: [indexPath], with: .automatic)
     }
 }

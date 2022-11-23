@@ -12,7 +12,7 @@ struct FindPartnersFormSections {
 
     static let basicSection = SectionInfo(
         title: "專案資訊",
-        buttonTitle: "下一步",
+        buttonTitle: "Next",
         items: [
             ItemInfo(
                 name: "專案名稱", instruction: "至少5個字",
@@ -23,23 +23,27 @@ struct FindPartnersFormSections {
                 must: true, type: .textView
             ),
             ItemInfo(
-                name: "專案類別", instruction: nil,
-                must: true, type: .goNextButton
+                name: "專案類別", subtitle: "選取專案類別", instruction: nil,
+                note: "精準的專案類別，幫助我們推薦給感興趣的人", must: true, type: .goNextButton
             )
         ]
     )
 
     static let groupSection = SectionInfo(
-        title: "團隊與招募資訊",
-        buttonTitle: "下一步",
+        title: "招募與團隊資訊",
+        buttonTitle: "Next",
         items: [
             ItemInfo(
-                name: "團隊成員", instruction: nil,
-                must: false, type: .addButton
+                name: "招募對象", instruction: nil,
+                must: true, type: .textFieldComboAmountPicker
             ),
             ItemInfo(
-                name: "招募需求", instruction: nil,
-                must: true, type: .addButton
+                name: "技術需求", instruction: nil,
+                must: true, type: .textView
+            ),
+            ItemInfo(
+                name: "團隊成員", subtitle: "選取團隊成員", instruction: nil,
+                note: "讓其他人更了解你的團隊，並能快速建立工作群組", must: false, type: .goNextButton
             )
         ]
     )
@@ -47,23 +51,19 @@ struct FindPartnersFormSections {
     static let detailSection = SectionInfo(
         title: "最後一步了",
         // TODO: - 未來改為"預覽"
-        buttonTitle: "發佈",
+        buttonTitle: "Post",
         items: [
             ItemInfo(
-                name: "截止時間", instruction: nil,
-                must: true, type: .goNextButton
+                name: "截止時間", instruction: nil, note: "截止時間最晚為現在時間 1 小時後",
+                must: true, type: .datePicker
             ),
             ItemInfo(
                 name: "地點", instruction: nil,
-                must: true, type: .goNextButton
+                must: true, type: .textField
             ),
             ItemInfo(
                 name: "上傳封面照片", instruction: "<1MB",
-                must: false, type: .uploadImage
-            ),
-            ItemInfo(
-                name: "相關檔案或連結", instruction: nil,
-                must: false, type: .addButton
+                must: true, type: .uploadImage
             )
         ]
     )
@@ -101,7 +101,9 @@ struct SectionInfo: Equatable {
 
 struct ItemInfo {
     let name: String
+    var subtitle: String? = nil
     let instruction: String?
+    var note: String? = nil
     let must: Bool
     let type: InputType
 }
@@ -109,8 +111,10 @@ struct ItemInfo {
 enum InputType {
     case textField
     case textView
+    case textFieldComboAmountPicker
     case collapse
     case addButton
     case goNextButton
     case uploadImage
+    case datePicker
 }

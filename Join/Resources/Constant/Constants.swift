@@ -22,11 +22,24 @@ struct Constant {
         static let applicantsSectionTitle = "應徵者"
     }
 
+    struct FindPartners {
+        static let projectDescription = "請輸入專案詳細描述，讓申請者更了解你的專案"
+        static let projectBasicSection = "專案基本資訊"
+        static let projectNamePlaceholder = "請輸入專案名稱"
+        static let recruitingFieldTitle = "招募對象"
+        static let recruitingRolePlaceholder = "在團隊中擔任的角色"
+        static let recruitingNumberFieldTitle = "人數"
+        static let recruitingSkillsFieldTitle = "技術需求"
+        static let recruitingSkillsPlaceholder = "清楚描述團隊需要的技術，是找到所需人才的秘訣"
+        static let deadlineError = "截止時間不可晚於現在的 1 小時後"
+    }
+
     struct Portfolio {
         static let sectionHeader = "Portfolio"
     }
 
     struct Edit {
+        static let editIntroduction = "請填寫個人簡介"
         static let editSkills = "Edit Skills"
         static let editInterests = "Edit Interests"
         static let addPortfolio = "Add New Work to Portfolio"
