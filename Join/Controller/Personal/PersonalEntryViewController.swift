@@ -6,12 +6,14 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class PersonalEntryViewController: UIViewController {
     enum Section: CaseIterable {
         case person
         case goNextPage
         case signout
+        case deleteAccount
     }
 
     enum NextPage: String, CaseIterable {
@@ -19,7 +21,7 @@ class PersonalEntryViewController: UIViewController {
         case posts = "我的專案"
         case applications = "我的應徵紀錄"
         case friends = "我的好友"
-        case preference = "偏好設定"
+        case preference = "個人設定"
     }
 
     @IBOutlet var tableView: UITableView! {
@@ -82,11 +84,16 @@ class PersonalEntryViewController: UIViewController {
         }
     }
 
-    func signOut(completion: @escaping (Result<String, Error>) -> Void) {
+    func clearUserDefaults() {
         UserDefaults.standard.setValue(nil, forKey: UserDefaults.UserKey.uidKey)
         UserDefaults.standard.setValue(nil, forKey: UserDefaults.UserKey.userThumbnailURLKey)
         UserDefaults.standard.setValue(nil, forKey: UserDefaults.UserKey.userNameKey)
         UserDefaults.standard.setValue(nil, forKey: UserDefaults.UserKey.userInterestsKey)
+    }
+
+    func signOut(completion: @escaping (Result<String, Error>) -> Void) {
+        clearUserDefaults()
+        // 下一行是假資料用
 //        completion(.success("Successfully signed out"))
 
         do {
@@ -95,6 +102,21 @@ class PersonalEntryViewController: UIViewController {
         } catch let signOutError as NSError {
             completion(.failure(signOutError))
         }
+    }
+
+    func deleteAccount(completion: @escaping (Result<String, Error>) -> Void) {
+        let user = Auth.auth().currentUser
+
+        user?.delete { err in
+            if let err = err {
+                // TODO: - Reauthenticate
+                completion(.failure(err))
+            } else {
+                completion(.success("Successfully delete"))
+            }
+        }
+
+        clearUserDefaults()
     }
 }
 
@@ -125,7 +147,8 @@ extension PersonalEntryViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let section = Section.allCases[indexPath.section]
-        if section == .person {
+        switch section {
+        case .person:
             guard let cell = tableView.dequeueReusableCell(
                 withIdentifier: PersonalMainThumbnailCell.identifier,
                 for: indexPath) as? PersonalMainThumbnailCell else {
@@ -133,7 +156,8 @@ extension PersonalEntryViewController: UITableViewDataSource {
             }
             cell.layoutCell(isEditing: false)
             return cell
-        } else if section == .signout {
+
+        case .signout:
             guard let cell = tableView.dequeueReusableCell(
                 withIdentifier: GoNextPageButtonCell.identifier,
                 for: indexPath) as? GoNextPageButtonCell else {
@@ -158,7 +182,37 @@ extension PersonalEntryViewController: UITableViewDataSource {
                 self?.present(alert, animated: true)
             }
             return cell
-        } else {
+
+        case .deleteAccount:
+            guard let cell = tableView.dequeueReusableCell(
+                withIdentifier: GoNextPageButtonCell.identifier,
+                for: indexPath) as? GoNextPageButtonCell else {
+                fatalError("Cannot create go next page button cell")
+            }
+            cell.layoutCellForDeleteAccount()
+            cell.tapHandler = { [weak self] in
+                let alert = UIAlertController(title: "確定要刪除帳號嗎？",
+                                              message: "刪除後所有您的資料將會遺失", preferredStyle: .alert)
+                let yesAction = UIAlertAction(title: "Confirm", style: .destructive) {[weak self]  _ in
+                    guard let self = self else { return }
+                    JProgressHUD.shared.showLoading(view: self.view)
+                    self.deleteAccount { result in
+                        switch result {
+                        case .success:
+                            JProgressHUD.shared.showSuccess(text: "帳號已成功刪除", view: self.view)
+                        case .failure(let err):
+                            JProgressHUD.shared.showFailure(text: err.localizedDescription, view: self.view)
+                        }
+                    }
+                }
+                let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+                alert.addAction(cancelAction)
+                alert.addAction(yesAction)
+                self?.present(alert, animated: true)
+            }
+            return cell
+
+        default:
             guard let cell = tableView.dequeueReusableCell(
                 withIdentifier: GoNextPageButtonCell.identifier,
                 for: indexPath) as? GoNextPageButtonCell else {

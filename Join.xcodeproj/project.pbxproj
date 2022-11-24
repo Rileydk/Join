@@ -44,6 +44,7 @@
 		BF326C27292DE7FC00898444 /* DatePickerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF326C25292DE7FC00898444 /* DatePickerCell.xib */; };
 		BF326C2D292E1C3500898444 /* GoNextPageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF326C2B292E1C3500898444 /* GoNextPageCell.swift */; };
 		BF326C2E292E1C3500898444 /* GoNextPageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF326C2C292E1C3500898444 /* GoNextPageCell.xib */; };
+		BF326C30292F465A00898444 /* AppleSignInManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF326C2F292F465A00898444 /* AppleSignInManager.swift */; };
 		BF3D8352292736CD009F903F /* PersonalInfoSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3D8351292736CD009F903F /* PersonalInfoSelectionViewController.swift */; };
 		BF3D835529273740009F903F /* OneSelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3D835329273740009F903F /* OneSelectionCell.swift */; };
 		BF3D835629273740009F903F /* OneSelectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF3D835429273740009F903F /* OneSelectionCell.xib */; };
@@ -201,6 +202,7 @@
 		BF326C25292DE7FC00898444 /* DatePickerCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DatePickerCell.xib; sourceTree = "<group>"; };
 		BF326C2B292E1C3500898444 /* GoNextPageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoNextPageCell.swift; sourceTree = "<group>"; };
 		BF326C2C292E1C3500898444 /* GoNextPageCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GoNextPageCell.xib; sourceTree = "<group>"; };
+		BF326C2F292F465A00898444 /* AppleSignInManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleSignInManager.swift; sourceTree = "<group>"; };
 		BF3D8351292736CD009F903F /* PersonalInfoSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalInfoSelectionViewController.swift; sourceTree = "<group>"; };
 		BF3D835329273740009F903F /* OneSelectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneSelectionCell.swift; sourceTree = "<group>"; };
 		BF3D835429273740009F903F /* OneSelectionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OneSelectionCell.xib; sourceTree = "<group>"; };
@@ -387,6 +389,15 @@
 			path = Util;
 			sourceTree = "<group>";
 		};
+		BF326C31292F466400898444 /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				BF42FACA2911473A00501789 /* FirebaseManager.swift */,
+				BF326C2F292F465A00898444 /* AppleSignInManager.swift */,
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
 		BF3D835729275FA9009F903F /* Third Party Wrapper */ = {
 			isa = PBXGroup;
 			children = (
@@ -515,10 +526,10 @@
 		BF42FA52290CE63C00501789 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				BF326C31292F466400898444 /* Service */,
 				BF42FAB1290FAC2000501789 /* Project.swift */,
 				BF42FAB3290FAC5C00501789 /* JUser.swift */,
 				BFF8A4F029164FA200ADC950 /* Chat.swift */,
-				BF42FACA2911473A00501789 /* FirebaseManager.swift */,
 				BF3D835A29278208009F903F /* Work.swift */,
 			);
 			path = Model;
@@ -1055,6 +1066,7 @@
 				BF3D835529273740009F903F /* OneSelectionCell.swift in Sources */,
 				BF9A86AE291E356C00BF934D /* GroupMembersViewController.swift in Sources */,
 				BF12944F292A303800AA631E /* ProjectTitleCell.swift in Sources */,
+				BF326C30292F465A00898444 /* AppleSignInManager.swift in Sources */,
 				BF3D83742928D11D009F903F /* ProfileActionButtonsCell.swift in Sources */,
 				BF42FA37290BE2AA00501789 /* SceneDelegate.swift in Sources */,
 				BFF8A4BF2913B46600ADC950 /* JoinButtonCell.swift in Sources */,
