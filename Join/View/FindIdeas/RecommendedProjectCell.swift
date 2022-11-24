@@ -7,9 +7,9 @@
 
 import UIKit
 
-class FriendProjectCell: CollectionViewCell {
+class RecommendedProjectCell: CollectionViewCell {
     @IBOutlet weak var imageView: UIImageView!
-    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var titleLabel: PaddingableLabel!
 
     let firebaseManager = FirebaseManager.shared
 
@@ -20,7 +20,18 @@ class FriendProjectCell: CollectionViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-//        titleLabel.backgroundColor = UIColor.gray.withAlphaComponent(0.6)
+        layer.backgroundColor = UIColor.clear.cgColor
+        layer.masksToBounds = false
+        layer.shadowOpacity = 0.2
+        layer.shadowRadius = 14
+        layer.shadowOffset = CGSize(width: 3, height: 3)
+        layer.shadowColor = UIColor.Gray1?.cgColor
+
+        contentView.layer.cornerRadius = 12
+
+        titleLabel.backgroundColor = UIColor.gray.withAlphaComponent(0.4)
+        titleLabel.layer.masksToBounds = true
+        titleLabel.layer.cornerRadius = 4
         imageView.layer.cornerRadius = 12
     }
 
