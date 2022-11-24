@@ -40,6 +40,7 @@ class PersonalEntryViewController: UIViewController {
     }
 
     let firebaseManager = FirebaseManager.shared
+    let appleSignInManager = AppleSignInManager.shared
 
     func goToNextPage(index: Int) {
         if NextPage.allCases[index] == .profile {
@@ -107,16 +108,21 @@ class PersonalEntryViewController: UIViewController {
     func deleteAccount(completion: @escaping (Result<String, Error>) -> Void) {
         let user = Auth.auth().currentUser
 
-        user?.delete { err in
-            if let err = err {
-                // TODO: - Reauthenticate
-                completion(.failure(err))
-            } else {
-                completion(.success("Successfully delete"))
-            }
-        }
+        appleSignInManager.revokeCredential()
+        // apple revoke auth
+        // firebase delete user data
+        // firebase delete user object
 
-        clearUserDefaults()
+//        user?.delete { err in
+//            if let err = err {
+//                // TODO: - Reauthenticate
+//                completion(.failure(err))
+//            } else {
+//                completion(.success("Successfully delete"))
+//            }
+//        }
+
+//        clearUserDefaults()
     }
 }
 
@@ -195,7 +201,7 @@ extension PersonalEntryViewController: UITableViewDataSource {
                                               message: "刪除後所有您的資料將會遺失", preferredStyle: .alert)
                 let yesAction = UIAlertAction(title: "Confirm", style: .destructive) {[weak self]  _ in
                     guard let self = self else { return }
-                    JProgressHUD.shared.showLoading(view: self.view)
+//                    JProgressHUD.shared.showLoading(view: self.view)
                     self.deleteAccount { result in
                         switch result {
                         case .success:
