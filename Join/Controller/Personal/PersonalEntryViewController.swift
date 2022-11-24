@@ -11,7 +11,7 @@ class PersonalEntryViewController: UIViewController {
     enum Section: CaseIterable {
         case person
         case goNextPage
-        case logout
+        case signout
     }
 
     enum NextPage: String, CaseIterable {
@@ -55,7 +55,7 @@ class PersonalEntryViewController: UIViewController {
             let personalStoryboard = UIStoryboard(name: StoryboardCategory.personal.rawValue, bundle: nil)
             guard let myPostsVC = personalStoryboard.instantiateViewController(
                 withIdentifier: MyPostsViewController.identifier
-            ) as? MyPostsViewController else {
+                ) as? MyPostsViewController else {
                 fatalError("Cannot create personal profile vc")
             }
             navigationController?.pushViewController(myPostsVC, animated: true)
@@ -75,7 +75,7 @@ class PersonalEntryViewController: UIViewController {
             let personalStoryboard = UIStoryboard(name: StoryboardCategory.personal.rawValue, bundle: nil)
             guard let friendsListVC = personalStoryboard.instantiateViewController(
                 withIdentifier: FriendsListViewController.identifier
-            ) as? FriendsListViewController else {
+                ) as? FriendsListViewController else {
                 fatalError("Cannot create personal profile vc")
             }
             navigationController?.pushViewController(friendsListVC, animated: true)
@@ -87,14 +87,14 @@ class PersonalEntryViewController: UIViewController {
         UserDefaults.standard.setValue(nil, forKey: UserDefaults.UserKey.userThumbnailURLKey)
         UserDefaults.standard.setValue(nil, forKey: UserDefaults.UserKey.userNameKey)
         UserDefaults.standard.setValue(nil, forKey: UserDefaults.UserKey.userInterestsKey)
-        completion(.success("Successfully signed out"))
+//        completion(.success("Successfully signed out"))
 
-//        do {
-//            try firebaseManager.myAuth.signOut()
-//            completion(.success("Success"))
-//        } catch let signOutError as NSError {
-//            completion(.failure(signOutError))
-//        }
+        do {
+            try firebaseManager.myAuth.signOut()
+            completion(.success("Success"))
+        } catch let signOutError as NSError {
+            completion(.failure(signOutError))
+        }
     }
 }
 
@@ -133,7 +133,7 @@ extension PersonalEntryViewController: UITableViewDataSource {
             }
             cell.layoutCell(isEditing: false)
             return cell
-        } else if section == .logout {
+        } else if section == .signout {
             guard let cell = tableView.dequeueReusableCell(
                 withIdentifier: GoNextPageButtonCell.identifier,
                 for: indexPath) as? GoNextPageButtonCell else {
@@ -178,19 +178,23 @@ extension UIViewController {
         if let rootVC = view.window?.rootViewController as? MockLoginViewController {
             rootVC.dismiss(animated: false)
         } else {
-            tabBarController?.selectedIndex = 0
+            // 下一行是假登入用
+//            tabBarController?.selectedIndex = 0
 
             let mainStoryboard = UIStoryboard(name: StoryboardCategory.main.rawValue, bundle: nil)
-//            guard let loginVC = mainStoryboard.instantiateViewController(
-//                withIdentifier: LoginViewController.identifier
-//                ) as? LoginViewController else {
-//                fatalError("Cannot instantiate log in vc")
-//            }
             guard let loginVC = mainStoryboard.instantiateViewController(
-                withIdentifier: MockLoginViewController.identifier
-            ) as? MockLoginViewController else {
+                withIdentifier: LoginViewController.identifier
+                ) as? LoginViewController else {
                 fatalError("Cannot instantiate log in vc")
             }
+
+            // 下一段是假登入用
+//            guard let loginVC = mainStoryboard.instantiateViewController(
+//                withIdentifier: MockLoginViewController.identifier
+//            ) as? MockLoginViewController else {
+//                fatalError("Cannot instantiate log in vc")
+//            }
+            
             loginVC.modalPresentationStyle = .fullScreen
             present(loginVC, animated: false)
         }

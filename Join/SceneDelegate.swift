@@ -24,28 +24,28 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This delegate does not imply the connecting scene or session are new
         // (see `application:configurationForConnectingSceneSession` instead).
 
-//        guard let scene = (scene as? UIWindowScene) else { return }
-//        window = UIWindow(windowScene: scene)
-//
-//        let mainStoryboard = UIStoryboard(name: StoryboardCategory.main.rawValue, bundle: nil)
-//        if Auth.auth().currentUser == nil {
-//            guard let loginVC = mainStoryboard.instantiateViewController(
-//                withIdentifier: LoginViewController.identifier
-//                ) as? LoginViewController else {
-//                fatalError("Cannot instantiate log in vc")
-//            }
-//            window?.rootViewController = loginVC
-//            window?.makeKeyAndVisible()
-//        } else {
-//            guard let tabBarController = mainStoryboard.instantiateViewController(
-//                withIdentifier: TabBarController.identifier
-//                ) as? TabBarController else {
-//                fatalError("Cannot load tab bar controller")
-//            }
-//            tabBarController.selectedIndex = 0
-//            window?.rootViewController = tabBarController
-//            window?.makeKeyAndVisible()
-//        }
+        guard let scene = (scene as? UIWindowScene) else { return }
+        window = UIWindow(windowScene: scene)
+
+        let mainStoryboard = UIStoryboard(name: StoryboardCategory.main.rawValue, bundle: nil)
+        if Auth.auth().currentUser == nil {
+            guard let loginVC = mainStoryboard.instantiateViewController(
+                withIdentifier: LoginViewController.identifier
+                ) as? LoginViewController else {
+                fatalError("Cannot instantiate log in vc")
+            }
+            window?.rootViewController = loginVC
+            window?.makeKeyAndVisible()
+        } else {
+            guard let tabBarController = mainStoryboard.instantiateViewController(
+                withIdentifier: TabBarController.identifier
+                ) as? TabBarController else {
+                fatalError("Cannot load tab bar controller")
+            }
+            tabBarController.selectedIndex = 0
+            window?.rootViewController = tabBarController
+            window?.makeKeyAndVisible()
+        }
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
