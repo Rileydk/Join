@@ -106,12 +106,29 @@ class PersonalEntryViewController: UIViewController {
     }
 
     func deleteAccount(completion: @escaping (Result<String, Error>) -> Void) {
-        let user = Auth.auth().currentUser
+        JProgressHUD.shared.showLoading(text: Constant.Alert.longDurationProcess,view: self.view)
 
-        appleSignInManager.revokeCredential()
-        // apple revoke auth
+        let user = Auth.auth().currentUser
+        let group = DispatchGroup()
+        var shouldContinue = true
+
+//        group.enter()
+        appleSignInManager.revokeCredential { result in
+            switch result {
+            case .success:
+                print("Successfully revoked")
+//                group.leave()
+            case .failure(let err):
+                print("err:", err.self.localizedDescription)
+//                shouldContinue = false
+//                group.leave()
+//                group.notify(queue: .main) {
+//                    JProgressHUD.shared.showFailure(text: err.localizedDescription, view: self.view)
+//                }
+            }
+        }
+
         // firebase delete user data
-        // firebase delete user object
 
 //        user?.delete { err in
 //            if let err = err {
@@ -121,7 +138,7 @@ class PersonalEntryViewController: UIViewController {
 //                completion(.success("Successfully delete"))
 //            }
 //        }
-
+//
 //        clearUserDefaults()
     }
 }

@@ -19,6 +19,7 @@ struct RefreshTokenResponse: Decodable {
     let accessToken: String
     let tokenType: String
     let expiresIn: Int64
+    let refreshToken: String
     let idToken: String
 }
 
@@ -152,6 +153,8 @@ class AppleSignInManager {
 
             var request = URLRequest(url: url)
             request.httpMethod = JHTTPMethod.post.rawValue
+            request.setValue(JHTTPHeaderField.contentType.rawValue,
+                             forHTTPHeaderField: JHTTPHeaderValue.xwwwFormURLEncoded.rawValue)
             URLSession.shared.dataTask(with: request) { [weak self] (data, response, err) in
                 guard let self = self else { return }
                 if let err = err {
@@ -166,19 +169,41 @@ class AppleSignInManager {
                     do {
                         self.decoder.keyDecodingStrategy = .convertFromSnakeCase
                         let response = try self.decoder.decode(RefreshTokenResponse.self, from: data)
-                        self.keychainManager.save(stringContent: response.idToken, by: UserDefaults.AppleSignInKey.refreshTokenKey)
+                        self.keychainManager.save(stringContent: response.refreshToken, by: UserDefaults.AppleSignInKey.refreshTokenKey)
+                        let refreshToken = self.keychainManager.getStringContent(by: UserDefaults.AppleSignInKey.refreshTokenKey)
                     } catch {
                         print(error)
                         return
                     }
                 }
             }.resume()
-
         }
     }
 
-    func revokeCredential() {
-        generateJWTToken()
+    func revokeCredential(completion: @escaping (Result<String, Error>) -> Void) {
+        if let refreshToken = keychainManager.getStringContent(by: UserDefaults.AppleSignInKey.refreshTokenKey),
+           let jwtToken = generateJWTToken(),
+           let url = URL(string: "https://appleid.apple.com/auth/revoke?client_id=\(AppleAuthConfig.bundleID.rawValue)&client_secret=\(jwtToken)&token=\(refreshToken)&token_type_hint=refresh_token") {
+
+            var request = URLRequest(url: url)
+            request.httpMethod = JHTTPMethod.post.rawValue
+            request.setValue(JHTTPHeaderField.contentType.rawValue,
+                             forHTTPHeaderField: JHTTPHeaderValue.xwwwFormURLEncoded.rawValue)
+
+            URLSession.shared.dataTask(with: request) { [weak self] (_, response, err) in
+                guard let self = self else { return }
+                if let err = err {
+                    completion(.failure(err))
+                    return
+                }
+                guard let response = response as? HTTPURLResponse,
+                      response.statusCode == 200 else {
+                    completion(.failure(AppleSignInError.responseError))
+                    return
+                }
+                completion(.success("Success"))
+            }.resume()
+        }
     }
 
     func generateJWTToken() -> JWTToken? {
@@ -204,7 +229,6 @@ class AppleSignInManager {
                 if let privateKey = privateContent.data(using: .utf8) {
                     let jwtSigner = JWTSigner.es256(privateKey: privateKey)
                     let signedJWT = try myJWT.sign(using: jwtSigner)
-                    print(signedJWT)
                     return signedJWT
                 } else {
                     print("no valid private key")
