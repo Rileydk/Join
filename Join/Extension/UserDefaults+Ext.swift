@@ -10,6 +10,7 @@ import Foundation
 extension UserDefaults {
     enum AppleSignInKey {
         static let authorizationCodeKey = "authorizationCode"
+        static let refreshTokenKey = "refreshToken"
     }
 
     enum UserKey {

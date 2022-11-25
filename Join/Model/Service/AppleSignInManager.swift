@@ -10,17 +10,29 @@ import AuthenticationServices
 import CryptoKit
 import FirebaseFirestore
 import FirebaseAuth
+import SwiftJWT
 
 typealias ClientSecretToken = String
-typealias JWTTokent = String
+typealias JWTToken = String
+
+struct RefreshTokenResponse: Decodable {
+    let accessToken: String
+    let tokenType: String
+    let expiresIn: Int64
+    let idToken: String
+}
 
 class AppleSignInManager {
     enum AppleSignInError: Error, LocalizedError {
         case failedToGetUserObject
+        case responseError
+        case decodeFailed
 
         var errorDescription: String {
             switch self {
             case .failedToGetUserObject: return "Failed to get user"
+            case .responseError: return "Get refresh token response error"
+            case .decodeFailed: return "Decode failed"
             }
         }
     }
@@ -29,9 +41,8 @@ class AppleSignInManager {
     private init() {}
 
     let keychainManager = KeychainManager.shared
+    let decoder = JSONDecoder()
 
-    // Get AuthCode
-    // gen JWT
     // get refresh token and save in Keychain
     // revoke authorization
     // deleteUser
@@ -94,6 +105,8 @@ class AppleSignInManager {
     }
 
     func signInApple(authorization: ASAuthorization, completion: @escaping (Result<User, Error>) -> Void) {
+        getRefreshToken()
+
         if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
             guard let nonce = currentNonce else {
                 fatalError("Invalid state: A login callback was received, but no login request was sent.")
@@ -132,61 +145,78 @@ class AppleSignInManager {
         }
     }
 
-    func revokeCredential() {
-        generateClientSecretToken()
+    func getRefreshToken() {
+        if let authCode = keychainManager.getStringContent(by: UserDefaults.AppleSignInKey.authorizationCodeKey),
+           let jwtToken = generateJWTToken(),
+           let url = URL(string: "https://appleid.apple.com/auth/token?client_id=\(AppleAuthConfig.bundleID.rawValue)&client_secret=\(jwtToken)&code=\(authCode)&grant_type=authorization_code") {
+
+            var request = URLRequest(url: url)
+            request.httpMethod = JHTTPMethod.post.rawValue
+            URLSession.shared.dataTask(with: request) { [weak self] (data, response, err) in
+                guard let self = self else { return }
+                if let err = err {
+                    print(err)
+                    return
+                }
+                guard let response = response as? HTTPURLResponse,
+                   response.statusCode == 200 else {
+                    return
+                }
+                if let data = data {
+                    do {
+                        self.decoder.keyDecodingStrategy = .convertFromSnakeCase
+                        let response = try self.decoder.decode(RefreshTokenResponse.self, from: data)
+                        self.keychainManager.save(stringContent: response.idToken, by: UserDefaults.AppleSignInKey.refreshTokenKey)
+                    } catch {
+                        print(error)
+                        return
+                    }
+                }
+            }.resume()
+
+        }
     }
 
-    func generateClientSecretToken() -> JWTTokent? {
-        // completion: @escaping (Result<ClientSecretToken, Error>) -> Void
-        struct Header: Encodable {
-            let alg = "ES256"
-            let kid = AppleAuthConfig.p8KeyID.rawValue
+    func revokeCredential() {
+        generateJWTToken()
+    }
+
+    func generateJWTToken() -> JWTToken? {
+        struct MyClaims: Claims {
+            let iss: String
+            let iat: Date
+            let exp: Date
+            let aud: String
+            let sub: String
         }
 
-        struct Payload: Encodable {
-            let iss = AppleAuthConfig.teamID.rawValue
-            let iat = Date().millisecondsSince1970
-            let exp = Date().millisecondsSince1970 + 12000
-            let aud = "https://appleid.apple.com"
-            let sub = AppleAuthConfig.bundleID.rawValue
-        }
+        let myHeader = Header(kid: AppleAuthConfig.p8KeyID.rawValue)
+        let myClaims = MyClaims(iss: AppleAuthConfig.teamID.rawValue,
+                                iat: Date(),
+                                exp: Date(timeIntervalSinceNow: 3600),
+                                aud: "https://appleid.apple.com",
+                                sub: AppleAuthConfig.bundleID.rawValue)
+        var myJWT = JWT(header: myHeader, claims: myClaims)
 
-        var privateContent = ""
         if let filePath = Bundle.main.path(forResource: AppleAuthConfig.privateKeyFileName.rawValue, ofType: "p8") {
             do {
-                privateContent = try String(contentsOfFile: filePath)
+                let privateContent = try String(contentsOfFile: filePath)
+                if let privateKey = privateContent.data(using: .utf8) {
+                    let jwtSigner = JWTSigner.es256(privateKey: privateKey)
+                    let signedJWT = try myJWT.sign(using: jwtSigner)
+                    print(signedJWT)
+                    return signedJWT
+                } else {
+                    print("no valid private key")
+                    return nil
+                }
             } catch {
                 print("decode failed")
+                return nil
             }
         } else {
             print("file path is nil")
-        }
-
-        let privateKey = SymmetricKey(data: Data(privateContent.utf8))
-
-        guard let headerJSONData = try? JSONEncoder().encode(Header()) else {
-            print("failed to encode header")
             return nil
         }
-        let headerBase64String = headerJSONData.urlSafeBase64EncodedString()
-
-        guard let payloadJSONData = try? JSONEncoder().encode(Payload()) else {
-            print("failed to encode payload")
-            return nil
-        }
-        let payloadBase64String = payloadJSONData.urlSafeBase64EncodedString()
-
-        let jwt = Data((headerBase64String + "." + payloadBase64String).utf8)
-        let signature = HMAC<SHA256>.authenticationCode(for: jwt, using: privateKey)
-        let signatureBase64String = Data(signature).urlSafeBase64EncodedString()
-
-        let signedJWT = [headerBase64String, payloadBase64String, signatureBase64String]
-            .joined(separator: ".")
-        return signedJWT
-    }
-
-    func getRefreshToken() {
-        let url = URL(string: "https://appleid.apple.com/auth/token")!
-        //        var request = URLRequest(url: )
     }
 }

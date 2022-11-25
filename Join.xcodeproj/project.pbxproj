@@ -50,6 +50,7 @@
 		BF326C37292F63FA00898444 /* AuthKey_MW6BK6Q5HF.p8 in Resources */ = {isa = PBXBuildFile; fileRef = BF326C36292F63FA00898444 /* AuthKey_MW6BK6Q5HF.p8 */; };
 		BF326C3A292F6AF200898444 /* AppleAuthConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF326C39292F6AF200898444 /* AppleAuthConfig.swift */; };
 		BF326C3C292F6D3200898444 /* Data+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF326C3B292F6D3200898444 /* Data+Ext.swift */; };
+		BF326C3E292F6D7A00898444 /* HTTP.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF326C3D292F6D7A00898444 /* HTTP.swift */; };
 		BF3D8352292736CD009F903F /* PersonalInfoSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3D8351292736CD009F903F /* PersonalInfoSelectionViewController.swift */; };
 		BF3D835529273740009F903F /* OneSelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3D835329273740009F903F /* OneSelectionCell.swift */; };
 		BF3D835629273740009F903F /* OneSelectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF3D835429273740009F903F /* OneSelectionCell.xib */; };
@@ -213,6 +214,7 @@
 		BF326C36292F63FA00898444 /* AuthKey_MW6BK6Q5HF.p8 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AuthKey_MW6BK6Q5HF.p8; sourceTree = "<group>"; };
 		BF326C39292F6AF200898444 /* AppleAuthConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleAuthConfig.swift; sourceTree = "<group>"; };
 		BF326C3B292F6D3200898444 /* Data+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+Ext.swift"; sourceTree = "<group>"; };
+		BF326C3D292F6D7A00898444 /* HTTP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTP.swift; sourceTree = "<group>"; };
 		BF3D8351292736CD009F903F /* PersonalInfoSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalInfoSelectionViewController.swift; sourceTree = "<group>"; };
 		BF3D835329273740009F903F /* OneSelectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneSelectionCell.swift; sourceTree = "<group>"; };
 		BF3D835429273740009F903F /* OneSelectionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OneSelectionCell.xib; sourceTree = "<group>"; };
@@ -405,6 +407,7 @@
 				BF42FACA2911473A00501789 /* FirebaseManager.swift */,
 				BF326C32292F515C00898444 /* FirebaseAuthManager.swift */,
 				BF326C2F292F465A00898444 /* AppleSignInManager.swift */,
+				BF326C3D292F6D7A00898444 /* HTTP.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -1079,6 +1082,7 @@
 				BF1294402929D85B00AA631E /* Constants.swift in Sources */,
 				BF0271412920D093000EA2F8 /* UIColor+Ext.swift in Sources */,
 				BF326C1D292C92B500898444 /* PillButton.swift in Sources */,
+				BF326C3E292F6D7A00898444 /* HTTP.swift in Sources */,
 				BF3D835B29278208009F903F /* Work.swift in Sources */,
 				BF42FAD62912945F00501789 /* RecommendedProjectCell.swift in Sources */,
 				BF326C26292DE7FC00898444 /* DatePickerCell.swift in Sources */,

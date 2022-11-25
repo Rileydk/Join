@@ -15,5 +15,6 @@ target 'Join' do
   pod 'JGProgressHUD'
   pod 'Kingfisher'
   pod 'KeychainAccess'
+  pod 'SwiftJWT'
 
 end
