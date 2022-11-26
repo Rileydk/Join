@@ -12,6 +12,11 @@ class GoNextPageButtonCell: TableViewCell {
 
     var tapHandler: (() -> Void)?
 
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        button.setTitleColor(.Gray1, for: .normal)
+    }
+
     func layoutCell(title: String) {
         button.setTitle(title, for: .normal)
     }
