@@ -104,6 +104,7 @@ extension LoginViewController: ASAuthorizationControllerDelegate {
                                     fatalError("Cannot instantiate profile edit vc")
                                 }
                                 profileEditVC.user = user
+                                profileEditVC.sourceType = .signup
 
                                 let navController = UINavigationController(rootViewController: profileEditVC)
                                 navController.modalPresentationStyle = .fullScreen

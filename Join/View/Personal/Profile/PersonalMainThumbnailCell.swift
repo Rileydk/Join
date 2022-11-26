@@ -36,8 +36,10 @@ class PersonalMainThumbnailCell: TableViewCell {
         if !thumbnailEditButton.isHidden {
             thumbnailEditButton.layer.cornerRadius = thumbnailEditButton.frame.width / 2
             NSLayoutConstraint.activate([
-                thumbnailEditButton.topAnchor.constraint(equalTo: thumbnailImageView.bottomAnchor, constant: -25),
-                thumbnailEditButton.leftAnchor.constraint(equalTo: thumbnailImageView.rightAnchor, constant: -25)
+                thumbnailEditButton.topAnchor.constraint(
+                    equalTo: thumbnailImageView.bottomAnchor, constant: -25),
+                thumbnailEditButton.leftAnchor.constraint(
+                    equalTo: thumbnailImageView.rightAnchor, constant: -25)
             ])
         }
     }
@@ -64,7 +66,7 @@ class PersonalMainThumbnailCell: TableViewCell {
             thumbnailEditButton.isHidden = true
         }
     }
-    
+
     @IBAction func editThumbnailThroughButton(_ sender: UIButton) {
         showSourceTypeActionSheet()
     }
