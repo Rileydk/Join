@@ -133,6 +133,7 @@ class PersonalProfileEditViewController: BaseViewController {
                     case .success:
                         group.leave()
                         group.notify(queue: .main) {
+                            UserDefaults.standard.setUserBasicInfo(user: user)
                             JProgressHUD.shared.showSuccess(view: self.view) {
                                 self.navigationController?.popViewController(animated: true)
                             }

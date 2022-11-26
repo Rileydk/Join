@@ -21,6 +21,11 @@ class GoNextPageButtonCell: TableViewCell {
         button.setTitleColor(.Red, for: .normal)
     }
 
+    func layoutCellForDeleteAccount() {
+        button.setTitle("Delete Account", for: .normal)
+        button.setTitleColor(.Red, for: .normal)
+    }
+
     @IBAction func goNextPage(_ sender: UIButton) {
         tapHandler?()
     }

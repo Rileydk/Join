@@ -44,6 +44,13 @@
 		BF326C27292DE7FC00898444 /* DatePickerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF326C25292DE7FC00898444 /* DatePickerCell.xib */; };
 		BF326C2D292E1C3500898444 /* GoNextPageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF326C2B292E1C3500898444 /* GoNextPageCell.swift */; };
 		BF326C2E292E1C3500898444 /* GoNextPageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF326C2C292E1C3500898444 /* GoNextPageCell.xib */; };
+		BF326C30292F465A00898444 /* AppleSignInManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF326C2F292F465A00898444 /* AppleSignInManager.swift */; };
+		BF326C33292F515C00898444 /* FirebaseAuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF326C32292F515C00898444 /* FirebaseAuthManager.swift */; };
+		BF326C35292F529900898444 /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF326C34292F529900898444 /* KeychainManager.swift */; };
+		BF326C37292F63FA00898444 /* AuthKey_MW6BK6Q5HF.p8 in Resources */ = {isa = PBXBuildFile; fileRef = BF326C36292F63FA00898444 /* AuthKey_MW6BK6Q5HF.p8 */; };
+		BF326C3A292F6AF200898444 /* AppleAuthConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF326C39292F6AF200898444 /* AppleAuthConfig.swift */; };
+		BF326C3C292F6D3200898444 /* Data+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF326C3B292F6D3200898444 /* Data+Ext.swift */; };
+		BF326C3E292F6D7A00898444 /* HTTP.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF326C3D292F6D7A00898444 /* HTTP.swift */; };
 		BF3D8352292736CD009F903F /* PersonalInfoSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3D8351292736CD009F903F /* PersonalInfoSelectionViewController.swift */; };
 		BF3D835529273740009F903F /* OneSelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3D835329273740009F903F /* OneSelectionCell.swift */; };
 		BF3D835629273740009F903F /* OneSelectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF3D835429273740009F903F /* OneSelectionCell.xib */; };
@@ -201,6 +208,13 @@
 		BF326C25292DE7FC00898444 /* DatePickerCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DatePickerCell.xib; sourceTree = "<group>"; };
 		BF326C2B292E1C3500898444 /* GoNextPageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoNextPageCell.swift; sourceTree = "<group>"; };
 		BF326C2C292E1C3500898444 /* GoNextPageCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GoNextPageCell.xib; sourceTree = "<group>"; };
+		BF326C2F292F465A00898444 /* AppleSignInManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleSignInManager.swift; sourceTree = "<group>"; };
+		BF326C32292F515C00898444 /* FirebaseAuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseAuthManager.swift; sourceTree = "<group>"; };
+		BF326C34292F529900898444 /* KeychainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainManager.swift; sourceTree = "<group>"; };
+		BF326C36292F63FA00898444 /* AuthKey_MW6BK6Q5HF.p8 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AuthKey_MW6BK6Q5HF.p8; sourceTree = "<group>"; };
+		BF326C39292F6AF200898444 /* AppleAuthConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleAuthConfig.swift; sourceTree = "<group>"; };
+		BF326C3B292F6D3200898444 /* Data+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+Ext.swift"; sourceTree = "<group>"; };
+		BF326C3D292F6D7A00898444 /* HTTP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTP.swift; sourceTree = "<group>"; };
 		BF3D8351292736CD009F903F /* PersonalInfoSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalInfoSelectionViewController.swift; sourceTree = "<group>"; };
 		BF3D835329273740009F903F /* OneSelectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneSelectionCell.swift; sourceTree = "<group>"; };
 		BF3D835429273740009F903F /* OneSelectionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OneSelectionCell.xib; sourceTree = "<group>"; };
@@ -387,6 +401,26 @@
 			path = Util;
 			sourceTree = "<group>";
 		};
+		BF326C31292F466400898444 /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				BF42FACA2911473A00501789 /* FirebaseManager.swift */,
+				BF326C32292F515C00898444 /* FirebaseAuthManager.swift */,
+				BF326C2F292F465A00898444 /* AppleSignInManager.swift */,
+				BF326C3D292F6D7A00898444 /* HTTP.swift */,
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
+		BF326C38292F6ACF00898444 /* AppleAuth */ = {
+			isa = PBXGroup;
+			children = (
+				BF326C36292F63FA00898444 /* AuthKey_MW6BK6Q5HF.p8 */,
+				BF326C39292F6AF200898444 /* AppleAuthConfig.swift */,
+			);
+			path = AppleAuth;
+			sourceTree = "<group>";
+		};
 		BF3D835729275FA9009F903F /* Third Party Wrapper */ = {
 			isa = PBXGroup;
 			children = (
@@ -503,6 +537,7 @@
 		BF42FA51290CE5D400501789 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				BF326C38292F6ACF00898444 /* AppleAuth */,
 				BF42FA65290D03BD00501789 /* Constant */,
 				BF42FA3D290BE2AC00501789 /* Assets.xcassets */,
 				BF42FA3F290BE2AC00501789 /* LaunchScreen.storyboard */,
@@ -515,11 +550,12 @@
 		BF42FA52290CE63C00501789 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				BF326C31292F466400898444 /* Service */,
 				BF42FAB1290FAC2000501789 /* Project.swift */,
 				BF42FAB3290FAC5C00501789 /* JUser.swift */,
 				BFF8A4F029164FA200ADC950 /* Chat.swift */,
-				BF42FACA2911473A00501789 /* FirebaseManager.swift */,
 				BF3D835A29278208009F903F /* Work.swift */,
+				BF326C34292F529900898444 /* KeychainManager.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -560,6 +596,7 @@
 				BF42FACE2912557500501789 /* UIImage+Ext.swift */,
 				BF0271402920D093000EA2F8 /* UIColor+Ext.swift */,
 				BF0271582924E3D8000EA2F8 /* UserDefaults+Ext.swift */,
+				BF326C3B292F6D3200898444 /* Data+Ext.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -872,6 +909,7 @@
 				BF9A86AC291E19B300BF934D /* GroupMessageCell.xib in Resources */,
 				BFF8A4D42914C79900ADC950 /* PersonBasicCell.xib in Resources */,
 				BF129455292A3C4B00AA631E /* ProjectItemCell.xib in Resources */,
+				BF326C37292F63FA00898444 /* AuthKey_MW6BK6Q5HF.p8 in Resources */,
 				BF9A86A4291CE06400BF934D /* GroupCreationHeaderCell.xib in Resources */,
 				BFF8A4B42913AD3000ADC950 /* BigImageCell.xib in Resources */,
 				BF3D83792928D9B8009F903F /* SelfIntroductionCell.xib in Resources */,
@@ -963,6 +1001,7 @@
 				BF12944B292A0AA200AA631E /* RelationshipButtonsCell.swift in Sources */,
 				BF42FADC2912967900501789 /* IdeaCell.swift in Sources */,
 				BF3D836F2928CDAF009F903F /* PersonalMainThumbnailCollectionCell.swift in Sources */,
+				BF326C3A292F6AF200898444 /* AppleAuthConfig.swift in Sources */,
 				BF42FAC42910010000501789 /* AddNewCell.swift in Sources */,
 				BF3D83672927A5D8009F903F /* WorkHeaderView.swift in Sources */,
 				BFF8A4DF2916342E00ADC950 /* BaseViewController.swift in Sources */,
@@ -1000,6 +1039,7 @@
 				BF9A86742918FA3500BF934D /* FriendsListViewController.swift in Sources */,
 				BF3D83652927A1B6009F903F /* KingFisherWrapper.swift in Sources */,
 				BF326C0F292BB5E200898444 /* BottomLinedTextView.swift in Sources */,
+				BF326C3C292F6D3200898444 /* Data+Ext.swift in Sources */,
 				BFF8A4FB2917FBF100ADC950 /* MockLoginViewController.swift in Sources */,
 				BFF8A4D32914C79900ADC950 /* PersonBasicCell.swift in Sources */,
 				BF42FACF2912557500501789 /* UIImage+Ext.swift in Sources */,
@@ -1019,6 +1059,7 @@
 				BFF8A4FB2917FBF100ADC950 /* MockLoginViewController.swift in Sources */,
 				BF42FA73290D197000501789 /* TableViewCell.swift in Sources */,
 				BF326C17292C5C2900898444 /* PaddingableTextView.swift in Sources */,
+				BF326C33292F515C00898444 /* FirebaseAuthManager.swift in Sources */,
 				BFF8A4E729163D8200ADC950 /* MessageTypingSuperview.swift in Sources */,
 				BFF8A4F62917992000ADC950 /* ChatListCell.swift in Sources */,
 				BF42FA81290D31EF00501789 /* GoSelectionCell.swift in Sources */,
@@ -1041,6 +1082,7 @@
 				BF1294402929D85B00AA631E /* Constants.swift in Sources */,
 				BF0271412920D093000EA2F8 /* UIColor+Ext.swift in Sources */,
 				BF326C1D292C92B500898444 /* PillButton.swift in Sources */,
+				BF326C3E292F6D7A00898444 /* HTTP.swift in Sources */,
 				BF3D835B29278208009F903F /* Work.swift in Sources */,
 				BF42FAD62912945F00501789 /* RecommendedProjectCell.swift in Sources */,
 				BF326C26292DE7FC00898444 /* DatePickerCell.swift in Sources */,
@@ -1055,11 +1097,13 @@
 				BF3D835529273740009F903F /* OneSelectionCell.swift in Sources */,
 				BF9A86AE291E356C00BF934D /* GroupMembersViewController.swift in Sources */,
 				BF12944F292A303800AA631E /* ProjectTitleCell.swift in Sources */,
+				BF326C30292F465A00898444 /* AppleSignInManager.swift in Sources */,
 				BF3D83742928D11D009F903F /* ProfileActionButtonsCell.swift in Sources */,
 				BF42FA37290BE2AA00501789 /* SceneDelegate.swift in Sources */,
 				BFF8A4BF2913B46600ADC950 /* JoinButtonCell.swift in Sources */,
 				BFF8A4AE2913A92300ADC950 /* ProjectDetailsViewController.swift in Sources */,
 				BF3D835E2927873C009F903F /* AddPortfolioViewController.swift in Sources */,
+				BF326C35292F529900898444 /* KeychainManager.swift in Sources */,
 				BF42FA61290CEF4700501789 /* UIStoryboard+Ext.swift in Sources */,
 				BF1294462929EB2500AA631E /* PaddingableLabel.swift in Sources */,
 				BFF8A4F129164FA200ADC950 /* Chat.swift in Sources */,

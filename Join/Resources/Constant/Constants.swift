@@ -45,4 +45,7 @@ struct Constant {
         static let addPortfolio = "Add New Work to Portfolio"
     }
 
+    struct Alert {
+        static let longDurationProcess = "處理中，請勿關閉畫面"
+    }
 }

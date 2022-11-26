@@ -180,3 +180,7 @@ Drop here!
 ### Firebase Patch ###
 .runtimeconfig.json
 .firebase/
+
+### Apple
+**/*.p8
+**/AppleAuthConfig.swift

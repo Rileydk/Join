@@ -6,12 +6,14 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class PersonalEntryViewController: UIViewController {
     enum Section: CaseIterable {
         case person
         case goNextPage
-        case logout
+        case signout
+        case deleteAccount
     }
 
     enum NextPage: String, CaseIterable {
@@ -19,7 +21,7 @@ class PersonalEntryViewController: UIViewController {
         case posts = "我的專案"
         case applications = "我的應徵紀錄"
         case friends = "我的好友"
-        case preference = "偏好設定"
+        case preference = "個人設定"
     }
 
     @IBOutlet var tableView: UITableView! {
@@ -38,6 +40,7 @@ class PersonalEntryViewController: UIViewController {
     }
 
     let firebaseManager = FirebaseManager.shared
+    let appleSignInManager = AppleSignInManager.shared
 
     func goToNextPage(index: Int) {
         if NextPage.allCases[index] == .profile {
@@ -55,7 +58,7 @@ class PersonalEntryViewController: UIViewController {
             let personalStoryboard = UIStoryboard(name: StoryboardCategory.personal.rawValue, bundle: nil)
             guard let myPostsVC = personalStoryboard.instantiateViewController(
                 withIdentifier: MyPostsViewController.identifier
-            ) as? MyPostsViewController else {
+                ) as? MyPostsViewController else {
                 fatalError("Cannot create personal profile vc")
             }
             navigationController?.pushViewController(myPostsVC, animated: true)
@@ -75,26 +78,85 @@ class PersonalEntryViewController: UIViewController {
             let personalStoryboard = UIStoryboard(name: StoryboardCategory.personal.rawValue, bundle: nil)
             guard let friendsListVC = personalStoryboard.instantiateViewController(
                 withIdentifier: FriendsListViewController.identifier
-            ) as? FriendsListViewController else {
+                ) as? FriendsListViewController else {
                 fatalError("Cannot create personal profile vc")
             }
             navigationController?.pushViewController(friendsListVC, animated: true)
         }
     }
 
-    func signOut(completion: @escaping (Result<String, Error>) -> Void) {
+    func clearUserDefaults() {
         UserDefaults.standard.setValue(nil, forKey: UserDefaults.UserKey.uidKey)
         UserDefaults.standard.setValue(nil, forKey: UserDefaults.UserKey.userThumbnailURLKey)
         UserDefaults.standard.setValue(nil, forKey: UserDefaults.UserKey.userNameKey)
         UserDefaults.standard.setValue(nil, forKey: UserDefaults.UserKey.userInterestsKey)
-        completion(.success("Successfully signed out"))
+    }
 
-//        do {
-//            try firebaseManager.myAuth.signOut()
-//            completion(.success("Success"))
-//        } catch let signOutError as NSError {
-//            completion(.failure(signOutError))
-//        }
+    func signOut(completion: ((Result<String, Error>) -> Void)? = nil) {
+        clearUserDefaults()
+
+        do {
+            try firebaseManager.myAuth.signOut()
+            completion?(.success("Success"))
+        } catch let signOutError as NSError {
+            completion?(.failure(signOutError))
+        }
+    }
+
+    func deleteAccount(completion: @escaping (Result<String, Error>) -> Void) {
+        let user = Auth.auth().currentUser
+        let group = DispatchGroup()
+        var shouldContinue = true
+        JProgressHUD.shared.showLoading(text: Constant.Alert.longDurationProcess,view: self.view)
+
+        appleSignInManager.appleSignInQueue.async { [weak self] in
+            guard let self = self else { return }
+
+            group.enter()
+            self.appleSignInManager.revokeCredential { result in
+                switch result {
+                case .success:
+                    group.leave()
+                case .failure(let err):
+                    shouldContinue = false
+                    group.leave()
+                    group.notify(queue: .main) {
+                        JProgressHUD.shared.showFailure(text: err.localizedDescription, view: self.view)
+                    }
+                }
+            }
+
+            group.wait()
+            guard shouldContinue else { return }
+            group.enter()
+            self.firebaseManager.clearUserData { result in
+                switch result {
+                case .success:
+                    group.leave()
+                case .failure(let err):
+                    shouldContinue = false
+                    group.leave()
+                }
+            }
+
+            group.wait()
+            group.enter()
+            user?.delete { err in
+                if let err = err {
+                    // TODO: - Reauthenticate
+                    shouldContinue = false
+                    group.leave()
+                    group.notify(queue: .main) {
+                        completion(.failure(err))
+                    }
+                } else {
+                    group.leave()
+                    group.notify(queue: .main) {
+                        completion(.success("Successfully delete"))
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -125,7 +187,8 @@ extension PersonalEntryViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let section = Section.allCases[indexPath.section]
-        if section == .person {
+        switch section {
+        case .person:
             guard let cell = tableView.dequeueReusableCell(
                 withIdentifier: PersonalMainThumbnailCell.identifier,
                 for: indexPath) as? PersonalMainThumbnailCell else {
@@ -133,7 +196,8 @@ extension PersonalEntryViewController: UITableViewDataSource {
             }
             cell.layoutCell(isEditing: false)
             return cell
-        } else if section == .logout {
+
+        case .signout:
             guard let cell = tableView.dequeueReusableCell(
                 withIdentifier: GoNextPageButtonCell.identifier,
                 for: indexPath) as? GoNextPageButtonCell else {
@@ -158,7 +222,46 @@ extension PersonalEntryViewController: UITableViewDataSource {
                 self?.present(alert, animated: true)
             }
             return cell
-        } else {
+
+        case .deleteAccount:
+            guard let cell = tableView.dequeueReusableCell(
+                withIdentifier: GoNextPageButtonCell.identifier,
+                for: indexPath) as? GoNextPageButtonCell else {
+                fatalError("Cannot create go next page button cell")
+            }
+            cell.layoutCellForDeleteAccount()
+            cell.tapHandler = { [weak self] in
+                let alert = UIAlertController(title: "確定要刪除帳號嗎？",
+                                              message: "刪除後所有您的資料將會遺失", preferredStyle: .alert)
+                let yesAction = UIAlertAction(title: "Confirm", style: .destructive) {[weak self]  _ in
+                    guard let self = self else { return }
+                    JProgressHUD.shared.showLoading(view: self.view)
+                    self.deleteAccount { result in
+                        switch result {
+                        case .success:
+                            JProgressHUD.shared.showSuccess(text: "帳號已成功刪除", view: self.view) {
+                                self.signOut { [weak self] result in
+                                    switch result {
+                                    case .success:
+                                        self?.backToRoot()
+                                    case .failure(let err):
+                                        print(err)
+                                    }
+                                }
+                            }
+                        case .failure(let err):
+                            JProgressHUD.shared.showFailure(text: err.localizedDescription, view: self.view)
+                        }
+                    }
+                }
+                let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+                alert.addAction(cancelAction)
+                alert.addAction(yesAction)
+                self?.present(alert, animated: true)
+            }
+            return cell
+
+        default:
             guard let cell = tableView.dequeueReusableCell(
                 withIdentifier: GoNextPageButtonCell.identifier,
                 for: indexPath) as? GoNextPageButtonCell else {
@@ -178,19 +281,23 @@ extension UIViewController {
         if let rootVC = view.window?.rootViewController as? MockLoginViewController {
             rootVC.dismiss(animated: false)
         } else {
-            tabBarController?.selectedIndex = 0
+            // 下一行是假登入用
+//            tabBarController?.selectedIndex = 0
 
             let mainStoryboard = UIStoryboard(name: StoryboardCategory.main.rawValue, bundle: nil)
-//            guard let loginVC = mainStoryboard.instantiateViewController(
-//                withIdentifier: LoginViewController.identifier
-//                ) as? LoginViewController else {
-//                fatalError("Cannot instantiate log in vc")
-//            }
             guard let loginVC = mainStoryboard.instantiateViewController(
-                withIdentifier: MockLoginViewController.identifier
-            ) as? MockLoginViewController else {
+                withIdentifier: LoginViewController.identifier
+                ) as? LoginViewController else {
                 fatalError("Cannot instantiate log in vc")
             }
+
+            // 下一段是假登入用
+//            guard let loginVC = mainStoryboard.instantiateViewController(
+//                withIdentifier: MockLoginViewController.identifier
+//            ) as? MockLoginViewController else {
+//                fatalError("Cannot instantiate log in vc")
+//            }
+            
             loginVC.modalPresentationStyle = .fullScreen
             present(loginVC, animated: false)
         }

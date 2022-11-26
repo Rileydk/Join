@@ -79,7 +79,12 @@ class ChatListViewController: BaseViewController {
                     self.groupMessageList = listItem
                     JProgressHUD.shared.dismiss()
                 case .failure(let err):
-                    JProgressHUD.shared.showFailure(text: err.localizedDescription, view: self.view)
+                    self.groupMessageList = []
+                    if err as? CommonError == .noMessage {
+                        JProgressHUD.shared.dismiss()
+                    } else {
+                        JProgressHUD.shared.showFailure(text: err.localizedDescription, view: self.view)
+                    }
                 }
             }
 
@@ -95,7 +100,11 @@ class ChatListViewController: BaseViewController {
                     JProgressHUD.shared.dismiss()
                 case .failure(let err):
                     self.messageList = []
-                    JProgressHUD.shared.showFailure(text: err.localizedDescription, view: self.view)
+                    if err as? CommonError == .noMessage {
+                        JProgressHUD.shared.dismiss()
+                    } else {
+                        JProgressHUD.shared.showFailure(text: err.localizedDescription, view: self.view)
+                    }
                 }
             }
         }

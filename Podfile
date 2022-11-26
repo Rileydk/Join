@@ -14,5 +14,7 @@ target 'Join' do
   pod 'IQKeyboardManagerSwift'
   pod 'JGProgressHUD'
   pod 'Kingfisher'
+  pod 'KeychainAccess'
+  pod 'SwiftJWT'
 
 end
