@@ -38,9 +38,11 @@ class PersonalProfileEditViewController: BaseViewController {
     }
 
     let firebaseManager = FirebaseManager.shared
+    var notloadedFromDBYet = true
     var user: JUser? {
         didSet {
-            if tableView != nil {
+            if notloadedFromDBYet {
+                notloadedFromDBYet = false
                 tableView.reloadData()
             }
         }

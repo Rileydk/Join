@@ -297,7 +297,7 @@ extension UIViewController {
 //            ) as? MockLoginViewController else {
 //                fatalError("Cannot instantiate log in vc")
 //            }
-            
+
             loginVC.modalPresentationStyle = .fullScreen
             present(loginVC, animated: false)
         }
