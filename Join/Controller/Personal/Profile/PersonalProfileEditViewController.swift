@@ -8,6 +8,11 @@
 import UIKit
 
 class PersonalProfileEditViewController: BaseViewController {
+    enum SourceType {
+        case signup
+        case editProfile
+    }
+
     enum Section: CaseIterable {
         case thumbnail
         case basic
@@ -38,15 +43,18 @@ class PersonalProfileEditViewController: BaseViewController {
     }
 
     let firebaseManager = FirebaseManager.shared
+    var notloadedFromDBYet = true
     var user: JUser? {
         didSet {
-            if tableView != nil {
+            if notloadedFromDBYet && tableView != nil {
+                notloadedFromDBYet = false
                 tableView.reloadData()
             }
         }
     }
     var oldUserInfo: JUser?
     var newImage: UIImage?
+    var sourceType: SourceType = .editProfile
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -134,8 +142,23 @@ class PersonalProfileEditViewController: BaseViewController {
                         group.leave()
                         group.notify(queue: .main) {
                             UserDefaults.standard.setUserBasicInfo(user: user)
-                            JProgressHUD.shared.showSuccess(view: self.view) {
-                                self.navigationController?.popViewController(animated: true)
+                            JProgressHUD.shared.showSuccess(view: self.view) { [weak self] in
+                                guard let self = self else { return }
+                                switch self.sourceType {
+                                case .signup:
+                                    let mainStoryboard = UIStoryboard(name: StoryboardCategory.main.rawValue, bundle: nil)
+                                    guard let tabBarController = mainStoryboard.instantiateViewController(
+                                        withIdentifier: TabBarController.identifier
+                                    ) as? TabBarController else {
+                                        fatalError("Cannot load tab bar controller")
+                                    }
+                                    tabBarController.selectedIndex = 0
+                                    tabBarController.modalPresentationStyle = .fullScreen
+                                    self.present(tabBarController, animated: false)
+                                    
+                                case .editProfile:
+                                    self.navigationController?.popViewController(animated: true)
+                                }
                             }
                         }
                     case .failure(let err):
@@ -167,7 +190,7 @@ extension PersonalProfileEditViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let section = Section.allCases[indexPath.section]
         if section == .thumbnail {
-            return 180
+            return 130
         } else if section == .basic {
             return 90
         } else if section == .introduction {

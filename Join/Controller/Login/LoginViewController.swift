@@ -20,6 +20,11 @@ class LoginViewController: BaseViewController {
         setupProviderLoginView()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tabBarController?.tabBar.isHidden = false
+    }
+
     func setupProviderLoginView() {
         let authorizationButton = ASAuthorizationAppleIDButton(type: .signIn, style: .white)
         authorizationButton.addTarget(self, action: #selector(startSignInWithAppleFlow), for: .touchUpInside)
@@ -104,6 +109,7 @@ extension LoginViewController: ASAuthorizationControllerDelegate {
                                     fatalError("Cannot instantiate profile edit vc")
                                 }
                                 profileEditVC.user = user
+                                profileEditVC.sourceType = .signup
 
                                 let navController = UINavigationController(rootViewController: profileEditVC)
                                 navController.modalPresentationStyle = .fullScreen
