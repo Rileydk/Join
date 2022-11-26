@@ -28,4 +28,8 @@ class KeychainManager {
             return nil
         }
     }
+
+    func clear(key: String) {
+        service[key] = nil
+    }
 }

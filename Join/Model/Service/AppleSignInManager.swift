@@ -41,6 +41,7 @@ class AppleSignInManager {
     static let shared = AppleSignInManager()
     private init() {}
 
+    let appleSignInQueue = DispatchQueue(label: "appleSignInQueue", attributes: .concurrent)
     let keychainManager = KeychainManager.shared
     let decoder = JSONDecoder()
 

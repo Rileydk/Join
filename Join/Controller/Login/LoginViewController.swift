@@ -41,7 +41,6 @@ extension LoginViewController: ASAuthorizationControllerDelegate {
     @available(iOS 13, *)
     // swiftlint:disable line_length
     func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
-
         appleSignInManager.signInApple(authorization: authorization) { [weak self] result in
             guard let self = self else { return }
             switch result {
@@ -53,10 +52,7 @@ extension LoginViewController: ASAuthorizationControllerDelegate {
                     self.firebaseManager.lookUpUser(userID: firUser.uid) { result in
                         switch result {
                         case .success(let user):
-                            UserDefaults.standard.setValue(user.id, forKey: UserDefaults.UserKey.uidKey)
-                            UserDefaults.standard.setValue(user.thumbnailURL, forKey: UserDefaults.UserKey.userThumbnailURLKey)
-                            UserDefaults.standard.setValue(user.name, forKey: UserDefaults.UserKey.userNameKey)
-                            UserDefaults.standard.setValue(user.interests, forKey: UserDefaults.UserKey.userInterestsKey)
+                            UserDefaults.standard.setUserBasicInfo(user: user)
 
                             shouldContinue = false
                             group.leave()
@@ -98,13 +94,13 @@ extension LoginViewController: ASAuthorizationControllerDelegate {
                     self.firebaseManager.set(user: newUser) { result in
                         switch result {
                         case .success(let user):
-                            UserDefaults.standard.setValue(user.id, forKey: UserDefaults.UserKey.uidKey)
-
+                            UserDefaults.standard.setUserBasicInfo(user: user)
+                            group.leave()
                             group.notify(queue: .main) {
                                 let storyboard = UIStoryboard(name: StoryboardCategory.personal.rawValue, bundle: nil)
                                 guard let profileEditVC = storyboard.instantiateViewController(
                                     withIdentifier: PersonalProfileEditViewController.identifier
-                                ) as? PersonalProfileEditViewController else {
+                                    ) as? PersonalProfileEditViewController else {
                                     fatalError("Cannot instantiate profile edit vc")
                                 }
                                 profileEditVC.user = user
@@ -118,6 +114,7 @@ extension LoginViewController: ASAuthorizationControllerDelegate {
                             }
 
                         case .failure(let err):
+                            group.leave()
                             group.notify(queue: .main) {
                                 JProgressHUD.shared.showFailure(text: err.localizedDescription, view: self.view)
                             }

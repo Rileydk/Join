@@ -67,7 +67,7 @@ class MyPostsViewController: BaseViewController {
 
             let group = DispatchGroup()
             group.enter()
-            self.firebaseManager.getAllMyProjectsID { result in
+            self.firebaseManager.getAllMyProjectsItems { result in
                 switch result {
                 case .success(let postsItems):
                     projectsID = postsItems.map { $0.projectID }

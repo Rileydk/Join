@@ -92,54 +92,71 @@ class PersonalEntryViewController: UIViewController {
         UserDefaults.standard.setValue(nil, forKey: UserDefaults.UserKey.userInterestsKey)
     }
 
-    func signOut(completion: @escaping (Result<String, Error>) -> Void) {
+    func signOut(completion: ((Result<String, Error>) -> Void)? = nil) {
         clearUserDefaults()
-        // 下一行是假資料用
-//        completion(.success("Successfully signed out"))
 
         do {
             try firebaseManager.myAuth.signOut()
-            completion(.success("Success"))
+            completion?(.success("Success"))
         } catch let signOutError as NSError {
-            completion(.failure(signOutError))
+            completion?(.failure(signOutError))
         }
     }
 
     func deleteAccount(completion: @escaping (Result<String, Error>) -> Void) {
-        JProgressHUD.shared.showLoading(text: Constant.Alert.longDurationProcess,view: self.view)
-
         let user = Auth.auth().currentUser
         let group = DispatchGroup()
         var shouldContinue = true
+        JProgressHUD.shared.showLoading(text: Constant.Alert.longDurationProcess,view: self.view)
 
-//        group.enter()
-        appleSignInManager.revokeCredential { result in
-            switch result {
-            case .success:
-                print("Successfully revoked")
-//                group.leave()
-            case .failure(let err):
-                print("err:", err.self.localizedDescription)
-//                shouldContinue = false
-//                group.leave()
-//                group.notify(queue: .main) {
-//                    JProgressHUD.shared.showFailure(text: err.localizedDescription, view: self.view)
-//                }
+        appleSignInManager.appleSignInQueue.async { [weak self] in
+            guard let self = self else { return }
+
+            group.enter()
+            self.appleSignInManager.revokeCredential { result in
+                switch result {
+                case .success:
+                    group.leave()
+                case .failure(let err):
+                    shouldContinue = false
+                    group.leave()
+                    group.notify(queue: .main) {
+                        JProgressHUD.shared.showFailure(text: err.localizedDescription, view: self.view)
+                    }
+                }
+            }
+
+            group.wait()
+            guard shouldContinue else { return }
+            group.enter()
+            self.firebaseManager.clearUserData { result in
+                switch result {
+                case .success:
+                    group.leave()
+                case .failure(let err):
+                    shouldContinue = false
+                    group.leave()
+                }
+            }
+
+            group.wait()
+            group.enter()
+            user?.delete { err in
+                if let err = err {
+                    // TODO: - Reauthenticate
+                    shouldContinue = false
+                    group.leave()
+                    group.notify(queue: .main) {
+                        completion(.failure(err))
+                    }
+                } else {
+                    group.leave()
+                    group.notify(queue: .main) {
+                        completion(.success("Successfully delete"))
+                    }
+                }
             }
         }
-
-        // firebase delete user data
-
-//        user?.delete { err in
-//            if let err = err {
-//                // TODO: - Reauthenticate
-//                completion(.failure(err))
-//            } else {
-//                completion(.success("Successfully delete"))
-//            }
-//        }
-//
-//        clearUserDefaults()
     }
 }
 
@@ -218,11 +235,20 @@ extension PersonalEntryViewController: UITableViewDataSource {
                                               message: "刪除後所有您的資料將會遺失", preferredStyle: .alert)
                 let yesAction = UIAlertAction(title: "Confirm", style: .destructive) {[weak self]  _ in
                     guard let self = self else { return }
-//                    JProgressHUD.shared.showLoading(view: self.view)
+                    JProgressHUD.shared.showLoading(view: self.view)
                     self.deleteAccount { result in
                         switch result {
                         case .success:
-                            JProgressHUD.shared.showSuccess(text: "帳號已成功刪除", view: self.view)
+                            JProgressHUD.shared.showSuccess(text: "帳號已成功刪除", view: self.view) {
+                                self.signOut { [weak self] result in
+                                    switch result {
+                                    case .success:
+                                        self?.backToRoot()
+                                    case .failure(let err):
+                                        print(err)
+                                    }
+                                }
+                            }
                         case .failure(let err):
                             JProgressHUD.shared.showFailure(text: err.localizedDescription, view: self.view)
                         }

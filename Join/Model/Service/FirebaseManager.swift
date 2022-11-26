@@ -949,6 +949,7 @@ class FirebaseManager {
     }
 
     func getAllMessagesCombinedWithSender(type: ChatroomType, completion: @escaping (Result<[MessageListItem], Error>) -> Void) {
+        var shouldContinue = true
         var messagesList = [MessageListItem]()
 
         firebaseQueue.async { [weak self] in
@@ -963,9 +964,10 @@ class FirebaseManager {
                             chatroomID: $0.chatroomID ?? "",
                             objectID: $0.id, lastTimeInChatroom: Date()
                         )
-                    }.filter { !$0.chatroomID.isEmpty }
+                    }.filter { !($0.chatroomID ?? "").isEmpty }
                     group.leave()
                 case .failure(let error):
+                    shouldContinue = false
                     group.leave()
                     group.notify(queue: .main) {
                         completion(.failure(error))
@@ -974,6 +976,13 @@ class FirebaseManager {
             }
 
             group.wait()
+            if messagesList.isEmpty {
+                shouldContinue = false
+                group.notify(queue: .main) {
+                    completion(.failure(CommonError.noMessage))
+                }
+            }
+            guard shouldContinue else { return }
             group.enter()
             self?.getAllMatchedChatroomMessages(messagesList: messagesList) { result in
                 switch result {
@@ -981,6 +990,7 @@ class FirebaseManager {
                     messagesList = fetchedMessagesList
                     group.leave()
                 case .failure(let error):
+                    shouldContinue = false
                     group.leave()
                     group.notify(queue: .main) {
                         completion(.failure(error))
@@ -989,6 +999,7 @@ class FirebaseManager {
             }
 
             group.wait()
+            guard shouldContinue else { return }
             group.enter()
             self?.getMyLastTimeInChatroom(messagesItems: messagesList, completion: { result in
                 switch result {
@@ -1123,7 +1134,6 @@ class FirebaseManager {
     }
 
     func getUserWorks(userID: UserID, completion: @escaping (Result<[Work], Error>) -> Void) {
-//        let ref = FirestoreMyDocumentEndpoint.myWorks.ref
         let ref = FirestoreEndpoint.users.ref.document(userID).collection("Works")
         ref.getDocuments { (snapshot, err) in
             if let err = err {
@@ -1197,7 +1207,14 @@ class FirebaseManager {
         }
     }
 
-    func getAllMyProjectsID(completion: @escaping (Result<[ProjectItem], Error>) -> Void) {
+    func getAllMyProjectsItems(testID: String? = nil, completion: @escaping (Result<[ProjectItem], Error>) -> Void) {
+//        var ref: CollectionReference
+//        if let testID = testID {
+//            ref = FirestoreEndpoint.users.ref.document(testID).collection("Posts")
+//        } else {
+//            ref = FirestoreMyDocumentEndpoint.myPosts.ref
+//        }
+        //////以上為測試
         let ref = FirestoreMyDocumentEndpoint.myPosts.ref
         ref.getDocuments { (snapshot, err) in
             if let err = err {
@@ -1586,6 +1603,7 @@ class FirebaseManager {
     }
 
     func getAllGroupMessages(completion: @escaping (Result<[GroupMessageListItem], Error>) -> Void) {
+        var shouldContinue = true
         var chatroomIDsBox = [ChatroomID]()
         var groupMessageListItems = [GroupMessageListItem]()
 
@@ -1605,9 +1623,17 @@ class FirebaseManager {
                 }
             }
 
+
             group.wait()
+            if chatroomIDsBox.isEmpty {
+                shouldContinue = false
+                group.notify(queue: .main) {
+                    completion(.failure(CommonError.noMessage))
+                }
+            }
+            guard shouldContinue else { return }
             group.enter()
-            self?.getAllGroupChatroomInfo(chatroomIDs: chatroomIDsBox) { [weak self] result in
+            self?.getAllGroupChatroomInfo(chatroomIDs: chatroomIDsBox) { result in
                 switch result {
                 case .success(let groupListItems):
                     groupMessageListItems = groupListItems
@@ -1619,6 +1645,7 @@ class FirebaseManager {
                             completion(.failure(err))
                         }
                     } else {
+                        shouldContinue = false
                         group.leave()
                         group.notify(queue: .main) {
                             completion(.failure(err))
@@ -1628,6 +1655,7 @@ class FirebaseManager {
             }
 
             group.wait()
+            guard shouldContinue else { return }
             group.enter()
             // swiftlint:disable line_length
             self?.getAllMessagesCombinedWithEachGroup(messagesItems: groupMessageListItems) { result in
@@ -1640,6 +1668,7 @@ class FirebaseManager {
                         print("No message")
                         group.leave()
                     } else {
+                        shouldContinue = false
                         group.leave()
                         group.notify(queue: .main) {
                             completion(.failure(err))
@@ -1649,6 +1678,7 @@ class FirebaseManager {
             }
 
             group.wait()
+            guard shouldContinue else { return }
             group.enter()
             self?.getMyLastTimeInGroupChatroom(type: .group, messagesItems: groupMessageListItems) { result in
                 switch result {
@@ -1891,6 +1921,27 @@ class FirebaseManager {
         }
     }
 
+    func getPrivateChatroomMembers(chatroomID: ChatroomID, completion: @escaping (Result<[ChatroomMember], Error>) -> Void) {
+        let membersRef = FirestoreEndpoint.privateChatroomMembers(chatroomID).ref
+        membersRef.getDocuments { (snapshot, err) in
+            if let err = err {
+                completion(.failure(err))
+            }
+            if let snapshot = snapshot {
+                let members: [ChatroomMember] = snapshot.documents.compactMap {
+                    do {
+                        return try $0.data(as: ChatroomMember.self, decoder: FirebaseManager.decoder)
+                    } catch {
+                        return nil
+                    }
+                }
+                completion(.success(members))
+            } else {
+                completion(.failure(CommonError.noValidQuerysnapshot))
+            }
+        }
+    }
+
     func getMyLastTimeInChatroom(messagesItems: [MessageListItem], completion: @escaping (Result<[MessageListItem], Error>) -> Void) {
         guard let myID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey) else {
             fatalError("Doesn't have user id")
@@ -1935,6 +1986,256 @@ class FirebaseManager {
         }
         group.notify(queue: .main) {
             completion(.success(messagesItems))
+        }
+    }
+
+    func deleteDocument(ref: DocumentReference, completion: (() -> Void)? = nil) {
+        ref.delete() { err in
+            if let err = err {
+                completion?()
+                return
+            }
+            completion?()
+        }
+    }
+
+    func deleteChatroom(chatroomID: ChatroomID, completion: (() -> Void)? = nil) {
+        let group = DispatchGroup()
+        firebaseQueue.async {
+            group.enter()
+            // 刪除聊天室訊息
+            self.getMessages(of: chatroomID) { result in
+                switch result {
+                case .success(let messages):
+                    let messageRef = FirestoreEndpoint.messages(chatroomID).ref
+                    messages.forEach { self.deleteDocument(ref: messageRef.document($0.messageID)) }
+                    group.leave()
+                case .failure(let err):
+                    print(err)
+                    group.leave()
+                }
+            }
+
+            // 刪除聊天室成員
+            group.enter()
+            self.getPrivateChatroomMembers(chatroomID: chatroomID) { result in
+                switch result {
+                case .success(let members):
+                    let membersRef = FirestoreEndpoint.privateChatroomMembers(chatroomID).ref
+                    for member in members {
+                        self.deleteDocument(ref: membersRef.document(member.userID))
+                    }
+                    group.leave()
+                case .failure(let err):
+                    print(err)
+                    group.leave()
+                }
+            }
+
+            // 刪除聊天室
+            group.enter()
+            let chatroomRef = FirestoreEndpoint.chatrooms.ref
+            self.deleteDocument(ref: chatroomRef.document(chatroomID)) {
+                group.leave()
+            }
+
+            group.notify(queue: .main) {
+                print("success")
+            }
+        }
+    }
+
+    // swiftlint:disable function_body_length
+    // swiftlint:disable cyclomatic_complexity
+    func clearUserData(completion: @escaping (Result<String, Error>) -> Void) {
+        guard let myID = myID else { return }
+        let myRef = FirestoreEndpoint.users.ref.document(myID)
+        let group = DispatchGroup()
+
+        var errorOccurred = false
+
+        firebaseQueue.async { [weak self] in
+            guard let self = self else { return }
+
+            // Delete all my projects and records under user
+            group.enter()
+            self.getAllMyProjectsItems(testID: myID) { [weak self] result in
+                guard let self = self else { return }
+                switch result {
+                case .success(let projectIDs):
+
+                    let projectRef = FirestoreEndpoint.projects.ref
+                    projectIDs.forEach { self.deleteDocument(ref: projectRef.document($0.projectID)) }
+                     let myProjectRef = FirestoreMyDocumentEndpoint.myPosts.ref
+                    projectIDs.forEach { self.deleteDocument(ref: myProjectRef.document($0.projectID)) }
+                    group.leave()
+                case .failure(let err):
+                    errorOccurred = true
+                    print(err)
+                    group.leave()
+                }
+            }
+
+            // myWorks
+            // 刪除 user 下的 records 和 works
+            group.wait()
+            group.enter()
+            self.getUserWorks(userID: myID) { result in
+                switch result {
+                case .success(let works):
+                    guard !works.isEmpty else {
+                        group.leave()
+                        return
+                    }
+                    for work in works {
+                        self.getWorkRecords(userID: myID, by: work.workID) { result in
+                            switch result {
+                            case .success(let records):
+
+                                let workRef = FirestoreEndpoint.users.ref.document(myID).collection("Works")
+                                let workRecordRef = workRef.document(work.workID).collection("Records")
+                                records.forEach { self.deleteDocument(ref: workRecordRef.document($0.recordID)) }
+                                self.deleteDocument(ref: workRef.document(work.workID) )
+                                group.leave()
+                            case .failure(let err):
+                                print(err)
+                                group.leave()
+                            }
+                        }
+
+                    }
+                case .failure(let err):
+                    print(err)
+                    errorOccurred = true
+                    group.leave()
+                }
+            }
+
+            // myFriends
+            // 刪除 user 下全部好友、從好友的好友中刪除自己；刪除 user 下好友聊天室、刪除這些好友聊天室及從屬的訊息
+            group.wait()
+            group.enter()
+            self.getAllFriendsAndChatroomsInfo(type: .friend) { result in
+                switch result {
+                case .success(let friendsAndChatrooms):
+                    guard !friendsAndChatrooms.isEmpty else {
+                        group.leave()
+                        return
+                    }
+
+                    let friendsIDs = friendsAndChatrooms.map { $0.id }
+                    let userRef = FirestoreEndpoint.users.ref
+                    // 刪除自己帳號下的好友
+                     let myFriendsRef = FirestoreMyDocumentEndpoint.myFriends.ref
+                    friendsIDs.forEach { self.deleteDocument(ref: myFriendsRef.document($0)) }
+                    // 刪除對方 user / Friends 紀錄下的自己及共同聊天室
+                    friendsIDs.forEach { self.deleteDocument(ref: userRef.document($0).collection("Friends").document(myID)) }
+
+                    let chatroomsIDs = friendsAndChatrooms.map { $0.chatroomID }
+                    for chatroomID in chatroomsIDs {
+                        guard let chatroomID = chatroomID else {
+                            group.leave()
+                            break
+                        }
+                        self.deleteChatroom(chatroomID: chatroomID)
+                    }
+                    group.leave()
+
+                case .failure(let err):
+                    errorOccurred = true
+                    print(err)
+                    group.leave()
+                }
+            }
+
+            // UnknownChat
+            // 刪除所有陌生訊息、對方儲存的紀錄、聊天室紀錄
+            group.wait()
+            group.enter()
+            self.getAllFriendsAndChatroomsInfo(type: .unknown) { result in
+                switch result {
+                case .success(let unknownsAndChatrooms):
+                    guard !unknownsAndChatrooms.isEmpty else {
+                        group.leave()
+                        return
+                    }
+
+                    let unknownsIDs = unknownsAndChatrooms.map { $0.id }
+                    // 刪除自己帳號下的陌生訊息
+                    let myUnknownsRef = FirestoreEndpoint.users.ref.document(myID).collection("UnknownChat")
+                    unknownsIDs.forEach { self.deleteDocument(ref: myUnknownsRef.document($0)) }
+                    // 刪除對方 user / UnknownChat 紀錄下的自己及共同聊天室
+                    let userRef = FirestoreEndpoint.users.ref
+                    unknownsIDs.forEach { self.deleteDocument(ref: userRef.document($0).collection("UnknownChat").document(myID)) }
+                    // 刪除聊天室
+                    let chatroomsIDs = unknownsAndChatrooms.map { $0.chatroomID }
+                    for chatroomID in chatroomsIDs {
+                        guard let chatroomID = chatroomID else {
+                            group.leave()
+                            return
+                        }
+                        self.deleteChatroom(chatroomID: chatroomID)
+                    }
+                    group.leave()
+                case .failure(let err):
+                    print(err)
+                    errorOccurred = true
+                    group.leave()
+                }
+            }
+
+            // myGroupchats
+            // 刪除 user 下的 groupchats、修改成員
+            group.wait()
+            group.enter()
+            self.getAllGroupMessages { result in
+                switch result {
+                case .success(let groupMessageList):
+                    guard !groupMessageList.isEmpty else {
+                        group.leave()
+                        return
+                    }
+
+                    let groupChatroomIDs = groupMessageList.map { $0.chatroomID }
+                    for chatroomID in groupChatroomIDs {
+                        let groupDeleteGroup = DispatchGroup()
+                        groupDeleteGroup.enter()
+                        let myGroupRef = FirestoreMyDocumentEndpoint.myGroupChat.ref
+                        self.deleteDocument(ref: myGroupRef.document(chatroomID)) {
+                            groupDeleteGroup.leave()
+                        }
+
+                        groupDeleteGroup.enter()
+                        let groupChatMembersRef = FirestoreEndpoint.groupMembers(chatroomID).ref
+                        self.deleteDocument(ref: groupChatMembersRef.document(myID)) {
+                            groupDeleteGroup.leave()
+                        }
+
+                        groupDeleteGroup.notify(queue: .main) {
+                            group.leave()
+                        }
+                    }
+                case .failure(let err):
+                    print(err)
+                    errorOccurred = true
+                    group.leave()
+                }
+            }
+
+            // Delete user data
+            group.wait()
+            group.enter()
+            self.deleteDocument(ref: myRef) {
+                group.leave()
+            }
+
+            group.notify(queue: .main) {
+//                if errorOccurred {
+//                    completion(.failure())
+//                } else {
+                    completion(.success("Success"))
+//                }
+            }
         }
     }
 }
