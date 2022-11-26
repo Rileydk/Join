@@ -42,6 +42,11 @@ class PersonalEntryViewController: UIViewController {
     let firebaseManager = FirebaseManager.shared
     let appleSignInManager = AppleSignInManager.shared
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tableView.reloadData()
+    }
+
     func goToNextPage(index: Int) {
         if NextPage.allCases[index] == .profile {
             let personalStoryboard = UIStoryboard(name: StoryboardCategory.personal.rawValue, bundle: nil)

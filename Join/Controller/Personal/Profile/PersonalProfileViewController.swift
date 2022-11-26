@@ -31,11 +31,7 @@ class PersonalProfileViewController: BaseViewController {
     let firebaseManager = FirebaseManager.shared
     let cellBackgroundColor: UIColor = .Gray6 ?? .white
     var userID: UserID?
-    var userData: JUser? {
-        didSet {
-            layoutViews()
-        }
-    }
+    var userData: JUser?
     var relationship: Relationship?
     var workItems = [WorkItem]()
 
@@ -74,7 +70,9 @@ class PersonalProfileViewController: BaseViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        updateData()
+        updateData() { [weak self] in
+            self?.layoutViews()
+        }
     }
 
     func layoutViews() {
@@ -85,7 +83,7 @@ class PersonalProfileViewController: BaseViewController {
             target: self, action: #selector(backToPreviousPage))
     }
 
-    func updateData() {
+    func updateData(completion: (() -> Void)? = nil) {
         guard let userID = userID else {
             fatalError("Doesn't have user id")
         }
@@ -170,6 +168,7 @@ class PersonalProfileViewController: BaseViewController {
                 if shouldContinue {
                     self.updateDatasource()
                     JProgressHUD.shared.dismiss()
+                    completion?()
                 } else {
                     JProgressHUD.shared.showFailure(view: self.view)
                 }
