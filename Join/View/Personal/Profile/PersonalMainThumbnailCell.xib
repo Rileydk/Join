@@ -3,6 +3,7 @@
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -29,6 +30,20 @@
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="k0e-kh-iOT">
+                        <rect key="frame" x="190" y="103" width="20" height="22"/>
+                        <color key="backgroundColor" name="Gray5"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="20" id="7Nz-RI-5B1"/>
+                            <constraint firstAttribute="width" secondItem="k0e-kh-iOT" secondAttribute="height" multiplier="1:1" id="WdD-H2-cLN"/>
+                        </constraints>
+                        <color key="tintColor" name="Gray3"/>
+                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                        <state key="normal" image="camera.circle" catalog="system"/>
+                        <connections>
+                            <action selector="editThumbnailThroughButton:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="3Te-rK-bHl"/>
+                        </connections>
+                    </button>
                 </subviews>
                 <constraints>
                     <constraint firstItem="bdE-35-KQi" firstAttribute="top" secondItem="3kW-06-YJK" secondAttribute="bottom" constant="24" id="IJ2-oM-HEv"/>
@@ -40,9 +55,19 @@
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
                 <outlet property="nameLabel" destination="bdE-35-KQi" id="7tF-Gb-Mdl"/>
+                <outlet property="thumbnailEditButton" destination="k0e-kh-iOT" id="ULc-o7-sg7"/>
                 <outlet property="thumbnailImageView" destination="3kW-06-YJK" id="Wzd-Si-EDW"/>
             </connections>
             <point key="canvasLocation" x="137.68115942028987" y="62.276785714285708"/>
         </tableViewCell>
     </objects>
+    <resources>
+        <image name="camera.circle" catalog="system" width="128" height="121"/>
+        <namedColor name="Gray3">
+            <color red="0.53333333333333333" green="0.53333333333333333" blue="0.53333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="Gray5">
+            <color red="0.8784313725490196" green="0.8784313725490196" blue="0.8784313725490196" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
 </document>

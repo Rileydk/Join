@@ -12,6 +12,7 @@ class PersonalMainThumbnailCell: TableViewCell {
     let firebaseManager = FirebaseManager.shared
 
     @IBOutlet weak var thumbnailImageView: UIImageView!
+    @IBOutlet weak var thumbnailEditButton: UIButton!
     @IBOutlet weak var nameLabel: UILabel!
 
     var updateImage: ((UIImage) -> Void)?
@@ -32,6 +33,13 @@ class PersonalMainThumbnailCell: TableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         thumbnailImageView.layer.cornerRadius = thumbnailImageView.frame.size.width / 2
+        if !thumbnailEditButton.isHidden {
+            thumbnailEditButton.layer.cornerRadius = thumbnailEditButton.frame.width / 2
+            NSLayoutConstraint.activate([
+                thumbnailEditButton.topAnchor.constraint(equalTo: thumbnailImageView.bottomAnchor, constant: -25),
+                thumbnailEditButton.leftAnchor.constraint(equalTo: thumbnailImageView.rightAnchor, constant: -25)
+            ])
+        }
     }
 
     func layoutCell(isEditing: Bool) {
@@ -45,9 +53,20 @@ class PersonalMainThumbnailCell: TableViewCell {
             let tapRecognizer = UITapGestureRecognizer(
                 target: self, action: #selector(showSourceTypeActionSheet))
             thumbnailImageView.addGestureRecognizer(tapRecognizer)
+
+            nameLabel.isHidden = true
+            thumbnailEditButton.isHidden = false
+            thumbnailEditButton.layer.borderWidth = 2
+            thumbnailEditButton.layer.borderColor = UIColor.White?.cgColor
         } else {
             thumbnailImageView.isUserInteractionEnabled = false
+            nameLabel.isHidden = false
+            thumbnailEditButton.isHidden = true
         }
+    }
+    
+    @IBAction func editThumbnailThroughButton(_ sender: UIButton) {
+        showSourceTypeActionSheet()
     }
 
     @objc func showSourceTypeActionSheet() {
