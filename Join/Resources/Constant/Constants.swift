@@ -18,7 +18,7 @@ struct Constant {
         static let skillsColumn = "技術需求"
         static let deadlineColumn = "截止時間"
         static let essentialLocationColumn = "合作地點"
-        static let descriptionSectionTitle = "About"
+        static let descriptionSectionTitle = "專案內容"
         static let contactSectionTitle = "聯絡人"
         static let applicantsSectionTitle = "應徵者"
         static let noApplicantAlertMessage = "目前尚無人應徵"
