@@ -16,25 +16,22 @@ class PortfolioCardCell: CollectionViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
+
+        layer.backgroundColor = UIColor.clear.cgColor
+        layer.masksToBounds = false
+        layer.shadowOpacity = 0.2
+        layer.shadowRadius = 14
+        layer.shadowOffset = CGSize(width: 3, height: 3)
+        layer.shadowColor = UIColor.Gray1?.cgColor
+
+        contentView.backgroundColor = .White
+        contentView.layer.cornerRadius = 8
         contentView.backgroundColor = .Gray6
+        workRecordImageView.clipsToBounds = true
+        workRecordImageView.layer.cornerRadius = 8
+        workRecordImageView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
         workNameLabel.textColor = .Gray2
         lastUpdateTimeLabel.textColor = .Gray3
-
-        containerView.layer.cornerRadius = 14
-        containerView.layer.masksToBounds = true
-        shadowView.backgroundColor = .clear
-        shadowView.layer.masksToBounds = false
-        shadowView.layer.shadowOpacity = 0.2
-        shadowView.layer.shadowRadius = 3
-        shadowView.layer.shadowOffset = CGSize(width: 2, height: 2)
-        shadowView.layer.shadowColor = UIColor.black.cgColor
-    }
-
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        shadowView.layer.shadowPath = UIBezierPath(
-            roundedRect: shadowView.bounds,cornerRadius: 14)
-            .cgPath
     }
 
     func layoutCell(workItem: WorkItem) {

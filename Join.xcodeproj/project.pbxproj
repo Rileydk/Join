@@ -140,6 +140,8 @@
 		BFB72ED529334213006F4651 /* BadgeSupplementaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB72ED429334213006F4651 /* BadgeSupplementaryView.swift */; };
 		BFB72ED82933604C006F4651 /* NoApplicantTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB72ED62933604C006F4651 /* NoApplicantTableViewCell.swift */; };
 		BFB72ED92933604C006F4651 /* NoApplicantTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BFB72ED72933604C006F4651 /* NoApplicantTableViewCell.xib */; };
+		BFB72EDC2933735B006F4651 /* NoDataHintCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB72EDA2933735B006F4651 /* NoDataHintCollectionViewCell.swift */; };
+		BFB72EDD2933735B006F4651 /* NoDataHintCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BFB72EDB2933735B006F4651 /* NoDataHintCollectionViewCell.xib */; };
 		BFF8A4AE2913A92300ADC950 /* ProjectDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF8A4AD2913A92300ADC950 /* ProjectDetailsViewController.swift */; };
 		BFF8A4B32913AD3000ADC950 /* BigImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF8A4B12913AD3000ADC950 /* BigImageCell.swift */; };
 		BFF8A4B42913AD3000ADC950 /* BigImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BFF8A4B22913AD3000ADC950 /* BigImageCell.xib */; };
@@ -313,6 +315,8 @@
 		BFB72ED429334213006F4651 /* BadgeSupplementaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgeSupplementaryView.swift; sourceTree = "<group>"; };
 		BFB72ED62933604C006F4651 /* NoApplicantTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoApplicantTableViewCell.swift; sourceTree = "<group>"; };
 		BFB72ED72933604C006F4651 /* NoApplicantTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NoApplicantTableViewCell.xib; sourceTree = "<group>"; };
+		BFB72EDA2933735B006F4651 /* NoDataHintCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoDataHintCollectionViewCell.swift; sourceTree = "<group>"; };
+		BFB72EDB2933735B006F4651 /* NoDataHintCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NoDataHintCollectionViewCell.xib; sourceTree = "<group>"; };
 		BFF8A4AD2913A92300ADC950 /* ProjectDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectDetailsViewController.swift; sourceTree = "<group>"; };
 		BFF8A4B12913AD3000ADC950 /* BigImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigImageCell.swift; sourceTree = "<group>"; };
 		BFF8A4B22913AD3000ADC950 /* BigImageCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BigImageCell.xib; sourceTree = "<group>"; };
@@ -483,6 +487,8 @@
 				BF3D837B2928E231009F903F /* PortfolioCardCell.xib */,
 				BFF8A4D12914C79900ADC950 /* PersonBasicCell.swift */,
 				BFF8A4D22914C79900ADC950 /* PersonBasicCell.xib */,
+				BFB72EDA2933735B006F4651 /* NoDataHintCollectionViewCell.swift */,
+				BFB72EDB2933735B006F4651 /* NoDataHintCollectionViewCell.xib */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -912,6 +918,7 @@
 				BFB72ECF29332AAF006F4651 /* GroupMemberCircleCollectionViewCell.xib in Resources */,
 				BF3D83752928D11D009F903F /* ProfileActionButtonsCell.xib in Resources */,
 				BF02714D29238D42000EA2F8 /* SingleLineInputCell.xib in Resources */,
+				BFB72EDD2933735B006F4651 /* NoDataHintCollectionViewCell.xib in Resources */,
 				BFF8A4CA2913EE4C00ADC950 /* PersonalMainThumbnailCell.xib in Resources */,
 				BF42FA41290BE2AC00501789 /* LaunchScreen.storyboard in Resources */,
 				BFF8A4EB29164BF500ADC950 /* MessageCell.xib in Resources */,
@@ -1022,6 +1029,7 @@
 				BF42FABF290FF65300501789 /* MemberCell.swift in Sources */,
 				BF326C22292CB21600898444 /* TextFieldComboAmountFieldCell.swift in Sources */,
 				BFF8A4D62915009B00ADC950 /* OthersProfileViewController.swift in Sources */,
+				BFB72EDC2933735B006F4651 /* NoDataHintCollectionViewCell.swift in Sources */,
 				BF12944B292A0AA200AA631E /* RelationshipButtonsCell.swift in Sources */,
 				BF42FADC2912967900501789 /* IdeaCell.swift in Sources */,
 				BF3D836F2928CDAF009F903F /* PersonalMainThumbnailCollectionCell.swift in Sources */,

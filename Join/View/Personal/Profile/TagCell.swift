@@ -12,8 +12,8 @@ class TagCell: CollectionViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        tagLabel.layer.backgroundColor = (UIColor.Yellow2 ?? .lightGray).cgColor
-        tagLabel.textColor = .Gray3
+        tagLabel.layer.backgroundColor = (UIColor.Yellow2 ?? .lightGray).withAlphaComponent(0.8).cgColor
+        tagLabel.textColor = .Gray3?.withAlphaComponent(0.8)
     }
 
     override func layoutSubviews() {
