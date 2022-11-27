@@ -39,6 +39,8 @@ struct JUser: Codable, Hashable {
     var sentRequests = [UserID]()
     var receivedRequests = [UserID]()
 
+    static let mockUser = JUser(id: "", name: "", email: "")
+
     var toDict: [String: Any] {
         return [
             "id": id as Any,

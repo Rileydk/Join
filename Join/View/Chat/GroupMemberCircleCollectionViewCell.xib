@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="GroupMemberCircleCollectionViewCell" customModule="Join" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="87" height="104"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="87" height="104"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="BdU-2j-Q0p">
+                        <rect key="frame" x="13.5" y="12" width="60" height="60"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="60" id="86D-kd-NQN"/>
+                            <constraint firstAttribute="width" secondItem="BdU-2j-Q0p" secondAttribute="height" multiplier="1:1" id="GWa-7e-ajL"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I30-rF-r5J">
+                        <rect key="frame" x="13.5" y="78" width="60" height="19.5"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                        <color key="textColor" name="Gray1"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5VP-gl-akD">
+                        <rect key="frame" x="67.5" y="10" width="8" height="8"/>
+                        <constraints>
+                            <constraint firstAttribute="width" secondItem="5VP-gl-akD" secondAttribute="height" multiplier="1:1" id="IhS-T2-ODA"/>
+                            <constraint firstAttribute="width" constant="18" id="tbd-LF-m3F"/>
+                        </constraints>
+                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                        <state key="normal" image="Icons_24px_Close"/>
+                    </button>
+                </subviews>
+            </view>
+            <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <constraints>
+                <constraint firstItem="I30-rF-r5J" firstAttribute="leading" secondItem="BdU-2j-Q0p" secondAttribute="leading" id="3w3-lo-C6t"/>
+                <constraint firstItem="I30-rF-r5J" firstAttribute="top" secondItem="BdU-2j-Q0p" secondAttribute="bottom" constant="6" id="KRz-dv-Q9f"/>
+                <constraint firstItem="BdU-2j-Q0p" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="12" id="Nhg-t4-sk2"/>
+                <constraint firstItem="BdU-2j-Q0p" firstAttribute="centerX" secondItem="ZTg-uK-7eu" secondAttribute="centerX" id="Qht-K5-xgD"/>
+                <constraint firstItem="I30-rF-r5J" firstAttribute="centerX" secondItem="ZTg-uK-7eu" secondAttribute="centerX" id="U5z-hX-BkB"/>
+                <constraint firstItem="I30-rF-r5J" firstAttribute="trailing" secondItem="BdU-2j-Q0p" secondAttribute="trailing" id="x0f-XI-ApM"/>
+            </constraints>
+            <size key="customSize" width="87" height="104"/>
+            <connections>
+                <outlet property="deleteBadgeButton" destination="5VP-gl-akD" id="LLO-RS-75b"/>
+                <outlet property="nameLabel" destination="I30-rF-r5J" id="xic-i5-QOr"/>
+                <outlet property="thumbnailImageView" destination="BdU-2j-Q0p" id="wUG-Zv-AIz"/>
+            </connections>
+            <point key="canvasLocation" x="163.04347826086959" y="130.58035714285714"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <image name="Icons_24px_Close" width="24" height="24"/>
+        <namedColor name="Gray1">
+            <color red="0.22745098039215686" green="0.22745098039215686" blue="0.22745098039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>
