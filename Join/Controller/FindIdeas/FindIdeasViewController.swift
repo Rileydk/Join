@@ -67,6 +67,8 @@ class FindIdeasViewController: BaseViewController {
     }
 
     func getProjects() {
+        JProgressHUD.shared.showLoading(view: self.view)
+
         var friendsProjects = [Project]()
         var interestProjects = [Project]()
 
@@ -74,14 +76,15 @@ class FindIdeasViewController: BaseViewController {
             let group = DispatchGroup()
             group.enter()
             self.firebaseManager.getAllProjects { [weak self] result in
+                guard let self = self else { return }
                 switch result {
                 case .success(let projects):
-                    self?.projects = projects
+                    self.projects = projects
                     group.leave()
                 case .failure(let error):
                     group.leave()
                     group.notify(queue: .main) {
-                        print(error)
+                        JProgressHUD.shared.showFailure(text: error.localizedDescription, view: self.view)
                     }
                 }
             }
@@ -100,7 +103,7 @@ class FindIdeasViewController: BaseViewController {
                 case .failure(let error):
                     group.leave()
                     group.notify(queue: .main) {
-                        print(error)
+                        JProgressHUD.shared.showFailure(text: error.localizedDescription, view: self.view)
                     }
                 }
             }
@@ -124,24 +127,13 @@ class FindIdeasViewController: BaseViewController {
                     group.notify(queue: .main) { [unowned self] in
                         recommendedProjects = interestProjects
                         restProjects = projects
-
-//                        recommendedProjects = friendsProjects
-//                        recommendedProjects += interestProjects.filter { interestProject in
-//                            !recommendedProjects.contains { recommendedProject in
-//                                interestProject.projectID == recommendedProject.projectID
-//                            }
-//                        }
-//                        restProjects = projects.filter { project in
-//                            !recommendedProjects.contains { recommendedProject in
-//                                project.projectID == recommendedProject.projectID
-//                            }
-//                        }
                         self.updateDatasource()
+                        JProgressHUD.shared.showSuccess(view: self.view)
                     }
                 case .failure(let err):
                     group.leave()
                     group.notify(queue: .main) {
-                        print(err)
+                        JProgressHUD.shared.showFailure(text: err.localizedDescription, view: self.view)
                     }
                 }
             }
