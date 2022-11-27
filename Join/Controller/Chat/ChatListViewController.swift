@@ -61,7 +61,7 @@ class ChatListViewController: BaseViewController {
             tabSegmentedControl.setTitle(types[i].buttonTitle, forSegmentAt: i)
         }
         tabSegmentedControl.selectedSegmentIndex = types.firstIndex(of: .friend)!
-        addGroupChatroomBarButton.tintColor = .Blue3
+        addGroupChatroomBarButton.tintColor = .White
     }
 
     func getMessageList() {

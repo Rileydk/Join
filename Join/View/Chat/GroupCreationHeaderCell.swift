@@ -33,9 +33,6 @@ class GroupCreationHeaderCell: CollectionViewCell {
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(addPhoto))
         groupImageView.addGestureRecognizer(tapGestureRecognizer)
         groupImageView.contentMode = .scaleAspectFill
-        imageEditButton.backgroundColor = .Gray5
-        imageEditButton.layer.borderWidth = 2
-        imageEditButton.layer.borderColor = UIColor.White?.cgColor
     }
 
     override func layoutSubviews() {
@@ -58,6 +55,10 @@ class GroupCreationHeaderCell: CollectionViewCell {
             string: defaultGroupName, attributes: [
                 NSAttributedString.Key.foregroundColor: (UIColor.Gray3?.withAlphaComponent(0.7) ?? .lightGray).cgColor
             ])
+//        imageEditButton.tintColor = .Red
+//        imageEditButton.backgroundColor = .Blue1
+        imageEditButton.layer.borderWidth = 2
+        imageEditButton.layer.borderColor = UIColor.White?.cgColor
     }
 
     @IBAction func editGroupImage(_ sender: UIButton) {

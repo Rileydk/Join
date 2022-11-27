@@ -34,6 +34,7 @@ class GroupChatroomViewController: BaseViewController {
             tableView.backgroundColor = .Blue4
             tableView.separatorStyle = .none
             tableView.allowsSelection = false
+            tableView.contentInset = .init(top: 20, left: 0, bottom: 15, right: 0)
         }
     }
 
