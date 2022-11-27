@@ -12,7 +12,7 @@ class ProjectTitleCell: TableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        contentView.backgroundColor = .White
     }
 
     func layoutCell(title: String?) {

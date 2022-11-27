@@ -166,7 +166,7 @@ extension FindIdeasViewController {
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 3)
 
         let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = .init(top: 28, leading: 16, bottom: 20, trailing: 20)
+        section.contentInsets = Constant.FindIdeas.projectsTopHorizontalScrollingContentInsets
         section.orthogonalScrollingBehavior = .groupPaging
 
         return section
@@ -181,13 +181,13 @@ extension FindIdeasViewController {
 
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1),
-            heightDimension: .estimated(140)
+            heightDimension: .estimated(150)
         )
         let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
 
         let section = NSCollectionLayoutSection(group: group)
-        section.interGroupSpacing = 28
-        section.contentInsets = .init(top: 0, leading: 16, bottom: 20, trailing: 16)
+        section.interGroupSpacing = Constant.FindIdeas.projectsInterGroupSpacing
+        section.contentInsets = Constant.FindIdeas.projectsPageContentInsets
         return section
     }
 

@@ -29,6 +29,7 @@ class ContactCell: TableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
+        contentView.backgroundColor = .White
         thumbnailImageView.isUserInteractionEnabled = true
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(goProfilePage))
         thumbnailImageView.addGestureRecognizer(tapGestureRecognizer)
