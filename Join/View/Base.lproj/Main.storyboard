@@ -109,10 +109,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="xXt-pa-GFz">
-                                <rect key="frame" x="88" y="739" width="238" height="55"/>
+                                <rect key="frame" x="87" y="749" width="240" height="45"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" secondItem="xXt-pa-GFz" secondAttribute="height" multiplier="13:3" id="VgE-I7-h8X"/>
-                                    <constraint firstAttribute="height" constant="55" id="qYa-oj-vtk"/>
+                                    <constraint firstAttribute="width" secondItem="xXt-pa-GFz" secondAttribute="height" multiplier="16:3" id="VgE-I7-h8X"/>
+                                    <constraint firstAttribute="height" constant="45" id="qYa-oj-vtk"/>
                                 </constraints>
                             </stackView>
                         </subviews>
