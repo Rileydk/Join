@@ -137,6 +137,7 @@
 		BFB72ECF29332AAF006F4651 /* GroupMemberCircleCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BFB72ECD29332AAF006F4651 /* GroupMemberCircleCollectionViewCell.xib */; };
 		BFB72ED229332B07006F4651 /* AddNewMemberCircleCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB72ED029332B07006F4651 /* AddNewMemberCircleCollectionViewCell.swift */; };
 		BFB72ED329332B07006F4651 /* AddNewMemberCircleCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BFB72ED129332B07006F4651 /* AddNewMemberCircleCollectionViewCell.xib */; };
+		BFB72ED529334213006F4651 /* BadgeSupplementaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB72ED429334213006F4651 /* BadgeSupplementaryView.swift */; };
 		BFF8A4AE2913A92300ADC950 /* ProjectDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF8A4AD2913A92300ADC950 /* ProjectDetailsViewController.swift */; };
 		BFF8A4B32913AD3000ADC950 /* BigImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF8A4B12913AD3000ADC950 /* BigImageCell.swift */; };
 		BFF8A4B42913AD3000ADC950 /* BigImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BFF8A4B22913AD3000ADC950 /* BigImageCell.xib */; };
@@ -307,6 +308,7 @@
 		BFB72ECD29332AAF006F4651 /* GroupMemberCircleCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GroupMemberCircleCollectionViewCell.xib; sourceTree = "<group>"; };
 		BFB72ED029332B07006F4651 /* AddNewMemberCircleCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewMemberCircleCollectionViewCell.swift; sourceTree = "<group>"; };
 		BFB72ED129332B07006F4651 /* AddNewMemberCircleCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddNewMemberCircleCollectionViewCell.xib; sourceTree = "<group>"; };
+		BFB72ED429334213006F4651 /* BadgeSupplementaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgeSupplementaryView.swift; sourceTree = "<group>"; };
 		BFF8A4AD2913A92300ADC950 /* ProjectDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectDetailsViewController.swift; sourceTree = "<group>"; };
 		BFF8A4B12913AD3000ADC950 /* BigImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigImageCell.swift; sourceTree = "<group>"; };
 		BFF8A4B22913AD3000ADC950 /* BigImageCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BigImageCell.xib; sourceTree = "<group>"; };
@@ -814,6 +816,7 @@
 				BF9A86B0291E3AE800BF934D /* AddNewMemberCell.xib */,
 				BFB72ECC29332AAF006F4651 /* GroupMemberCircleCollectionViewCell.swift */,
 				BFB72ECD29332AAF006F4651 /* GroupMemberCircleCollectionViewCell.xib */,
+				BFB72ED429334213006F4651 /* BadgeSupplementaryView.swift */,
 				BFB72ED029332B07006F4651 /* AddNewMemberCircleCollectionViewCell.swift */,
 				BFB72ED129332B07006F4651 /* AddNewMemberCircleCollectionViewCell.xib */,
 			);
@@ -1049,6 +1052,7 @@
 				BF326C11292BBAB200898444 /* TableViewSimpleHeaderView.swift in Sources */,
 				BFF8A4F32917982B00ADC950 /* ChatListViewController.swift in Sources */,
 				BFF8A4D32914C79900ADC950 /* PersonBasicCell.swift in Sources */,
+				BFB72ED529334213006F4651 /* BadgeSupplementaryView.swift in Sources */,
 				BF9A867D2918FB1800BF934D /* FriendCell.swift in Sources */,
 				BF42FACF2912557500501789 /* UIImage+Ext.swift in Sources */,
 				BF42FAB2290FAC2000501789 /* Project.swift in Sources */,

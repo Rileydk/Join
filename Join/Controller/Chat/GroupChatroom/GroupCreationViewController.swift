@@ -14,7 +14,7 @@ class GroupCreationViewController: BaseViewController {
     }
 
     enum Item: Hashable {
-        case header
+        case header(String)
         case member(JUser)
     }
 
@@ -29,6 +29,7 @@ class GroupCreationViewController: BaseViewController {
             collectionView.register(
                 UINib(nibName: AddNewMemberCircleCollectionViewCell.identifier, bundle: nil),
                 forCellWithReuseIdentifier: AddNewMemberCircleCollectionViewCell.identifier)
+//            collectionView.register(BadgeSupplementaryView.self, forSupplementaryViewOfKind: "badge-element-kind", withReuseIdentifier: BadgeSupplementaryView.identifier)
             collectionView.setCollectionViewLayout(createLayout(), animated: true)
             collectionView.delegate = self
             configureDatasource()
@@ -179,8 +180,15 @@ extension GroupCreationViewController {
     }
 
     func createGroupMemberSelectionSection() -> NSCollectionLayoutSection {
+//        let anchorEdges: NSDirectionalRectEdge = [.top, .trailing]
+//        let offset = CGPoint(x: 0.3, y: -0.3)
+//        let badgeAnchor = NSCollectionLayoutAnchor(edges: anchorEdges, fractionalOffset: offset)
+//        let badgeSize = NSCollectionLayoutSize(widthDimension: .absolute(20), heightDimension: .absolute(20))
+//        let badge = NSCollectionLayoutSupplementaryItem(layoutSize: badgeSize, elementKind: "badge-element-kind", containerAnchor: badgeAnchor)
+
         let itemSize = NSCollectionLayoutSize(widthDimension: .absolute(50),
                                               heightDimension: .estimated(130))
+//        let item = NSCollectionLayoutItem(layoutSize: itemSize, supplementaryItems: [badge])
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
 
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
@@ -217,13 +225,22 @@ extension GroupCreationViewController {
         datasource = GroupDatasource(collectionView: collectionView) { [weak self] (collectionView, indexPath, item) -> UICollectionViewCell? in
             return self?.createCell(collectionView: collectionView, indexPath: indexPath, item: item)
         }
+
+//        datasource.supplementaryViewProvider = { (collectionView: UICollectionView, kind: String, indexPath: IndexPath) -> UICollectionReusableView? in
+//
+//            guard let badgeView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: BadgeSupplementaryView.identifier, for: indexPath) as? BadgeSupplementaryView else {
+//                return nil
+//            }
+//            return badgeView
+//        }
+
         updateDatasource()
     }
 
     // swiftlint:disable line_length
     func createCell(collectionView: UICollectionView, indexPath: IndexPath, item: Item) -> UICollectionViewCell {
         switch item {
-        case .header:
+        case .header(let groupName):
             guard let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: GroupCreationHeaderCell.identifier,
                 for: indexPath) as? GroupCreationHeaderCell else {
@@ -231,7 +248,7 @@ extension GroupCreationViewController {
             }
             cell.delegate = self
             if let userImageURL = UserDefaults.standard.string(forKey: UserDefaults.UserKey.userThumbnailURLKey) {
-                cell.layoutCell(defaultGroupName: defaultGroupName, imageURL: userImageURL)
+                cell.layoutCell(defaultGroupName: groupName, imageURL: userImageURL)
             }
             cell.alertPresentHandler = { [weak self] alert in
                 self?.present(alert, animated: true)
@@ -252,10 +269,17 @@ extension GroupCreationViewController {
                 return cell
 
             } else {
+
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: GroupMemberCircleCollectionViewCell.identifier, for: indexPath) as? GroupMemberCircleCollectionViewCell else {
                     fatalError("Cannot create group member circle collection view cell")
                 }
                 cell.layoutCell(user: user)
+                if indexPath.row == 1{
+                    cell.deleteBadgeButton.isHidden = true
+                }
+                cell.deleteHandler = { [weak self] in
+                    self?.selectedFriends.remove(at: indexPath.row - 2)
+                }
                 return cell
             }
         }
@@ -264,8 +288,13 @@ extension GroupCreationViewController {
     func updateDatasource() {
         var snapshot = NSDiffableDataSourceSnapshot<Section, Item>()
         snapshot.appendSections(Section.allCases)
-        snapshot.appendItems([.header], toSection: .header)
-        snapshot.appendItems([.member(JUser.mockUser)] + selectedFriends.map { .member($0) }, toSection: .members)
+        snapshot.appendItems([.header(defaultGroupName)], toSection: .header)
+        let myUserData = JUser(
+            id: UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey)!,
+            name: UserDefaults.standard.string(forKey: UserDefaults.UserKey.userNameKey)!,
+            email: "",
+            thumbnailURL: UserDefaults.standard.string(forKey: UserDefaults.UserKey.userThumbnailURLKey)!)
+        snapshot.appendItems([.member(JUser.mockUser), .member(myUserData)] + selectedFriends.map { .member($0) }, toSection: .members)
 
         datasource.apply(snapshot, animatingDifferences: false)
     }

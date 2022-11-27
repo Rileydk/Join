@@ -30,6 +30,15 @@
                         <color key="textColor" name="Gray1"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5VP-gl-akD">
+                        <rect key="frame" x="67.5" y="10" width="8" height="8"/>
+                        <constraints>
+                            <constraint firstAttribute="width" secondItem="5VP-gl-akD" secondAttribute="height" multiplier="1:1" id="IhS-T2-ODA"/>
+                            <constraint firstAttribute="width" constant="18" id="tbd-LF-m3F"/>
+                        </constraints>
+                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                        <state key="normal" image="Icons_24px_Close"/>
+                    </button>
                 </subviews>
             </view>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
@@ -43,6 +52,7 @@
             </constraints>
             <size key="customSize" width="87" height="104"/>
             <connections>
+                <outlet property="deleteBadgeButton" destination="5VP-gl-akD" id="LLO-RS-75b"/>
                 <outlet property="nameLabel" destination="I30-rF-r5J" id="xic-i5-QOr"/>
                 <outlet property="thumbnailImageView" destination="BdU-2j-Q0p" id="wUG-Zv-AIz"/>
             </connections>
@@ -50,6 +60,7 @@
         </collectionViewCell>
     </objects>
     <resources>
+        <image name="Icons_24px_Close" width="24" height="24"/>
         <namedColor name="Gray1">
             <color red="0.22745098039215686" green="0.22745098039215686" blue="0.22745098039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
