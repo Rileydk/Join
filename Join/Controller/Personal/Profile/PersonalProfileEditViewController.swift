@@ -149,7 +149,7 @@ class PersonalProfileEditViewController: BaseViewController {
                                     let mainStoryboard = UIStoryboard(name: StoryboardCategory.main.rawValue, bundle: nil)
                                     guard let tabBarController = mainStoryboard.instantiateViewController(
                                         withIdentifier: TabBarController.identifier
-                                    ) as? TabBarController else {
+                                        ) as? TabBarController else {
                                         fatalError("Cannot load tab bar controller")
                                     }
                                     tabBarController.selectedIndex = 0
@@ -321,7 +321,7 @@ extension PersonalProfileEditViewController: UITableViewDataSource {
                         name: StoryboardCategory.personal.rawValue, bundle: nil)
                     guard let addPortfolioVC = personalStoryboard.instantiateViewController(
                         withIdentifier: AddPortfolioViewController.identifier
-                    ) as? AddPortfolioViewController else {
+                        ) as? AddPortfolioViewController else {
                         fatalError("Cannot load AddPortfolioViewController")
                     }
                     self.navigationController?.pushViewController(addPortfolioVC, animated: true)
@@ -334,7 +334,7 @@ extension PersonalProfileEditViewController: UITableViewDataSource {
 
 // MARK: - Text View Delegate
 extension PersonalProfileEditViewController: UITextViewDelegate {
-    func textViewDidEndEditing(_ textView: UITextView) {
+    func textViewDidChangeSelection(_ textView: UITextView) {
         user?.introduction = textView.text
     }
 }

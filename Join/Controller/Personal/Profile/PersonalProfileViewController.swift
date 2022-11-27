@@ -380,14 +380,16 @@ extension PersonalProfileViewController {
         section.interGroupSpacing = 12
         section.contentInsets = .init(top: 0, leading: 32, bottom: 10, trailing: 32)
 
-        let headerSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalHeight(1),
-            heightDimension: .absolute(60))
-        let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(
-            layoutSize: headerSize,
-            elementKind: UICollectionView.elementKindSectionHeader,
-            alignment: .topLeading)
-        section.boundarySupplementaryItems = [sectionHeader]
+        if !workItems.isEmpty {
+            let headerSize = NSCollectionLayoutSize(
+                widthDimension: .fractionalHeight(1),
+                heightDimension: .absolute(60))
+            let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(
+                layoutSize: headerSize,
+                elementKind: UICollectionView.elementKindSectionHeader,
+                alignment: .topLeading)
+            section.boundarySupplementaryItems = [sectionHeader]
+        }
 
         return section
     }

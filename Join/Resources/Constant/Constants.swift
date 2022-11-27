@@ -41,7 +41,7 @@ struct Constant {
     }
 
     struct Portfolio {
-        static let sectionHeader = "Portfolio"
+        static let sectionHeader = "作品集"
     }
 
     struct Edit {

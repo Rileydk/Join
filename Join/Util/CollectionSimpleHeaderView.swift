@@ -13,7 +13,7 @@ class CollectionSimpleHeaderView: UICollectionReusableView {
         let label = UILabel()
         label.text = Constant.Portfolio.sectionHeader
         label.textColor = .Blue1
-        label.font = UIFont.systemFont(ofSize: 22, weight: .semibold)
+        label.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
         return label
     }()
 
