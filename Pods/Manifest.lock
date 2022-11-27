@@ -737,6 +737,7 @@ PODS:
   - LoggerAPI (1.9.200):
     - Logging (~> 1.1)
   - Logging (1.4.0)
+  - lottie-ios (3.5.0)
   - MJRefresh (3.7.5)
   - nanopb (2.30909.0):
     - nanopb/decode (= 2.30909.0)
@@ -750,7 +751,6 @@ PODS:
     - BlueRSA (~> 1.0)
     - KituraContracts (~> 1.2)
     - LoggerAPI (~> 1.7)
-  - TTGTagCollectionView (2.3.0)
 
 DEPENDENCIES:
   - FirebaseAuth
@@ -761,9 +761,9 @@ DEPENDENCIES:
   - JGProgressHUD
   - KeychainAccess
   - Kingfisher
+  - lottie-ios
   - MJRefresh
   - SwiftJWT
-  - TTGTagCollectionView
 
 SPEC REPOS:
   trunk:
@@ -797,11 +797,11 @@ SPEC REPOS:
     - Libuv-gRPC
     - LoggerAPI
     - Logging
+    - lottie-ios
     - MJRefresh
     - nanopb
     - PromisesObjC
     - SwiftJWT
-    - TTGTagCollectionView
 
 SPEC CHECKSUMS:
   abseil: ebe5b5529fb05d93a8bdb7951607be08b7fa71bc
@@ -834,12 +834,12 @@ SPEC CHECKSUMS:
   Libuv-gRPC: 55e51798e14ef436ad9bc45d12d43b77b49df378
   LoggerAPI: ad9c4a6f1e32f518fdb43a1347ac14d765ab5e3d
   Logging: beeb016c9c80cf77042d62e83495816847ef108b
+  lottie-ios: c55158d67d0629a260625cc2ded2052b829e3c3e
   MJRefresh: fdf5e979eb406a0341468932d1dfc8b7f9fce961
   nanopb: b552cce312b6c8484180ef47159bc0f65a1f0431
   PromisesObjC: ab77feca74fa2823e7af4249b8326368e61014cb
   SwiftJWT: 88c412708f58c169d431d344c87bc79a87c830ae
-  TTGTagCollectionView: 4104f93281097eae5adbf4444811e32f5e52dc95
 
-PODFILE CHECKSUM: 3154a325aba858be61a9c8262c54dc6726c348dd
+PODFILE CHECKSUM: ced9962cc3a98b80948574ad225bed330d8c0cd8
 
 COCOAPODS: 1.11.3

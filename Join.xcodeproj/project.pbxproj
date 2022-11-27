@@ -177,6 +177,7 @@
 		BFF8A4F62917992000ADC950 /* ChatListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF8A4F42917992000ADC950 /* ChatListCell.swift */; };
 		BFF8A4F72917992000ADC950 /* ChatListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BFF8A4F52917992000ADC950 /* ChatListCell.xib */; };
 		BFF8A4FB2917FBF100ADC950 /* MockLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF8A4FA2917FBF100ADC950 /* MockLoginViewController.swift */; };
+		BFF919552933D04100D8CEFC /* team-work-animation.json in Resources */ = {isa = PBXBuildFile; fileRef = BFF919542933D04100D8CEFC /* team-work-animation.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -353,6 +354,7 @@
 		BFF8A4F42917992000ADC950 /* ChatListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatListCell.swift; sourceTree = "<group>"; };
 		BFF8A4F52917992000ADC950 /* ChatListCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChatListCell.xib; sourceTree = "<group>"; };
 		BFF8A4FA2917FBF100ADC950 /* MockLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockLoginViewController.swift; sourceTree = "<group>"; };
+		BFF919542933D04100D8CEFC /* team-work-animation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "team-work-animation.json"; sourceTree = "<group>"; };
 		E73F750E744AEAB2F0006E8B /* Pods-Join.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Join.debug.xcconfig"; path = "Target Support Files/Pods-Join/Pods-Join.debug.xcconfig"; sourceTree = "<group>"; };
 		F30624BA8F470C0A1492643F /* Pods-Join.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Join.release.xcconfig"; path = "Target Support Files/Pods-Join/Pods-Join.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -563,6 +565,7 @@
 				BF326C38292F6ACF00898444 /* AppleAuth */,
 				BF42FA65290D03BD00501789 /* Constant */,
 				BF42FA3D290BE2AC00501789 /* Assets.xcassets */,
+				BFF919542933D04100D8CEFC /* team-work-animation.json */,
 				BF42FA3F290BE2AC00501789 /* LaunchScreen.storyboard */,
 				BF42FA42290BE2AC00501789 /* Info.plist */,
 				BF42FAAD290F6B7F00501789 /* GoogleService-Info.plist */,
@@ -946,6 +949,7 @@
 				BF9A86A4291CE06400BF934D /* GroupCreationHeaderCell.xib in Resources */,
 				BFF8A4B42913AD3000ADC950 /* BigImageCell.xib in Resources */,
 				BF3D83792928D9B8009F903F /* SelfIntroductionCell.xib in Resources */,
+				BFF919552933D04100D8CEFC /* team-work-animation.json in Resources */,
 				BF42FA5C290CED6C00501789 /* FindPartners.storyboard in Resources */,
 				BF42FAB8290FBE2D00501789 /* AddNewLineSectionCell.xib in Resources */,
 				BF42FA3E290BE2AC00501789 /* Assets.xcassets in Resources */,

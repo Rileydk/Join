@@ -10,12 +10,12 @@ target 'Join' do
   pod 'FirebaseFirestore'
   pod 'FirebaseStorage'
   pod 'FirebaseFirestoreSwift'
-  pod "TTGTagCollectionView"
   pod 'IQKeyboardManagerSwift'
   pod 'JGProgressHUD'
   pod 'Kingfisher'
   pod 'KeychainAccess'
   pod 'SwiftJWT'
   pod 'MJRefresh'
+  pod 'lottie-ios'
 
 end
