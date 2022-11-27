@@ -16,5 +16,6 @@ target 'Join' do
   pod 'Kingfisher'
   pod 'KeychainAccess'
   pod 'SwiftJWT'
+  pod 'MJRefresh'
 
 end

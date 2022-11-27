@@ -51,10 +51,10 @@
                                     <constraint firstAttribute="width" secondItem="SV4-Vk-044" secondAttribute="height" multiplier="1:1" id="3AE-Ek-uWe"/>
                                     <constraint firstAttribute="width" constant="32" id="u0T-kw-jBh"/>
                                 </constraints>
-                                <color key="tintColor" name="Yellow1"/>
+                                <color key="tintColor" name="Blue3"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal">
-                                    <imageReference key="image" image="paperplane.fill" catalog="system" symbolScale="large"/>
+                                    <imageReference key="image" image="paperplane" catalog="system" symbolScale="large"/>
                                 </state>
                                 <connections>
                                     <action selector="sendMessage:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="udO-PR-WV2"/>
@@ -82,9 +82,9 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="paperplane.fill" catalog="system" width="128" height="118"/>
-        <namedColor name="Yellow1">
-            <color red="1" green="0.71764705882352942" blue="0.011764705882352941" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        <image name="paperplane" catalog="system" width="128" height="118"/>
+        <namedColor name="Blue3">
+            <color red="0.29411764705882354" green="0.7686274509803922" blue="0.94509803921568625" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

@@ -39,14 +39,7 @@ class RecommendedProjectCell: CollectionViewCell {
         titleLabel.text = project.name
         if let imageURLString = project.imageURL {
             imageView.isHidden = false
-            firebaseManager.downloadImage(urlString: imageURLString) { [weak self] result in
-                switch result {
-                case .success(let image):
-                    self?.imageView.image = image
-                case .failure(let error):
-                    print(error)
-                }
-            }
+            imageView.loadImage(imageURLString)
         } else {
             imageView.isHidden = true
         }

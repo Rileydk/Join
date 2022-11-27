@@ -142,6 +142,7 @@
 		BFB72ED92933604C006F4651 /* NoApplicantTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BFB72ED72933604C006F4651 /* NoApplicantTableViewCell.xib */; };
 		BFB72EDC2933735B006F4651 /* NoDataHintCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB72EDA2933735B006F4651 /* NoDataHintCollectionViewCell.swift */; };
 		BFB72EDD2933735B006F4651 /* NoDataHintCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BFB72EDB2933735B006F4651 /* NoDataHintCollectionViewCell.xib */; };
+		BFB72EDF2933AE32006F4651 /* MJRefreshWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB72EDE2933AE32006F4651 /* MJRefreshWrapper.swift */; };
 		BFF8A4AE2913A92300ADC950 /* ProjectDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF8A4AD2913A92300ADC950 /* ProjectDetailsViewController.swift */; };
 		BFF8A4B32913AD3000ADC950 /* BigImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF8A4B12913AD3000ADC950 /* BigImageCell.swift */; };
 		BFF8A4B42913AD3000ADC950 /* BigImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BFF8A4B22913AD3000ADC950 /* BigImageCell.xib */; };
@@ -317,6 +318,7 @@
 		BFB72ED72933604C006F4651 /* NoApplicantTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NoApplicantTableViewCell.xib; sourceTree = "<group>"; };
 		BFB72EDA2933735B006F4651 /* NoDataHintCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoDataHintCollectionViewCell.swift; sourceTree = "<group>"; };
 		BFB72EDB2933735B006F4651 /* NoDataHintCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NoDataHintCollectionViewCell.xib; sourceTree = "<group>"; };
+		BFB72EDE2933AE32006F4651 /* MJRefreshWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MJRefreshWrapper.swift; sourceTree = "<group>"; };
 		BFF8A4AD2913A92300ADC950 /* ProjectDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectDetailsViewController.swift; sourceTree = "<group>"; };
 		BFF8A4B12913AD3000ADC950 /* BigImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigImageCell.swift; sourceTree = "<group>"; };
 		BFF8A4B22913AD3000ADC950 /* BigImageCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BigImageCell.xib; sourceTree = "<group>"; };
@@ -444,6 +446,7 @@
 			children = (
 				BF3D835829275FD3009F903F /* JGProgressHUDWrapper.swift */,
 				BF3D83642927A1B6009F903F /* KingFisherWrapper.swift */,
+				BFB72EDE2933AE32006F4651 /* MJRefreshWrapper.swift */,
 			);
 			path = "Third Party Wrapper";
 			sourceTree = "<group>";
@@ -928,7 +931,6 @@
 				BF326C23292CB21600898444 /* TextFieldComboAmountFieldCell.xib in Resources */,
 				BFF8A4DA2915036000ADC950 /* ContactCell.xib in Resources */,
 				BF3D835629273740009F903F /* OneSelectionCell.xib in Resources */,
-				BFF8A4DA2915036000ADC950 /* ContactCell.xib in Resources */,
 				BF42FA58290CEA5900501789 /* FindIdeas.storyboard in Resources */,
 				BFF8A4F72917992000ADC950 /* ChatListCell.xib in Resources */,
 				BF9A8686291A020300BF934D /* DropdownEmptyAlertCell.xib in Resources */,
@@ -1077,22 +1079,11 @@
 				BF326C0F292BB5E200898444 /* BottomLinedTextView.swift in Sources */,
 				BF326C3C292F6D3200898444 /* Data+Ext.swift in Sources */,
 				BFF8A4FB2917FBF100ADC950 /* MockLoginViewController.swift in Sources */,
-				BFF8A4D32914C79900ADC950 /* PersonBasicCell.swift in Sources */,
-				BF42FACF2912557500501789 /* UIImage+Ext.swift in Sources */,
-				BF42FAB2290FAC2000501789 /* Project.swift in Sources */,
-				BFF8A4D92915036000ADC950 /* ContactCell.swift in Sources */,
-				BFF8A4F32917982B00ADC950 /* ChatListViewController.swift in Sources */,
-				BFF8A4D32914C79900ADC950 /* PersonBasicCell.swift in Sources */,
 				BF9A868E291BAD1500BF934D /* MyPostsViewController.swift in Sources */,
-				BF9A867D2918FB1800BF934D /* FriendCell.swift in Sources */,
 				BF326C0D292BB40E00898444 /* BottomLinedTextField.swift in Sources */,
 				BF9A86A3291CE06400BF934D /* GroupCreationHeaderCell.swift in Sources */,
-				BF42FACF2912557500501789 /* UIImage+Ext.swift in Sources */,
-				BF42FAB2290FAC2000501789 /* Project.swift in Sources */,
 				BF9A8691291BCF9F00BF934D /* MyPostsDetailViewController.swift in Sources */,
 				BF326C1F292CABB400898444 /* LightNavigationController.swift in Sources */,
-				BF9A86742918FA3500BF934D /* FriendsListViewController.swift in Sources */,
-				BFF8A4FB2917FBF100ADC950 /* MockLoginViewController.swift in Sources */,
 				BF42FA73290D197000501789 /* TableViewCell.swift in Sources */,
 				BF326C17292C5C2900898444 /* PaddingableTextView.swift in Sources */,
 				BF326C33292F515C00898444 /* FirebaseAuthManager.swift in Sources */,
@@ -1104,6 +1095,7 @@
 				BF42FA35290BE2AA00501789 /* AppDelegate.swift in Sources */,
 				BF3D835929275FD3009F903F /* JGProgressHUDWrapper.swift in Sources */,
 				BFF8A4EA29164BF500ADC950 /* MessageCell.swift in Sources */,
+				BFB72EDF2933AE32006F4651 /* MJRefreshWrapper.swift in Sources */,
 				BFF8A4C22913C6F700ADC950 /* SegueIdentifier.swift in Sources */,
 				BF9A8685291A020300BF934D /* DropdownEmptyAlertCell.swift in Sources */,
 				BF326C15292C44FB00898444 /* PaddingableTextFileld.swift in Sources */,

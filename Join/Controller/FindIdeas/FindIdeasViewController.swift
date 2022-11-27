@@ -43,12 +43,15 @@ class FindIdeasViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        collectionView.addRefreshHeader { [weak self] in
+            self?.getProjects()
+        }
         layoutViews()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        getProjects()
+        collectionView.beginHeaderRefreshing()
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -74,14 +77,15 @@ class FindIdeasViewController: BaseViewController {
             let group = DispatchGroup()
             group.enter()
             self.firebaseManager.getAllProjects { [weak self] result in
+                guard let self = self else { return }
                 switch result {
                 case .success(let projects):
-                    self?.projects = projects
+                    self.projects = projects.sorted(by: { $0.createTime > $1.createTime })
                     group.leave()
                 case .failure(let error):
                     group.leave()
                     group.notify(queue: .main) {
-                        print(error)
+                        JProgressHUD.shared.showFailure(text: error.localizedDescription, view: self.view)
                     }
                 }
             }
@@ -100,7 +104,7 @@ class FindIdeasViewController: BaseViewController {
                 case .failure(let error):
                     group.leave()
                     group.notify(queue: .main) {
-                        print(error)
+                        JProgressHUD.shared.showFailure(text: error.localizedDescription, view: self.view)
                     }
                 }
             }
@@ -124,24 +128,15 @@ class FindIdeasViewController: BaseViewController {
                     group.notify(queue: .main) { [unowned self] in
                         recommendedProjects = interestProjects
                         restProjects = projects
-
-//                        recommendedProjects = friendsProjects
-//                        recommendedProjects += interestProjects.filter { interestProject in
-//                            !recommendedProjects.contains { recommendedProject in
-//                                interestProject.projectID == recommendedProject.projectID
-//                            }
-//                        }
-//                        restProjects = projects.filter { project in
-//                            !recommendedProjects.contains { recommendedProject in
-//                                project.projectID == recommendedProject.projectID
-//                            }
-//                        }
                         self.updateDatasource()
+
+                        collectionView.endHeaderRefreshing()
                     }
                 case .failure(let err):
                     group.leave()
                     group.notify(queue: .main) {
-                        print(err)
+                        collectionView.endHeaderRefreshing()
+                        JProgressHUD.shared.showFailure(text: err.localizedDescription, view: self.view)
                     }
                 }
             }
