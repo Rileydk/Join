@@ -25,6 +25,7 @@ ${BUILT_PRODUCTS_DIR}/KituraContracts/KituraContracts.framework
 ${BUILT_PRODUCTS_DIR}/Libuv-gRPC/uv.framework
 ${BUILT_PRODUCTS_DIR}/LoggerAPI/LoggerAPI.framework
 ${BUILT_PRODUCTS_DIR}/Logging/Logging.framework
+${BUILT_PRODUCTS_DIR}/MJRefresh/MJRefresh.framework
 ${BUILT_PRODUCTS_DIR}/PromisesObjC/FBLPromises.framework
 ${BUILT_PRODUCTS_DIR}/SwiftJWT/SwiftJWT.framework
 ${BUILT_PRODUCTS_DIR}/TTGTagCollectionView/TTGTags.framework

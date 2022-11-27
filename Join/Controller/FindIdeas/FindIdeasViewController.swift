@@ -43,12 +43,15 @@ class FindIdeasViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        collectionView.addRefreshHeader { [weak self] in
+            self?.getProjects()
+        }
         layoutViews()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        getProjects()
+        collectionView.beginHeaderRefreshing()
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -67,8 +70,6 @@ class FindIdeasViewController: BaseViewController {
     }
 
     func getProjects() {
-        JProgressHUD.shared.showLoading(view: self.view)
-
         var friendsProjects = [Project]()
         var interestProjects = [Project]()
 
@@ -128,11 +129,13 @@ class FindIdeasViewController: BaseViewController {
                         recommendedProjects = interestProjects
                         restProjects = projects
                         self.updateDatasource()
-                        JProgressHUD.shared.showSuccess(view: self.view)
+
+                        collectionView.endHeaderRefreshing()
                     }
                 case .failure(let err):
                     group.leave()
                     group.notify(queue: .main) {
+                        collectionView.endHeaderRefreshing()
                         JProgressHUD.shared.showFailure(text: err.localizedDescription, view: self.view)
                     }
                 }
