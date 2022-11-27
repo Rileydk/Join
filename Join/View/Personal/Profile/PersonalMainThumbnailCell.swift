@@ -46,9 +46,7 @@ class PersonalMainThumbnailCell: TableViewCell {
 
     func layoutCell(isEditing: Bool) {
         nameLabel.text = UserDefaults.standard.string(forKey: UserDefaults.UserKey.userNameKey)
-        let imageURL = URL(string: UserDefaults.standard.string(forKey: UserDefaults.UserKey.userThumbnailURLKey)!)
-                        ?? URL(string: FindPartnersFormSections.placeholderImageURL)!
-        thumbnailImageView.kf.setImage(with: imageURL)
+        thumbnailImageView.loadImage(UserDefaults.standard.string(forKey: UserDefaults.UserKey.userThumbnailURLKey)!)
 
         if isEditing {
             thumbnailImageView.isUserInteractionEnabled = true
