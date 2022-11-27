@@ -7,6 +7,7 @@
 
 import UIKit
 import AuthenticationServices
+import Lottie
 
 class LoginViewController: BaseViewController {
     let firebaseManager = FirebaseManager.shared
@@ -18,6 +19,7 @@ class LoginViewController: BaseViewController {
         super.viewDidLoad()
         view.backgroundColor = .Blue1
         setupProviderLoginView()
+        setupAnimation()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -38,6 +40,16 @@ class LoginViewController: BaseViewController {
         authorizationController.delegate = self
         authorizationController.presentationContextProvider = self
         authorizationController.performRequests()
+    }
+
+    func setupAnimation() {
+        let animationView = LottieAnimationView(name: "team-work-animation")
+        animationView.frame = CGRect(x: 0 - UIScreen.main.bounds.width * 0.25, y: 160, width: UIScreen.main.bounds.width * 1.6, height: UIScreen.main.bounds.width * 1.6 * 1080/1920)
+        animationView.contentMode = .scaleAspectFill
+        view.addSubview(animationView)
+
+        animationView.loopMode = .loop
+        animationView.play()
     }
 }
 
