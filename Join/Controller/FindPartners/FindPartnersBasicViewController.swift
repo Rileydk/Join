@@ -203,7 +203,7 @@ class FindPartnersBasicViewController: BaseViewController {
             ) as? FriendSelectionViewController else {
             fatalError("Cannot load friend selection vc")
         }
-        friendSelectionVC.source = .addMembersToFindPartners
+        friendSelectionVC.source = .addMembers
         friendSelectionVC.selectedFriends = members
         friendSelectionVC.addToFindPartnersHandler = { [weak self] groupMembers in
             self?.members = groupMembers
@@ -409,7 +409,7 @@ extension FindPartnersBasicViewController: UITableViewDataSource {
 
                 guard let memberVC = findPartnersStoryboard.instantiateViewController(
                     withIdentifier: MemberCardViewController.identifier
-                ) as? MemberCardViewController else {
+                    ) as? MemberCardViewController else {
                     fatalError("Cannot load member card VC from storyboard")
                 }
                 memberVC.title = title

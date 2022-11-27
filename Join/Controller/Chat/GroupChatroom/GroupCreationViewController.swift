@@ -10,21 +10,27 @@ import UIKit
 class GroupCreationViewController: BaseViewController {
     enum Section: CaseIterable {
         case header
-//        case members
+        case members
     }
 
     enum Item: Hashable {
         case header
-//        case member(JUser)
+        case member(JUser)
     }
 
     @IBOutlet weak var collectionView: UICollectionView! {
         didSet {
             collectionView.register(
                 UINib(nibName: GroupCreationHeaderCell.identifier, bundle: nil),
-                forCellWithReuseIdentifier: GroupCreationHeaderCell.identifier
-            )
+                forCellWithReuseIdentifier: GroupCreationHeaderCell.identifier)
+            collectionView.register(
+                UINib(nibName: GroupMemberCircleCollectionViewCell.identifier, bundle: nil),
+                forCellWithReuseIdentifier: GroupMemberCircleCollectionViewCell.identifier)
+            collectionView.register(
+                UINib(nibName: AddNewMemberCircleCollectionViewCell.identifier, bundle: nil),
+                forCellWithReuseIdentifier: AddNewMemberCircleCollectionViewCell.identifier)
             collectionView.setCollectionViewLayout(createLayout(), animated: true)
+            collectionView.delegate = self
             configureDatasource()
             collectionView.backgroundColor = .Gray6
         }
@@ -33,16 +39,21 @@ class GroupCreationViewController: BaseViewController {
     typealias GroupDatasource = UICollectionViewDiffableDataSource<Section, Item>
     private var datasource: GroupDatasource!
     let firebaseManager = FirebaseManager.shared
-    var selectedFriends = [JUser]()
+    var selectedFriends = [JUser]() {
+        didSet {
+            if collectionView != nil {
+                updateDatasource()
+            }
+        }
+    }
     var groupChatroom = GroupChatroom(
         id: "", name: "", imageURL: "", admin: "", createdTime: Date()
     )
     var defaultGroupName: String {
         var defaultGroupName = "\(UserDefaults.standard.string(forKey: UserDefaults.UserKey.userNameKey)!)"
-        for friend in selectedFriends {
-            defaultGroupName += friend.name
-            if friend != selectedFriends.last {
-                defaultGroupName += ", "
+        if !selectedFriends.isEmpty {
+            for friend in selectedFriends {
+                defaultGroupName += ", \(friend.name)"
             }
         }
         return defaultGroupName
@@ -167,12 +178,28 @@ extension GroupCreationViewController {
         return section
     }
 
+    func createGroupMemberSelectionSection() -> NSCollectionLayoutSection {
+        let itemSize = NSCollectionLayoutSize(widthDimension: .absolute(50),
+                                              heightDimension: .estimated(130))
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
+                                               heightDimension: .estimated(104))
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 4)
+
+        let section = NSCollectionLayoutSection(group: group)
+        section.contentInsets = .init(top: 20, leading: 20, bottom: 20, trailing: 20)
+        return section
+    }
+
     func sectionFor(index: Int, environment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection {
         let section = datasource.snapshot().sectionIdentifiers[index]
 
         switch section {
         case .header:
             return createHeaderSection()
+        case .members:
+            return createGroupMemberSelectionSection()
         }
     }
 
@@ -216,6 +243,21 @@ extension GroupCreationViewController {
                 self?.present(picker, animated: true)
             }
             return cell
+
+        case .member(let user):
+            if indexPath.row == 0 {
+                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AddNewMemberCircleCollectionViewCell.identifier, for: indexPath) as? AddNewMemberCircleCollectionViewCell else {
+                    fatalError("Cannot create add new member circle collection view cell")
+                }
+                return cell
+
+            } else {
+                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: GroupMemberCircleCollectionViewCell.identifier, for: indexPath) as? GroupMemberCircleCollectionViewCell else {
+                    fatalError("Cannot create group member circle collection view cell")
+                }
+                cell.layoutCell(user: user)
+                return cell
+            }
         }
     }
 
@@ -223,8 +265,30 @@ extension GroupCreationViewController {
         var snapshot = NSDiffableDataSourceSnapshot<Section, Item>()
         snapshot.appendSections(Section.allCases)
         snapshot.appendItems([.header], toSection: .header)
+        snapshot.appendItems([.member(JUser.mockUser)] + selectedFriends.map { .member($0) }, toSection: .members)
 
         datasource.apply(snapshot, animatingDifferences: false)
+    }
+}
+
+// MARK: - Collection View Delegate
+extension GroupCreationViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let section = Section.allCases[indexPath.section]
+        if section == .members && indexPath.row == 0 {
+            let chatStoryboard = UIStoryboard(name: StoryboardCategory.chat.rawValue, bundle: nil)
+            guard let friendSelectionVC = chatStoryboard.instantiateViewController(
+                withIdentifier: FriendSelectionViewController.identifier
+                ) as? FriendSelectionViewController else {
+                fatalError("Cannot create friend selection vc")
+            }
+            friendSelectionVC.selectedFriends = selectedFriends
+            friendSelectionVC.source = .secondStepWhenCreateNewGroupChat
+            friendSelectionVC.addToMemberSelectionHandler = { [weak self] newSelectedFriends in
+                self?.selectedFriends = newSelectedFriends
+            }
+            navigationController?.pushViewController(friendSelectionVC, animated: true)
+        }
     }
 }
 

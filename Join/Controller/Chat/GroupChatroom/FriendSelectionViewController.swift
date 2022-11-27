@@ -10,8 +10,9 @@ import UIKit
 class FriendSelectionViewController: BaseViewController {
     enum Source {
         case createNewGroupChat
+        case secondStepWhenCreateNewGroupChat
         case addNewMembers
-        case addMembersToFindPartners
+        case addMembers
     }
 
     let firebaseManager = FirebaseManager.shared
@@ -24,6 +25,7 @@ class FriendSelectionViewController: BaseViewController {
     var selectedIndexes = [Int]()
     var selectedFriends = [JUser]()
     var addToFindPartnersHandler: (([JUser]) -> Void)?
+    var addToMemberSelectionHandler: (([JUser]) -> Void)?
 
     var searchController = UISearchController()
 
@@ -62,10 +64,10 @@ class FriendSelectionViewController: BaseViewController {
 
     func layoutViews() {
         switch source {
-        case .addNewMembers, .createNewGroupChat:
-            title = "選擇群組成員"
-        case .addMembersToFindPartners:
-            title = "選擇團隊成員"
+        case .addNewMembers, .createNewGroupChat, .secondStepWhenCreateNewGroupChat:
+            title = selectedFriends.isEmpty ? "選擇群組成員" : "已選擇\(selectedFriends.count)個成員"
+        case .addMembers:
+            title = selectedFriends.isEmpty ? "選擇團隊ㄌ成員" : "已選擇\(selectedFriends.count)個成員"
         }
 
         searchController.searchBar.searchTextField.backgroundColor = .White
@@ -77,21 +79,26 @@ class FriendSelectionViewController: BaseViewController {
             navigationItem.rightBarButtonItem = UIBarButtonItem(
                 title: "Next", style: .done, target: self, action: #selector(prepareGroupChatroom)
             )
-        } else if source == .addNewMembers {
+        } else if source == .secondStepWhenCreateNewGroupChat {
             navigationItem.rightBarButtonItem = UIBarButtonItem(
                 title: "Invite", style: .done, target: self, action: #selector(addNewMembers)
             )
-        } else if source == .addMembersToFindPartners {
+        } else if source == .addNewMembers {
             navigationItem.rightBarButtonItem = UIBarButtonItem(
-                title: "Add", style: .done, target: self, action: #selector(addToFindPartners)
+                title: "Invite", style: .done, target: self, action: #selector(addNewMembersToExistedGroupChatroom)
             )
-        } else {
+        } else if source == .addMembers {
             navigationItem.rightBarButtonItem = UIBarButtonItem(
                 title: "Add", style: .done, target: self, action: #selector(addNewMembers)
             )
+        } else {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(
+                title: "Add", style: .done, target: self, action: #selector(addNewMembersToExistedGroupChatroom)
+            )
         }
         navigationItem.leftBarButtonItem = UIBarButtonItem(
-            title: "Discard", style: .plain, target: self, action: #selector(backToPreviousPage))
+            image: UIImage(named: JImages.Icons_24px_Close.rawValue), style: .plain,
+            target: self, action: #selector(backToPreviousPage))
     }
 
     @objc func prepareGroupChatroom() {
@@ -105,7 +112,7 @@ class FriendSelectionViewController: BaseViewController {
         navigationController?.pushViewController(groupCreationVC, animated: true)
     }
 
-    @objc func addNewMembers() {
+    @objc func addNewMembersToExistedGroupChatroom() {
         guard let chatroomID = chatroomID else { return }
         let newMembers = selectedFriends.map {
             ChatroomMember(
@@ -133,8 +140,9 @@ class FriendSelectionViewController: BaseViewController {
         }
     }
 
-    @objc func addToFindPartners() {
+    @objc func addNewMembers() {
         addToFindPartnersHandler?(selectedFriends)
+        addToMemberSelectionHandler?(selectedFriends)
         backToPreviousPage()
     }
 

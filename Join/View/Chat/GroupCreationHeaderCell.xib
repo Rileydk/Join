@@ -18,7 +18,7 @@
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="photo" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="UYX-uP-wai">
-                        <rect key="frame" x="16" y="21" width="90" height="87.5"/>
+                        <rect key="frame" x="20" y="21" width="90" height="87.5"/>
                         <color key="tintColor" name="Black4"/>
                         <constraints>
                             <constraint firstAttribute="width" secondItem="UYX-uP-wai" secondAttribute="height" multiplier="1:1" id="481-Up-70r"/>
@@ -40,7 +40,7 @@
                         </connections>
                     </button>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="Wc3-uD-jGX">
-                        <rect key="frame" x="122" y="31.5" width="266" height="67.5"/>
+                        <rect key="frame" x="126" y="31.5" width="268" height="67.5"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Group Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PdE-UX-ayO">
                                 <rect key="frame" x="0.0" y="0.0" width="105.5" height="21.5"/>
@@ -49,7 +49,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="elk-BD-Jkr" customClass="PaddingableTextField" customModule="Join" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="33.5" width="266" height="34"/>
+                                <rect key="frame" x="0.0" y="33.5" width="268" height="34"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
@@ -67,12 +67,12 @@
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
             <constraints>
                 <constraint firstItem="Wc3-uD-jGX" firstAttribute="leading" secondItem="UYX-uP-wai" secondAttribute="trailing" constant="16" id="30U-h4-UdU"/>
-                <constraint firstAttribute="trailing" secondItem="Wc3-uD-jGX" secondAttribute="trailing" constant="26" id="7i9-0F-VSh"/>
+                <constraint firstAttribute="trailing" secondItem="Wc3-uD-jGX" secondAttribute="trailing" constant="20" id="7i9-0F-VSh"/>
                 <constraint firstItem="Wc3-uD-jGX" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" id="Aqd-TK-7WN"/>
                 <constraint firstItem="UYX-uP-wai" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" id="JSy-9z-1n5"/>
                 <constraint firstItem="p5j-qq-RUO" firstAttribute="width" secondItem="p5j-qq-RUO" secondAttribute="height" multiplier="1:1" id="OKb-bV-d36"/>
                 <constraint firstItem="UYX-uP-wai" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" id="Ymb-ib-m0x"/>
-                <constraint firstItem="UYX-uP-wai" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="16" id="vQ8-Gd-ZiL"/>
+                <constraint firstItem="UYX-uP-wai" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="20" id="vQ8-Gd-ZiL"/>
             </constraints>
             <connections>
                 <outlet property="groupImageView" destination="UYX-uP-wai" id="hVb-PL-yvF"/>
