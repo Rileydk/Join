@@ -15,7 +15,7 @@ class GroupCreationViewController: BaseViewController {
 
     enum Item: Hashable {
         case header
-//        case member(User)
+//        case member(JUser)
     }
 
     @IBOutlet weak var collectionView: UICollectionView! {
@@ -37,6 +37,16 @@ class GroupCreationViewController: BaseViewController {
     var groupChatroom = GroupChatroom(
         id: "", name: "", imageURL: "", admin: "", createdTime: Date()
     )
+    var defaultGroupName: String {
+        var defaultGroupName = "\(UserDefaults.standard.string(forKey: UserDefaults.UserKey.userNameKey)!)"
+        for friend in selectedFriends {
+            defaultGroupName += friend.name
+            if friend != selectedFriends.last {
+                defaultGroupName += ", "
+            }
+        }
+        return defaultGroupName
+    }
     var selectedMembers = [ChatroomMember]()
     var groupImage: UIImage?
     var chatroomID: ChatroomID?
@@ -57,33 +67,27 @@ class GroupCreationViewController: BaseViewController {
             group.enter()
             let myID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey) ?? ""
             self?.firebaseManager.getUserInfo(id: myID) { [weak self] result in
+                guard let self = self else { return }
                 switch result {
                 case .success(let userData):
-                    guard var selectedFriends = self?.selectedFriends,
-                          let groupChatroom = self?.groupChatroom else { return }
+                    var selectedFriends = self.selectedFriends
                     selectedFriends.insert(userData, at: 0)
-                    if groupChatroom.name.isEmpty {
-                        for friend in selectedFriends {
-                            self?.groupChatroom.name += friend.name
-                            if friend != self?.selectedFriends.last {
-                                self?.groupChatroom.name += ", "
-                            }
-                        }
+                    if self.groupChatroom.name.isEmpty {
+                        self.groupChatroom.name = self.defaultGroupName
                     }
-                    self?.selectedMembers = selectedFriends.map {
+                    self.selectedMembers = selectedFriends.map {
                         ChatroomMember(
                             userID: $0.id, currentMemberStatus: .join,
                             currentInoutStatus: .out, lastTimeInChatroom: Date()
                         )
                     }
-                    self?.groupChatroom.admin = userData.id
+                    self.groupChatroom.admin = userData.id
                     group.leave()
                 case .failure(let err):
                     print(err)
                     group.leave()
                 }
             }
-
 
             group.enter()
             if let groupImage = self?.groupImage,
@@ -155,7 +159,7 @@ extension GroupCreationViewController {
 
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1),
-            heightDimension: .fractionalHeight(0.3)
+            heightDimension: .absolute(130)
         )
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
 
@@ -199,6 +203,9 @@ extension GroupCreationViewController {
                 fatalError("Cannot create personal basic cell")
             }
             cell.delegate = self
+            if let userImageURL = UserDefaults.standard.string(forKey: UserDefaults.UserKey.userThumbnailURLKey) {
+                cell.layoutCell(defaultGroupName: defaultGroupName, imageURL: userImageURL)
+            }
             cell.alertPresentHandler = { [weak self] alert in
                 self?.present(alert, animated: true)
             }

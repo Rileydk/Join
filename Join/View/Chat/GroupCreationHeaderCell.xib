@@ -2,7 +2,6 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -26,35 +25,75 @@
                             <constraint firstAttribute="width" constant="90" id="BbE-Kt-plT"/>
                         </constraints>
                     </imageView>
-                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="elk-BD-Jkr">
-                        <rect key="frame" x="118" y="48" width="280" height="34"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                        <textInputTraits key="textInputTraits"/>
+                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="p5j-qq-RUO">
+                        <rect key="frame" x="86" y="88" width="20" height="22"/>
+                        <color key="backgroundColor" name="Gray1"/>
+                        <constraints>
+                            <constraint firstAttribute="width" secondItem="p5j-qq-RUO" secondAttribute="height" multiplier="1:1" id="awa-vQ-Alk"/>
+                            <constraint firstAttribute="width" constant="20" id="fCr-m1-v8b"/>
+                        </constraints>
+                        <color key="tintColor" name="Gray3"/>
+                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                        <state key="normal" image="camera.circle" catalog="system"/>
                         <connections>
-                            <action selector="addName:" destination="gTV-IL-0wX" eventType="editingChanged" id="R7y-c6-aO1"/>
+                            <action selector="editGroupImage:" destination="gTV-IL-0wX" eventType="touchUpInside" id="93O-hI-8tx"/>
                         </connections>
-                    </textField>
+                    </button>
+                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="Wc3-uD-jGX">
+                        <rect key="frame" x="122" y="31.5" width="266" height="67.5"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Group Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PdE-UX-ayO">
+                                <rect key="frame" x="0.0" y="0.0" width="105.5" height="21.5"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="18"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="elk-BD-Jkr" customClass="PaddingableTextField" customModule="Join" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="33.5" width="266" height="34"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <action selector="addName:" destination="gTV-IL-0wX" eventType="editingChanged" id="R7y-c6-aO1"/>
+                                </connections>
+                            </textField>
+                        </subviews>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="elk-BD-Jkr" secondAttribute="trailing" id="1DT-gr-3mM"/>
+                            <constraint firstItem="elk-BD-Jkr" firstAttribute="leading" secondItem="Wc3-uD-jGX" secondAttribute="leading" id="UmK-22-udq"/>
+                        </constraints>
+                    </stackView>
                 </subviews>
             </view>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
             <constraints>
-                <constraint firstItem="elk-BD-Jkr" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" id="BjB-kp-ovc"/>
+                <constraint firstItem="Wc3-uD-jGX" firstAttribute="leading" secondItem="UYX-uP-wai" secondAttribute="trailing" constant="16" id="30U-h4-UdU"/>
+                <constraint firstAttribute="trailing" secondItem="Wc3-uD-jGX" secondAttribute="trailing" constant="26" id="7i9-0F-VSh"/>
+                <constraint firstItem="Wc3-uD-jGX" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" id="Aqd-TK-7WN"/>
                 <constraint firstItem="UYX-uP-wai" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" id="JSy-9z-1n5"/>
-                <constraint firstAttribute="trailing" secondItem="elk-BD-Jkr" secondAttribute="trailing" constant="16" id="PYJ-Rb-Alp"/>
-                <constraint firstItem="elk-BD-Jkr" firstAttribute="leading" secondItem="UYX-uP-wai" secondAttribute="trailing" constant="12" id="jA6-9a-9fP"/>
+                <constraint firstItem="p5j-qq-RUO" firstAttribute="width" secondItem="p5j-qq-RUO" secondAttribute="height" multiplier="1:1" id="OKb-bV-d36"/>
+                <constraint firstItem="UYX-uP-wai" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" id="Ymb-ib-m0x"/>
                 <constraint firstItem="UYX-uP-wai" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="16" id="vQ8-Gd-ZiL"/>
             </constraints>
             <connections>
                 <outlet property="groupImageView" destination="UYX-uP-wai" id="hVb-PL-yvF"/>
                 <outlet property="groupNameTextField" destination="elk-BD-Jkr" id="6ud-Sy-GSA"/>
+                <outlet property="imageEditButton" destination="p5j-qq-RUO" id="w6Z-mw-sXa"/>
+                <outlet property="titleLabel" destination="PdE-UX-ayO" id="6fu-5j-SAW"/>
             </connections>
             <point key="canvasLocation" x="137.68115942028987" y="65.625"/>
         </collectionViewCell>
     </objects>
     <resources>
+        <image name="camera.circle" catalog="system" width="128" height="121"/>
         <image name="photo" catalog="system" width="128" height="93"/>
         <namedColor name="Black4">
             <color red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="Gray1">
+            <color red="0.22745098039215686" green="0.22745098039215686" blue="0.22745098039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="Gray3">
+            <color red="0.53333333333333333" green="0.53333333333333333" blue="0.53333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>

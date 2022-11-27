@@ -15,7 +15,9 @@ protocol GroupCreationHeaderCellDelegate: AnyObject {
 
 class GroupCreationHeaderCell: CollectionViewCell {
     @IBOutlet weak var groupImageView: UIImageView!
-    @IBOutlet weak var groupNameTextField: UITextField!
+    @IBOutlet weak var imageEditButton: UIButton!
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var groupNameTextField: PaddingableTextField!
 
     var alertPresentHandler: ((UIAlertController) -> Void)?
     var cameraPresentHandler: ((UIImagePickerController) -> Void)?
@@ -24,9 +26,42 @@ class GroupCreationHeaderCell: CollectionViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
+        titleLabel.textColor = .Gray1
+        titleLabel.text = "群組名稱"
+        groupNameTextField.textColor = .Gray1
         groupImageView.isUserInteractionEnabled = true
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(addPhoto))
         groupImageView.addGestureRecognizer(tapGestureRecognizer)
+        groupImageView.contentMode = .scaleAspectFill
+        imageEditButton.backgroundColor = .Gray5
+        imageEditButton.layer.borderWidth = 2
+        imageEditButton.layer.borderColor = UIColor.White?.cgColor
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        groupImageView.layer.cornerRadius = groupImageView.frame.width / 2
+        imageEditButton.layer.cornerRadius = groupImageView.frame.width / 2
+        NSLayoutConstraint.activate([
+            imageEditButton.topAnchor.constraint(
+                equalTo: groupImageView.bottomAnchor, constant: -20),
+            imageEditButton.leftAnchor.constraint(
+                equalTo: groupImageView.rightAnchor, constant: -20)
+        ])
+    }
+
+    func layoutCell(defaultGroupName: String, imageURL: URLString) {
+        if let url = URL(string: imageURL) {
+            groupImageView.kf.setImage(with: url)
+        }
+        groupNameTextField.attributedPlaceholder = NSAttributedString(
+            string: defaultGroupName, attributes: [
+                NSAttributedString.Key.foregroundColor: (UIColor.Gray3?.withAlphaComponent(0.7) ?? .lightGray).cgColor
+            ])
+    }
+
+    @IBAction func editGroupImage(_ sender: UIButton) {
+        showSourceTypeActionSheet()
     }
 
     @objc func addPhoto() {
@@ -82,7 +117,9 @@ class GroupCreationHeaderCell: CollectionViewCell {
     }
 
     @IBAction func addName(_ sender: UITextField) {
-        delegate?.groupCreationHeaderCell(self, didAddName: groupNameTextField.text ?? "")
+        var text = sender.text ?? ""
+        text = text.trimmingCharacters(in: .whitespaces)
+        delegate?.groupCreationHeaderCell(self, didAddName: text)
     }
 }
 
