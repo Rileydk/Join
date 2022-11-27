@@ -24,6 +24,7 @@ struct Project: Hashable, Codable {
     var recruiting = [OpenPosition]()
     var contact: UserID
     var applicants = [UserID]()
+    var createTime = Date()
 
     static let mockProject = Project(contact: "")
 
@@ -42,7 +43,8 @@ struct Project: Hashable, Codable {
             "members": membersDict as Any,
             "recruiting": recruitingDict as Any,
             "contact": contact as Any,
-            "applicants": applicants as Any
+            "applicants": applicants as Any,
+            "createTime:": createTime as Any
         ]
     }
 }

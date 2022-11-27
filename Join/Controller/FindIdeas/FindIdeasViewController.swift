@@ -79,7 +79,7 @@ class FindIdeasViewController: BaseViewController {
                 guard let self = self else { return }
                 switch result {
                 case .success(let projects):
-                    self.projects = projects
+                    self.projects = projects.sorted(by: { $0.createTime > $1.createTime })
                     group.leave()
                 case .failure(let error):
                     group.leave()

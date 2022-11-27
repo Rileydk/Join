@@ -268,6 +268,7 @@ class FirebaseManager {
         let projectID = ref.document().documentID
         var project = project
         project.projectID = projectID
+        project.createTime = Date()
 
         firebaseQueue.async {
             let group = DispatchGroup()
@@ -345,7 +346,7 @@ class FirebaseManager {
         let ref = FirestoreEndpoint.projects.ref
 
         let now = FirebaseFirestore.Timestamp(date: Date())
-        ref.whereField("deadline", isGreaterThan: now).order(by: "deadline", descending: true).getDocuments { querySnapshot, error in
+        ref.order(by: "createTime", descending: false).getDocuments { querySnapshot, error in
             if let error = error {
                 completion(.failure(error))
                 return
