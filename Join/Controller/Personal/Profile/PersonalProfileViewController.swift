@@ -372,21 +372,24 @@ extension PersonalProfileViewController {
 
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1),
-            heightDimension: .fractionalWidth(0.68)
+            heightDimension: .absolute(260)
         )
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
 
         let section = NSCollectionLayoutSection(group: group)
         section.interGroupSpacing = 12
+        section.contentInsets = .init(top: 0, leading: 32, bottom: 10, trailing: 32)
 
-        let headerSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalHeight(1),
-            heightDimension: .absolute(60))
-        let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(
-            layoutSize: headerSize,
-            elementKind: UICollectionView.elementKindSectionHeader,
-            alignment: .topLeading)
-        section.boundarySupplementaryItems = [sectionHeader]
+        if !workItems.isEmpty {
+            let headerSize = NSCollectionLayoutSize(
+                widthDimension: .fractionalHeight(1),
+                heightDimension: .absolute(60))
+            let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(
+                layoutSize: headerSize,
+                elementKind: UICollectionView.elementKindSectionHeader,
+                alignment: .topLeading)
+            section.boundarySupplementaryItems = [sectionHeader]
+        }
 
         return section
     }
@@ -456,13 +459,6 @@ extension PersonalProfileViewController {
                 cell.layoutCell(backgroundColor: cellBackgroundColor)
                 cell.editProfileHandler = { [weak self] in
                     self?.editPersonalInfo()
-//                    let personalStoryboard = UIStoryboard(name: StoryboardCategory.personal.rawValue, bundle: nil)
-//                    guard let personalProfileEditVC = personalStoryboard.instantiateViewController(
-//                        withIdentifier: PersonalProfileEditViewController.identifier
-//                        ) as? PersonalProfileEditViewController else {
-//                        fatalError("Cannot load personal profile edit vc")
-//                    }
-//                    self?.navigationController?.pushViewController(personalProfileEditVC, animated: true)
                 }
                 return cell
 

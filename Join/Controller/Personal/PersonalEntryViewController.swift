@@ -20,7 +20,7 @@ class PersonalEntryViewController: UIViewController {
     enum NextPage: String, CaseIterable {
         case profile = "我的主頁"
         case posts = "我的專案"
-        case applications = "我的應徵紀錄"
+        case applications = "我的應徵"
         case friends = "我的好友"
         case preference = "個人設定"
     }

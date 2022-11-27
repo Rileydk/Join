@@ -12,6 +12,11 @@ class BigImageCell: TableViewCell {
 
     @IBOutlet weak var bigImageView: UIImageView!
 
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        contentView.backgroundColor = .White
+    }
+
     func layoutCell(imageURL: URLString) {
         bigImageView.loadImage(imageURL)
     }

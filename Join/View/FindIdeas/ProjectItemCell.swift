@@ -12,6 +12,11 @@ class ProjectItemCell: TableViewCell {
     @IBOutlet weak var itemTitleLabel: UILabel!
     @IBOutlet weak var contentLabel: UILabel!
 
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        contentView.backgroundColor = .White
+    }
+
     func layoutCellWithPosition(project: Project) {
         iconImageView.image = UIImage(named: JImages.Icons_24px_Person.rawValue)
         itemTitleLabel.text = Constant.FindIdeas.recruitingColumn

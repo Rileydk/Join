@@ -55,6 +55,7 @@ class MyPostsViewController: BaseViewController {
 
     func layoutViews() {
         title = "我發佈的專案"
+        collectionView.backgroundColor = UIColor.Gray6
     }
 
     func getProjects() {
@@ -74,6 +75,7 @@ class MyPostsViewController: BaseViewController {
                     guard !projectsID.isEmpty else {
                         // TODO: - 改為顯示提示畫面
                         print("No projects")
+                        JProgressHUD.shared.dismiss()
                         shouldContinue = false
                         group.leave()
                         return
@@ -115,17 +117,19 @@ extension MyPostsViewController {
     func createPostsSection() -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1),
-            heightDimension: .fractionalHeight(1)
+            heightDimension: .estimated(150)
         )
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
 
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1),
-            heightDimension: .estimated(220)
+            heightDimension: .estimated(150)
         )
         let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
 
         let section = NSCollectionLayoutSection(group: group)
+        section.interGroupSpacing = Constant.FindIdeas.projectsInterGroupSpacing
+        section.contentInsets = Constant.FindIdeas.projectsPageContentInsets
         return section
     }
 

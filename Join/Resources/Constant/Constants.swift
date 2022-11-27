@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 struct Constant {
     struct Placeholder {
@@ -20,6 +21,11 @@ struct Constant {
         static let descriptionSectionTitle = "About"
         static let contactSectionTitle = "聯絡人"
         static let applicantsSectionTitle = "應徵者"
+        static let noApplicantAlertMessage = "目前尚無人應徵"
+
+        static let projectsTopHorizontalScrollingContentInsets: NSDirectionalEdgeInsets = .init(top: 28, leading: 16, bottom: 20, trailing: 0)
+        static let projectsPageContentInsets: NSDirectionalEdgeInsets = .init(top: 16, leading: 16, bottom: 20, trailing: 16)
+        static let projectsInterGroupSpacing: CGFloat = 24
     }
 
     struct FindPartners {
@@ -35,7 +41,7 @@ struct Constant {
     }
 
     struct Portfolio {
-        static let sectionHeader = "Portfolio"
+        static let sectionHeader = "作品集"
     }
 
     struct Edit {

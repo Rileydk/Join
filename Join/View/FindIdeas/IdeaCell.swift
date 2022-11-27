@@ -15,7 +15,7 @@ class IdeaCell: CollectionViewCell {
     @IBOutlet weak var numberLabel: UILabel!
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var savingButton: UIButton!
-    @IBOutlet weak var applicantsAmountLabelButton: UIButton!
+    @IBOutlet weak var applicantsAmountLabel: PaddingableLabel!
     @IBOutlet weak var tagLabel: PaddingableLabel!
     @IBOutlet weak var moreImageView: UIImageView!
 
@@ -46,12 +46,12 @@ class IdeaCell: CollectionViewCell {
         tagLabel.textColor = .Blue1?.withAlphaComponent(0.7)
         tagLabel.layer.borderWidth = 0.5
         tagLabel.layer.borderColor = UIColor.Blue1?.withAlphaComponent(0.7).cgColor
-        applicantsAmountLabelButton.isEnabled = false
     }
 
     override func layoutSubviews() {
         super.layoutSubviews()
-        applicantsAmountLabelButton.layer.cornerRadius = applicantsAmountLabelButton.frame.height / 2
+        applicantsAmountLabel.layer.cornerRadius = applicantsAmountLabel.frame.height / 2
+        applicantsAmountLabel.layer.masksToBounds = true
         tagLabel.layer.cornerRadius = tagLabel.frame.height / 2
         tagLabel.clipsToBounds = true
     }
@@ -70,7 +70,7 @@ class IdeaCell: CollectionViewCell {
         locationLabel.text = project.location
         positionLabel.text = project.recruiting.first!.role
         numberLabel.text = "* \(project.recruiting.first!.number)"
-        applicantsAmountLabelButton.isHidden = true
+        applicantsAmountLabel.isHidden = true
 
         if let imageURLString = project.imageURL {
             imageView.isHidden = false
@@ -84,8 +84,8 @@ class IdeaCell: CollectionViewCell {
         layoutCell(project: project)
         savingButton.isHidden = true
         if !project.applicants.isEmpty {
-            applicantsAmountLabelButton.isHidden = false
-            applicantsAmountLabelButton.setTitle("應徵數: \(project.applicants.count)", for: .normal)
+            applicantsAmountLabel.isHidden = false
+            applicantsAmountLabel.text = "應徵數: \(project.applicants.count)"
         }
     }
 }

@@ -48,7 +48,8 @@ class MyApplicationsViewController: BaseViewController {
     }
 
     func layoutViews() {
-        title = "我的應徵紀錄"
+        title = "我的應徵"
+        collectionView.backgroundColor = UIColor.Gray6
     }
 
     func getMyApplications() {
@@ -69,17 +70,19 @@ extension MyApplicationsViewController {
     func createMyApplicationSection() -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1),
-            heightDimension: .fractionalHeight(1)
+            heightDimension: .estimated(150)
         )
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
 
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1),
-            heightDimension: .estimated(220)
+            heightDimension: .estimated(150)
         )
         let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
 
         let section = NSCollectionLayoutSection(group: group)
+        section.interGroupSpacing = Constant.FindIdeas.projectsInterGroupSpacing
+        section.contentInsets = Constant.FindIdeas.projectsPageContentInsets
         return section
     }
 
@@ -141,6 +144,7 @@ extension MyApplicationsViewController: UICollectionViewDelegate {
             guard let detailVC = findIdeasStoryboard.instantiateViewController(withIdentifier: ProjectDetailsViewController.identifier) as? ProjectDetailsViewController else {
                 fatalError("Cannot create my post detail vc")
             }
+            detailVC.sourceType = .myApplications
             detailVC.project = projects[indexPath.row]
             navigationController?.pushViewController(detailVC, animated: true)
         }

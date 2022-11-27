@@ -15,8 +15,8 @@ class ProfileActionButtonsCell: CollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         editProfileButton.layer.cornerRadius = 8
-        editProfileButton.setTitleColor(.Gray2, for: .normal)
-        editProfileButton.backgroundColor = .Gray4
+        editProfileButton.setTitleColor(.Gray2?.withAlphaComponent(0.8), for: .normal)
+        editProfileButton.backgroundColor = .Gray4?.withAlphaComponent(0.8)
     }
 
     @IBAction func editProfile(_ sender: Any) {

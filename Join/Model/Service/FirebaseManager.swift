@@ -2134,7 +2134,7 @@ class FirebaseManager {
                     let chatroomsIDs = friendsAndChatrooms.map { $0.chatroomID }
                     for chatroomID in chatroomsIDs {
                         guard let chatroomID = chatroomID else {
-                            group.leave()
+//                            group.leave()
                             break
                         }
                         self.deleteChatroom(chatroomID: chatroomID)
@@ -2171,7 +2171,7 @@ class FirebaseManager {
                     let chatroomsIDs = unknownsAndChatrooms.map { $0.chatroomID }
                     for chatroomID in chatroomsIDs {
                         guard let chatroomID = chatroomID else {
-                            group.leave()
+//                            group.leave()
                             return
                         }
                         self.deleteChatroom(chatroomID: chatroomID)
@@ -2211,7 +2211,7 @@ class FirebaseManager {
                             groupDeleteGroup.leave()
                         }
 
-                        groupDeleteGroup.notify(queue: .main) {
+                        groupDeleteGroup.notify(queue: self.firebaseQueue) {
                             group.leave()
                         }
                     }

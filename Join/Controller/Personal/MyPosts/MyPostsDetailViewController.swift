@@ -20,6 +20,7 @@ class MyPostsDetailViewController: BaseViewController {
         // case group
         // case location
         case applicants
+        case noApplicant
     }
 
     enum Item: Hashable {
@@ -34,6 +35,7 @@ class MyPostsDetailViewController: BaseViewController {
         //        case group
         //        case location
         case applicant(JUser)
+        case noApplicant
     }
 
     typealias ProjectDetailsDatasource = UITableViewDiffableDataSource<Section, Item>
@@ -65,6 +67,8 @@ class MyPostsDetailViewController: BaseViewController {
                 UINib(nibName: DetailTitleHeaderView.identifier, bundle: nil),
                 forHeaderFooterViewReuseIdentifier: DetailTitleHeaderView.identifier
             )
+            tableView.register(
+                UINib(nibName: NoApplicantTableViewCell.identifier, bundle: nil), forCellReuseIdentifier: NoApplicantTableViewCell.identifier)
             tableView.delegate = self
             configureDatasource()
 
@@ -75,6 +79,7 @@ class MyPostsDetailViewController: BaseViewController {
             if #available(iOS 15, *) {
                 tableView.sectionHeaderTopPadding = 0
             }
+            tableView.backgroundColor = .White
         }
     }
 
@@ -106,6 +111,15 @@ class MyPostsDetailViewController: BaseViewController {
 
 // MARK: - Table View Delegate
 extension MyPostsDetailViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let section = Section.allCases[indexPath.section]
+        if section == .noApplicant {
+            return 80
+        } else {
+            return UITableView.automaticDimension
+        }
+    }
+
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         let section = Section.allCases[section]
         if section == .description || section == .applicants {
@@ -239,6 +253,12 @@ extension MyPostsDetailViewController {
                 }
             }
             return cell
+
+        case .noApplicant:
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: NoApplicantTableViewCell.identifier, for: indexPath) as? NoApplicantTableViewCell else {
+                fatalError("Cannot create no applicant cell")
+            }
+            return cell
         }
     }
 
@@ -259,6 +279,8 @@ extension MyPostsDetailViewController {
         snapshot.appendItems([.description(project)], toSection: .description)
         if !applicants.isEmpty {
             snapshot.appendItems(applicants.map { .applicant($0) }, toSection: .applicants)
+        } else {
+            snapshot.appendItems([.noApplicant], toSection: .noApplicant)
         }
 
         datasource.apply(snapshot, animatingDifferences: false)

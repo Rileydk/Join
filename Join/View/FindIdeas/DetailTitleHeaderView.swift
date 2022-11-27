@@ -12,6 +12,11 @@ class DetailTitleHeaderView: TableViewHeaderFooterView {
     @IBOutlet weak var shareLinkButton: UIButton!
     @IBOutlet weak var bookMarkButton: UIButton!
 
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        contentView.backgroundColor = .White
+    }
+
     func layoutHeaderView(title: String) {
         titleLabel.text = title
     }

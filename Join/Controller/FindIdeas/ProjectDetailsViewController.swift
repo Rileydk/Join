@@ -8,6 +8,11 @@
 import UIKit
 
 class ProjectDetailsViewController: BaseViewController {
+    enum SourceType {
+        case findIdeas
+        case myApplications
+    }
+
     enum Section: CaseIterable {
         case bigImage
         case projectName
@@ -44,6 +49,7 @@ class ProjectDetailsViewController: BaseViewController {
     let myID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey) ?? ""
     var project: Project?
     var userData: JUser?
+    var sourceType: SourceType = .findIdeas
 
     @IBOutlet weak var tableView: UITableView! {
         didSet {
@@ -82,6 +88,7 @@ class ProjectDetailsViewController: BaseViewController {
             if #available(iOS 15, *) {
                 tableView.sectionHeaderTopPadding = 0
             }
+            tableView.backgroundColor = .White
         }
     }
 
@@ -162,17 +169,15 @@ class ProjectDetailsViewController: BaseViewController {
 
 // MARK: - Table View Delegate
 extension ProjectDetailsViewController: UITableViewDelegate {
-//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-//        let section = Section.allCases[indexPath.section]
-//        if section == .bigImage {
-//            return 200
-//        } else if section == . {
-//
-//        } else {
-//            return 100
-//        }
-//    }
-//
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let section = Section.allCases[indexPath.section]
+        if section == .joinButton {
+            return 100
+        } else {
+            return UITableView.automaticDimension
+        }
+    }
+
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         let section = Section.allCases[section]
         if section == .description || section == .contact {
@@ -313,6 +318,9 @@ extension ProjectDetailsViewController {
                 withIdentifier: JoinButtonCell.identifier,
                 for: indexPath) as? JoinButtonCell else {
                 fatalError("Cannot create join button cell")
+            }
+            if sourceType == .myApplications {
+                cell.joinButton.backgroundColor = .Gray2?.withAlphaComponent(0.7)
             }
             cell.joinHandler = { [weak self] in
                 guard let project = self?.project else { return }

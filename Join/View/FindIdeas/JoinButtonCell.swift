@@ -13,7 +13,7 @@ class JoinButtonCell: TableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        contentView.backgroundColor = .White
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
