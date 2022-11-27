@@ -103,11 +103,12 @@ extension LoginViewController: ASAuthorizationControllerDelegate {
                     group.wait()
                     guard shouldContinue else { return }
                     group.enter()
-                    let newUser = JUser(id: firUser.uid, name: firUser.displayName ?? "",
-                                        email: firUser.email ?? "",
-                                        thumbnailURL: firUser.photoURL != nil
-                                        ? String(describing: firUser.photoURL)
-                                        : FindPartnersFormSections.placeholderImageURL)
+                    let newUser = JUser(
+                        id: firUser.uid, name: firUser.displayName ?? "",
+                        email: firUser.email ?? "",
+                        thumbnailURL: firUser.photoURL != nil
+                            ? String(describing: firUser.photoURL)
+                            : FindPartnersFormSections.placeholderImageURL)
                     self.firebaseManager.set(user: newUser) { result in
                         switch result {
                         case .success(let user):
