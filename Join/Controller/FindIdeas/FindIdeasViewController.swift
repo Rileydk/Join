@@ -46,12 +46,12 @@ class FindIdeasViewController: BaseViewController {
         collectionView.addRefreshHeader { [weak self] in
             self?.getProjects()
         }
-        layoutViews()
+        collectionView.beginHeaderRefreshing()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        collectionView.beginHeaderRefreshing()
+        layoutViews()
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -80,7 +80,7 @@ class FindIdeasViewController: BaseViewController {
                 guard let self = self else { return }
                 switch result {
                 case .success(let projects):
-                    self.projects = projects.sorted(by: { $0.createTime > $1.createTime })
+                    self.projects = projects.sorted(by: { $0.createTime! > $1.createTime! })
                     group.leave()
                 case .failure(let error):
                     group.leave()
