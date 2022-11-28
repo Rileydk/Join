@@ -43,15 +43,11 @@ class FindIdeasViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        layoutViews()
         collectionView.addRefreshHeader { [weak self] in
             self?.getProjects()
         }
         collectionView.beginHeaderRefreshing()
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        layoutViews()
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

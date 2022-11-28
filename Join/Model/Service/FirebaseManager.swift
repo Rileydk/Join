@@ -1990,7 +1990,7 @@ class FirebaseManager {
         }
     }
 
-    func getBlockList(completion: @escaping (Result<[String], Error>) -> Void) {
+    func getBlockList(completion: @escaping (Result<[UserID], Error>) -> Void) {
         let ref = FirestoreEndpoint.users.ref
         guard let myID = myID else { return }
         ref.document(myID).getDocument { (snapshot, err) in

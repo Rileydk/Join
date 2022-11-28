@@ -113,7 +113,7 @@
 		BF42FAD92912960D00501789 /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FAD82912960D00501789 /* CollectionViewCell.swift */; };
 		BF42FADC2912967900501789 /* IdeaCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FADA2912967900501789 /* IdeaCell.swift */; };
 		BF42FADD2912967900501789 /* IdeaCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF42FADB2912967900501789 /* IdeaCell.xib */; };
-		BF9A86742918FA3500BF934D /* FriendsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9A86732918FA3500BF934D /* FriendsListViewController.swift */; };
+		BF9A86742918FA3500BF934D /* UsersListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9A86732918FA3500BF934D /* UsersListViewController.swift */; };
 		BF9A867D2918FB1800BF934D /* FriendCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9A867B2918FB1800BF934D /* FriendCell.swift */; };
 		BF9A867E2918FB1800BF934D /* FriendCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF9A867C2918FB1800BF934D /* FriendCell.xib */; };
 		BF9A8685291A020300BF934D /* DropdownEmptyAlertCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9A8683291A020300BF934D /* DropdownEmptyAlertCell.swift */; };
@@ -290,7 +290,7 @@
 		BF42FAD82912960D00501789 /* CollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewCell.swift; sourceTree = "<group>"; };
 		BF42FADA2912967900501789 /* IdeaCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdeaCell.swift; sourceTree = "<group>"; };
 		BF42FADB2912967900501789 /* IdeaCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = IdeaCell.xib; sourceTree = "<group>"; };
-		BF9A86732918FA3500BF934D /* FriendsListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsListViewController.swift; sourceTree = "<group>"; };
+		BF9A86732918FA3500BF934D /* UsersListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersListViewController.swift; sourceTree = "<group>"; };
 		BF9A867B2918FB1800BF934D /* FriendCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendCell.swift; sourceTree = "<group>"; };
 		BF9A867C2918FB1800BF934D /* FriendCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FriendCell.xib; sourceTree = "<group>"; };
 		BF9A8683291A020300BF934D /* DropdownEmptyAlertCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropdownEmptyAlertCell.swift; sourceTree = "<group>"; };
@@ -789,7 +789,7 @@
 				BF9A8699291C9DAB00BF934D /* MyApplications */,
 				BF9A868F291BCF8700BF934D /* MyPosts */,
 				BFF8A4C42913EDB800ADC950 /* PersonalEntryViewController.swift */,
-				BF9A86732918FA3500BF934D /* FriendsListViewController.swift */,
+				BF9A86732918FA3500BF934D /* UsersListViewController.swift */,
 			);
 			path = Personal;
 			sourceTree = "<group>";
@@ -1077,7 +1077,7 @@
 				BF9A867D2918FB1800BF934D /* FriendCell.swift in Sources */,
 				BF42FACF2912557500501789 /* UIImage+Ext.swift in Sources */,
 				BF42FAB2290FAC2000501789 /* Project.swift in Sources */,
-				BF9A86742918FA3500BF934D /* FriendsListViewController.swift in Sources */,
+				BF9A86742918FA3500BF934D /* UsersListViewController.swift in Sources */,
 				BFB72ED82933604C006F4651 /* NoApplicantTableViewCell.swift in Sources */,
 				BF3D83652927A1B6009F903F /* KingFisherWrapper.swift in Sources */,
 				BF326C0F292BB5E200898444 /* BottomLinedTextView.swift in Sources */,
