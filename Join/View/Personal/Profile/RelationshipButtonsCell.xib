@@ -2,7 +2,6 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -18,7 +17,7 @@
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="o41-XX-KgP">
-                        <rect key="frame" x="67" y="15" width="250" height="30"/>
+                        <rect key="frame" x="51" y="15" width="282" height="30"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Cgs-XV-Xqs">
                                 <rect key="frame" x="0.0" y="0.0" width="87" height="30"/>
@@ -38,6 +37,11 @@
                                     <action selector="sendMessage:" destination="gTV-IL-0wX" eventType="touchUpInside" id="gc8-Um-gFM"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" showsMenuAsPrimaryAction="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uoZ-gh-3PN">
+                                <rect key="frame" x="258" y="0.0" width="24" height="30"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" image="Icons_24px_More"/>
+                            </button>
                         </subviews>
                     </stackView>
                 </subviews>
@@ -49,10 +53,14 @@
             </constraints>
             <size key="customSize" width="384" height="50"/>
             <connections>
+                <outlet property="moreActionButton" destination="uoZ-gh-3PN" id="fZQ-mp-ypn"/>
                 <outlet property="relationshipButton" destination="Cgs-XV-Xqs" id="oqv-MT-SDV"/>
                 <outlet property="sendMessageButton" destination="u2m-5e-BqL" id="aqB-SJ-fTq"/>
             </connections>
             <point key="canvasLocation" x="379.71014492753625" y="99.776785714285708"/>
         </collectionViewCell>
     </objects>
+    <resources>
+        <image name="Icons_24px_More" width="24" height="24"/>
+    </resources>
 </document>

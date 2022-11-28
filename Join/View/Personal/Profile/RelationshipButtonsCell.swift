@@ -10,10 +10,14 @@ import UIKit
 class RelationshipButtonsCell: CollectionViewCell {
     @IBOutlet weak var relationshipButton: UIButton!
     @IBOutlet weak var sendMessageButton: UIButton!
+    @IBOutlet weak var moreActionButton: UIButton!
 
     var sendFriendRequestHandler: (() -> Void)?
     var acceptFriendRequestHandler: (() -> Void)?
     var goChatroomHandler: (() -> Void)?
+    var blockUserHandler: (() -> Void)?
+
+    let firebaseManager = FirebaseManager.shared
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -24,6 +28,17 @@ class RelationshipButtonsCell: CollectionViewCell {
         sendMessageButton.setTitleColor(.Gray3, for: .normal)
         sendMessageButton.layer.borderColor = (UIColor.Gray4 ?? .lightGray).cgColor
         sendMessageButton.backgroundColor = .White
+
+        moreActionButton.showsMenuAsPrimaryAction = true
+        let reportAction = UIAction(title: Constant.Personal.report, attributes: [], state: .off) { _ in
+
+        }
+        let blockAction = UIAction(title: Constant.Personal.block, attributes: [], state: .off) { [weak self] _ in
+            self?.blockUser()
+        }
+        var elements: [UIAction] = [reportAction, blockAction]
+        let menu = UIMenu(children: elements)
+        moreActionButton.menu = menu
     }
 
     func layoutCell(with relationship: Relationship?) {
@@ -65,5 +80,9 @@ class RelationshipButtonsCell: CollectionViewCell {
 
     @IBAction func sendMessage(_ sender: UIButton) {
         goChatroomHandler?()
+    }
+
+    func blockUser() {
+        blockUserHandler?()
     }
 }

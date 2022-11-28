@@ -70,7 +70,7 @@ class PersonalProfileViewController: BaseViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        updateData() { [weak self] in
+        updateData { [weak self] in
             self?.layoutViews()
         }
     }
@@ -288,6 +288,37 @@ class PersonalProfileViewController: BaseViewController {
             }
         }
     }
+
+    func blockUser() {
+        let alert = UIAlertController(title: Constant.Personal.blockAlertTitle,
+                                      message: Constant.Personal.blockAlertMessage,
+                                      preferredStyle: .actionSheet)
+        let yesAction = UIAlertAction(title: Constant.Personal.blockAlertYesActionTitle,
+                                      style: .destructive) { [weak self] _ in
+            guard let self = self else { return }
+            JProgressHUD.shared.showLoading(text: Constant.Common.processing, view: self.view)
+            guard let myID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey),
+                  let userID = self.userID else { return }
+            self.firebaseManager.addNewValueToArray(
+                ref: FirestoreEndpoint.users.ref.document(myID),
+                field: "blockList", values: [userID]) { result in
+                switch result {
+                case .success:
+                    JProgressHUD.shared.showSuccess(text: Constant.Personal.blocked, view: self.view) {
+                        self.navigationController?.popToRootViewController(animated: true)
+                    }
+                case .failure(let err):
+                    print(err)
+                    JProgressHUD.shared.showFailure(text: Constant.Common.errorShouldRetry, view: self.view)
+                }
+            }
+        }
+        let cancelAction = UIAlertAction(title: Constant.Personal.blockAlertCancelActionTitle, style: .cancel)
+
+        alert.addAction(yesAction)
+        alert.addAction(cancelAction)
+        present(alert, animated: true)
+    }
 }
 
 // MARK: - Layout
@@ -477,6 +508,9 @@ extension PersonalProfileViewController {
                 }
                 cell.goChatroomHandler = { [weak self] in
                     self?.goChatroom()
+                }
+                cell.blockUserHandler = { [weak self] in
+                    self?.blockUser()
                 }
                 return cell
             }

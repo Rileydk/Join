@@ -1990,6 +1990,37 @@ class FirebaseManager {
         }
     }
 
+    func getBlockList(completion: @escaping (Result<[String], Error>) -> Void) {
+        let ref = FirestoreEndpoint.users.ref
+        guard let myID = myID else { return }
+        ref.document(myID).getDocument { (snapshot, err) in
+            if let err = err {
+                completion(.failure(err))
+                return
+            }
+            if let snapshot = snapshot {
+                do {
+                    let user = try snapshot.data(as: JUser.self, decoder: FirebaseManager.decoder)
+                    completion(.success(user.blockList))
+                } catch {
+                    completion(.failure(error))
+                }
+            } else {
+                completion(.failure(CommonError.noValidQuerysnapshot))
+            }
+        }
+    }
+
+    func addNewValueToArray(ref: DocumentReference, field: String, values: [Any], completion: @escaping (Result<String, Error>) -> Void) {
+        ref.updateData([field: FieldValue.arrayUnion(values)]) { err in
+            if let err = err {
+                completion(.failure(err))
+                return
+            }
+            completion(.success("Success"))
+        }
+    }
+
     func deleteDocument(ref: DocumentReference, completion: (() -> Void)? = nil) {
         ref.delete { err in
             if let err = err {
