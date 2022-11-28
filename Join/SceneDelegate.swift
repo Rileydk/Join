@@ -26,7 +26,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         guard let scene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: scene)
-
+        
         let mainStoryboard = UIStoryboard(name: StoryboardCategory.main.rawValue, bundle: nil)
         if Auth.auth().currentUser == nil {
             guard let loginVC = mainStoryboard.instantiateViewController(
