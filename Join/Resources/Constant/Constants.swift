@@ -60,6 +60,11 @@ struct Constant {
         static let sectionHeader = "作品集"
     }
 
+    struct Login {
+        static let statement = "登入以使用完整功能\n登入即表示您同意我們的 "
+        static let privatePolicy = "隱私權政策"
+    }
+
     struct Edit {
         static let editIntroduction = "請填寫個人簡介"
         static let editSkills = "Edit Skills"
@@ -76,5 +81,9 @@ struct Constant {
         static let cancel = "取消"
         static let processing = "處理中..."
         static let errorShouldRetry = "發生錯誤，請重新操作"
+    }
+
+    struct Link {
+        static let privacyPolicyURL = "https://www.privacypolicies.com/live/d6a88da8-fa04-4360-a5b6-dafad6c03f26"
     }
 }

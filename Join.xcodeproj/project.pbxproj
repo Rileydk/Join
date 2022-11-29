@@ -29,6 +29,7 @@
 		BF129458292A51A700AA631E /* MultilineCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF129456292A51A700AA631E /* MultilineCell.swift */; };
 		BF129459292A51A700AA631E /* MultilineCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF129457292A51A700AA631E /* MultilineCell.xib */; };
 		BF2681BD2935BBBE007DCFBE /* Report.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2681BC2935BBBE007DCFBE /* Report.swift */; };
+		BF2681BF2935CC98007DCFBE /* LinkTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2681BE2935CC98007DCFBE /* LinkTextView.swift */; };
 		BF326C0D292BB40E00898444 /* BottomLinedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF326C0C292BB40E00898444 /* BottomLinedTextField.swift */; };
 		BF326C0F292BB5E200898444 /* BottomLinedTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF326C0E292BB5E200898444 /* BottomLinedTextView.swift */; };
 		BF326C11292BBAB200898444 /* TableViewSimpleHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF326C10292BBAB200898444 /* TableViewSimpleHeaderView.swift */; };
@@ -205,6 +206,7 @@
 		BF129456292A51A700AA631E /* MultilineCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultilineCell.swift; sourceTree = "<group>"; };
 		BF129457292A51A700AA631E /* MultilineCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MultilineCell.xib; sourceTree = "<group>"; };
 		BF2681BC2935BBBE007DCFBE /* Report.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Report.swift; sourceTree = "<group>"; };
+		BF2681BE2935CC98007DCFBE /* LinkTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkTextView.swift; sourceTree = "<group>"; };
 		BF326C0C292BB40E00898444 /* BottomLinedTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomLinedTextField.swift; sourceTree = "<group>"; };
 		BF326C0E292BB5E200898444 /* BottomLinedTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomLinedTextView.swift; sourceTree = "<group>"; };
 		BF326C10292BBAB200898444 /* TableViewSimpleHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewSimpleHeaderView.swift; sourceTree = "<group>"; };
@@ -421,6 +423,7 @@
 				BF326C16292C5C2900898444 /* PaddingableTextView.swift */,
 				BF326C12292BBC3600898444 /* TableViewSimpleHeaderView.xib */,
 				BF326C1C292C92B500898444 /* PillButton.swift */,
+				BF2681BE2935CC98007DCFBE /* LinkTextView.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -1063,6 +1066,7 @@
 				BF9A869F291CDE8300BF934D /* GroupCreationViewController.swift in Sources */,
 				BF129454292A3C4B00AA631E /* ProjectItemCell.swift in Sources */,
 				BF326C1A292C7E5B00898444 /* ProjectCategoryListCell.swift in Sources */,
+				BF2681BF2935CC98007DCFBE /* LinkTextView.swift in Sources */,
 				BF1294432929E7FA00AA631E /* TagCell.swift in Sources */,
 				BFF8A4B32913AD3000ADC950 /* BigImageCell.swift in Sources */,
 				BF9A86B1291E3AE800BF934D /* AddNewMemberCell.swift in Sources */,

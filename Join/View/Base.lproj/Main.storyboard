@@ -115,22 +115,37 @@
                                     <constraint firstAttribute="height" constant="45" id="qYa-oj-vtk"/>
                                 </constraints>
                             </stackView>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="FIA-F2-75Z" customClass="LinkTextView" customModule="Join" customModuleProvider="target">
+                                <rect key="frame" x="40" y="800" width="334" height="48"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <string key="text">cccccccc
+fffff</string>
+                                <color key="textColor" systemColor="labelColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="MHb-T9-jD8"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="MHb-T9-jD8" firstAttribute="bottom" secondItem="FIA-F2-75Z" secondAttribute="bottom" constant="14" id="51j-bo-zi8"/>
+                            <constraint firstItem="MHb-T9-jD8" firstAttribute="trailing" secondItem="FIA-F2-75Z" secondAttribute="trailing" constant="40" id="A93-mM-Net"/>
+                            <constraint firstItem="FIA-F2-75Z" firstAttribute="leading" secondItem="MHb-T9-jD8" secondAttribute="leading" constant="40" id="AWf-Pz-teu"/>
+                            <constraint firstItem="FIA-F2-75Z" firstAttribute="centerX" secondItem="MHb-T9-jD8" secondAttribute="centerX" id="MKv-pk-WLy"/>
                             <constraint firstItem="xXt-pa-GFz" firstAttribute="centerX" secondItem="bhS-Dm-V3w" secondAttribute="centerX" id="QEm-ql-FIg"/>
+                            <constraint firstItem="FIA-F2-75Z" firstAttribute="top" secondItem="xXt-pa-GFz" secondAttribute="bottom" constant="6" id="pB5-hY-bAE"/>
                             <constraint firstItem="MHb-T9-jD8" firstAttribute="bottom" secondItem="xXt-pa-GFz" secondAttribute="bottom" constant="68" id="qnY-yZ-CFI"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="loginProviderStackView" destination="xXt-pa-GFz" id="nWz-V3-gTY"/>
+                        <outlet property="statementTextView" destination="FIA-F2-75Z" id="Db6-AA-KfW"/>
                         <segue destination="AWW-iZ-ttW" kind="show" id="Wum-Uz-8pD"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="d62-zk-yHj" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-772" y="407"/>
+            <point key="canvasLocation" x="-772.46376811594212" y="406.47321428571428"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
@@ -140,6 +155,9 @@
         <namedColor name="Blue1">
             <color red="0.0" green="0.22352941176470589" blue="0.38823529411764707" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

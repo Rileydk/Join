@@ -14,12 +14,27 @@ class LoginViewController: BaseViewController {
     let appleSignInManager = AppleSignInManager.shared
 
     @IBOutlet weak var loginProviderStackView: UIStackView!
+    @IBOutlet weak var statementTextView: LinkTextView!
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .Blue1
         setupProviderLoginView()
         setupAnimation()
+
+        statementTextView.backgroundColor = .clear
+        statementTextView.textColor = .Gray6
+        statementTextView.tintColor = .White
+        let privatePolicy = Constant.Login.privatePolicy
+        let statement = Constant.Login.statement + "\(privatePolicy)"
+//        let url = URL(string: Constant.Link.privacyPolicyURL)!
+        statementTextView.text = statement
+        statementTextView.addLinks([privatePolicy: Constant.Link.privacyPolicyURL])
+        statementTextView.onLinkTap = { url in
+            UIApplication.shared.open(url)
+            return true
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {

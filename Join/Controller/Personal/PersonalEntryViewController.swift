@@ -24,6 +24,7 @@ class PersonalEntryViewController: UIViewController {
         case friends = "我的好友"
         case blockList = "我的黑名單"
         case preference = "個人設定"
+        case privacyPolicy = "隱私權政策"
     }
 
     @IBOutlet var tableView: UITableView! {
@@ -86,6 +87,11 @@ class PersonalEntryViewController: UIViewController {
                 friendsListVC.usageType = .blockList
             }
             navigationController?.pushViewController(friendsListVC, animated: true)
+
+        case .privacyPolicy:
+            if let url = URL(string: Constant.Link.privacyPolicyURL) {
+                UIApplication.shared.open(url)
+            }
 
         case .preference:
             return
