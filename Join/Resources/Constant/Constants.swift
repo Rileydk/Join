@@ -54,6 +54,9 @@ struct Constant {
         static let blocked = "已為您封鎖此用戶，您可以在個人頁面「我的黑名單」中查看及編輯"
 
         static let deleteFriend = "刪除好友"
+
+        static let myFriends = "我的好友"
+        static let myBlockList = "黑名單"
     }
 
     struct Portfolio {
