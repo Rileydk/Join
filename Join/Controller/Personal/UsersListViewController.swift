@@ -50,16 +50,50 @@ class UsersListViewController: BaseViewController {
     func updateData() {
         switch usageType {
         case .friend:
-            firebaseManager.getAllFriendsInfo { [weak self] result in
+            firebaseManager.firebaseQueue.async { [weak self] in
                 guard let self = self else { return }
-                switch result {
-                case .success(let friends):
-                    self.users = friends
-                    self.filteredUsers = friends
-                    self.tableView.reloadData()
-                    JProgressHUD.shared.dismiss()
-                case .failure(let error):
-                    JProgressHUD.shared.showFailure(text: error.localizedDescription, view: self.view)
+                let group = DispatchGroup()
+                var shouldContinue = true
+
+                group.enter()
+                self.firebaseManager.getAllFriendsInfo { result in
+                    switch result {
+                    case .success(let friends):
+                        self.users = friends
+                        group.leave()
+                    case .failure(let error):
+                        shouldContinue = false
+                        group.leave()
+                        group.notify(queue: .main) {
+                            self.tableView.endHeaderRefreshing()
+                            JProgressHUD.shared.showFailure(text: error.localizedDescription, view: self.view)
+                        }
+                    }
+                }
+
+                group.wait()
+                guard shouldContinue else { return }
+                group.enter()
+                self.firebaseManager.getBlockList { result in
+                    switch result {
+                    case .success(let blockList):
+                        self.users = self.users.filter { user in
+                            !blockList.contains(user.id)
+                        }
+                        self.filteredUsers = self.users
+                        group.leave()
+                        group.notify(queue: .main) {
+                            self.tableView.reloadData()
+                            self.tableView.endHeaderRefreshing()
+                        }
+                    case .failure(let err):
+                        shouldContinue = false
+                        group.leave()
+                        group.notify(queue: .main) {
+                            self.tableView.endHeaderRefreshing()
+                            JProgressHUD.shared.showFailure(text: err.localizedDescription, view: self.view)
+                        }
+                    }
                 }
             }
         case .blockList:
@@ -86,7 +120,10 @@ class UsersListViewController: BaseViewController {
                 }
 
                 group.wait()
-                guard shouldContinue else { return }
+                guard shouldContinue && !blockList.isEmpty else {
+                    self.tableView.endHeaderRefreshing()
+                    return
+                }
                 group.enter()
                 self.firebaseManager.getAllMatchedUsersDetail(usersID: blockList) { result in
                     switch result {

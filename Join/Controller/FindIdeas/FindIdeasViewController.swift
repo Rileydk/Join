@@ -71,6 +71,8 @@ class FindIdeasViewController: BaseViewController {
 
         firebaseManager.firebaseQueue.async { [unowned self] in
             let group = DispatchGroup()
+            var shouldContinue = true
+
             group.enter()
             self.firebaseManager.getAllProjects { [weak self] result in
                 guard let self = self else { return }
@@ -79,6 +81,7 @@ class FindIdeasViewController: BaseViewController {
                     self.projects = projects.sorted(by: { $0.createTime! > $1.createTime! })
                     group.leave()
                 case .failure(let error):
+                    shouldContinue = false
                     group.leave()
                     group.notify(queue: .main) {
                         JProgressHUD.shared.showFailure(text: error.localizedDescription, view: self.view)
@@ -87,26 +90,46 @@ class FindIdeasViewController: BaseViewController {
             }
 
             group.wait()
+            guard shouldContinue else { return }
             group.enter()
-            self.firebaseManager.getAllFriendsAndChatroomsInfo(type: .friend) { [unowned self] result in
+            self.firebaseManager.getBlockList { result in
                 switch result {
-                case .success(let friends):
-                    friendsProjects = self.projects.filter { project in
-                        friends.contains { friend in
-                            project.contact == friend.id
-                        }
+                case .success(let blockList):
+                    self.projects = self.projects.filter { project in
+                        !blockList.contains(project.contact)
                     }
                     group.leave()
-                case .failure(let error):
+                case .failure(let err):
+                    shouldContinue = false
                     group.leave()
                     group.notify(queue: .main) {
-                        JProgressHUD.shared.showFailure(text: error.localizedDescription, view: self.view)
+                        JProgressHUD.shared.showFailure(text: err.localizedDescription, view: self.view)
                     }
                 }
             }
 
+//            group.wait()
+//            group.enter()
+//            self.firebaseManager.getAllFriendsAndChatroomsInfo(type: .friend) { [unowned self] result in
+//                switch result {
+//                case .success(let friends):
+//                    friendsProjects = self.projects.filter { project in
+//                        friends.contains { friend in
+//                            project.contact == friend.id
+//                        }
+//                    }
+//                    group.leave()
+//                case .failure(let error):
+//                    group.leave()
+//                    group.notify(queue: .main) {
+//                        JProgressHUD.shared.showFailure(text: error.localizedDescription, view: self.view)
+//                    }
+//                }
+//            }
+
             group.enter()
             // TODO: - 改為使用 UserDefaults 取得興趣類別
+            guard shouldContinue else { return }
             guard let id = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey) else {
                 fatalError("Doesn't have user id")
             }

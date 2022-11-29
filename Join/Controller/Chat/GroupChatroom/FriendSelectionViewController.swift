@@ -50,14 +50,50 @@ class FriendSelectionViewController: BaseViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        firebaseManager.getAllFriendsInfo { [unowned self] result in
-            switch result {
-            case .success(let friends):
-                self.friends = friends
-                self.filteredFriends = friends
-                tableView.reloadData()
-            case .failure(let error):
-                print(error)
+        firebaseManager.firebaseQueue.async { [weak self] in
+            guard let self = self else { return }
+            let group = DispatchGroup()
+            var shouldContinue = true
+
+            group.enter()
+            self.firebaseManager.getAllFriendsInfo { result in
+                switch result {
+                case .success(let friends):
+                    self.friends = friends
+                    group.leave()
+                case .failure(let error):
+                    shouldContinue = false
+                    group.leave()
+                    group.notify(queue: .main) {
+                        self.tableView.endHeaderRefreshing()
+                        JProgressHUD.shared.showFailure(text: error.localizedDescription, view: self.view)
+                    }
+                }
+            }
+
+            group.wait()
+            guard shouldContinue else { return }
+            group.enter()
+            self.firebaseManager.getBlockList { result in
+                switch result {
+                case .success(let blockList):
+                    self.friends = self.friends.filter { friend in
+                        !blockList.contains(friend.id)
+                    }
+                    self.filteredFriends = self.friends
+                    group.leave()
+                    group.notify(queue: .main) {
+                        self.tableView.reloadData()
+                        self.tableView.endHeaderRefreshing()
+                    }
+                case .failure(let err):
+                    shouldContinue = false
+                    group.leave()
+                    group.notify(queue: .main) {
+                        self.tableView.endHeaderRefreshing()
+                        JProgressHUD.shared.showFailure(text: err.localizedDescription, view: self.view)
+                    }
+                }
             }
         }
     }
