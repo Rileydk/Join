@@ -860,6 +860,7 @@
 				BF42FA2F290BE2AA00501789 /* Resources */,
 				BF42FA48290BE37100501789 /* ShellScript */,
 				B544A008D19CD6F33AE276C9 /* [CP] Embed Pods Frameworks */,
+				BF2681C02935DE1E007DCFBE /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -1009,6 +1010,25 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Join/Pods-Join-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		BF2681C02935DE1E007DCFBE /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${TARGET_NAME}",
+				"$(SRCROOT)/$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)",
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/FirebaseCrashlytics/run\"\n";
 		};
 		BF42FA48290BE37100501789 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1207,7 +1227,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -1298,6 +1318,7 @@
 				CODE_SIGN_ENTITLEMENTS = Join/Join.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = LC7DCZXZ89;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Join/Resources/Info.plist;
@@ -1333,6 +1354,7 @@
 				CODE_SIGN_ENTITLEMENTS = Join/Join.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = LC7DCZXZ89;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Join/Resources/Info.plist;

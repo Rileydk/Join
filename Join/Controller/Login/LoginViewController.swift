@@ -8,6 +8,7 @@
 import UIKit
 import AuthenticationServices
 import Lottie
+import FirebaseCrashlytics
 
 class LoginViewController: BaseViewController {
     let firebaseManager = FirebaseManager.shared
@@ -28,7 +29,6 @@ class LoginViewController: BaseViewController {
         statementTextView.tintColor = .White
         let privatePolicy = Constant.Login.privatePolicy
         let statement = Constant.Login.statement + "\(privatePolicy)"
-//        let url = URL(string: Constant.Link.privacyPolicyURL)!
         statementTextView.text = statement
         statementTextView.addLinks([privatePolicy: Constant.Link.privacyPolicyURL])
         statementTextView.onLinkTap = { url in

@@ -10,6 +10,7 @@ target 'Join' do
   pod 'FirebaseFirestore'
   pod 'FirebaseStorage'
   pod 'FirebaseFirestoreSwift'
+  pod 'FirebaseCrashlytics'
   pod 'IQKeyboardManagerSwift'
   pod 'JGProgressHUD'
   pod 'Kingfisher'
