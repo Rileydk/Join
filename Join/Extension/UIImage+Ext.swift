@@ -18,6 +18,7 @@ enum JImages: String {
     case Icons_24px_More
     case Icons_24px_Tools
     case Icons_24px_Person
+    case Icons_24px_VerticalMore
 }
 
 extension UIImage {

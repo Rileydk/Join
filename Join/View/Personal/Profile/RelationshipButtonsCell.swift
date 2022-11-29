@@ -16,6 +16,7 @@ class RelationshipButtonsCell: CollectionViewCell {
     var acceptFriendRequestHandler: (() -> Void)?
     var goChatroomHandler: (() -> Void)?
     var blockUserHandler: (() -> Void)?
+    var reportUserHandler: (() -> Void)?
 
     let firebaseManager = FirebaseManager.shared
 
@@ -30,8 +31,8 @@ class RelationshipButtonsCell: CollectionViewCell {
         sendMessageButton.backgroundColor = .White
 
         moreActionButton.showsMenuAsPrimaryAction = true
-        let reportAction = UIAction(title: Constant.Personal.report, attributes: [], state: .off) { _ in
-
+        let reportAction = UIAction(title: Constant.Personal.report, attributes: [], state: .off) { [weak self] _ in
+            self?.reportUserHandler?()
         }
         let blockAction = UIAction(title: Constant.Personal.block, attributes: [], state: .off) { [weak self] _ in
             self?.blockUser()

@@ -319,6 +319,28 @@ class PersonalProfileViewController: BaseViewController {
         alert.addAction(cancelAction)
         present(alert, animated: true)
     }
+
+    func reportUser() {
+        let alert = UIAlertController(title: Constant.FindIdeas.reportAlert, message: nil, preferredStyle: .actionSheet)
+        let yesAction = UIAlertAction(title: Constant.Common.confirm, style: .destructive) { [weak self] _ in
+            guard let self = self else { return }
+            JProgressHUD.shared.showLoading(text: Constant.Common.processing, view: self.view)
+            let report = Report(reportID: "", type: .personalProfile, reportedObjectID: self.userID as! String, reportTime: Date(), reason: nil)
+            self.firebaseManager.addNewReport(report: report) { result in
+                switch result {
+                case .success:
+                    JProgressHUD.shared.showSuccess(text: Constant.FindIdeas.reportResult, view: self.view)
+                case .failure(let err):
+                    print(err)
+                    JProgressHUD.shared.showFailure(text: Constant.Common.errorShouldRetry, view: self.view)
+                }
+            }
+        }
+        let cancelAction = UIAlertAction(title: Constant.Common.cancel, style: .cancel)
+        alert.addAction(cancelAction)
+        alert.addAction(yesAction)
+        self.present(alert, animated: true)
+    }
 }
 
 // MARK: - Layout
@@ -511,6 +533,9 @@ extension PersonalProfileViewController {
                 }
                 cell.blockUserHandler = { [weak self] in
                     self?.blockUser()
+                }
+                cell.reportUserHandler = { [weak self] in
+                    self?.reportUser()
                 }
                 return cell
             }

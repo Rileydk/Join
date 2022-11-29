@@ -21,6 +21,9 @@ struct Constant {
         static let descriptionSectionTitle = "專案內容"
         static let contactSectionTitle = "聯絡人"
         static let applicantsSectionTitle = "應徵者"
+        static let report = "檢舉此篇貼文"
+        static let reportAlert = "確定要檢舉這篇貼文嗎？"
+        static let reportResult = "已經收到您的檢舉"
         static let noApplicantAlertMessage = "目前尚無人應徵"
 
         static let projectsTopHorizontalScrollingContentInsets: NSDirectionalEdgeInsets = .init(top: 28, leading: 16, bottom: 20, trailing: 0)
@@ -69,6 +72,8 @@ struct Constant {
     }
 
     struct Common {
+        static let confirm = "確定"
+        static let cancel = "取消"
         static let processing = "處理中..."
         static let errorShouldRetry = "發生錯誤，請重新操作"
     }

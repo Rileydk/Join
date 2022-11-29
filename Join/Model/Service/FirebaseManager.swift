@@ -60,6 +60,7 @@ enum FirestoreEndpoint {
     case privateChatroomMembers(ChatroomID)
     case groupMembers(ChatroomID)
     case interests
+    case reports
 
     var ref: CollectionReference {
         let db = Firestore.firestore()
@@ -75,6 +76,7 @@ enum FirestoreEndpoint {
         let messages = "Messages"
         let members = "Members"
         let infoCategories = "Categories"
+        let reports = "Reports"
 
         switch self {
         case .projects:
@@ -101,6 +103,8 @@ enum FirestoreEndpoint {
             return db.collection(groupChatrooms).document(chatroomID).collection(members)
         case .interests:
             return db.collection(infoCategories)
+        case .reports:
+            return db.collection(reports)
         }
     }
 }
@@ -2011,8 +2015,34 @@ class FirebaseManager {
         }
     }
 
+    func addNewReport(report: Report, completion: @escaping (Result<String, Error>) -> Void) {
+        let ref = FirestoreEndpoint.reports.ref
+        let reportID = ref.document().documentID
+        var report = report
+        report.reportID = reportID
+
+        ref.document(reportID).setData(report.toDict) { err in
+            if let err = err {
+                completion(.failure(err))
+                return
+            }
+            completion(.success("Success"))
+        }
+
+    }
+
     func addNewValueToArray(ref: DocumentReference, field: String, values: [Any], completion: @escaping (Result<String, Error>) -> Void) {
         ref.updateData([field: FieldValue.arrayUnion(values)]) { err in
+            if let err = err {
+                completion(.failure(err))
+                return
+            }
+            completion(.success("Success"))
+        }
+    }
+
+    func removeValueOfArray(ref: DocumentReference, field: String, values: [Any], completion: @escaping (Result<String, Error>) -> Void) {
+        ref.updateData([field: FieldValue.arrayRemove(values)]) { err in
             if let err = err {
                 completion(.failure(err))
                 return
@@ -2270,7 +2300,7 @@ class FirebaseManager {
                             deleteUnknownGroup.enter()
                             guard let chatroomID = chatroomID else {
                                 deleteUnknownGroup.leave()
-                                return
+                                break
                             }
                             self.deleteChatroom(chatroomID: chatroomID) {
                                 deleteUnknownGroup.leave()
