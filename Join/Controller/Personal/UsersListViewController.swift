@@ -43,6 +43,12 @@ class UsersListViewController: BaseViewController {
         tableView.addRefreshHeader { [weak self] in
             self?.updateData()
         }
+        switch usageType {
+        case .friend:
+            title = Constant.Personal.myFriends
+        case .blockList:
+            title = Constant.Personal.myBlockList
+        }
         tableView.beginHeaderRefreshing()
         layoutViews()
     }

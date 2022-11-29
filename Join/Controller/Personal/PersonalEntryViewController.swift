@@ -22,7 +22,7 @@ class PersonalEntryViewController: UIViewController {
         case posts = "我的專案"
         case applications = "我的應徵"
         case friends = "我的好友"
-        case blockList = "我的黑名單"
+        case blockList = "黑名單"
         case preference = "個人設定"
         case privacyPolicy = "隱私權政策"
     }
@@ -40,6 +40,11 @@ class PersonalEntryViewController: UIViewController {
             tableView.delegate = self
             tableView.dataSource = self
         }
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tableView.reloadData()
     }
 
     let firebaseManager = FirebaseManager.shared
@@ -89,7 +94,6 @@ class PersonalEntryViewController: UIViewController {
             navigationController?.pushViewController(friendsListVC, animated: true)
 
         case .privacyPolicy:
-            fatalError("Crash")
             if let url = URL(string: Constant.Link.privacyPolicyURL) {
                 UIApplication.shared.open(url)
             }

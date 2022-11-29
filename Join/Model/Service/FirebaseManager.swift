@@ -2103,6 +2103,7 @@ class FirebaseManager {
 
             group.notify(queue: .main) {
                 print("success")
+                completion?()
             }
         }
     }
@@ -2235,9 +2236,9 @@ class FirebaseManager {
                             self.deleteDocument(ref: userRef.document($0).collection("Friends").document(myID)) {
                                 deleteFriendsGroup.leave()
                             }
-
                         }
 
+                        // 刪聊天室
                         let chatroomsIDs = friendsAndChatrooms.map { $0.chatroomID }
                         for chatroomID in chatroomsIDs {
                             deleteFriendsGroup.enter()
@@ -2249,7 +2250,6 @@ class FirebaseManager {
                                 deleteFriendsGroup.leave()
                             }
                         }
-                        deleteFriendsGroup.wait()
                         deleteFriendsGroup.notify(queue: self.firebaseQueue) {
                             group.leave()
                         }
@@ -2279,37 +2279,34 @@ class FirebaseManager {
                     let myUnknownsRef = FirestoreEndpoint.users.ref.document(myID).collection("UnknownChat")
                     let deleteUnknownGroup = DispatchGroup()
 
-                    self.firebaseQueue.async {
-                        unknownsIDs.forEach {
-                            deleteUnknownGroup.enter()
-                            self.deleteDocument(ref: myUnknownsRef.document($0)) {
-                                deleteUnknownGroup.leave()
-                            }
+                    unknownsIDs.forEach {
+                        deleteUnknownGroup.enter()
+                        self.deleteDocument(ref: myUnknownsRef.document($0)) {
+                            deleteUnknownGroup.leave()
                         }
-                        // 刪除對方 user / UnknownChat 紀錄下的自己及共同聊天室
-                        let userRef = FirestoreEndpoint.users.ref
-                        unknownsIDs.forEach {
-                            deleteUnknownGroup.enter()
-                            self.deleteDocument(ref: userRef.document($0).collection("UnknownChat").document(myID)) {
-                                deleteUnknownGroup.leave()
-                            }
+                    }
+                    // 刪除對方 user / UnknownChat 紀錄下的自己及共同聊天室
+                    let userRef = FirestoreEndpoint.users.ref
+                    unknownsIDs.forEach {
+                        deleteUnknownGroup.enter()
+                        self.deleteDocument(ref: userRef.document($0).collection("UnknownChat").document(myID)) {
+                            deleteUnknownGroup.leave()
                         }
-                        // 刪除聊天室
-                        let chatroomsIDs = unknownsAndChatrooms.map { $0.chatroomID }
-                        for chatroomID in chatroomsIDs {
-                            deleteUnknownGroup.enter()
-                            guard let chatroomID = chatroomID else {
-                                deleteUnknownGroup.leave()
-                                break
-                            }
-                            self.deleteChatroom(chatroomID: chatroomID) {
-                                deleteUnknownGroup.leave()
-                            }
+                    }
+                    // 刪除聊天室
+                    let chatroomsIDs = unknownsAndChatrooms.map { $0.chatroomID }
+                    for chatroomID in chatroomsIDs {
+                        deleteUnknownGroup.enter()
+                        guard let chatroomID = chatroomID else {
+                            deleteUnknownGroup.leave()
+                            break
                         }
-                        deleteUnknownGroup.wait()
-                        deleteUnknownGroup.notify(queue: self.firebaseQueue) {
-                            group.leave()
+                        self.deleteChatroom(chatroomID: chatroomID) {
+                            deleteUnknownGroup.leave()
                         }
+                    }
+                    deleteUnknownGroup.notify(queue: self.firebaseQueue) {
+                        group.leave()
                     }
                 case .failure(let err):
                     errorMessage = err
