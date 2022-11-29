@@ -92,6 +92,37 @@ class ProjectDetailsViewController: BaseViewController {
         }
     }
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        if  let myID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey),
+            let project = project,
+            project.contact != myID {
+            let button = UIButton()
+            let verticalMoreImage = UIImage(
+                named: JImages.Icons_24px_VerticalMore.rawValue)?
+                .withRenderingMode(.alwaysTemplate)
+            button.setImage(verticalMoreImage, for: .normal)
+            button.tintColor = .White
+
+            button.showsMenuAsPrimaryAction = true
+            let reportAction = UIAction(title: Constant.FindIdeas.report, attributes: [], state: .off) { [weak self] _ in
+                let alert = UIAlertController(title: Constant.FindIdeas.reportAlert, message: nil, preferredStyle: .actionSheet)
+                let yesAction = UIAlertAction(title: Constant.Common.confirm, style: .destructive) { [weak self] _ in
+                    self?.sendReport()
+                }
+                let cancelAction = UIAlertAction(title: Constant.Common.cancel, style: .cancel)
+                alert.addAction(cancelAction)
+                alert.addAction(yesAction)
+                self?.present(alert, animated: true)
+            }
+            let elements: [UIAction] = [reportAction]
+            let menu = UIMenu(children: elements)
+            button.menu = menu
+
+            navigationItem.rightBarButtonItem = UIBarButtonItem(customView: button)
+        }
+    }
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
@@ -164,6 +195,22 @@ class ProjectDetailsViewController: BaseViewController {
         let action = UIAlertAction(title: "OK", style: .default)
         alert.addAction(action)
         present(alert, animated: true)
+    }
+
+    func sendReport() {
+        guard let project = project else { return }
+
+        JProgressHUD.shared.showLoading(text: Constant.Common.processing, view: self.view)
+        let report = Report(reportID: "", type: .idea, reportedObjectID: project.projectID, reportTime: Date(), reason: nil)
+        firebaseManager.addNewReport(report: report) { result in
+            switch result {
+            case .success:
+                JProgressHUD.shared.showSuccess(text: Constant.FindIdeas.reportResult, view: self.view)
+            case .failure(let err):
+                print(err)
+                JProgressHUD.shared.showFailure(text: Constant.Common.errorShouldRetry, view: self.view)
+            }
+        }
     }
 }
 

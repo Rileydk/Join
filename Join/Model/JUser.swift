@@ -38,6 +38,7 @@ struct JUser: Codable, Hashable {
     var skills = [String]()
     var sentRequests = [UserID]()
     var receivedRequests = [UserID]()
+    var blockList = [UserID]()
 
     static let mockUser = JUser(id: "", name: "", email: "")
 
@@ -51,7 +52,8 @@ struct JUser: Codable, Hashable {
             "interests": interests as Any,
             "skills": skills as Any,
             "sentRequests": sentRequests as Any,
-            "receivedRequests": receivedRequests as Any
+            "receivedRequests": receivedRequests as Any,
+            "blockList": blockList as Any
         ]
     }
 }

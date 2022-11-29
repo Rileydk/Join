@@ -21,6 +21,9 @@ struct Constant {
         static let descriptionSectionTitle = "專案內容"
         static let contactSectionTitle = "聯絡人"
         static let applicantsSectionTitle = "應徵者"
+        static let report = "檢舉此篇貼文"
+        static let reportAlert = "確定要檢舉這篇貼文嗎？"
+        static let reportResult = "已經收到您的檢舉"
         static let noApplicantAlertMessage = "目前尚無人應徵"
 
         static let projectsTopHorizontalScrollingContentInsets: NSDirectionalEdgeInsets = .init(top: 28, leading: 16, bottom: 20, trailing: 0)
@@ -40,8 +43,26 @@ struct Constant {
         static let deadlineError = "截止時間不可晚於現在的 1 小時後"
     }
 
+    struct Personal {
+        static let report = "檢舉此個人頁面"
+
+        static let blockAlertTitle = "確定要封鎖此用戶嗎？"
+        static let blockAlertMessage = "封鎖期間您將無法看到此用戶的個人頁面、所發佈的貼文及您與該用戶間的歷史訊息，對方也不會顯示在您的好友列表中。您隨時可以在個人頁面「我的黑名單」中變更此狀態。"
+        static let blockAlertYesActionTitle = "我確定要封鎖"
+        static let blockAlertCancelActionTitle = "取消"
+        static let block = "封鎖此用戶"
+        static let blocked = "已為您封鎖此用戶，您可以在個人頁面「我的黑名單」中查看及編輯"
+
+        static let deleteFriend = "刪除好友"
+    }
+
     struct Portfolio {
         static let sectionHeader = "作品集"
+    }
+
+    struct Login {
+        static let statement = "登入以使用完整功能\n登入即表示您同意我們的 "
+        static let privatePolicy = "隱私權政策"
     }
 
     struct Edit {
@@ -53,5 +74,16 @@ struct Constant {
 
     struct Alert {
         static let longDurationProcess = "處理中，請勿關閉畫面"
+    }
+
+    struct Common {
+        static let confirm = "確定"
+        static let cancel = "取消"
+        static let processing = "處理中..."
+        static let errorShouldRetry = "發生錯誤，請重新操作"
+    }
+
+    struct Link {
+        static let privacyPolicyURL = "https://www.privacypolicies.com/live/d6a88da8-fa04-4360-a5b6-dafad6c03f26"
     }
 }

@@ -74,6 +74,7 @@ class PersonalProfileEditViewController: BaseViewController {
             case .success(let user):
                 self.user = user
                 self.oldUserInfo = user
+                print("get user data:", user)
                 JProgressHUD.shared.dismiss()
             case .failure(let err):
                 JProgressHUD.shared.showFailure(view: self.view)
@@ -172,6 +173,7 @@ class PersonalProfileEditViewController: BaseViewController {
                 }
             }
         } else {
+            print("user info not qualified:", user)
             let alert = UIAlertController(title: "姓名和Email是必填欄位喔", message: nil, preferredStyle: .alert)
             let action = UIAlertAction(title: "OK", style: .default)
             alert.addAction(action)
@@ -248,6 +250,7 @@ extension PersonalProfileEditViewController: UITableViewDataSource {
                 cell.layoutCell(withTitle: .name, value: user.name)
                 cell.updateName = { [weak self] name in
                     self?.user?.name = name
+                    print("user name updated:", user)
                 }
             }
             if indexPath.row == 1 {
@@ -336,5 +339,6 @@ extension PersonalProfileEditViewController: UITableViewDataSource {
 extension PersonalProfileEditViewController: UITextViewDelegate {
     func textViewDidChangeSelection(_ textView: UITextView) {
         user?.introduction = textView.text
+        print("user introduction updated:", user?.introduction)
     }
 }

@@ -552,7 +552,7 @@ extension FindPartnersBasicViewController: UITextViewDelegate {
     }
 }
 
-// MARK: - Member Card Delegate
+//// MARK: - Member Card Delegate
 extension FindPartnersBasicViewController: MemberCardDelegate {
     func memberCardViewController(_ controller: MemberCardViewController, didSetMembers members: [Member]) {
         project.members = members

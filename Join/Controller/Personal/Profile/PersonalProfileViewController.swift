@@ -8,6 +8,11 @@
 import UIKit
 
 class PersonalProfileViewController: BaseViewController {
+    enum SourceType {
+        case normal
+        case blockList
+    }
+
     enum Section: CaseIterable {
         case person
         case buttons
@@ -34,6 +39,7 @@ class PersonalProfileViewController: BaseViewController {
     var userData: JUser?
     var relationship: Relationship?
     var workItems = [WorkItem]()
+    var sourceType: SourceType = .normal
 
     @IBOutlet weak var collectionView: UICollectionView! {
         didSet {
@@ -70,7 +76,7 @@ class PersonalProfileViewController: BaseViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        updateData() { [weak self] in
+        updateData { [weak self] in
             self?.layoutViews()
         }
     }
@@ -288,6 +294,59 @@ class PersonalProfileViewController: BaseViewController {
             }
         }
     }
+
+    func blockUser() {
+        let alert = UIAlertController(title: Constant.Personal.blockAlertTitle,
+                                      message: Constant.Personal.blockAlertMessage,
+                                      preferredStyle: .actionSheet)
+        let yesAction = UIAlertAction(title: Constant.Personal.blockAlertYesActionTitle,
+                                      style: .destructive) { [weak self] _ in
+            guard let self = self else { return }
+            JProgressHUD.shared.showLoading(text: Constant.Common.processing, view: self.view)
+            guard let myID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey),
+                  let userID = self.userID else { return }
+            self.firebaseManager.addNewValueToArray(
+                ref: FirestoreEndpoint.users.ref.document(myID),
+                field: "blockList", values: [userID]) { result in
+                switch result {
+                case .success:
+                    JProgressHUD.shared.showSuccess(text: Constant.Personal.blocked, view: self.view) {
+                        self.navigationController?.popToRootViewController(animated: true)
+                    }
+                case .failure(let err):
+                    print(err)
+                    JProgressHUD.shared.showFailure(text: Constant.Common.errorShouldRetry, view: self.view)
+                }
+            }
+        }
+        let cancelAction = UIAlertAction(title: Constant.Personal.blockAlertCancelActionTitle, style: .cancel)
+
+        alert.addAction(yesAction)
+        alert.addAction(cancelAction)
+        present(alert, animated: true)
+    }
+
+    func reportUser() {
+        let alert = UIAlertController(title: Constant.FindIdeas.reportAlert, message: nil, preferredStyle: .actionSheet)
+        let yesAction = UIAlertAction(title: Constant.Common.confirm, style: .destructive) { [weak self] _ in
+            guard let self = self else { return }
+            JProgressHUD.shared.showLoading(text: Constant.Common.processing, view: self.view)
+            let report = Report(reportID: "", type: .personalProfile, reportedObjectID: self.userID as! String, reportTime: Date(), reason: nil)
+            self.firebaseManager.addNewReport(report: report) { result in
+                switch result {
+                case .success:
+                    JProgressHUD.shared.showSuccess(text: Constant.FindIdeas.reportResult, view: self.view)
+                case .failure(let err):
+                    print(err)
+                    JProgressHUD.shared.showFailure(text: Constant.Common.errorShouldRetry, view: self.view)
+                }
+            }
+        }
+        let cancelAction = UIAlertAction(title: Constant.Common.cancel, style: .cancel)
+        alert.addAction(cancelAction)
+        alert.addAction(yesAction)
+        self.present(alert, animated: true)
+    }
 }
 
 // MARK: - Layout
@@ -468,7 +527,7 @@ extension PersonalProfileViewController {
                     for: indexPath) as? RelationshipButtonsCell else {
                     fatalError("Cannot create personal basic cell")
                 }
-                cell.layoutCell(with: relationship)
+                cell.layoutCell(with: relationship, isBlocked: sourceType == .blockList)
                 cell.sendFriendRequestHandler = { [weak self] in
                     self?.sendFriendRequest(id: self?.userID)
                 }
@@ -477,6 +536,12 @@ extension PersonalProfileViewController {
                 }
                 cell.goChatroomHandler = { [weak self] in
                     self?.goChatroom()
+                }
+                cell.blockUserHandler = { [weak self] in
+                    self?.blockUser()
+                }
+                cell.reportUserHandler = { [weak self] in
+                    self?.reportUser()
                 }
                 return cell
             }

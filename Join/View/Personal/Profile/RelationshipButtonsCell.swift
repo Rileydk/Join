@@ -10,10 +10,15 @@ import UIKit
 class RelationshipButtonsCell: CollectionViewCell {
     @IBOutlet weak var relationshipButton: UIButton!
     @IBOutlet weak var sendMessageButton: UIButton!
+    @IBOutlet weak var moreActionButton: UIButton!
 
     var sendFriendRequestHandler: (() -> Void)?
     var acceptFriendRequestHandler: (() -> Void)?
     var goChatroomHandler: (() -> Void)?
+    var blockUserHandler: (() -> Void)?
+    var reportUserHandler: (() -> Void)?
+
+    let firebaseManager = FirebaseManager.shared
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -24,9 +29,20 @@ class RelationshipButtonsCell: CollectionViewCell {
         sendMessageButton.setTitleColor(.Gray3, for: .normal)
         sendMessageButton.layer.borderColor = (UIColor.Gray4 ?? .lightGray).cgColor
         sendMessageButton.backgroundColor = .White
+
+        moreActionButton.showsMenuAsPrimaryAction = true
+        let reportAction = UIAction(title: Constant.Personal.report, attributes: [], state: .off) { [weak self] _ in
+            self?.reportUserHandler?()
+        }
+        let blockAction = UIAction(title: Constant.Personal.block, attributes: [], state: .off) { [weak self] _ in
+            self?.blockUser()
+        }
+        var elements: [UIAction] = [reportAction, blockAction]
+        let menu = UIMenu(children: elements)
+        moreActionButton.menu = menu
     }
 
-    func layoutCell(with relationship: Relationship?) {
+    func layoutCell(with relationship: Relationship?, isBlocked: Bool) {
         guard let relationship = relationship else { return }
 
         switch relationship {
@@ -49,6 +65,21 @@ class RelationshipButtonsCell: CollectionViewCell {
         default:
             break
         }
+
+        moreActionButton.showsMenuAsPrimaryAction = true
+        let reportAction = UIAction(title: Constant.Personal.report, attributes: [], state: .off) { [weak self] _ in
+            self?.reportUserHandler?()
+        }
+        var elements: [UIAction] = [reportAction]
+        if !isBlocked {
+            let blockAction = UIAction(title: Constant.Personal.block, attributes: [], state: .off) { [weak self] _ in
+                self?.blockUser()
+            }
+            elements += [blockAction]
+        }
+        let menu = UIMenu(children: elements)
+        moreActionButton.menu = menu
+
     }
 
     @IBAction func changeRelationship(_ sender: UIButton) {
@@ -65,5 +96,9 @@ class RelationshipButtonsCell: CollectionViewCell {
 
     @IBAction func sendMessage(_ sender: UIButton) {
         goChatroomHandler?()
+    }
+
+    func blockUser() {
+        blockUserHandler?()
     }
 }

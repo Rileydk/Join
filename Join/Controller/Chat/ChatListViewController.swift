@@ -89,21 +89,54 @@ class ChatListViewController: BaseViewController {
             }
 
         } else {
-            firebaseManager.getAllMessagesCombinedWithSender(type: type) { [weak self] result in
+            firebaseManager.firebaseQueue.async { [weak self] in
                 guard let self = self else { return }
-                switch result {
-                case .success(let listItem):
-                    let listItem = listItem.sorted(by: {
-                        $0.messages.first!.time > $1.messages.first!.time
-                    })
-                    self.messageList = listItem
-                    JProgressHUD.shared.dismiss()
-                case .failure(let err):
-                    self.messageList = []
-                    if err as? CommonError == .noMessage {
-                        JProgressHUD.shared.dismiss()
-                    } else {
-                        JProgressHUD.shared.showFailure(text: err.localizedDescription, view: self.view)
+                let group = DispatchGroup()
+                var shouldContinue = true
+                var rawMessageList = [MessageListItem]()
+
+                group.enter()
+                self.firebaseManager.getAllMessagesCombinedWithSender(type: self.type) { [weak self] result in
+                    guard let self = self else { return }
+                    switch result {
+                    case .success(let listItem):
+                        rawMessageList = listItem
+                        group.leave()
+                    case .failure(let err):
+                        self.messageList = []
+                        if err as? CommonError == .noMessage {
+                            JProgressHUD.shared.dismiss()
+                        } else {
+                            JProgressHUD.shared.showFailure(text: err.localizedDescription, view: self.view)
+                        }
+                    }
+                }
+
+                group.wait()
+                guard shouldContinue else { return }
+                group.enter()
+                self.firebaseManager.getBlockList { result in
+                    switch result {
+                    case .success(let blockList):
+                        rawMessageList = rawMessageList.filter { messageItem in
+                            return !blockList.contains(messageItem.objectID)
+                        }
+                        rawMessageList = rawMessageList.sorted(by: {
+                            $0.messages.first!.time > $1.messages.first!.time
+                        })
+                        self.messageList = rawMessageList
+                        group.leave()
+                        group.notify(queue: .main) {
+                            self.tableView.reloadData()
+                            JProgressHUD.shared.dismiss()
+                        }
+                    case .failure(let err):
+                        shouldContinue = false
+                        group.leave()
+                        group.notify(queue: .main) {
+                            self.tableView.endHeaderRefreshing()
+                            JProgressHUD.shared.showFailure(text: err.localizedDescription, view: self.view)
+                        }
                     }
                 }
             }

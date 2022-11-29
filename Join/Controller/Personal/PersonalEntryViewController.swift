@@ -22,7 +22,9 @@ class PersonalEntryViewController: UIViewController {
         case posts = "我的專案"
         case applications = "我的應徵"
         case friends = "我的好友"
+        case blockList = "我的黑名單"
         case preference = "個人設定"
+        case privacyPolicy = "隱私權政策"
     }
 
     @IBOutlet var tableView: UITableView! {
@@ -44,18 +46,19 @@ class PersonalEntryViewController: UIViewController {
     let appleSignInManager = AppleSignInManager.shared
 
     func goToNextPage(index: Int) {
-        if NextPage.allCases[index] == .profile {
+        let nextPage = NextPage.allCases[index]
+        switch nextPage {
+        case .profile:
             let personalStoryboard = UIStoryboard(name: StoryboardCategory.personal.rawValue, bundle: nil)
             guard let profileVC = personalStoryboard.instantiateViewController(
                 withIdentifier: PersonalProfileViewController.identifier
-                ) as? PersonalProfileViewController else {
+            ) as? PersonalProfileViewController else {
                 fatalError("Cannot create personal profile vc")
             }
             profileVC.userID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey)
             navigationController?.pushViewController(profileVC, animated: true)
-        }
 
-        if NextPage.allCases[index] == .posts {
+        case .posts:
             let personalStoryboard = UIStoryboard(name: StoryboardCategory.personal.rawValue, bundle: nil)
             guard let myPostsVC = personalStoryboard.instantiateViewController(
                 withIdentifier: MyPostsViewController.identifier
@@ -63,26 +66,35 @@ class PersonalEntryViewController: UIViewController {
                 fatalError("Cannot create personal profile vc")
             }
             navigationController?.pushViewController(myPostsVC, animated: true)
-        }
 
-        if NextPage.allCases[index] == .applications {
+        case .applications:
             let personalStoryboard = UIStoryboard(name: StoryboardCategory.personal.rawValue, bundle: nil)
             guard let myApplicationsVC = personalStoryboard.instantiateViewController(
                 withIdentifier: MyApplicationsViewController.identifier
-            ) as? MyApplicationsViewController else {
+                ) as? MyApplicationsViewController else {
                 fatalError("Cannot create personal profile vc")
             }
             navigationController?.pushViewController(myApplicationsVC, animated: true)
-        }
 
-        if NextPage.allCases[index] == .friends {
+        case .friends, .blockList:
             let personalStoryboard = UIStoryboard(name: StoryboardCategory.personal.rawValue, bundle: nil)
             guard let friendsListVC = personalStoryboard.instantiateViewController(
-                withIdentifier: FriendsListViewController.identifier
-                ) as? FriendsListViewController else {
+                withIdentifier: UsersListViewController.identifier
+                ) as? UsersListViewController else {
                 fatalError("Cannot create personal profile vc")
             }
+            if nextPage == .blockList {
+                friendsListVC.usageType = .blockList
+            }
             navigationController?.pushViewController(friendsListVC, animated: true)
+
+        case .privacyPolicy:
+            if let url = URL(string: Constant.Link.privacyPolicyURL) {
+                UIApplication.shared.open(url)
+            }
+
+        case .preference:
+            return
         }
     }
 
