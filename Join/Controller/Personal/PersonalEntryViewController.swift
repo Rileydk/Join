@@ -42,6 +42,11 @@ class PersonalEntryViewController: UIViewController {
         }
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tableView.reloadData()
+    }
+
     let firebaseManager = FirebaseManager.shared
     let appleSignInManager = AppleSignInManager.shared
 
