@@ -103,7 +103,7 @@ class FriendSelectionViewController: BaseViewController {
         case .addNewMembers, .createNewGroupChat, .secondStepWhenCreateNewGroupChat:
             title = selectedFriends.isEmpty ? "選擇群組成員" : "已選擇\(selectedFriends.count)個成員"
         case .addMembers:
-            title = selectedFriends.isEmpty ? "選擇團隊ㄌ成員" : "已選擇\(selectedFriends.count)個成員"
+            title = selectedFriends.isEmpty ? "選擇團隊成員" : "已選擇\(selectedFriends.count)個成員"
         }
 
         searchController.searchBar.searchTextField.backgroundColor = .White

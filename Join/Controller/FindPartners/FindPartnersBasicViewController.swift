@@ -291,6 +291,15 @@ extension FindPartnersBasicViewController: UITableViewDelegate {
         return header
     }
 
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        if formState == FindPartnersFormSections.basicSection && indexPath.row > 2 ||
+            formState == FindPartnersFormSections.groupSection && indexPath.row > 2 {
+            return true
+        } else {
+            return false
+        }
+    }
+
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             if formState == FindPartnersFormSections.basicSection {
