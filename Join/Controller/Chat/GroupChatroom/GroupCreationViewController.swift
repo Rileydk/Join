@@ -147,6 +147,7 @@ class GroupCreationViewController: BaseViewController {
                 chatroomVC.chatroomID = strongSelf.chatroomID
                 chatroomVC.title = strongSelf.groupChatroom.name
 
+                print(self?.navigationController?.viewControllers)
                 guard let rootVC = strongSelf.navigationController?.viewControllers.first! as? ChatListViewController else {
                     fatalError("Cannot get chat list vc")
                 }

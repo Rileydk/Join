@@ -89,7 +89,6 @@ class PersonalEntryViewController: UIViewController {
             navigationController?.pushViewController(friendsListVC, animated: true)
 
         case .privacyPolicy:
-            fatalError("Crash")
             if let url = URL(string: Constant.Link.privacyPolicyURL) {
                 UIApplication.shared.open(url)
             }
