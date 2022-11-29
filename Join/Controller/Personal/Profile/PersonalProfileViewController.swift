@@ -8,6 +8,11 @@
 import UIKit
 
 class PersonalProfileViewController: BaseViewController {
+    enum SourceType {
+        case normal
+        case blockList
+    }
+
     enum Section: CaseIterable {
         case person
         case buttons
@@ -34,6 +39,7 @@ class PersonalProfileViewController: BaseViewController {
     var userData: JUser?
     var relationship: Relationship?
     var workItems = [WorkItem]()
+    var sourceType: SourceType = .normal
 
     @IBOutlet weak var collectionView: UICollectionView! {
         didSet {
@@ -521,7 +527,7 @@ extension PersonalProfileViewController {
                     for: indexPath) as? RelationshipButtonsCell else {
                     fatalError("Cannot create personal basic cell")
                 }
-                cell.layoutCell(with: relationship)
+                cell.layoutCell(with: relationship, isBlocked: sourceType == .blockList)
                 cell.sendFriendRequestHandler = { [weak self] in
                     self?.sendFriendRequest(id: self?.userID)
                 }

@@ -42,7 +42,7 @@ class RelationshipButtonsCell: CollectionViewCell {
         moreActionButton.menu = menu
     }
 
-    func layoutCell(with relationship: Relationship?) {
+    func layoutCell(with relationship: Relationship?, isBlocked: Bool) {
         guard let relationship = relationship else { return }
 
         switch relationship {
@@ -65,6 +65,21 @@ class RelationshipButtonsCell: CollectionViewCell {
         default:
             break
         }
+
+        moreActionButton.showsMenuAsPrimaryAction = true
+        let reportAction = UIAction(title: Constant.Personal.report, attributes: [], state: .off) { [weak self] _ in
+            self?.reportUserHandler?()
+        }
+        var elements: [UIAction] = [reportAction]
+        if !isBlocked {
+            let blockAction = UIAction(title: Constant.Personal.block, attributes: [], state: .off) { [weak self] _ in
+                self?.blockUser()
+            }
+            elements += [blockAction]
+        }
+        let menu = UIMenu(children: elements)
+        moreActionButton.menu = menu
+
     }
 
     @IBAction func changeRelationship(_ sender: UIButton) {

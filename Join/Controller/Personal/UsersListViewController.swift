@@ -168,6 +168,9 @@ extension UsersListViewController: UITableViewDelegate {
             fatalError("Cannot create others profile vc")
         }
         profileVC.userID = filteredUsers[indexPath.row].id
+        if usageType == .blockList {
+            profileVC.sourceType = .blockList
+        }
         navigationController?.pushViewController(profileVC, animated: true)
     }
 }
