@@ -258,11 +258,11 @@ extension GroupChatroomViewController: UITableViewDataSource {
             cell.tapHandler = { [weak self] in
                 let personalStoryboard = UIStoryboard(name: StoryboardCategory.personal.rawValue, bundle: nil)
                 guard let profileVC = personalStoryboard.instantiateViewController(
-                    withIdentifier: OthersProfileViewController.identifier
-                ) as? OthersProfileViewController else {
+                    withIdentifier: PersonalProfileViewController.identifier
+                ) as? PersonalProfileViewController else {
                     fatalError("Cannot create others profile vc")
                 }
-                profileVC.objectData = self?.wholeInfoMessages[indexPath.row].sender
+                profileVC.userID = self?.wholeInfoMessages[indexPath.row].sender.id
                 self?.navigationController?.pushViewController(profileVC, animated: true)
             }
             return cell
