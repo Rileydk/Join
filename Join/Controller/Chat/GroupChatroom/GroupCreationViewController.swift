@@ -313,7 +313,12 @@ extension GroupCreationViewController: UICollectionViewDelegate {
             friendSelectionVC.selectedFriends = selectedFriends
             friendSelectionVC.source = .secondStepWhenCreateNewGroupChat
             friendSelectionVC.addToMemberSelectionHandler = { [weak self] newSelectedFriends in
-                self?.selectedFriends = newSelectedFriends
+                guard let self = self else { return }
+                var snapshot = self.datasource.snapshot()
+                snapshot.deleteItems(self.selectedFriends.map { .member($0) })
+                self.selectedFriends = newSelectedFriends
+                snapshot.appendItems(self.selectedFriends.map { .member($0) }, toSection: .members)
+                self.datasource.apply(snapshot, animatingDifferences: true)
             }
             navigationController?.pushViewController(friendSelectionVC, animated: true)
         }
