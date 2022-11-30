@@ -27,7 +27,7 @@
                     </imageView>
                     <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="p5j-qq-RUO">
                         <rect key="frame" x="86" y="88" width="20" height="22"/>
-                        <color key="backgroundColor" name="Gray4"/>
+                        <color key="backgroundColor" name="Gray5"/>
                         <constraints>
                             <constraint firstAttribute="width" secondItem="p5j-qq-RUO" secondAttribute="height" multiplier="1:1" id="awa-vQ-Alk"/>
                             <constraint firstAttribute="width" constant="20" id="fCr-m1-v8b"/>
@@ -75,10 +75,10 @@
                 <constraint firstItem="UYX-uP-wai" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="20" id="vQ8-Gd-ZiL"/>
             </constraints>
             <connections>
-                <outlet property="groupImageView" destination="UYX-uP-wai" id="hVb-PL-yvF"/>
-                <outlet property="groupNameTextField" destination="elk-BD-Jkr" id="6ud-Sy-GSA"/>
-                <outlet property="imageEditButton" destination="p5j-qq-RUO" id="w6Z-mw-sXa"/>
-                <outlet property="titleLabel" destination="PdE-UX-ayO" id="6fu-5j-SAW"/>
+                <outlet property="groupImageView" destination="UYX-uP-wai" id="ObC-MX-stg"/>
+                <outlet property="groupNameTextField" destination="elk-BD-Jkr" id="sEl-LH-4PM"/>
+                <outlet property="imageEditButton" destination="p5j-qq-RUO" id="VUs-n9-3cZ"/>
+                <outlet property="titleLabel" destination="PdE-UX-ayO" id="3iG-su-pNA"/>
             </connections>
             <point key="canvasLocation" x="137.68115942028987" y="65.625"/>
         </collectionViewCell>
@@ -92,8 +92,8 @@
         <namedColor name="Gray3">
             <color red="0.53333333333333333" green="0.53333333333333333" blue="0.53333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
-        <namedColor name="Gray4">
-            <color red="0.78431372549019607" green="0.78431372549019607" blue="0.78431372549019607" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        <namedColor name="Gray5">
+            <color red="0.8784313725490196" green="0.8784313725490196" blue="0.8784313725490196" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>

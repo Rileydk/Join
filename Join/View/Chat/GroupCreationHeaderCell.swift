@@ -33,30 +33,29 @@ class GroupCreationHeaderCell: CollectionViewCell {
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(addPhoto))
         groupImageView.addGestureRecognizer(tapGestureRecognizer)
         groupImageView.contentMode = .scaleAspectFill
+        imageEditButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            imageEditButton.topAnchor.constraint(
+                equalTo: groupImageView.bottomAnchor, constant: -22),
+            imageEditButton.leftAnchor.constraint(
+                equalTo: groupImageView.rightAnchor, constant: -22)
+        ])
     }
 
     override func layoutSubviews() {
         super.layoutSubviews()
         groupImageView.layer.cornerRadius = groupImageView.frame.width / 2
-        imageEditButton.layer.cornerRadius = groupImageView.frame.width / 2
-        NSLayoutConstraint.activate([
-            imageEditButton.topAnchor.constraint(
-                equalTo: groupImageView.bottomAnchor, constant: -20),
-            imageEditButton.leftAnchor.constraint(
-                equalTo: groupImageView.rightAnchor, constant: -20)
-        ])
+        imageEditButton.layer.cornerRadius = imageEditButton.frame.width / 2
     }
 
     func layoutCell(defaultGroupName: String, imageURL: URLString) {
-        if let url = URL(string: imageURL) {
-            groupImageView.kf.setImage(with: url)
-        }
+        groupImageView.loadImage(imageURL)
         groupNameTextField.attributedPlaceholder = NSAttributedString(
             string: defaultGroupName, attributes: [
-                NSAttributedString.Key.foregroundColor: (UIColor.Gray3?.withAlphaComponent(0.7) ?? .lightGray).cgColor
-            ])
-//        imageEditButton.tintColor = .Red
-//        imageEditButton.backgroundColor = .Blue1
+                NSAttributedString.Key.foregroundColor: (UIColor.Gray3?.withAlphaComponent(0.7) ?? .lightGray)
+            ]
+        )
+        imageEditButton.backgroundColor = .Gray5
         imageEditButton.layer.borderWidth = 2
         imageEditButton.layer.borderColor = UIColor.White?.cgColor
     }

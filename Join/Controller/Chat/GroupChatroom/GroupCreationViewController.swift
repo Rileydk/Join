@@ -275,7 +275,7 @@ extension GroupCreationViewController {
                     fatalError("Cannot create group member circle collection view cell")
                 }
                 cell.layoutCell(user: user)
-                if indexPath.row == 1{
+                if indexPath.row == 1 {
                     cell.deleteBadgeButton.isHidden = true
                 }
                 cell.deleteHandler = { [weak self] in
