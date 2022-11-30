@@ -45,11 +45,16 @@ class FriendSelectionViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        getFriendsData()
         layoutViews()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        tableView.reloadData()
+    }
+
+    func getFriendsData() {
         firebaseManager.firebaseQueue.async { [weak self] in
             guard let self = self else { return }
             let group = DispatchGroup()

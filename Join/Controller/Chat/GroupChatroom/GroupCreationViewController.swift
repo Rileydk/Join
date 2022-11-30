@@ -62,9 +62,11 @@ class GroupCreationViewController: BaseViewController {
             title: "Create", style: .done,
             target: self, action: #selector(createGroup)
         )
-        let backImage = UIImage(named: JImages.Icons_24px_Back.rawValue)
-//        backImage.
-//        navigationItem.leftBarButtonItem = UIBarButtonItem(image: , style: <#T##UIBarButtonItem.Style#>, target: <#T##Any?#>, action: <#T##Selector?#>)
+        if let backImage = UIImage(named: JImages.Icons_24px_Back.rawValue) {
+            backImage.withRenderingMode(.alwaysTemplate)
+            backImage.withTintColor(.White ?? .white)
+            navigationItem.leftBarButtonItem = UIBarButtonItem(image: backImage, style: .plain, target: self, action: #selector(backToPreviousPage))
+        }
     }
 
     @objc func createGroup() {
@@ -171,6 +173,14 @@ class GroupCreationViewController: BaseViewController {
             }
             datasource.apply(snapshot, animatingDifferences: false)
         }
+    }
+
+    @objc func backToPreviousPage() {
+        guard let firstPage = navigationController?.viewControllers.dropLast().last as? FriendSelectionViewController else {
+            fatalError("Cannot get friend selection page")
+        }
+        firstPage.selectedFriends = selectedFriends
+        navigationController?.popViewController(animated: true)
     }
 }
 
