@@ -29,7 +29,6 @@ class GroupCreationViewController: BaseViewController {
             collectionView.register(
                 UINib(nibName: AddNewMemberCircleCollectionViewCell.identifier, bundle: nil),
                 forCellWithReuseIdentifier: AddNewMemberCircleCollectionViewCell.identifier)
-//            collectionView.register(BadgeSupplementaryView.self, forSupplementaryViewOfKind: "badge-element-kind", withReuseIdentifier: BadgeSupplementaryView.identifier)
             collectionView.setCollectionViewLayout(createLayout(), animated: true)
             collectionView.delegate = self
             configureDatasource()
@@ -40,13 +39,7 @@ class GroupCreationViewController: BaseViewController {
     typealias GroupDatasource = UICollectionViewDiffableDataSource<Section, Item>
     private var datasource: GroupDatasource!
     let firebaseManager = FirebaseManager.shared
-    var selectedFriends = [JUser]() {
-        didSet {
-            if collectionView != nil {
-                updateDatasource()
-            }
-        }
-    }
+    var selectedFriends = [JUser]()
     var groupChatroom = GroupChatroom(
         id: "", name: "", imageURL: "", admin: "", createdTime: Date()
     )
@@ -69,6 +62,9 @@ class GroupCreationViewController: BaseViewController {
             title: "Create", style: .done,
             target: self, action: #selector(createGroup)
         )
+        let backImage = UIImage(named: JImages.Icons_24px_Back.rawValue)
+//        backImage.
+//        navigationItem.leftBarButtonItem = UIBarButtonItem(image: , style: <#T##UIBarButtonItem.Style#>, target: <#T##Any?#>, action: <#T##Selector?#>)
     }
 
     @objc func createGroup() {
@@ -146,8 +142,6 @@ class GroupCreationViewController: BaseViewController {
                 }
                 chatroomVC.chatroomID = strongSelf.chatroomID
                 chatroomVC.title = strongSelf.groupChatroom.name
-
-                print(self?.navigationController?.viewControllers)
                 guard let rootVC = strongSelf.navigationController?.viewControllers.first! as? ChatListViewController else {
                     fatalError("Cannot get chat list vc")
                 }
@@ -158,6 +152,24 @@ class GroupCreationViewController: BaseViewController {
                 }
                 self?.navigationController?.setViewControllers([rootVC, chatroomVC], animated: true)
             }
+        }
+    }
+
+    @objc func deleteSelectedFriend(sender: UIButton, event: UIEvent) {
+        var snapshot = datasource.snapshot()
+        guard let touch = event.allTouches?.first else { return }
+        let touchPoint = touch.location(in: collectionView)
+        if let indexPath = collectionView.indexPathForItem(at: touchPoint),
+           let removedOne = datasource.itemIdentifier(for: indexPath) {
+            selectedFriends.remove(at: indexPath.row - 2)
+            snapshot.deleteItems([removedOne])
+            datasource.apply(snapshot, animatingDifferences: true)
+
+            if let oldDefaultGroupName = datasource.itemIdentifier(for: IndexPath(item: 0, section: 0)) {
+                snapshot.deleteItems([oldDefaultGroupName])
+                snapshot.appendItems([.header(defaultGroupName)], toSection: .header)
+            }
+            datasource.apply(snapshot, animatingDifferences: false)
         }
     }
 }
@@ -181,15 +193,8 @@ extension GroupCreationViewController {
     }
 
     func createGroupMemberSelectionSection() -> NSCollectionLayoutSection {
-//        let anchorEdges: NSDirectionalRectEdge = [.top, .trailing]
-//        let offset = CGPoint(x: 0.3, y: -0.3)
-//        let badgeAnchor = NSCollectionLayoutAnchor(edges: anchorEdges, fractionalOffset: offset)
-//        let badgeSize = NSCollectionLayoutSize(widthDimension: .absolute(20), heightDimension: .absolute(20))
-//        let badge = NSCollectionLayoutSupplementaryItem(layoutSize: badgeSize, elementKind: "badge-element-kind", containerAnchor: badgeAnchor)
-
         let itemSize = NSCollectionLayoutSize(widthDimension: .absolute(50),
                                               heightDimension: .estimated(130))
-//        let item = NSCollectionLayoutItem(layoutSize: itemSize, supplementaryItems: [badge])
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
 
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
@@ -227,14 +232,6 @@ extension GroupCreationViewController {
             return self?.createCell(collectionView: collectionView, indexPath: indexPath, item: item)
         }
 
-//        datasource.supplementaryViewProvider = { (collectionView: UICollectionView, kind: String, indexPath: IndexPath) -> UICollectionReusableView? in
-//
-//            guard let badgeView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: BadgeSupplementaryView.identifier, for: indexPath) as? BadgeSupplementaryView else {
-//                return nil
-//            }
-//            return badgeView
-//        }
-
         updateDatasource()
     }
 
@@ -270,17 +267,18 @@ extension GroupCreationViewController {
                 return cell
 
             } else {
-
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: GroupMemberCircleCollectionViewCell.identifier, for: indexPath) as? GroupMemberCircleCollectionViewCell else {
                     fatalError("Cannot create group member circle collection view cell")
                 }
+
                 cell.layoutCell(user: user)
                 if indexPath.row == 1 {
                     cell.deleteBadgeButton.isHidden = true
                 }
-                cell.deleteHandler = { [weak self] in
-                    self?.selectedFriends.remove(at: indexPath.row - 2)
+                cell.deleteHandler = { [weak self] (sender, event) in
+                    self?.deleteSelectedFriend(sender: sender, event: event)
                 }
+
                 return cell
             }
         }
