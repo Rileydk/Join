@@ -12,7 +12,7 @@ class GroupMemberCircleCollectionViewCell: CollectionViewCell {
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var deleteBadgeButton: UIButton!
 
-    var deleteHandler: (() -> Void)?
+    var deleteHandler: ((UIButton, UIEvent) -> Void)?
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -48,7 +48,7 @@ class GroupMemberCircleCollectionViewCell: CollectionViewCell {
         nameLabel.text = user.name
     }
 
-    @objc func deleteSelectedMember() {
-        deleteHandler?()
+    @objc func deleteSelectedMember(sender: UIButton, event: UIEvent) {
+        deleteHandler?(sender, event)
     }
 }

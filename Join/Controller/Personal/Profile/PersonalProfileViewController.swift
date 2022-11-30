@@ -11,6 +11,7 @@ class PersonalProfileViewController: BaseViewController {
     enum SourceType {
         case normal
         case blockList
+        case chatroom
     }
 
     enum Section: CaseIterable {
@@ -535,7 +536,12 @@ extension PersonalProfileViewController {
                     self?.acceptFriendRequest(id: self?.userID)
                 }
                 cell.goChatroomHandler = { [weak self] in
-                    self?.goChatroom()
+                    guard let self = self else { return }
+                    if self.sourceType == .chatroom {
+                        self.dismiss(animated: true)
+                    } else {
+                        self.goChatroom()
+                    }
                 }
                 cell.blockUserHandler = { [weak self] in
                     self?.blockUser()

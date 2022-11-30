@@ -51,7 +51,7 @@ class SingleLineInputCell: TableViewCell {
         inputTextField.text = value
         inputTextField.attributedPlaceholder = NSAttributedString(
             string: type.placeholder, attributes: [
-                NSAttributedString.Key.foregroundColor: (UIColor.Gray3?.withAlphaComponent(0.7) ?? .lightGray).cgColor
+                NSAttributedString.Key.foregroundColor: (UIColor.Gray3?.withAlphaComponent(0.7) ?? .lightGray)
             ])
         self.type = type
     }
