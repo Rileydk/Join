@@ -88,6 +88,17 @@ class PersonalProfileViewController: BaseViewController {
         navigationItem.leftBarButtonItem = UIBarButtonItem(
             image: UIImage(named: JImages.Icons_24px_Back.rawValue), style: .plain,
             target: self, action: #selector(backToPreviousPage))
+
+        if let myID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey), myID == userID {
+            guard let navVC = navigationController else { return }
+            let navBarAppearance = UINavigationBarAppearance()
+            navBarAppearance.configureWithOpaqueBackground()
+            navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.Gray1]
+            navBarAppearance.backgroundColor = .White
+            navVC.navigationBar.standardAppearance = navBarAppearance
+            navVC.navigationBar.scrollEdgeAppearance = navBarAppearance
+            navVC.navigationBar.tintColor = .Gray1
+        }
     }
 
     func updateData(completion: (() -> Void)? = nil) {
@@ -437,7 +448,7 @@ extension PersonalProfileViewController {
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
 
         let section = NSCollectionLayoutSection(group: group)
-        section.interGroupSpacing = 12
+        section.interGroupSpacing = 22
         section.contentInsets = .init(top: 0, leading: 32, bottom: 10, trailing: 32)
 
         if !workItems.isEmpty {

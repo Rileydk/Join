@@ -16,7 +16,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="414" height="245"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Work Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hXF-kb-y0N">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Work Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hXF-kb-y0N">
                         <rect key="frame" x="16" y="212" width="102.5" height="17"/>
                         <fontDescription key="fontDescription" type="system" pointSize="20"/>
                         <nil key="textColor"/>
@@ -29,29 +29,18 @@
                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="170" id="YSK-jw-IY7"/>
                         </constraints>
                     </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="2022-12-19" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rby-VP-Gnt">
-                        <rect key="frame" x="302.5" y="212" width="95.5" height="17"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                        <nil key="textColor"/>
-                        <nil key="highlightedColor"/>
-                    </label>
                 </subviews>
             </view>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="rby-VP-Gnt" secondAttribute="bottom" constant="16" id="3cJ-E4-JM2"/>
                 <constraint firstItem="hXF-kb-y0N" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="16" id="7TC-VJ-luP"/>
-                <constraint firstItem="rby-VP-Gnt" firstAttribute="top" secondItem="tRx-fK-juY" secondAttribute="bottom" constant="12" id="Ibd-sW-FCx"/>
                 <constraint firstAttribute="bottom" secondItem="hXF-kb-y0N" secondAttribute="bottom" constant="16" id="Svv-y2-lxS"/>
-                <constraint firstItem="rby-VP-Gnt" firstAttribute="leading" secondItem="hXF-kb-y0N" secondAttribute="trailing" constant="32" id="d3n-Kp-dK0"/>
                 <constraint firstItem="tRx-fK-juY" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="fdm-b3-Kx0"/>
                 <constraint firstItem="hXF-kb-y0N" firstAttribute="top" secondItem="tRx-fK-juY" secondAttribute="bottom" constant="12" id="rPz-Nr-jIu"/>
-                <constraint firstAttribute="trailing" secondItem="rby-VP-Gnt" secondAttribute="trailing" constant="16" id="s1F-Mq-sbT"/>
                 <constraint firstItem="tRx-fK-juY" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="tkZ-Yl-VbJ"/>
                 <constraint firstAttribute="trailing" secondItem="tRx-fK-juY" secondAttribute="trailing" id="zLu-eP-OHn"/>
             </constraints>
             <connections>
-                <outlet property="lastUpdateTimeLabel" destination="rby-VP-Gnt" id="Wh8-P1-zKn"/>
                 <outlet property="workNameLabel" destination="hXF-kb-y0N" id="lvb-rC-AVR"/>
                 <outlet property="workRecordImageView" destination="tRx-fK-juY" id="cfF-3F-EuF"/>
             </connections>

@@ -41,6 +41,7 @@ class PersonalProfileEditViewController: BaseViewController {
             tableView.separatorStyle = .none
         }
     }
+    var rightBarButton: PillButton?
 
     let firebaseManager = FirebaseManager.shared
     var notloadedFromDBYet = true
@@ -50,6 +51,7 @@ class PersonalProfileEditViewController: BaseViewController {
                 notloadedFromDBYet = false
                 tableView.reloadData()
             }
+            checkCanSave()
         }
     }
     var oldUserInfo: JUser?
@@ -58,8 +60,12 @@ class PersonalProfileEditViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.rightBarButtonItem = UIBarButtonItem(
-            barButtonSystemItem: .save, target: self, action: #selector(saveToAccount))
+        let config = UIButton.Configuration.filled()
+        rightBarButton = PillButton(configuration: config)
+        rightBarButton!.setTitle(Constant.Common.save, for: .normal)
+        rightBarButton!.addTarget(self, action: #selector(saveToAccount), for: .touchUpInside)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: rightBarButton!)
+        checkCanSave()
 
         guard let myID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey) else {
             fatalError("Doesn't have my id")
@@ -79,100 +85,98 @@ class PersonalProfileEditViewController: BaseViewController {
         }
     }
 
-    @objc func saveToAccount() {
-        guard var user = user else {
-            print("No user data")
-            return
-        }
-
+    func checkCanSave() {
+        guard var user = user else { return }
         if !(user.name.isEmpty || user.email.isEmpty) {
-            JProgressHUD.shared.showSaving(view: self.view)
+            navigationItem.rightBarButtonItem?.isEnabled = true
+        } else {
+            navigationItem.rightBarButtonItem?.isEnabled = false
+        }
+    }
 
-            firebaseManager.firebaseQueue.async { [weak self] in
-                guard let self = self else { return }
-                var shouldContinue = true
+    @objc func saveToAccount() {
+        guard var user = user else { return }
+        JProgressHUD.shared.showSaving(view: self.view)
 
-                let group = DispatchGroup()
-                if let newImageData = self.newImage?.jpeg(.lowest) {
-                    group.enter()
-                    self.firebaseManager.uploadImage(image: newImageData) { result in
-                        switch result {
-                        case .success(let imageURL):
-                            user.thumbnailURL = imageURL
-                            group.leave()
-                        case .failure(let err):
-                            group.leave()
-                            group.notify(queue: .main) {
-                                JProgressHUD.shared.showFailure(
-                                    text: err.localizedDescription,view: self.view)
-                                shouldContinue = false
-                            }
+        firebaseManager.firebaseQueue.async { [weak self] in
+            guard let self = self else { return }
+            var shouldContinue = true
+
+            let group = DispatchGroup()
+            if let newImageData = self.newImage?.jpeg(.lowest) {
+                group.enter()
+                self.firebaseManager.uploadImage(image: newImageData) { result in
+                    switch result {
+                    case .success(let imageURL):
+                        user.thumbnailURL = imageURL
+                        group.leave()
+                    case .failure(let err):
+                        group.leave()
+                        group.notify(queue: .main) {
+                            JProgressHUD.shared.showFailure(
+                                text: err.localizedDescription,view: self.view)
+                            shouldContinue = false
                         }
                     }
-                } else {
-                    group.enter()
-                    user.thumbnailURL = "\(FindPartnersFormSections.placeholderImageURL)"
+                }
+            } else {
+                group.enter()
+                user.thumbnailURL = "\(FindPartnersFormSections.placeholderImageURL)"
+                group.leave()
+            }
+
+            group.enter()
+            guard let oldInfo = self.oldUserInfo else { return }
+            self.firebaseManager.updateAuthentication(oldInfo: oldInfo, newInfo: user) { result in
+                switch result {
+                case .success:
                     group.leave()
-                }
-
-                group.enter()
-                guard let oldInfo = self.oldUserInfo else { return }
-                self.firebaseManager.updateAuthentication(oldInfo: oldInfo, newInfo: user) { result in
-                    switch result {
-                    case .success:
-                        group.leave()
-                    case .failure(let err):
-                        group.leave()
-                        group.notify(queue: .main) {
-                            JProgressHUD.shared.showFailure(
-                                text: err.localizedDescription,view: self.view)
-                            shouldContinue = false
-                        }
-                    }
-                }
-
-                group.wait()
-                group.enter()
-                self.firebaseManager.set(user: user) { result in
-                    switch result {
-                    case .success:
-                        group.leave()
-                        group.notify(queue: .main) {
-                            UserDefaults.standard.setUserBasicInfo(user: user)
-                            JProgressHUD.shared.showSuccess(view: self.view) { [weak self] in
-                                guard let self = self else { return }
-                                switch self.sourceType {
-                                case .signup:
-                                    let mainStoryboard = UIStoryboard(name: StoryboardCategory.main.rawValue, bundle: nil)
-                                    guard let tabBarController = mainStoryboard.instantiateViewController(
-                                        withIdentifier: TabBarController.identifier
-                                        ) as? TabBarController else {
-                                        fatalError("Cannot load tab bar controller")
-                                    }
-                                    tabBarController.selectedIndex = 0
-                                    tabBarController.modalPresentationStyle = .fullScreen
-                                    self.present(tabBarController, animated: false)
-                                    
-                                case .editProfile:
-                                    self.navigationController?.popViewController(animated: true)
-                                }
-                            }
-                        }
-                    case .failure(let err):
-                        group.leave()
-                        group.notify(queue: .main) {
-                            JProgressHUD.shared.showFailure(
-                                text: err.localizedDescription,view: self.view)
-                            shouldContinue = false
-                        }
+                case .failure(let err):
+                    group.leave()
+                    group.notify(queue: .main) {
+                        JProgressHUD.shared.showFailure(
+                            text: err.localizedDescription,view: self.view)
+                        shouldContinue = false
                     }
                 }
             }
-        } else {
-            let alert = UIAlertController(title: "姓名和Email是必填欄位喔", message: nil, preferredStyle: .alert)
-            let action = UIAlertAction(title: "OK", style: .default)
-            alert.addAction(action)
-            present(alert, animated: true)
+
+            group.wait()
+            group.enter()
+            self.firebaseManager.set(user: user) { result in
+                switch result {
+                case .success:
+                    group.leave()
+                    group.notify(queue: .main) {
+                        UserDefaults.standard.setUserBasicInfo(user: user)
+                        JProgressHUD.shared.showSuccess(view: self.view) { [weak self] in
+                            guard let self = self else { return }
+                            switch self.sourceType {
+                            case .signup:
+                                let mainStoryboard = UIStoryboard(name: StoryboardCategory.main.rawValue, bundle: nil)
+                                guard let tabBarController = mainStoryboard.instantiateViewController(
+                                    withIdentifier: TabBarController.identifier
+                                    ) as? TabBarController else {
+                                    fatalError("Cannot load tab bar controller")
+                                }
+                                tabBarController.selectedIndex = 0
+                                tabBarController.modalPresentationStyle = .fullScreen
+                                self.present(tabBarController, animated: false)
+
+                            case .editProfile:
+                                self.navigationController?.popViewController(animated: true)
+                            }
+                        }
+                    }
+                case .failure(let err):
+                    group.leave()
+                    group.notify(queue: .main) {
+                        JProgressHUD.shared.showFailure(
+                            text: err.localizedDescription,view: self.view)
+                        shouldContinue = false
+                    }
+                }
+            }
         }
     }
 }

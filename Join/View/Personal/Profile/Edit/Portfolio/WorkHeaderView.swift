@@ -27,7 +27,7 @@ class WorkHeaderView: TableViewHeaderFooterView {
     override func awakeFromNib() {
         super.awakeFromNib()
         contentView.backgroundColor = .White
-        titleLabel.text = "上傳檔案"
+        titleLabel.text = Constant.Portfolio.uploadFile
         titleLabel.textColor = .Gray1
         addButton.tintColor = .Blue1
     }

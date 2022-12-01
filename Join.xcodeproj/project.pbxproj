@@ -30,6 +30,8 @@
 		BF129459292A51A700AA631E /* MultilineCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF129457292A51A700AA631E /* MultilineCell.xib */; };
 		BF2681BD2935BBBE007DCFBE /* Report.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2681BC2935BBBE007DCFBE /* Report.swift */; };
 		BF2681BF2935CC98007DCFBE /* LinkTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2681BE2935CC98007DCFBE /* LinkTextView.swift */; };
+		BF2681C42938DEF8007DCFBE /* URL+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2681C32938DEF8007DCFBE /* URL+Ext.swift */; };
+		BF2681C62938DF69007DCFBE /* LPLinkMetadata+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2681C52938DF69007DCFBE /* LPLinkMetadata+Ext.swift */; };
 		BF326C0D292BB40E00898444 /* BottomLinedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF326C0C292BB40E00898444 /* BottomLinedTextField.swift */; };
 		BF326C0F292BB5E200898444 /* BottomLinedTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF326C0E292BB5E200898444 /* BottomLinedTextView.swift */; };
 		BF326C11292BBAB200898444 /* TableViewSimpleHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF326C10292BBAB200898444 /* TableViewSimpleHeaderView.swift */; };
@@ -207,6 +209,8 @@
 		BF129457292A51A700AA631E /* MultilineCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MultilineCell.xib; sourceTree = "<group>"; };
 		BF2681BC2935BBBE007DCFBE /* Report.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Report.swift; sourceTree = "<group>"; };
 		BF2681BE2935CC98007DCFBE /* LinkTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkTextView.swift; sourceTree = "<group>"; };
+		BF2681C32938DEF8007DCFBE /* URL+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Ext.swift"; sourceTree = "<group>"; };
+		BF2681C52938DF69007DCFBE /* LPLinkMetadata+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LPLinkMetadata+Ext.swift"; sourceTree = "<group>"; };
 		BF326C0C292BB40E00898444 /* BottomLinedTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomLinedTextField.swift; sourceTree = "<group>"; };
 		BF326C0E292BB5E200898444 /* BottomLinedTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomLinedTextView.swift; sourceTree = "<group>"; };
 		BF326C10292BBAB200898444 /* TableViewSimpleHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewSimpleHeaderView.swift; sourceTree = "<group>"; };
@@ -631,6 +635,8 @@
 				BF0271402920D093000EA2F8 /* UIColor+Ext.swift */,
 				BF0271582924E3D8000EA2F8 /* UserDefaults+Ext.swift */,
 				BF326C3B292F6D3200898444 /* Data+Ext.swift */,
+				BF2681C32938DEF8007DCFBE /* URL+Ext.swift */,
+				BF2681C52938DF69007DCFBE /* LPLinkMetadata+Ext.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -1087,6 +1093,7 @@
 				BF129454292A3C4B00AA631E /* ProjectItemCell.swift in Sources */,
 				BF326C1A292C7E5B00898444 /* ProjectCategoryListCell.swift in Sources */,
 				BF2681BF2935CC98007DCFBE /* LinkTextView.swift in Sources */,
+				BF2681C62938DF69007DCFBE /* LPLinkMetadata+Ext.swift in Sources */,
 				BF1294432929E7FA00AA631E /* TagCell.swift in Sources */,
 				BFF8A4B32913AD3000ADC950 /* BigImageCell.swift in Sources */,
 				BF9A86B1291E3AE800BF934D /* AddNewMemberCell.swift in Sources */,
@@ -1125,6 +1132,7 @@
 				BF42FAB4290FAC5C00501789 /* JUser.swift in Sources */,
 				BF42FAC1290FF73B00501789 /* RecruitingCell.swift in Sources */,
 				BF42FA35290BE2AA00501789 /* AppDelegate.swift in Sources */,
+				BF2681C42938DEF8007DCFBE /* URL+Ext.swift in Sources */,
 				BF3D835929275FD3009F903F /* JGProgressHUDWrapper.swift in Sources */,
 				BFF8A4EA29164BF500ADC950 /* MessageCell.swift in Sources */,
 				BFB72EDF2933AE32006F4651 /* MJRefreshWrapper.swift in Sources */,

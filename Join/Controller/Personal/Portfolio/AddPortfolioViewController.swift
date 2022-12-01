@@ -29,11 +29,11 @@ class AddPortfolioViewController: BaseViewController {
         var image: UIImage?
         var url: URLString?
 
-        init(recordID: RecordID, type: RecordType, image: UIImage?) {
+        init(recordID: RecordID, type: RecordType, image: UIImage?, url: URLString?) {
             self.recordID = recordID
             self.type = type
             self.image = image
-            self.url = nil
+            self.url = url
         }
 
         init(recordID: RecordID, type: RecordType, url: URLString?) {
@@ -65,6 +65,7 @@ class AddPortfolioViewController: BaseViewController {
             tableView.backgroundColor = .White
         }
     }
+    var rightBarButton: PillButton?
     private var provider = LPMetadataProvider()
 
     typealias WorkDatasource = UITableViewDiffableDataSource<Section, Item>
@@ -72,37 +73,45 @@ class AddPortfolioViewController: BaseViewController {
     let firebaseManager = FirebaseManager.shared
     var work = Work(
         workID: "", name: "", latestUpdatedTime: Date(),
-        creator: UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey)!)
+        creator: UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey)!) {
+            didSet {
+                checkCanSave()
+            }
+        }
 
     var scannedContent: VNDocumentCameraScan? {
         didSet {
             guard let scannedContent = scannedContent else { return }
             for index in 0 ..< scannedContent.pageCount {
-                editableRecords.append(EditableWorkRecord(recordID: "", type: .image, image: scannedContent.imageOfPage(at: index)))
+                editableRecords.append(EditableWorkRecord(recordID: "", type: .image, image: scannedContent.imageOfPage(at: index), url: ""))
             }
         }
     }
     var editableRecords = [EditableWorkRecord]() {
         didSet {
+            checkCanSave()
             updateDatasource()
         }
     }
     var finalRecords = [WorkRecord]()
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        let config = UIButton.Configuration.filled()
+        rightBarButton = PillButton(configuration: config)
+        rightBarButton!.setTitle(Constant.Common.save, for: .normal)
+        rightBarButton!.addTarget(self, action: #selector(addNewWork), for: .touchUpInside)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: rightBarButton!)
+        let _ = checkCanSave()
+    }
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationItem.rightBarButtonItem = UIBarButtonItem(
-            title: "Save", style: .done, target: self, action: #selector(addNewWork))
         navigationItem.leftBarButtonItem = UIBarButtonItem(
             title: "Discard", style: .plain, target: self, action: #selector(backToPreviousPage))
     }
 
     @objc func addNewWork() {
-        guard isProperlyFilled() else {
-            alertNeedFilled()
-            return
-        }
-
         JProgressHUD.shared.showSaving(view: self.view)
 
         var myWorkID: WorkID?
@@ -112,20 +121,27 @@ class AddPortfolioViewController: BaseViewController {
         firebaseManager.firebaseQueue.async { [weak self] in
             guard let self = self else { return }
             let group = DispatchGroup()
-            group.enter()
-            for image in self.editableRecords {
-//                self.firebaseManager.uploadImage(image: image.jpeg(.lowest)!) { [weak self] result in
-//                    guard let self = self else { return }
-//                    switch result {
-//                    case .success(let urlString):
-//                        self.records.append(WorkRecord(recordID: "", url: urlString))
-//                    case .failure(let err):
-//                        shouldContinue = false
-//                        JProgressHUD.shared.showFailure(view: self.view)
-//                        print(err)
-//                    }
-//                    group.leave()
-//                }
+            for record in self.editableRecords {
+                group.enter()
+                if record.type == .image, let image = record.image {
+                    self.firebaseManager.uploadImage(image: image.jpeg(.lowest)!) { [weak self] result in
+                        guard let self = self else { return }
+                        switch result {
+                        case .success(let urlString):
+                            self.finalRecords.append(WorkRecord(recordID: "", type: .image, url: urlString))
+                        case .failure(let err):
+                            shouldContinue = false
+                            JProgressHUD.shared.showFailure(view: self.view)
+                            print(err)
+                        }
+                        group.leave()
+                    }
+                } else if record.type == .hyperlink, let url = record.url {
+                    self.finalRecords.append(WorkRecord(recordID: "", type: .hyperlink, url: url))
+                    group.leave()
+                } else {
+                    break
+                }
             }
 
             group.wait()
@@ -180,54 +196,16 @@ class AddPortfolioViewController: BaseViewController {
         }
     }
 
-    func isProperlyFilled() -> Bool {
-        !work.name.isEmpty && !editableRecords.isEmpty
-    }
-
-    func alertNeedFilled() {
-        let alert = UIAlertController(title: "名稱和檔案都是必填項目喔！", message: nil, preferredStyle: .alert)
-        let action = UIAlertAction(title: "OK", style: .default)
-        alert.addAction(action)
-        present(alert, animated: true)
+    func checkCanSave() {
+        if !work.name.isEmpty && !editableRecords.isEmpty {
+            navigationItem.rightBarButtonItem?.isEnabled = true
+        } else {
+            navigationItem.rightBarButtonItem?.isEnabled = false
+        }
     }
 
     @objc func backToPreviousPage() {
         navigationController?.popViewController(animated: true)
-    }
-
-    func getURLMetadata(url: URL, completion: @escaping (LPLinkMetadata?) -> Void) {
-        provider = LPMetadataProvider()
-        provider.startFetchingMetadata(for: url) { (metadata, err) in
-            guard err == nil, let metadata = metadata else {
-                DispatchQueue.main.async {
-                    JProgressHUD.shared.showFailure(text: Constant.Common.notValidURL, view: self.view)
-                    completion(nil)
-                }
-                return
-            }
-            DispatchQueue.main.async {
-                completion(metadata)
-            }
-        }
-    }
-
-    func getMetadataImage(metadata: LPLinkMetadata, completion: @escaping (UIImage?) -> Void) {
-        guard let imageProvider = metadata.imageProvider else { return }
-        imageProvider.loadObject(ofClass: UIImage.self) { (image, err) in
-            if let err = err {
-                print(err)
-                completion(nil)
-                return
-            }
-            if let image = image as? UIImage {
-                DispatchQueue.main.async {
-                    completion(image)
-                }
-            } else {
-                print("failed")
-                completion(nil)
-            }
-        }
     }
 }
 
@@ -317,8 +295,9 @@ extension AddPortfolioViewController {
                 fatalError("Cannot load work record cell")
             }
             if let urlString = editableRecord.url, let url = URL(string: urlString) {
-                getURLMetadata(url: url) { metadata in
-                    cell.layoutCell(metadata: metadata)
+                cell.layoutCell(url: url)
+                cell.alertHandler = { [weak self] alert in
+                    self?.present(alert, animated: true)
                 }
             } else {
                 cell.layoutCell(recordImage: editableRecord.image!)
@@ -344,8 +323,7 @@ extension AddPortfolioViewController {
 // MARK: - Work Header View Delegate
 extension AddPortfolioViewController: WorkHeaderViewDelegate {
     func workHeaderView(_ cell: WorkHeaderView, didSetImage image: UIImage) {
-//        recordsImages.append(image)
-        editableRecords.append(EditableWorkRecord(recordID: "", type: .image, image: image))
+        editableRecords.append(EditableWorkRecord(recordID: "", type: .image, image: image, url: ""))
     }
 }
 

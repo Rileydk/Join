@@ -8,11 +8,8 @@
 import UIKit
 
 class PortfolioCardCell: CollectionViewCell {
-    @IBOutlet weak var containerView: UIView!
-    @IBOutlet weak var shadowView: UIView!
     @IBOutlet weak var workRecordImageView: UIImageView!
     @IBOutlet weak var workNameLabel: UILabel!
-    @IBOutlet weak var lastUpdateTimeLabel: UILabel!
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -31,13 +28,33 @@ class PortfolioCardCell: CollectionViewCell {
         workRecordImageView.layer.cornerRadius = 8
         workRecordImageView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
         workNameLabel.textColor = .Gray2
-        lastUpdateTimeLabel.textColor = .Gray3
     }
 
     func layoutCell(workItem: WorkItem) {
-        workRecordImageView.loadImage(workItem.records.first!.url)
+        let indicator = UIActivityIndicatorView()
+        contentView.addSubview(indicator)
+        indicator.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            indicator.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            indicator.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
+        ])
+
+        guard let firstRecord = workItem.records.first else { return }
+        if firstRecord.type == .image {
+            workRecordImageView.loadImage(firstRecord.url)
+        } else {
+            indicator.startAnimating()
+            guard let url = URL(string: firstRecord.url) else { return }
+            url.getMetadata { [weak self] metadata in
+                guard let metadata = metadata else { return }
+                metadata.getMetadataImage { image in
+                    indicator.stopAnimating()
+                    guard let image = image else { return }
+                    self?.workRecordImageView.image = image
+                }
+            }
+        }
         workNameLabel.text = workItem.name
-        lastUpdateTimeLabel.text = workItem.latestUpdatedTime.formatted
     }
 
 }
