@@ -76,12 +76,12 @@ extension LoginViewController: ASAuthorizationControllerDelegate {
         appleSignInManager.signInApple(authorization: authorization) { [weak self] result in
             guard let self = self else { return }
             switch result {
-            case .success(let firUser):
+            case .success(let initUser):
                 self.firebaseManager.firebaseQueue.async {
                     var shouldContinue = true
                     let group = DispatchGroup()
                     group.enter()
-                    self.firebaseManager.lookUpUser(userID: firUser.uid) { result in
+                    self.firebaseManager.lookUpUser(userID: initUser.id) { result in
                         switch result {
                         case .success(let user):
                             UserDefaults.standard.setUserBasicInfo(user: user)
@@ -119,10 +119,10 @@ extension LoginViewController: ASAuthorizationControllerDelegate {
                     guard shouldContinue else { return }
                     group.enter()
                     let newUser = JUser(
-                        id: firUser.uid, name: firUser.displayName ?? "",
-                        email: firUser.email ?? "",
-                        thumbnailURL: firUser.photoURL != nil
-                            ? String(describing: firUser.photoURL)
+                        id: initUser.id, name: initUser.name,
+                        email: initUser.email,
+                        thumbnailURL: initUser.thumbnail != nil
+                            ? String(describing: initUser.thumbnail)
                             : FindPartnersFormSections.placeholderImageURL)
                     self.firebaseManager.set(user: newUser) { result in
                         switch result {
