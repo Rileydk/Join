@@ -61,6 +61,7 @@ struct Constant {
 
     struct Portfolio {
         static let sectionHeader = "作品集"
+        static let uploadFile = "上傳附件"
     }
 
     struct Login {
@@ -70,9 +71,9 @@ struct Constant {
 
     struct Edit {
         static let editIntroduction = "請填寫個人簡介"
-        static let editSkills = "Edit Skills"
-        static let editInterests = "Edit Interests"
-        static let addPortfolio = "Add New Work to Portfolio"
+        static let editSkills = "編輯我的技能"
+        static let editInterests = "編輯我的興趣"
+        static let addPortfolio = "新增我的作品"
     }
 
     struct Alert {
@@ -80,13 +81,24 @@ struct Constant {
     }
 
     struct Common {
+        static let ok = "OK"
         static let confirm = "確定"
         static let cancel = "取消"
+        static let save = "Save"
         static let processing = "處理中..."
         static let errorShouldRetry = "發生錯誤，請重新操作"
+        static let notValidURL = "這不是有效的URL，請重新輸入"
+        static let emptyURL = "URL不可為空白"
     }
 
     struct Link {
         static let privacyPolicyURL = "https://www.privacypolicies.com/live/d6a88da8-fa04-4360-a5b6-dafad6c03f26"
+    }
+
+    struct ImageRelated {
+        static let fromLibrary = "從相簿選取"
+        static let openCamera = "開啟相機"
+        static let scanDocument = "掃描文件或圖片"
+        static let pasteURL = "貼上網址"
     }
 }

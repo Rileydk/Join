@@ -7,6 +7,7 @@
 
 import UIKit
 import PhotosUI
+import VisionKit
 
 protocol WorkHeaderViewDelegate: AnyObject {
     func workHeaderView(_ cell: WorkHeaderView, didSetImage image: UIImage)
@@ -19,12 +20,14 @@ class WorkHeaderView: TableViewHeaderFooterView {
     var alertPresentHandler: ((UIAlertController) -> Void)?
     var cameraPresentHandler: ((UIImagePickerController) -> Void)?
     var libraryPresentHandler: ((PHPickerViewController) -> Void)?
-    weak var delegate: WorkHeaderViewDelegate?
+    var scannerPresentHandler: ((VNDocumentCameraViewController) -> Void)?
+    var pastingURLHandler: (() -> Void)?
+    weak var delegate: (WorkHeaderViewDelegate & VNDocumentCameraViewControllerDelegate)?
 
     override func awakeFromNib() {
         super.awakeFromNib()
         contentView.backgroundColor = .White
-        titleLabel.text = "上傳檔案"
+        titleLabel.text = Constant.Portfolio.uploadFile
         titleLabel.textColor = .Gray1
         addButton.tintColor = .Blue1
     }
@@ -45,20 +48,29 @@ class WorkHeaderView: TableViewHeaderFooterView {
 
     func showSourceTypeActionSheet() {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        let cameraAction = UIAlertAction(title: "開啟相機", style: .default) { _ in
+        let cameraAction = UIAlertAction(title: Constant.ImageRelated.openCamera, style: .default) { _ in
             self.showCamera()
             alert.dismiss(animated: true)
         }
-        let photoLibraryAction = UIAlertAction(title: "從相簿選取", style: .default) { _ in
+        let photoLibraryAction = UIAlertAction(title: Constant.ImageRelated.fromLibrary, style: .default) { _ in
             self.showPhotoLibrary()
             alert.dismiss(animated: true)
         }
-        let cancelAction = UIAlertAction(title: "取消", style: .cancel) { _ in
+        let scanDocumentAction = UIAlertAction(title: Constant.ImageRelated.scanDocument, style: .default) { _ in
+            self.startScanning()
+            alert.dismiss(animated: true)
+        }
+        let pasteURLAction = UIAlertAction(title: Constant.ImageRelated.pasteURL, style: .default) { _ in
+            self.pastingURLHandler?()
+        }
+        let cancelAction = UIAlertAction(title: Constant.Common.cancel, style: .cancel) { _ in
             alert.dismiss(animated: true)
         }
 
         alert.addAction(cameraAction)
         alert.addAction(photoLibraryAction)
+        alert.addAction(scanDocumentAction)
+        alert.addAction(pasteURLAction)
         alert.addAction(cancelAction)
         alertPresentHandler?(alert)
     }
@@ -80,6 +92,17 @@ class WorkHeaderView: TableViewHeaderFooterView {
         controller.sourceType = .camera
         controller.delegate = self
         cameraPresentHandler?(controller)
+    }
+
+    func startScanning() {
+        guard VNDocumentCameraViewController.isSupported else {
+            // TODO: - Handle Error
+            return
+        }
+        let controller = VNDocumentCameraViewController()
+        controller.delegate = delegate
+        controller.editButtonItem.tintColor = .red
+        scannerPresentHandler?(controller)
     }
 
     func alert(title: String, message: String) {

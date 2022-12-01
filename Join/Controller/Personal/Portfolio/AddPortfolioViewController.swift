@@ -6,18 +6,42 @@
 //
 
 import UIKit
+import VisionKit
+import LinkPresentation
+import SwiftUI
 
 class AddPortfolioViewController: BaseViewController {
     enum Section: String, CaseIterable {
         case name = "作品名稱"
-        // case description
+//        case description
         case file
     }
 
     enum Item: Hashable {
         case name(Work)
-        // case description(String)
-        case file(UIImage)
+//        case description(String)
+        case file(EditableWorkRecord)
+    }
+
+    struct EditableWorkRecord: Hashable {
+        var recordID: RecordID
+        var type: RecordType
+        var image: UIImage?
+        var url: URLString?
+
+        init(recordID: RecordID, type: RecordType, image: UIImage?, url: URLString?) {
+            self.recordID = recordID
+            self.type = type
+            self.image = image
+            self.url = url
+        }
+
+        init(recordID: RecordID, type: RecordType, url: URLString?) {
+            self.recordID = recordID
+            self.type = type
+            self.image = nil
+            self.url = url
+        }
     }
 
     @IBOutlet weak var tableView: UITableView! {
@@ -25,6 +49,10 @@ class AddPortfolioViewController: BaseViewController {
             tableView.register(
                 UINib(nibName: SingleLineInputCell.identifier, bundle: nil),
                 forCellReuseIdentifier: SingleLineInputCell.identifier)
+            tableView.register(
+                UINib(nibName: MultilineInputCell.identifier, bundle: nil),
+                forCellReuseIdentifier: MultilineInputCell.identifier
+            )
             tableView.register(
                 UINib(nibName: WorkRecordCell.identifier, bundle: nil),
                 forCellReuseIdentifier: WorkRecordCell.identifier)
@@ -37,37 +65,53 @@ class AddPortfolioViewController: BaseViewController {
             tableView.backgroundColor = .White
         }
     }
+    var rightBarButton: PillButton?
+    private var provider = LPMetadataProvider()
 
     typealias WorkDatasource = UITableViewDiffableDataSource<Section, Item>
     private var datasource: WorkDatasource!
     let firebaseManager = FirebaseManager.shared
     var work = Work(
         workID: "", name: "", latestUpdatedTime: Date(),
-        creator: UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey)!)
+        creator: UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey)!) {
+            didSet {
+                checkCanSave()
+            }
+        }
 
-    var recordsImages = [UIImage]() {
+    var scannedContent: VNDocumentCameraScan? {
         didSet {
-            // FIXME: - 暫時不能上傳多張照片，需要在上傳過且刪除已選照片前停止加入新照片，且 table view diffable 沒有包含 header，因此同時使用 reload data
-            tableView.reloadData()
+            guard let scannedContent = scannedContent else { return }
+            for index in 0 ..< scannedContent.pageCount {
+                editableRecords.append(EditableWorkRecord(recordID: "", type: .image, image: scannedContent.imageOfPage(at: index), url: ""))
+            }
+        }
+    }
+    var editableRecords = [EditableWorkRecord]() {
+        didSet {
+            checkCanSave()
             updateDatasource()
         }
     }
-    var records = [WorkRecord]()
+    var finalRecords = [WorkRecord]()
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        let config = UIButton.Configuration.filled()
+        rightBarButton = PillButton(configuration: config)
+        rightBarButton!.setTitle(Constant.Common.save, for: .normal)
+        rightBarButton!.addTarget(self, action: #selector(addNewWork), for: .touchUpInside)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: rightBarButton!)
+        let _ = checkCanSave()
+    }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationItem.rightBarButtonItem = UIBarButtonItem(
-            title: "Save", style: .done, target: self, action: #selector(addNewWork))
         navigationItem.leftBarButtonItem = UIBarButtonItem(
             title: "Discard", style: .plain, target: self, action: #selector(backToPreviousPage))
     }
 
     @objc func addNewWork() {
-        guard isProperlyFilled() else {
-            alertNeedFilled()
-            return
-        }
-
         JProgressHUD.shared.showSaving(view: self.view)
 
         var myWorkID: WorkID?
@@ -77,24 +121,31 @@ class AddPortfolioViewController: BaseViewController {
         firebaseManager.firebaseQueue.async { [weak self] in
             guard let self = self else { return }
             let group = DispatchGroup()
-            group.enter()
-            for image in self.recordsImages {
-                self.firebaseManager.uploadImage(image: image.jpeg(.lowest)!) { [weak self] result in
-                    guard let self = self else { return }
-                    switch result {
-                    case .success(let urlString):
-                        self.records.append(WorkRecord(recordID: "", url: urlString))
-                    case .failure(let err):
-                        shouldContinue = false
-                        JProgressHUD.shared.showFailure(view: self.view)
-                        print(err)
+            for record in self.editableRecords {
+                group.enter()
+                if record.type == .image, let image = record.image {
+                    self.firebaseManager.uploadImage(image: image.jpeg(.lowest)!) { [weak self] result in
+                        guard let self = self else { return }
+                        switch result {
+                        case .success(let urlString):
+                            self.finalRecords.append(WorkRecord(recordID: "", type: .image, url: urlString))
+                        case .failure(let err):
+                            shouldContinue = false
+                            JProgressHUD.shared.showFailure(view: self.view)
+                            print(err)
+                        }
+                        group.leave()
                     }
+                } else if record.type == .hyperlink, let url = record.url {
+                    self.finalRecords.append(WorkRecord(recordID: "", type: .hyperlink, url: url))
                     group.leave()
+                } else {
+                    break
                 }
             }
 
             group.wait()
-            guard !self.records.isEmpty && shouldContinue else { return }
+            guard !self.finalRecords.isEmpty && shouldContinue else { return }
             group.enter()
             self.firebaseManager.addNewWork(work: self.work) { result in
                 switch result {
@@ -111,7 +162,7 @@ class AddPortfolioViewController: BaseViewController {
             group.wait()
             guard let myWorkID = myWorkID, shouldContinue else { return }
             group.enter()
-            self.firebaseManager.addNewRecords(records: self.records, to: myWorkID) { result in
+            self.firebaseManager.addNewRecords(records: self.finalRecords, to: myWorkID) { result in
                 switch result {
                 case .success(let recordsIDsOrder):
                     myRecordsIDsOrder = recordsIDsOrder
@@ -145,15 +196,12 @@ class AddPortfolioViewController: BaseViewController {
         }
     }
 
-    func isProperlyFilled() -> Bool {
-        !work.name.isEmpty && !recordsImages.isEmpty
-    }
-
-    func alertNeedFilled() {
-        let alert = UIAlertController(title: "名稱和檔案都是必填項目喔！", message: nil, preferredStyle: .alert)
-        let action = UIAlertAction(title: "OK", style: .default)
-        alert.addAction(action)
-        present(alert, animated: true)
+    func checkCanSave() {
+        if !work.name.isEmpty && !editableRecords.isEmpty {
+            navigationItem.rightBarButtonItem?.isEnabled = true
+        } else {
+            navigationItem.rightBarButtonItem?.isEnabled = false
+        }
     }
 
     @objc func backToPreviousPage() {
@@ -187,7 +235,7 @@ extension AddPortfolioViewController: UITableViewDelegate {
                 ) as? WorkHeaderView else {
                 fatalError("Cannot load Work Header View")
             }
-            header.layoutHeader(addButtonShouldEnabled: recordsImages.isEmpty)
+            header.layoutHeader(addButtonShouldEnabled: editableRecords.isEmpty)
             header.delegate = self
             header.alertPresentHandler = { [weak self] alert in
                 self?.present(alert, animated: true)
@@ -197,6 +245,21 @@ extension AddPortfolioViewController: UITableViewDelegate {
             }
             header.libraryPresentHandler = { [weak self] picker in
                 self?.present(picker, animated: true)
+            }
+            header.scannerPresentHandler = { [weak self] scanner in
+                self?.present(scanner, animated: true)
+            }
+            header.pastingURLHandler = { [weak self] in
+                guard let self = self else { return }
+                guard UIPasteboard.general.hasStrings else {
+                    JProgressHUD.shared.showFailure(text: Constant.Common.emptyURL, view: self.view)
+                    return
+                }
+                if let copiedText = UIPasteboard.general.string, URL(string: copiedText) != nil {
+                    self.editableRecords.append(EditableWorkRecord(recordID: "", type: .hyperlink, url: copiedText))
+                } else {
+                    JProgressHUD.shared.showFailure(text: Constant.Common.notValidURL, view: self.view)
+                }
             }
             return header
         } else {
@@ -227,11 +290,18 @@ extension AddPortfolioViewController {
                 self.work.name = workName
             }
             return cell
-        case .file(let image):
+        case .file(let editableRecord):
             guard let cell = tableView.dequeueReusableCell(withIdentifier: WorkRecordCell.identifier, for: indexPath) as? WorkRecordCell else {
                 fatalError("Cannot load work record cell")
             }
-            cell.layoutCell(recordImage: image)
+            if let urlString = editableRecord.url, let url = URL(string: urlString) {
+                cell.layoutCell(url: url)
+                cell.alertHandler = { [weak self] alert in
+                    self?.present(alert, animated: true)
+                }
+            } else {
+                cell.layoutCell(recordImage: editableRecord.image!)
+            }
             return cell
         }
     }
@@ -245,7 +315,7 @@ extension AddPortfolioViewController {
         var snapshot = NSDiffableDataSourceSnapshot<Section, Item>()
         snapshot.appendSections(Section.allCases)
         snapshot.appendItems([.name(work)], toSection: .name)
-        snapshot.appendItems(recordsImages.map { .file($0) }, toSection: .file)
+        snapshot.appendItems(editableRecords.map { .file($0) }, toSection: .file)
         datasource.apply(snapshot, animatingDifferences: false)
     }
 }
@@ -253,6 +323,19 @@ extension AddPortfolioViewController {
 // MARK: - Work Header View Delegate
 extension AddPortfolioViewController: WorkHeaderViewDelegate {
     func workHeaderView(_ cell: WorkHeaderView, didSetImage image: UIImage) {
-        recordsImages.append(image)
+        editableRecords.append(EditableWorkRecord(recordID: "", type: .image, image: image, url: ""))
+    }
+}
+
+// MARK: - VNDocumentViewController Delegate
+extension AddPortfolioViewController: VNDocumentCameraViewControllerDelegate {
+    func documentCameraViewController(_ controller: VNDocumentCameraViewController, didFinishWith scan: VNDocumentCameraScan) {
+        scannedContent = scan
+        dismiss(animated: true)
+    }
+
+    func documentCameraViewController(_ controller: VNDocumentCameraViewController, didFailWithError error: Error) {
+        JProgressHUD.shared.showFailure(text: Constant.Common.errorShouldRetry, view: self.view)
+        dismiss(animated: true)
     }
 }
