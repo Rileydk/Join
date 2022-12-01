@@ -6,17 +6,18 @@
 //
 
 import UIKit
+import VisionKit
 
 class AddPortfolioViewController: BaseViewController {
     enum Section: String, CaseIterable {
         case name = "作品名稱"
-        // case description
+//        case description
         case file
     }
 
     enum Item: Hashable {
         case name(Work)
-        // case description(String)
+//        case description(String)
         case file(UIImage)
     }
 
@@ -25,6 +26,10 @@ class AddPortfolioViewController: BaseViewController {
             tableView.register(
                 UINib(nibName: SingleLineInputCell.identifier, bundle: nil),
                 forCellReuseIdentifier: SingleLineInputCell.identifier)
+            tableView.register(
+                UINib(nibName: MultilineInputCell.identifier, bundle: nil),
+                forCellReuseIdentifier: MultilineInputCell.identifier
+            )
             tableView.register(
                 UINib(nibName: WorkRecordCell.identifier, bundle: nil),
                 forCellReuseIdentifier: WorkRecordCell.identifier)
@@ -45,6 +50,14 @@ class AddPortfolioViewController: BaseViewController {
         workID: "", name: "", latestUpdatedTime: Date(),
         creator: UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey)!)
 
+    var scannedContent: VNDocumentCameraScan? {
+        didSet {
+            guard let scannedContent = scannedContent else { return }
+            for index in 0 ..< scannedContent.pageCount {
+                recordsImages.append(scannedContent.imageOfPage(at: index))
+            }
+        }
+    }
     var recordsImages = [UIImage]() {
         didSet {
             // FIXME: - 暫時不能上傳多張照片，需要在上傳過且刪除已選照片前停止加入新照片，且 table view diffable 沒有包含 header，因此同時使用 reload data
@@ -198,6 +211,9 @@ extension AddPortfolioViewController: UITableViewDelegate {
             header.libraryPresentHandler = { [weak self] picker in
                 self?.present(picker, animated: true)
             }
+            header.scannerPresentHandler = { [weak self] scanner in
+                self?.present(scanner, animated: true)
+            }
             return header
         } else {
             return nil
@@ -254,5 +270,18 @@ extension AddPortfolioViewController {
 extension AddPortfolioViewController: WorkHeaderViewDelegate {
     func workHeaderView(_ cell: WorkHeaderView, didSetImage image: UIImage) {
         recordsImages.append(image)
+    }
+}
+
+// MARK: - VNDocumentViewController Delegate
+extension AddPortfolioViewController: VNDocumentCameraViewControllerDelegate {
+    func documentCameraViewController(_ controller: VNDocumentCameraViewController, didFinishWith scan: VNDocumentCameraScan) {
+        scannedContent = scan
+        dismiss(animated: true)
+    }
+
+    func documentCameraViewController(_ controller: VNDocumentCameraViewController, didFailWithError error: Error) {
+        JProgressHUD.shared.showFailure(text: Constant.Common.errorShouldRetry, view: self.view)
+        dismiss(animated: true)
     }
 }

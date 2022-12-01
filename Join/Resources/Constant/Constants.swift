@@ -89,4 +89,10 @@ struct Constant {
     struct Link {
         static let privacyPolicyURL = "https://www.privacypolicies.com/live/d6a88da8-fa04-4360-a5b6-dafad6c03f26"
     }
+
+    struct ImageRelated {
+        static let fromLibrary = "從相簿選取"
+        static let openCamera = "開啟相機"
+        static let scanDocument = "掃描文件或圖片"
+    }
 }

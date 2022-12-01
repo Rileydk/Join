@@ -615,6 +615,8 @@
 			children = (
 				BF42FA55290CE89500501789 /* TabBarController.swift */,
 				BFF8A4DE2916342E00ADC950 /* BaseViewController.swift */,
+				BF1294472929FEDA00AA631E /* NavigationController.swift */,
+				BF326C1E292CABB400898444 /* LightNavigationController.swift */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -686,8 +688,6 @@
 				BF42FA72290D197000501789 /* TableViewCell.swift */,
 				BF42FAD82912960D00501789 /* CollectionViewCell.swift */,
 				BFF8A4BB2913B39900ADC950 /* TableViewHeaderFooterView.swift */,
-				BF1294472929FEDA00AA631E /* NavigationController.swift */,
-				BF326C1E292CABB400898444 /* LightNavigationController.swift */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -1323,8 +1323,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Join/Resources/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Join: 找夥伴";
-				INFOPLIST_KEY_NSCameraUsageDescription = "需要您授權開啟相機以發佈找夥伴貼文";
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "需要您授權使用相簿圖片以發佈找夥伴貼文";
+				INFOPLIST_KEY_NSCameraUsageDescription = "需要您授權開啟相機以發佈貼文或拍攝作品";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "需要您授權使用相簿圖片以發佈貼文或上傳作品";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -1361,8 +1361,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Join/Resources/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Join: 找夥伴";
-				INFOPLIST_KEY_NSCameraUsageDescription = "需要您授權開啟相機以發佈找夥伴貼文";
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "需要您授權使用相簿圖片以發佈找夥伴貼文";
+				INFOPLIST_KEY_NSCameraUsageDescription = "需要您授權開啟相機以發佈貼文或拍攝作品";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "需要您授權使用相簿圖片以發佈貼文或上傳作品";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
