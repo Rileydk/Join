@@ -84,6 +84,8 @@ struct Constant {
         static let cancel = "取消"
         static let processing = "處理中..."
         static let errorShouldRetry = "發生錯誤，請重新操作"
+        static let notValidURL = "這不是有效的URL，請重新輸入"
+        static let emptyURL = "URL不可為空白"
     }
 
     struct Link {
@@ -94,5 +96,6 @@ struct Constant {
         static let fromLibrary = "從相簿選取"
         static let openCamera = "開啟相機"
         static let scanDocument = "掃描文件或圖片"
+        static let pasteURL = "貼上網址"
     }
 }

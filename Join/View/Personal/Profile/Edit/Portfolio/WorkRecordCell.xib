@@ -3,7 +3,9 @@
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -16,32 +18,44 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="200"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="A7Q-HW-8Cc">
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="A7Q-HW-8Cc">
                         <rect key="frame" x="274" y="89" width="20" height="22"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="20" id="cpN-Ga-7cJ"/>
                             <constraint firstAttribute="width" secondItem="A7Q-HW-8Cc" secondAttribute="height" multiplier="10:11" id="zvv-SA-JLt"/>
                         </constraints>
+                        <color key="tintColor" name="Red"/>
                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                         <state key="normal" image="trash" catalog="system"/>
                     </button>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="zCR-1B-Ybc">
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XEn-am-pjQ">
                         <rect key="frame" x="26" y="9" width="240" height="182"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="zCR-1B-Ybc">
+                                <rect key="frame" x="0.0" y="0.0" width="240" height="182"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstAttribute="width" secondItem="zCR-1B-Ybc" secondAttribute="height" multiplier="250:190" id="zyM-Rb-vJB"/>
+                            <constraint firstAttribute="bottom" secondItem="zCR-1B-Ybc" secondAttribute="bottom" id="CVD-11-ABw"/>
+                            <constraint firstAttribute="trailing" secondItem="zCR-1B-Ybc" secondAttribute="trailing" id="Jh3-IT-kow"/>
+                            <constraint firstAttribute="width" secondItem="XEn-am-pjQ" secondAttribute="height" multiplier="250:190" id="Sza-La-iSR"/>
+                            <constraint firstItem="zCR-1B-Ybc" firstAttribute="leading" secondItem="XEn-am-pjQ" secondAttribute="leading" id="Trn-UN-DL0"/>
+                            <constraint firstItem="zCR-1B-Ybc" firstAttribute="top" secondItem="XEn-am-pjQ" secondAttribute="top" id="Y4l-G3-c7d"/>
                         </constraints>
-                    </imageView>
+                    </view>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="A7Q-HW-8Cc" firstAttribute="centerY" secondItem="zCR-1B-Ybc" secondAttribute="centerY" id="5il-FS-dDp"/>
                     <constraint firstAttribute="trailing" secondItem="A7Q-HW-8Cc" secondAttribute="trailing" constant="26" id="8vv-gZ-dND"/>
-                    <constraint firstItem="zCR-1B-Ybc" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="26" id="ag5-f2-CgC"/>
-                    <constraint firstItem="zCR-1B-Ybc" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="nJs-6Y-iha"/>
-                    <constraint firstItem="A7Q-HW-8Cc" firstAttribute="leading" secondItem="zCR-1B-Ybc" secondAttribute="trailing" constant="8" id="zR3-Al-pxZ"/>
+                    <constraint firstItem="A7Q-HW-8Cc" firstAttribute="leading" secondItem="XEn-am-pjQ" secondAttribute="trailing" constant="8" id="I6N-ef-Ilk"/>
+                    <constraint firstItem="XEn-am-pjQ" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="26" id="LtD-3A-WmB"/>
+                    <constraint firstItem="A7Q-HW-8Cc" firstAttribute="centerY" secondItem="XEn-am-pjQ" secondAttribute="centerY" id="O14-RN-8tV"/>
+                    <constraint firstItem="XEn-am-pjQ" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="qTp-Ap-omv"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
+                <outlet property="containerView" destination="XEn-am-pjQ" id="1sd-uu-cjs"/>
                 <outlet property="deleteButton" destination="A7Q-HW-8Cc" id="vD6-fa-SNT"/>
                 <outlet property="recordImageView" destination="zCR-1B-Ybc" id="kDi-hw-kJ2"/>
             </connections>
@@ -50,5 +64,11 @@
     </objects>
     <resources>
         <image name="trash" catalog="system" width="121" height="128"/>
+        <namedColor name="Red">
+            <color red="0.81999999284744263" green="0.28600001335144043" blue="0.35699999332427979" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
     </resources>
 </document>

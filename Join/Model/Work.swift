@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 typealias WorkID = String
 typealias RecordID = String
@@ -30,13 +31,20 @@ struct Work: Hashable, Decodable {
     }
 }
 
+enum RecordType: String, Decodable {
+    case image
+    case hyperlink
+}
+
 struct WorkRecord: Hashable, Decodable {
     var recordID: RecordID
+    var type: RecordType
     var url: URLString
 
     var toDict: [String: Any] {
         return [
             "recordID": recordID as Any,
+            "type": type.rawValue as Any,
             "url": url as Any
         ]
     }

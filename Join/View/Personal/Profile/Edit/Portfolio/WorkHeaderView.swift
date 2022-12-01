@@ -21,6 +21,7 @@ class WorkHeaderView: TableViewHeaderFooterView {
     var cameraPresentHandler: ((UIImagePickerController) -> Void)?
     var libraryPresentHandler: ((PHPickerViewController) -> Void)?
     var scannerPresentHandler: ((VNDocumentCameraViewController) -> Void)?
+    var pastingURLHandler: (() -> Void)?
     weak var delegate: (WorkHeaderViewDelegate & VNDocumentCameraViewControllerDelegate)?
 
     override func awakeFromNib() {
@@ -59,6 +60,9 @@ class WorkHeaderView: TableViewHeaderFooterView {
             self.startScanning()
             alert.dismiss(animated: true)
         }
+        let pasteURLAction = UIAlertAction(title: Constant.ImageRelated.pasteURL, style: .default) { _ in
+            self.pastingURLHandler?()
+        }
         let cancelAction = UIAlertAction(title: Constant.Common.cancel, style: .cancel) { _ in
             alert.dismiss(animated: true)
         }
@@ -66,6 +70,7 @@ class WorkHeaderView: TableViewHeaderFooterView {
         alert.addAction(cameraAction)
         alert.addAction(photoLibraryAction)
         alert.addAction(scanDocumentAction)
+        alert.addAction(pasteURLAction)
         alert.addAction(cancelAction)
         alertPresentHandler?(alert)
     }

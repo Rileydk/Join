@@ -7,6 +7,8 @@
 
 import UIKit
 import VisionKit
+import LinkPresentation
+import SwiftUI
 
 class AddPortfolioViewController: BaseViewController {
     enum Section: String, CaseIterable {
@@ -18,7 +20,28 @@ class AddPortfolioViewController: BaseViewController {
     enum Item: Hashable {
         case name(Work)
 //        case description(String)
-        case file(UIImage)
+        case file(EditableWorkRecord)
+    }
+
+    struct EditableWorkRecord: Hashable {
+        var recordID: RecordID
+        var type: RecordType
+        var image: UIImage?
+        var url: URLString?
+
+        init(recordID: RecordID, type: RecordType, image: UIImage?) {
+            self.recordID = recordID
+            self.type = type
+            self.image = image
+            self.url = nil
+        }
+
+        init(recordID: RecordID, type: RecordType, url: URLString?) {
+            self.recordID = recordID
+            self.type = type
+            self.image = nil
+            self.url = url
+        }
     }
 
     @IBOutlet weak var tableView: UITableView! {
@@ -42,6 +65,7 @@ class AddPortfolioViewController: BaseViewController {
             tableView.backgroundColor = .White
         }
     }
+    private var provider = LPMetadataProvider()
 
     typealias WorkDatasource = UITableViewDiffableDataSource<Section, Item>
     private var datasource: WorkDatasource!
@@ -54,18 +78,16 @@ class AddPortfolioViewController: BaseViewController {
         didSet {
             guard let scannedContent = scannedContent else { return }
             for index in 0 ..< scannedContent.pageCount {
-                recordsImages.append(scannedContent.imageOfPage(at: index))
+                editableRecords.append(EditableWorkRecord(recordID: "", type: .image, image: scannedContent.imageOfPage(at: index)))
             }
         }
     }
-    var recordsImages = [UIImage]() {
+    var editableRecords = [EditableWorkRecord]() {
         didSet {
-            // FIXME: - 暫時不能上傳多張照片，需要在上傳過且刪除已選照片前停止加入新照片，且 table view diffable 沒有包含 header，因此同時使用 reload data
-            tableView.reloadData()
             updateDatasource()
         }
     }
-    var records = [WorkRecord]()
+    var finalRecords = [WorkRecord]()
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -91,23 +113,23 @@ class AddPortfolioViewController: BaseViewController {
             guard let self = self else { return }
             let group = DispatchGroup()
             group.enter()
-            for image in self.recordsImages {
-                self.firebaseManager.uploadImage(image: image.jpeg(.lowest)!) { [weak self] result in
-                    guard let self = self else { return }
-                    switch result {
-                    case .success(let urlString):
-                        self.records.append(WorkRecord(recordID: "", url: urlString))
-                    case .failure(let err):
-                        shouldContinue = false
-                        JProgressHUD.shared.showFailure(view: self.view)
-                        print(err)
-                    }
-                    group.leave()
-                }
+            for image in self.editableRecords {
+//                self.firebaseManager.uploadImage(image: image.jpeg(.lowest)!) { [weak self] result in
+//                    guard let self = self else { return }
+//                    switch result {
+//                    case .success(let urlString):
+//                        self.records.append(WorkRecord(recordID: "", url: urlString))
+//                    case .failure(let err):
+//                        shouldContinue = false
+//                        JProgressHUD.shared.showFailure(view: self.view)
+//                        print(err)
+//                    }
+//                    group.leave()
+//                }
             }
 
             group.wait()
-            guard !self.records.isEmpty && shouldContinue else { return }
+            guard !self.finalRecords.isEmpty && shouldContinue else { return }
             group.enter()
             self.firebaseManager.addNewWork(work: self.work) { result in
                 switch result {
@@ -124,7 +146,7 @@ class AddPortfolioViewController: BaseViewController {
             group.wait()
             guard let myWorkID = myWorkID, shouldContinue else { return }
             group.enter()
-            self.firebaseManager.addNewRecords(records: self.records, to: myWorkID) { result in
+            self.firebaseManager.addNewRecords(records: self.finalRecords, to: myWorkID) { result in
                 switch result {
                 case .success(let recordsIDsOrder):
                     myRecordsIDsOrder = recordsIDsOrder
@@ -159,7 +181,7 @@ class AddPortfolioViewController: BaseViewController {
     }
 
     func isProperlyFilled() -> Bool {
-        !work.name.isEmpty && !recordsImages.isEmpty
+        !work.name.isEmpty && !editableRecords.isEmpty
     }
 
     func alertNeedFilled() {
@@ -171,6 +193,41 @@ class AddPortfolioViewController: BaseViewController {
 
     @objc func backToPreviousPage() {
         navigationController?.popViewController(animated: true)
+    }
+
+    func getURLMetadata(url: URL, completion: @escaping (LPLinkMetadata?) -> Void) {
+        provider = LPMetadataProvider()
+        provider.startFetchingMetadata(for: url) { (metadata, err) in
+            guard err == nil, let metadata = metadata else {
+                DispatchQueue.main.async {
+                    JProgressHUD.shared.showFailure(text: Constant.Common.notValidURL, view: self.view)
+                    completion(nil)
+                }
+                return
+            }
+            DispatchQueue.main.async {
+                completion(metadata)
+            }
+        }
+    }
+
+    func getMetadataImage(metadata: LPLinkMetadata, completion: @escaping (UIImage?) -> Void) {
+        guard let imageProvider = metadata.imageProvider else { return }
+        imageProvider.loadObject(ofClass: UIImage.self) { (image, err) in
+            if let err = err {
+                print(err)
+                completion(nil)
+                return
+            }
+            if let image = image as? UIImage {
+                DispatchQueue.main.async {
+                    completion(image)
+                }
+            } else {
+                print("failed")
+                completion(nil)
+            }
+        }
     }
 }
 
@@ -200,7 +257,7 @@ extension AddPortfolioViewController: UITableViewDelegate {
                 ) as? WorkHeaderView else {
                 fatalError("Cannot load Work Header View")
             }
-            header.layoutHeader(addButtonShouldEnabled: recordsImages.isEmpty)
+            header.layoutHeader(addButtonShouldEnabled: editableRecords.isEmpty)
             header.delegate = self
             header.alertPresentHandler = { [weak self] alert in
                 self?.present(alert, animated: true)
@@ -213,6 +270,18 @@ extension AddPortfolioViewController: UITableViewDelegate {
             }
             header.scannerPresentHandler = { [weak self] scanner in
                 self?.present(scanner, animated: true)
+            }
+            header.pastingURLHandler = { [weak self] in
+                guard let self = self else { return }
+                guard UIPasteboard.general.hasStrings else {
+                    JProgressHUD.shared.showFailure(text: Constant.Common.emptyURL, view: self.view)
+                    return
+                }
+                if let copiedText = UIPasteboard.general.string, URL(string: copiedText) != nil {
+                    self.editableRecords.append(EditableWorkRecord(recordID: "", type: .hyperlink, url: copiedText))
+                } else {
+                    JProgressHUD.shared.showFailure(text: Constant.Common.notValidURL, view: self.view)
+                }
             }
             return header
         } else {
@@ -243,11 +312,17 @@ extension AddPortfolioViewController {
                 self.work.name = workName
             }
             return cell
-        case .file(let image):
+        case .file(let editableRecord):
             guard let cell = tableView.dequeueReusableCell(withIdentifier: WorkRecordCell.identifier, for: indexPath) as? WorkRecordCell else {
                 fatalError("Cannot load work record cell")
             }
-            cell.layoutCell(recordImage: image)
+            if let urlString = editableRecord.url, let url = URL(string: urlString) {
+                getURLMetadata(url: url) { metadata in
+                    cell.layoutCell(metadata: metadata)
+                }
+            } else {
+                cell.layoutCell(recordImage: editableRecord.image!)
+            }
             return cell
         }
     }
@@ -261,7 +336,7 @@ extension AddPortfolioViewController {
         var snapshot = NSDiffableDataSourceSnapshot<Section, Item>()
         snapshot.appendSections(Section.allCases)
         snapshot.appendItems([.name(work)], toSection: .name)
-        snapshot.appendItems(recordsImages.map { .file($0) }, toSection: .file)
+        snapshot.appendItems(editableRecords.map { .file($0) }, toSection: .file)
         datasource.apply(snapshot, animatingDifferences: false)
     }
 }
@@ -269,7 +344,8 @@ extension AddPortfolioViewController {
 // MARK: - Work Header View Delegate
 extension AddPortfolioViewController: WorkHeaderViewDelegate {
     func workHeaderView(_ cell: WorkHeaderView, didSetImage image: UIImage) {
-        recordsImages.append(image)
+//        recordsImages.append(image)
+        editableRecords.append(EditableWorkRecord(recordID: "", type: .image, image: image))
     }
 }
 
