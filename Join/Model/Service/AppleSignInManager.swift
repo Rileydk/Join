@@ -38,6 +38,13 @@ class AppleSignInManager {
         }
     }
 
+    struct UserInitInfo {
+        var id: String
+        var name: String
+        var email: String
+        var thumbnail: URLString?
+    }
+
     static let shared = AppleSignInManager()
     private init() {}
 
@@ -106,10 +113,16 @@ class AppleSignInManager {
         return request
     }
 
-    func signInApple(authorization: ASAuthorization, completion: @escaping (Result<User, Error>) -> Void) {
+    func signInApple(authorization: ASAuthorization, completion: @escaping (Result<UserInitInfo, Error>) -> Void) {
         getRefreshToken()
 
+        var fullName = ""
+
         if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
+            if let userProvidedName = appleIDCredential.fullName {
+                fullName = userProvidedName.formatted()
+            }
+
             guard let nonce = currentNonce else {
                 fatalError("Invalid state: A login callback was received, but no login request was sent.")
             }
@@ -138,8 +151,13 @@ class AppleSignInManager {
                     completion(.failure(error))
                     return
                 }
-                if let firUser = Auth.auth().currentUser {
-                    completion(.success(firUser))
+                if var firUser = Auth.auth().currentUser {
+                    let adjustedUser = UserInitInfo(
+                        id: firUser.uid,
+                        name: ((firUser.displayName ?? fullName) ?? ""),
+                        email: firUser.email ?? "",
+                        thumbnail: nil)
+                    completion(.success(adjustedUser))
                 } else {
                     completion(.failure(AppleSignInError.failedToGetUserObject))
                 }
