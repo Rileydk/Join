@@ -89,6 +89,7 @@ struct Constant {
         static let errorShouldRetry = "發生錯誤，請重新操作"
         static let notValidURL = "這不是有效的URL，請重新輸入"
         static let emptyURL = "URL不可為空白"
+        static let duplicatedURL = "重複的URL"
     }
 
     struct Link {

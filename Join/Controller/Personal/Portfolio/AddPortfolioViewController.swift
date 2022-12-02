@@ -254,7 +254,12 @@ extension AddPortfolioViewController: UITableViewDelegate {
                     return
                 }
                 if let copiedText = UIPasteboard.general.string, URL(string: copiedText) != nil {
-                    self.editableRecords.append(EditableWorkRecord(recordID: "", type: .hyperlink, url: copiedText))
+                    if self.editableRecords.contains { $0.url == copiedText } {
+                        JProgressHUD.shared.showFailure(text: Constant.Common.duplicatedURL, view: self.view)
+                    } else {
+                        self.editableRecords.append(EditableWorkRecord(recordID: "", type: .hyperlink, url: copiedText))
+                    }
+
                 } else {
                     JProgressHUD.shared.showFailure(text: Constant.Common.notValidURL, view: self.view)
                 }
