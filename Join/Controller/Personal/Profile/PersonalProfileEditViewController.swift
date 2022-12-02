@@ -60,6 +60,8 @@ class PersonalProfileEditViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        title = Constant.Personal.editPageTitle
+
         let config = UIButton.Configuration.filled()
         rightBarButton = PillButton(configuration: config)
         rightBarButton!.setTitle(Constant.Common.save, for: .normal)
@@ -123,7 +125,7 @@ class PersonalProfileEditViewController: BaseViewController {
                         }
                     }
                 }
-            } else {
+            } else if (user.thumbnailURL ?? "").isEmpty {
                 group.enter()
                 user.thumbnailURL = "\(FindPartnersFormSections.placeholderImageURL)"
                 group.leave()
@@ -203,7 +205,7 @@ extension PersonalProfileEditViewController: UITableViewDelegate {
         } else if section == .basic {
             return 90
         } else if section == .introduction {
-            return 160
+            return 200
         } else {
             return 50
         }

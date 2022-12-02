@@ -44,6 +44,7 @@ struct Constant {
     }
 
     struct Personal {
+        static let editPageTitle = "編輯我的個人資料"
         static let report = "檢舉此個人頁面"
 
         static let blockAlertTitle = "確定要封鎖此用戶嗎？"
@@ -70,7 +71,7 @@ struct Constant {
     }
 
     struct Edit {
-        static let editIntroduction = "請填寫個人簡介"
+        static let editIntroduction = "個人簡介"
         static let editSkills = "編輯我的技能"
         static let editInterests = "編輯我的興趣"
         static let addPortfolio = "新增我的作品"
