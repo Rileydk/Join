@@ -298,7 +298,10 @@ extension AddPortfolioViewController {
                 fatalError("Cannot load work record cell")
             }
             if let urlString = editableRecord.url, let url = URL(string: urlString) {
-                cell.layoutCell(url: url)
+                cell.layoutCell(url: url) { [weak self] in
+                    guard let self = self else { return }
+                    self.editableRecords.remove(at: self.editableRecords.firstIndex(of: editableRecord)!)
+                }
                 cell.alertHandler = { [weak self] alert in
                     self?.present(alert, animated: true)
                 }

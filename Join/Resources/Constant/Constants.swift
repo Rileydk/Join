@@ -100,6 +100,6 @@ struct Constant {
         static let fromLibrary = "從相簿選取"
         static let openCamera = "開啟相機"
         static let scanDocument = "掃描文件或圖片"
-        static let pasteURL = "貼上網址"
+        static let pasteURL = "貼上網址（請先複製）"
     }
 }

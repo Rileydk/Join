@@ -30,7 +30,7 @@ class WorkRecordCell: TableViewCell {
         recordImageView.layer.cornerRadius = 10
     }
 
-    func layoutCell(url: URL) {
+    func layoutCell(url: URL, errorHandler: @escaping () -> Void) {
         recordImageView.isHidden = true
         let indicator = UIActivityIndicatorView()
         containerView.addSubview(indicator)
@@ -58,10 +58,11 @@ class WorkRecordCell: TableViewCell {
                 ])
             } else {
                 indicator.stopAnimating()
-                let alert = UIAlertController(title: Constant.Common.notValidURL, message: nil, preferredStyle: .alert)
+                let alert = UIAlertController(title: Constant.Common.errorShouldRetry, message: nil, preferredStyle: .alert)
                 let action = UIAlertAction(title: Constant.Common.ok, style: .default)
                 alert.addAction(action)
                 self.alertHandler?(alert)
+                errorHandler()
             }
         }
 
