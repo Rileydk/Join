@@ -97,18 +97,16 @@ class AddPortfolioViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        let config = UIButton.Configuration.filled()
-        rightBarButton = PillButton(configuration: config)
+        let rightButtonConfig = UIButton.Configuration.filled()
+        rightBarButton = PillButton(configuration: rightButtonConfig)
         rightBarButton!.setTitle(Constant.Common.save, for: .normal)
         rightBarButton!.addTarget(self, action: #selector(addNewWork), for: .touchUpInside)
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: rightBarButton!)
-        let _ = checkCanSave()
-    }
+        checkCanSave()
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
         navigationItem.leftBarButtonItem = UIBarButtonItem(
-            title: "Discard", style: .plain, target: self, action: #selector(backToPreviousPage))
+            image: UIImage(named: JImages.Icons_24px_Close.rawValue), style: .plain,
+            target: self, action: #selector(backToPreviousPage))
     }
 
     @objc func addNewWork() {

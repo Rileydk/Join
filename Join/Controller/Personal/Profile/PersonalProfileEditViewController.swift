@@ -67,6 +67,10 @@ class PersonalProfileEditViewController: BaseViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: rightBarButton!)
         checkCanSave()
 
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            image: UIImage(named: JImages.Icons_24px_Close.rawValue), style: .plain,
+            target: self, action: #selector(backToPreviousPage))
+
         guard let myID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey) else {
             fatalError("Doesn't have my id")
         }
@@ -178,6 +182,10 @@ class PersonalProfileEditViewController: BaseViewController {
                 }
             }
         }
+    }
+
+    @objc func backToPreviousPage() {
+        navigationController?.popViewController(animated: true)
     }
 }
 

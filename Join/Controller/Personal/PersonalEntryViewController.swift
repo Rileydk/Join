@@ -44,6 +44,15 @@ class PersonalEntryViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        guard let navVC = navigationController else { return }
+        let navBarAppearance = UINavigationBarAppearance()
+        navBarAppearance.configureWithOpaqueBackground()
+        navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.Gray1]
+        navBarAppearance.backgroundColor = .Blue1
+        navVC.navigationBar.standardAppearance = navBarAppearance
+        navVC.navigationBar.scrollEdgeAppearance = navBarAppearance
+        navVC.navigationBar.tintColor = .White
+
         tableView.reloadData()
     }
 
@@ -61,6 +70,10 @@ class PersonalEntryViewController: UIViewController {
                 fatalError("Cannot create personal profile vc")
             }
             profileVC.userID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey)
+            hidesBottomBarWhenPushed = true
+            DispatchQueue.main.async { [weak self] in
+                self?.hidesBottomBarWhenPushed = false
+            }
             navigationController?.pushViewController(profileVC, animated: true)
 
         case .posts:

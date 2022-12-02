@@ -154,7 +154,7 @@ class PersonalProfileViewController: BaseViewController {
                         WorkItem(workID: $0.workID, name: $0.name,
                                  description: $0.description,
                                  latestUpdatedTime: $0.latestUpdatedTime, records: [])
-                    }
+                    }.sorted { $0.latestUpdatedTime > $1.latestUpdatedTime }
                     group.leave()
                 case .failure(let err):
                     group.leave()
@@ -252,6 +252,7 @@ class PersonalProfileViewController: BaseViewController {
             fatalError("Cannot load personal profile edit vc")
         }
 
+        hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(personalProfileEditVC, animated: true)
     }
 
