@@ -379,8 +379,22 @@
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="eGv-Mn-7dj">
                                                     <rect key="frame" x="0.0" y="0.0" width="414" height="157"/>
                                                 </imageView>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U0h-L0-bBr">
+                                                    <rect key="frame" x="362" y="12" width="36" height="36"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="36" id="I4w-6r-z4E"/>
+                                                        <constraint firstAttribute="width" secondItem="U0h-L0-bBr" secondAttribute="height" multiplier="1:1" id="TQc-Zv-WmP"/>
+                                                    </constraints>
+                                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                    <state key="normal" image="link" catalog="system"/>
+                                                    <connections>
+                                                        <action selector="goToLinkPage:" destination="4uL-gS-H4L" eventType="touchUpInside" id="mSV-Ka-BQl"/>
+                                                    </connections>
+                                                </button>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="U0h-L0-bBr" secondAttribute="trailing" constant="16" id="79q-Mj-8ZP"/>
+                                                <constraint firstItem="U0h-L0-bBr" firstAttribute="top" secondItem="EV1-P8-aip" secondAttribute="top" constant="12" id="Fqj-oH-OlA"/>
                                                 <constraint firstItem="eGv-Mn-7dj" firstAttribute="top" secondItem="EV1-P8-aip" secondAttribute="top" id="GN8-vs-7xp"/>
                                                 <constraint firstAttribute="bottom" secondItem="eGv-Mn-7dj" secondAttribute="bottom" id="MyT-ba-39u"/>
                                                 <constraint firstAttribute="trailing" secondItem="eGv-Mn-7dj" secondAttribute="trailing" id="tEz-t2-fot"/>
@@ -388,7 +402,9 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="linkButton" destination="U0h-L0-bBr" id="2eq-ep-N4o"/>
                                             <outlet property="myMasterpieceImageView" destination="eGv-Mn-7dj" id="Ees-wd-b2z"/>
+                                            <outlet property="myMasterpieceImageViewBottomConstraint" destination="MyT-ba-39u" id="9PB-VZ-pWW"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -400,7 +416,11 @@
                                 <state key="normal" image="Icons_24px_More"/>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4st-Mk-Pqo">
-                                <rect key="frame" x="356" y="26" width="32" height="32"/>
+                                <rect key="frame" x="362" y="26" width="32" height="32"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="32" id="som-q3-vVP"/>
+                                    <constraint firstAttribute="width" secondItem="4st-Mk-Pqo" secondAttribute="height" multiplier="1:1" id="yTB-av-OOt"/>
+                                </constraints>
                                 <inset key="contentEdgeInsets" minX="4" minY="4" maxX="4" maxY="4"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" image="Icons_24px_Close"/>
@@ -414,12 +434,12 @@
                         <constraints>
                             <constraint firstItem="Ai0-HD-jfg" firstAttribute="bottom" secondItem="cRX-SG-9nE" secondAttribute="bottom" constant="-26" id="8Uc-xL-IO6"/>
                             <constraint firstItem="4st-Mk-Pqo" firstAttribute="top" secondItem="3W0-mZ-ZH7" secondAttribute="top" constant="26" id="A95-pA-2Ac"/>
-                            <constraint firstItem="cRX-SG-9nE" firstAttribute="trailing" secondItem="4st-Mk-Pqo" secondAttribute="trailing" constant="26" id="GYb-iU-orA"/>
-                            <constraint firstAttribute="bottom" secondItem="8bS-Vg-HdP" secondAttribute="bottom" id="OZL-Po-j80"/>
+                            <constraint firstItem="cRX-SG-9nE" firstAttribute="trailing" secondItem="4st-Mk-Pqo" secondAttribute="trailing" constant="20" id="GYb-iU-orA"/>
+                            <constraint firstAttribute="bottom" secondItem="8bS-Vg-HdP" secondAttribute="bottom" id="QWa-kR-q7U"/>
+                            <constraint firstItem="8bS-Vg-HdP" firstAttribute="top" secondItem="3W0-mZ-ZH7" secondAttribute="top" id="T76-xe-RQi"/>
                             <constraint firstItem="8bS-Vg-HdP" firstAttribute="leading" secondItem="cRX-SG-9nE" secondAttribute="leading" id="X2J-qm-EaX"/>
                             <constraint firstItem="cRX-SG-9nE" firstAttribute="trailing" secondItem="8bS-Vg-HdP" secondAttribute="trailing" id="e1d-1n-wEI"/>
                             <constraint firstItem="Ai0-HD-jfg" firstAttribute="leading" secondItem="3W0-mZ-ZH7" secondAttribute="leading" constant="26" id="e2W-ya-4AH"/>
-                            <constraint firstItem="8bS-Vg-HdP" firstAttribute="top" secondItem="3W0-mZ-ZH7" secondAttribute="top" id="pZh-2f-iam"/>
                         </constraints>
                     </view>
                     <connections>
@@ -430,7 +450,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="efO-QJ-TZu" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6095.652173913044" y="231.69642857142856"/>
+            <point key="canvasLocation" x="6159" y="232"/>
         </scene>
         <!--Item-->
         <scene sceneID="BFG-DT-NJj">
@@ -455,6 +475,7 @@
     <resources>
         <image name="Icons_24px_Close" width="24" height="24"/>
         <image name="Icons_24px_More" width="24" height="24"/>
+        <image name="link" catalog="system" width="128" height="122"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

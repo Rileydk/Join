@@ -9,52 +9,39 @@ import UIKit
 
 class MyMasterpieceTableViewCell: TableViewCell {
     @IBOutlet weak var myMasterpieceImageView: UIImageView!
+    @IBOutlet weak var myMasterpieceImageViewBottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var linkButton: UIButton!
+    var url: URL?
 
-    func layoutCell(workRecordWithImage: WorkRecordWithImage) {
-        guard let image = workRecordWithImage.image else { return }
-        self.myMasterpieceImageView.image = image
+    var openLinkHandler: ((URL) -> Void)?
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        linkButton.tintColor = .White?.withAlphaComponent(0.9)
+        linkButton.backgroundColor = .Blue2?.withAlphaComponent(0.7)
+        linkButton.contentEdgeInsets = .init(top: 4, left: 4, bottom: 4, right: 4)
     }
 
-    func layoutCell(workRecord: WorkRecord) {
-        let indicator = UIActivityIndicatorView()
-        contentView.addSubview(indicator)
-        indicator.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            indicator.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            indicator.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
-        ])
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        linkButton.layer.cornerRadius = linkButton.frame.width / 2
+    }
 
-        myMasterpieceImageView.translatesAutoresizingMaskIntoConstraints = false
-        if workRecord.type == .image {
-            FirebaseManager.shared.downloadImage(urlString: workRecord.url) { [weak self] result in
-                guard let self = self else { return }
-                switch result {
-                case .success(let image):
-                    NSLayoutConstraint.activate([
-                        self.myMasterpieceImageView.widthAnchor.constraint(equalTo: self.myMasterpieceImageView.heightAnchor, multiplier: image.size.width / image.size.height)
-                    ])
-                    self.myMasterpieceImageView.image = image
-    //                recordImage = image
-                case .failure(let err):
-                    break
-                }
-            }
-//            myMasterpieceImageView.loadImage(workRecord.url)
+    func layoutCell(workRecordWithImage: WorkRecordWithImage, cellPadding: CGFloat = 0) {
+        guard let image = workRecordWithImage.image else { return }
+        myMasterpieceImageViewBottomConstraint.constant = cellPadding
+        myMasterpieceImageView.image = image
+        if workRecordWithImage.type == .hyperlink,
+           let recordURL = URL(string: workRecordWithImage.url) {
+            url = recordURL
+            linkButton.isHidden = false
         } else {
-            indicator.startAnimating()
-            guard let url = URL(string: workRecord.url) else { return }
-            url.getMetadata { [weak self] metadata in
-                guard let self = self, let metadata = metadata else { return }
-                metadata.getMetadataImage { image in
-                    indicator.stopAnimating()
-                    guard let image = image else { return }
-                    NSLayoutConstraint.activate([
-                        self.myMasterpieceImageView.widthAnchor.constraint(equalTo: self.myMasterpieceImageView.heightAnchor, multiplier: image.size.width / image.size.height)
-                    ])
-                    self.myMasterpieceImageView.image = image
-                }
-            }
+            linkButton.isHidden = true
         }
     }
 
+    @IBAction func goToLinkPage(_ sender: Any) {
+        guard let url = url else { return }
+        openLinkHandler?(url)
+    }
 }

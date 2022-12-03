@@ -9,6 +9,7 @@ import UIKit
 import AuthenticationServices
 import Lottie
 import FirebaseCrashlytics
+import SafariServices
 
 class LoginViewController: BaseViewController {
     let firebaseManager = FirebaseManager.shared
@@ -31,8 +32,9 @@ class LoginViewController: BaseViewController {
         let statement = Constant.Login.statement + "\(privatePolicy)"
         statementTextView.text = statement
         statementTextView.addLinks([privatePolicy: Constant.Link.privacyPolicyURL])
-        statementTextView.onLinkTap = { url in
-            UIApplication.shared.open(url)
+        statementTextView.onLinkTap = { [weak self] url in
+            let safari = SFSafariViewController(url: url)
+            self?.present(safari, animated: true)
             return true
         }
     }

@@ -73,13 +73,12 @@ class PersonalProfileViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.setHidesBackButton(true, animated: false)
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        updateData { [weak self] in
-            self?.layoutViews()
+        collectionView.addRefreshHeader { [weak self] in
+            self?.updateData {
+                self?.layoutViews()
+            }
         }
+        collectionView.beginHeaderRefreshing()
     }
 
     func layoutViews() {
@@ -106,7 +105,7 @@ class PersonalProfileViewController: BaseViewController {
             fatalError("Doesn't have user id")
         }
 
-        JProgressHUD.shared.showLoading(view: self.view)
+//        JProgressHUD.shared.showLoading(view: self.view)
 
         let group = DispatchGroup()
         var shouldContinue = true
@@ -122,6 +121,7 @@ class PersonalProfileViewController: BaseViewController {
                 case .failure(let err):
                     group.leave()
                     group.notify(queue: .main) {
+                        self.collectionView.endHeaderRefreshing()
                         JProgressHUD.shared.showFailure(text: err.localizedDescription, view: self.view)
                         shouldContinue = false
                     }
@@ -137,6 +137,7 @@ class PersonalProfileViewController: BaseViewController {
                     case .failure(let err):
                         group.leave()
                         group.notify(queue: .main) {
+                            self.collectionView.endHeaderRefreshing()
                             JProgressHUD.shared.showFailure(text: err.localizedDescription, view: self.view)
                             shouldContinue = false
                         }
@@ -159,6 +160,7 @@ class PersonalProfileViewController: BaseViewController {
                 case .failure(let err):
                     group.leave()
                     group.notify(queue: .main) {
+                        self.collectionView.endHeaderRefreshing()
                         JProgressHUD.shared.showFailure(text: err.localizedDescription, view: self.view)
                         shouldContinue = false
                     }
@@ -185,9 +187,11 @@ class PersonalProfileViewController: BaseViewController {
             group.notify(queue: .main) {
                 if shouldContinue {
                     self.updateDatasource()
-                    JProgressHUD.shared.dismiss()
+                    self.collectionView.endHeaderRefreshing()
+//                    JProgressHUD.shared.dismiss()
                     completion?()
                 } else {
+                    self.collectionView.endHeaderRefreshing()
                     JProgressHUD.shared.showFailure(view: self.view)
                 }
             }

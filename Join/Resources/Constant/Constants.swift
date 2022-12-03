@@ -63,6 +63,7 @@ struct Constant {
     struct Portfolio {
         static let sectionHeader = "作品集"
         static let uploadFile = "上傳附件"
+        static let report = "檢舉此作品集"
     }
 
     struct Login {

@@ -8,6 +8,7 @@
 import UIKit
 import FirebaseAuth
 import AuthenticationServices
+import SafariServices
 
 class PersonalEntryViewController: UIViewController {
     enum Section: CaseIterable {
@@ -108,7 +109,8 @@ class PersonalEntryViewController: UIViewController {
 
         case .privacyPolicy:
             if let url = URL(string: Constant.Link.privacyPolicyURL) {
-                UIApplication.shared.open(url)
+                let safari = SFSafariViewController(url: url)
+                present(safari, animated: true)
             }
 
         case .preference:

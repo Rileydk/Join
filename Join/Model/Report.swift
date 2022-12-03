@@ -13,6 +13,7 @@ struct Report {
     enum ContentType: String {
         case idea
         case personalProfile
+        case portfolio
     }
 
     var reportID: ReportID
