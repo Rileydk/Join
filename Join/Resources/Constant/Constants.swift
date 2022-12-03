@@ -103,4 +103,9 @@ struct Constant {
         static let scanDocument = "掃描文件或圖片"
         static let pasteURL = "貼上網址（請先複製）"
     }
+
+    struct AppleIdentifier {
+        static let sectionHeaderElementKind = "section-header-element-kind"
+        static let sectionFooterElementKind = "section-footer-element-kind"
+    }
 }

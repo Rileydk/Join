@@ -131,7 +131,7 @@ extension MyPostsDetailViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let section = Section.allCases[section]
-        if section == .description || section == .applicants  {
+        if section == .description || section == .applicants {
             guard let headerView = tableView.dequeueReusableHeaderFooterView(
                 withIdentifier: DetailTitleHeaderView.identifier) as? DetailTitleHeaderView else {
                 return nil

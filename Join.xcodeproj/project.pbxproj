@@ -32,6 +32,10 @@
 		BF2681BF2935CC98007DCFBE /* LinkTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2681BE2935CC98007DCFBE /* LinkTextView.swift */; };
 		BF2681C42938DEF8007DCFBE /* URL+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2681C32938DEF8007DCFBE /* URL+Ext.swift */; };
 		BF2681C62938DF69007DCFBE /* LPLinkMetadata+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2681C52938DF69007DCFBE /* LPLinkMetadata+Ext.swift */; };
+		BF2681C82939D1BE007DCFBE /* PortfolioDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2681C72939D1BE007DCFBE /* PortfolioDetailViewController.swift */; };
+		BF2681D5293A0B6E007DCFBE /* MyMasterpieceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2681D4293A0B6E007DCFBE /* MyMasterpieceTableViewCell.swift */; };
+		BF2681D7293A3A8F007DCFBE /* CreatorHeaderFooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF2681D6293A3A8F007DCFBE /* CreatorHeaderFooterView.xib */; };
+		BF2681D9293A3AB1007DCFBE /* CreatorHeaderFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2681D8293A3AB1007DCFBE /* CreatorHeaderFooterView.swift */; };
 		BF326C0D292BB40E00898444 /* BottomLinedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF326C0C292BB40E00898444 /* BottomLinedTextField.swift */; };
 		BF326C0F292BB5E200898444 /* BottomLinedTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF326C0E292BB5E200898444 /* BottomLinedTextView.swift */; };
 		BF326C11292BBAB200898444 /* TableViewSimpleHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF326C10292BBAB200898444 /* TableViewSimpleHeaderView.swift */; };
@@ -211,6 +215,10 @@
 		BF2681BE2935CC98007DCFBE /* LinkTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkTextView.swift; sourceTree = "<group>"; };
 		BF2681C32938DEF8007DCFBE /* URL+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Ext.swift"; sourceTree = "<group>"; };
 		BF2681C52938DF69007DCFBE /* LPLinkMetadata+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LPLinkMetadata+Ext.swift"; sourceTree = "<group>"; };
+		BF2681C72939D1BE007DCFBE /* PortfolioDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortfolioDetailViewController.swift; sourceTree = "<group>"; };
+		BF2681D4293A0B6E007DCFBE /* MyMasterpieceTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyMasterpieceTableViewCell.swift; sourceTree = "<group>"; };
+		BF2681D6293A3A8F007DCFBE /* CreatorHeaderFooterView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CreatorHeaderFooterView.xib; sourceTree = "<group>"; };
+		BF2681D8293A3AB1007DCFBE /* CreatorHeaderFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatorHeaderFooterView.swift; sourceTree = "<group>"; };
 		BF326C0C292BB40E00898444 /* BottomLinedTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomLinedTextField.swift; sourceTree = "<group>"; };
 		BF326C0E292BB5E200898444 /* BottomLinedTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomLinedTextView.swift; sourceTree = "<group>"; };
 		BF326C10292BBAB200898444 /* TableViewSimpleHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewSimpleHeaderView.swift; sourceTree = "<group>"; };
@@ -466,6 +474,7 @@
 			isa = PBXGroup;
 			children = (
 				BF3D835D2927873C009F903F /* AddPortfolioViewController.swift */,
+				BF2681C72939D1BE007DCFBE /* PortfolioDetailViewController.swift */,
 			);
 			path = Portfolio;
 			sourceTree = "<group>";
@@ -503,6 +512,9 @@
 				BFF8A4D22914C79900ADC950 /* PersonBasicCell.xib */,
 				BFB72EDA2933735B006F4651 /* NoDataHintCollectionViewCell.swift */,
 				BFB72EDB2933735B006F4651 /* NoDataHintCollectionViewCell.xib */,
+				BF2681D4293A0B6E007DCFBE /* MyMasterpieceTableViewCell.swift */,
+				BF2681D6293A3A8F007DCFBE /* CreatorHeaderFooterView.xib */,
+				BF2681D8293A3AB1007DCFBE /* CreatorHeaderFooterView.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -970,6 +982,7 @@
 				BF42FAAE290F6B8000501789 /* GoogleService-Info.plist in Resources */,
 				BF42FA82290D31EF00501789 /* GoSelectionCell.xib in Resources */,
 				BF42FA3C290BE2AA00501789 /* Main.storyboard in Resources */,
+				BF2681D7293A3A8F007DCFBE /* CreatorHeaderFooterView.xib in Resources */,
 				BF129459292A51A700AA631E /* MultilineCell.xib in Resources */,
 				BF3D83702928CDAF009F903F /* PersonalMainThumbnailCollectionCell.xib in Resources */,
 			);
@@ -1065,6 +1078,7 @@
 				BF12943E2929D7E800AA631E /* CollectionSimpleHeaderView.swift in Sources */,
 				BF42FAB0290F7E9000501789 /* SelectionCategoriesViewController.swift in Sources */,
 				BF42FABF290FF65300501789 /* MemberCell.swift in Sources */,
+				BF2681D5293A0B6E007DCFBE /* MyMasterpieceTableViewCell.swift in Sources */,
 				BF326C22292CB21600898444 /* TextFieldComboAmountFieldCell.swift in Sources */,
 				BFF8A4D62915009B00ADC950 /* OthersProfileViewController.swift in Sources */,
 				BFB72EDC2933735B006F4651 /* NoDataHintCollectionViewCell.swift in Sources */,
@@ -1118,6 +1132,7 @@
 				BF326C0F292BB5E200898444 /* BottomLinedTextView.swift in Sources */,
 				BF326C3C292F6D3200898444 /* Data+Ext.swift in Sources */,
 				BFF8A4FB2917FBF100ADC950 /* MockLoginViewController.swift in Sources */,
+				BF2681D9293A3AB1007DCFBE /* CreatorHeaderFooterView.swift in Sources */,
 				BF9A868E291BAD1500BF934D /* MyPostsViewController.swift in Sources */,
 				BF326C0D292BB40E00898444 /* BottomLinedTextField.swift in Sources */,
 				BF9A86A3291CE06400BF934D /* GroupCreationHeaderCell.swift in Sources */,
@@ -1146,6 +1161,7 @@
 				BF3D83782928D9B8009F903F /* SelfIntroductionCell.swift in Sources */,
 				BF42FA76290D1CD800501789 /* FindPartnersBasicViewController.swift in Sources */,
 				BF9A8697291BD13400BF934D /* MyApplicantCell.swift in Sources */,
+				BF2681C82939D1BE007DCFBE /* PortfolioDetailViewController.swift in Sources */,
 				BF42FA6E290D178400501789 /* UIView+Ext.swift in Sources */,
 				BF1294402929D85B00AA631E /* Constants.swift in Sources */,
 				BF0271412920D093000EA2F8 /* UIColor+Ext.swift in Sources */,

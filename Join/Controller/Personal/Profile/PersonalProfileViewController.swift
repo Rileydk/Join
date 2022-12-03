@@ -500,7 +500,7 @@ extension PersonalProfileViewController {
 
         let headerRegistration = UICollectionView
             .SupplementaryRegistration<CollectionSimpleHeaderView>(
-                elementKind: UICollectionView.elementKindSectionHeader) { _, _, _ in }
+            elementKind: UICollectionView.elementKindSectionHeader) { _, _, _ in }
         datasource.supplementaryViewProvider = { [weak self] (_, _, index) in
             self?.collectionView.dequeueConfiguredReusableSupplementary(
                 using: headerRegistration, for: index)
@@ -621,6 +621,12 @@ extension PersonalProfileViewController {
 // MARK: - Collection View Delegate
 extension PersonalProfileViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("see work detail")
+        let personalStoryboard = UIStoryboard(name: StoryboardCategory.personal.rawValue, bundle: nil)
+        let portfolioDetailVC = personalStoryboard.instantiateViewController(identifier: PortfolioDetailViewController.identifier, creator: { [weak self] coder -> PortfolioDetailViewController? in
+            guard let self = self, let userData = self.userData else { return nil }
+            return PortfolioDetailViewController(coder: coder, user: userData, workItem: self.workItems[indexPath.row])
+        })
+        portfolioDetailVC.modalPresentationStyle = .fullScreen
+        present(portfolioDetailVC, animated: true)
     }
 }
