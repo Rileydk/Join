@@ -9,9 +9,7 @@ import UIKit
 
 class DetailTitleHeaderView: TableViewHeaderFooterView {
     @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var shareLinkButton: UIButton!
-    @IBOutlet weak var bookMarkButton: UIButton!
-
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         contentView.backgroundColor = .White

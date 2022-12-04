@@ -30,7 +30,7 @@ class ProjectDetailsViewController: BaseViewController {
 
     enum Item: Hashable {
         case bigImage(URLString)
-        case projectName(String)
+        case projectName(Project)
         // case categories
         case recruiting(Project)
         case skills(Project)
@@ -120,13 +120,25 @@ class ProjectDetailsViewController: BaseViewController {
             button.menu = menu
 
             navigationItem.rightBarButtonItem = UIBarButtonItem(customView: button)
+
         }
+        let backIcon = UIImage(named: JImages.Icons_24px_Back.rawValue)
+        backIcon?.withRenderingMode(.alwaysTemplate)
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            image: backIcon,
+            style: .plain, target: self, action: #selector(backToPreviousPage))
+
+        guard let project = project else { return }
+        title = project.name
+
+        tableView.addRefreshHeader { [weak self] in
+            self?.getContactInfo()
+        }
+        tableView.beginHeaderRefreshing()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
-        JProgressHUD.shared.showLoading(view: self.view)
         getContactInfo()
     }
 
@@ -138,9 +150,10 @@ class ProjectDetailsViewController: BaseViewController {
                 case .success(let user):
                     self.userData = user
                     self.updateDatasource()
-                    JProgressHUD.shared.dismiss()
+                    self.tableView.endHeaderRefreshing()
                 case .failure(let error):
                     print(error)
+                    self.tableView.endHeaderRefreshing()
                     JProgressHUD.shared.showFailure(text: error.localizedDescription, view: self.view)
                 }
             }
@@ -212,6 +225,10 @@ class ProjectDetailsViewController: BaseViewController {
             }
         }
     }
+
+    @objc func backToPreviousPage() {
+        navigationController?.popViewController(animated: true)
+    }
 }
 
 // MARK: - Table View Delegate
@@ -264,6 +281,7 @@ extension ProjectDetailsViewController {
     }
 
     // swiftlint:disable cyclomatic_complexity
+    // swiftlint:disable function_body_length
     func createCell(tableView: UITableView, indexPath: IndexPath, item: Item) -> UITableViewCell {
         switch item {
         case .bigImage(let imageURL):
@@ -275,11 +293,42 @@ extension ProjectDetailsViewController {
             cell.layoutCell(imageURL: imageURL)
             return cell
 
-        case .projectName(let projectName):
+        case .projectName(let project):
             guard let cell = tableView.dequeueReusableCell(withIdentifier: ProjectTitleCell.identifier, for: indexPath) as? ProjectTitleCell else {
                 fatalError("Cannot create recruiting title cell")
             }
-            cell.layoutCell(title: projectName)
+            cell.layoutCell(project: project)
+            cell.saveHandler = { [weak self] (action, project) in
+                guard let self = self,
+                      let myID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey) else { return }
+                let ref = FirestoreEndpoint.projects.ref.document(project.projectID)
+                let fieldName = ProjectDocumentArrayFieldType.collectors.rawValue
+                JProgressHUD.shared.showSaving(view: self.view)
+                switch action {
+                case .save:
+                    self.firebaseManager.addNewValueToArray(ref: ref, field: fieldName, values: [myID]) { result in
+                        switch result {
+                        case .success:
+                            self.getContactInfo()
+                            JProgressHUD.shared.showSuccess(text: Constant.Personal.saveSuccessfully, view: self.view)
+                        case .failure(let err):
+                            print(err)
+                            JProgressHUD.shared.showFailure(text: Constant.Common.errorShouldRetry, view: self.view)
+                        }
+                    }
+                case .remove:
+                    self.firebaseManager.removeValueOfArray(ref: ref, field: fieldName, values: [myID]) { result in
+                        switch result {
+                        case .success:
+                            self.getContactInfo()
+                            JProgressHUD.shared.showSuccess(text: Constant.Personal.removeSuccessfully, view: self.view)
+                        case .failure(let err):
+                            print(err)
+                            JProgressHUD.shared.showFailure(text: Constant.Common.errorShouldRetry, view: self.view)
+                        }
+                    }
+                }
+            }
             return cell
 
         case .recruiting(let project):
@@ -401,7 +450,7 @@ extension ProjectDetailsViewController {
         if let urlString = project.imageURL {
             snapshot.appendItems([.bigImage(urlString)], toSection: .bigImage)
         }
-        snapshot.appendItems([.projectName(project.name)], toSection: .projectName)
+        snapshot.appendItems([.projectName(project)], toSection: .projectName)
         snapshot.appendItems([.recruiting(project)], toSection: .recruiting)
         snapshot.appendItems([.skills(project)], toSection: .skills)
         snapshot.appendItems([.deadline(project)], toSection: .deadline)

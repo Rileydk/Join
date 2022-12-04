@@ -62,10 +62,11 @@ class AddPortfolioViewController: BaseViewController {
             tableView.delegate = self
             configureDatasource()
             tableView.separatorStyle = .none
-            tableView.backgroundColor = .White
+            tableView.backgroundColor = backgroundColor
         }
     }
     var rightBarButton: PillButton?
+    let backgroundColor = Constant.ColorTheme.lightBackgroundColor
     private var provider = LPMetadataProvider()
 
     typealias WorkDatasource = UITableViewDiffableDataSource<Section, Item>
@@ -97,18 +98,17 @@ class AddPortfolioViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        let config = UIButton.Configuration.filled()
-        rightBarButton = PillButton(configuration: config)
+        title = Constant.Portfolio.addPortfolio
+        let rightButtonConfig = UIButton.Configuration.filled()
+        rightBarButton = PillButton(configuration: rightButtonConfig)
         rightBarButton!.setTitle(Constant.Common.save, for: .normal)
         rightBarButton!.addTarget(self, action: #selector(addNewWork), for: .touchUpInside)
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: rightBarButton!)
-        let _ = checkCanSave()
-    }
+        checkCanSave()
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
         navigationItem.leftBarButtonItem = UIBarButtonItem(
-            title: "Discard", style: .plain, target: self, action: #selector(backToPreviousPage))
+            image: UIImage(named: JImages.Icons_24px_Close.rawValue), style: .plain,
+            target: self, action: #selector(backToPreviousPage))
     }
 
     @objc func addNewWork() {
@@ -236,6 +236,7 @@ extension AddPortfolioViewController: UITableViewDelegate {
                 fatalError("Cannot load Work Header View")
             }
             header.layoutHeader(addButtonShouldEnabled: editableRecords.isEmpty)
+            header.backgroundColor = backgroundColor
             header.delegate = self
             header.alertPresentHandler = { [weak self] alert in
                 self?.present(alert, animated: true)
@@ -256,7 +257,12 @@ extension AddPortfolioViewController: UITableViewDelegate {
                     return
                 }
                 if let copiedText = UIPasteboard.general.string, URL(string: copiedText) != nil {
-                    self.editableRecords.append(EditableWorkRecord(recordID: "", type: .hyperlink, url: copiedText))
+                    if self.editableRecords.contains { $0.url == copiedText } {
+                        JProgressHUD.shared.showFailure(text: Constant.Common.duplicatedURL, view: self.view)
+                    } else {
+                        self.editableRecords.append(EditableWorkRecord(recordID: "", type: .hyperlink, url: copiedText))
+                    }
+
                 } else {
                     JProgressHUD.shared.showFailure(text: Constant.Common.notValidURL, view: self.view)
                 }
@@ -285,6 +291,7 @@ extension AddPortfolioViewController {
                 fatalError("Cannot load single line input cell")
             }
             cell.layoutCell(withTitle: .workName, value: work.name)
+            cell.contentView.backgroundColor = backgroundColor
             cell.updateWorkName = { [weak self] workName in
                 guard let self = self else { return }
                 self.work.name = workName
@@ -295,13 +302,17 @@ extension AddPortfolioViewController {
                 fatalError("Cannot load work record cell")
             }
             if let urlString = editableRecord.url, let url = URL(string: urlString) {
-                cell.layoutCell(url: url)
+                cell.layoutCell(url: url) { [weak self] in
+                    guard let self = self else { return }
+                    self.editableRecords.remove(at: self.editableRecords.firstIndex(of: editableRecord)!)
+                }
                 cell.alertHandler = { [weak self] alert in
                     self?.present(alert, animated: true)
                 }
             } else {
                 cell.layoutCell(recordImage: editableRecord.image!)
             }
+            cell.contentView.backgroundColor = backgroundColor
             return cell
         }
     }

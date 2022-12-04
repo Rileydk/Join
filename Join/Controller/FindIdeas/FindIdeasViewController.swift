@@ -24,6 +24,7 @@ class FindIdeasViewController: BaseViewController {
     var projects = [Project]()
     var recommendedProjects = [Project]()
     var restProjects = [Project]()
+    var firstLoad = true
 
     @IBOutlet weak var collectionView: UICollectionView! {
         didSet {
@@ -45,9 +46,18 @@ class FindIdeasViewController: BaseViewController {
         super.viewDidLoad()
         layoutViews()
         collectionView.addRefreshHeader { [weak self] in
-            self?.getProjects()
+            guard let self = self else { return }
+            self.getProjects()
+            self.firstLoad = false
         }
         collectionView.beginHeaderRefreshing()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if !firstLoad {
+            getProjects()
+        }
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -108,6 +118,7 @@ class FindIdeasViewController: BaseViewController {
                 }
             }
 
+            //// 暫時沒有好友推薦
 //            group.wait()
 //            group.enter()
 //            self.firebaseManager.getAllFriendsAndChatroomsInfo(type: .friend) { [unowned self] result in
@@ -250,6 +261,37 @@ extension FindIdeasViewController {
                 fatalError("Cannot create Idea Cell")
             }
             cell.layoutCell(project: data)
+            cell.saveHandler = { [weak self] (action, project) in
+                guard let self = self,
+                      let myID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey) else { return }
+                let ref = FirestoreEndpoint.projects.ref.document(project.projectID)
+                let fieldName = ProjectDocumentArrayFieldType.collectors.rawValue
+                JProgressHUD.shared.showSaving(view: self.view)
+                switch action {
+                case .save:
+                    self.firebaseManager.addNewValueToArray(ref: ref, field: fieldName, values: [myID]) { result in
+                        switch result {
+                        case .success:
+                            self.getProjects()
+                            JProgressHUD.shared.showSuccess(text: Constant.Personal.saveSuccessfully, view: self.view)
+                        case .failure(let err):
+                            print(err)
+                            JProgressHUD.shared.showFailure(text: Constant.Common.errorShouldRetry, view: self.view)
+                        }
+                    }
+                case .remove:
+                    self.firebaseManager.removeValueOfArray(ref: ref, field: fieldName, values: [myID]) { result in
+                        switch result {
+                        case .success:
+                            self.getProjects()
+                            JProgressHUD.shared.showSuccess(text: Constant.Personal.removeSuccessfully, view: self.view)
+                        case .failure(let err):
+                            print(err)
+                            JProgressHUD.shared.showFailure(text: Constant.Common.errorShouldRetry, view: self.view)
+                        }
+                    }
+                }
+            }
             return cell
         }
     }

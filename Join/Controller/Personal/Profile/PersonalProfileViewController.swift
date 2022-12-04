@@ -67,12 +67,30 @@ class PersonalProfileViewController: BaseViewController {
             collectionView.setCollectionViewLayout(createLayout(), animated: true)
             configureDatasource()
             collectionView.delegate = self
+            collectionView.backgroundColor = .Gray6
         }
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.setHidesBackButton(true, animated: false)
+        guard let navVC = navigationController else { return }
+        let navBarAppearance = UINavigationBarAppearance()
+        navBarAppearance.configureWithOpaqueBackground()
+        navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.Gray1]
+        navBarAppearance.backgroundColor = .Gray6
+        navBarAppearance.shadowColor = .clear
+        navBarAppearance.shadowImage = UIImage()
+        navVC.navigationBar.standardAppearance = navBarAppearance
+        navVC.navigationBar.scrollEdgeAppearance = navBarAppearance
+        navVC.navigationBar.tintColor = .Gray1
+
+        collectionView.addRefreshHeader { [weak self] in
+            self?.updateData {
+                self?.layoutViews()
+            }
+        }
+        collectionView.beginHeaderRefreshing()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -84,29 +102,15 @@ class PersonalProfileViewController: BaseViewController {
 
     func layoutViews() {
         title = userData?.name
-        collectionView.backgroundColor = .Gray6
         navigationItem.leftBarButtonItem = UIBarButtonItem(
             image: UIImage(named: JImages.Icons_24px_Back.rawValue), style: .plain,
             target: self, action: #selector(backToPreviousPage))
-
-        if let myID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey), myID == userID {
-            guard let navVC = navigationController else { return }
-            let navBarAppearance = UINavigationBarAppearance()
-            navBarAppearance.configureWithOpaqueBackground()
-            navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.Gray1]
-            navBarAppearance.backgroundColor = .White
-            navVC.navigationBar.standardAppearance = navBarAppearance
-            navVC.navigationBar.scrollEdgeAppearance = navBarAppearance
-            navVC.navigationBar.tintColor = .Gray1
-        }
     }
 
     func updateData(completion: (() -> Void)? = nil) {
         guard let userID = userID else {
             fatalError("Doesn't have user id")
         }
-
-        JProgressHUD.shared.showLoading(view: self.view)
 
         let group = DispatchGroup()
         var shouldContinue = true
@@ -122,6 +126,7 @@ class PersonalProfileViewController: BaseViewController {
                 case .failure(let err):
                     group.leave()
                     group.notify(queue: .main) {
+                        self.collectionView.endHeaderRefreshing()
                         JProgressHUD.shared.showFailure(text: err.localizedDescription, view: self.view)
                         shouldContinue = false
                     }
@@ -137,6 +142,7 @@ class PersonalProfileViewController: BaseViewController {
                     case .failure(let err):
                         group.leave()
                         group.notify(queue: .main) {
+                            self.collectionView.endHeaderRefreshing()
                             JProgressHUD.shared.showFailure(text: err.localizedDescription, view: self.view)
                             shouldContinue = false
                         }
@@ -154,11 +160,12 @@ class PersonalProfileViewController: BaseViewController {
                         WorkItem(workID: $0.workID, name: $0.name,
                                  description: $0.description,
                                  latestUpdatedTime: $0.latestUpdatedTime, records: [])
-                    }
+                    }.sorted { $0.latestUpdatedTime > $1.latestUpdatedTime }
                     group.leave()
                 case .failure(let err):
                     group.leave()
                     group.notify(queue: .main) {
+                        self.collectionView.endHeaderRefreshing()
                         JProgressHUD.shared.showFailure(text: err.localizedDescription, view: self.view)
                         shouldContinue = false
                     }
@@ -185,9 +192,10 @@ class PersonalProfileViewController: BaseViewController {
             group.notify(queue: .main) {
                 if shouldContinue {
                     self.updateDatasource()
-                    JProgressHUD.shared.dismiss()
+                    self.collectionView.endHeaderRefreshing()
                     completion?()
                 } else {
+                    self.collectionView.endHeaderRefreshing()
                     JProgressHUD.shared.showFailure(view: self.view)
                 }
             }
@@ -252,6 +260,7 @@ class PersonalProfileViewController: BaseViewController {
             fatalError("Cannot load personal profile edit vc")
         }
 
+        hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(personalProfileEditVC, animated: true)
     }
 
@@ -499,7 +508,7 @@ extension PersonalProfileViewController {
 
         let headerRegistration = UICollectionView
             .SupplementaryRegistration<CollectionSimpleHeaderView>(
-                elementKind: UICollectionView.elementKindSectionHeader) { _, _, _ in }
+            elementKind: UICollectionView.elementKindSectionHeader) { _, _, _ in }
         datasource.supplementaryViewProvider = { [weak self] (_, _, index) in
             self?.collectionView.dequeueConfiguredReusableSupplementary(
                 using: headerRegistration, for: index)
@@ -620,6 +629,12 @@ extension PersonalProfileViewController {
 // MARK: - Collection View Delegate
 extension PersonalProfileViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("see work detail")
+        let personalStoryboard = UIStoryboard(name: StoryboardCategory.personal.rawValue, bundle: nil)
+        let portfolioDetailVC = personalStoryboard.instantiateViewController(identifier: PortfolioDetailViewController.identifier, creator: { [weak self] coder -> PortfolioDetailViewController? in
+            guard let self = self, let userData = self.userData else { return nil }
+            return PortfolioDetailViewController(coder: coder, user: userData, workItem: self.workItems[indexPath.row])
+        })
+        portfolioDetailVC.modalPresentationStyle = .fullScreen
+        present(portfolioDetailVC, animated: true)
     }
 }

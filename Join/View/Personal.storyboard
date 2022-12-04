@@ -107,10 +107,40 @@
             </objects>
             <point key="canvasLocation" x="2893" y="1639"/>
         </scene>
-        <!--My Applications View Controller-->
+        <!--Personal Settings View Controller-->
+        <scene sceneID="XAx-GI-dpP">
+            <objects>
+                <viewController storyboardIdentifier="PersonalSettingsViewController" id="eGQ-Hx-QbT" customClass="PersonalSettingsViewController" customModule="Join" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="ham-uw-KMi">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="v90-oF-LMx">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </tableView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="Q4D-FA-pZW"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="Q4D-FA-pZW" firstAttribute="trailing" secondItem="v90-oF-LMx" secondAttribute="trailing" id="NXT-gG-Nr8"/>
+                            <constraint firstItem="v90-oF-LMx" firstAttribute="top" secondItem="ham-uw-KMi" secondAttribute="top" id="PZA-sY-M0h"/>
+                            <constraint firstItem="v90-oF-LMx" firstAttribute="leading" secondItem="Q4D-FA-pZW" secondAttribute="leading" id="RNu-xs-BWx"/>
+                            <constraint firstAttribute="bottom" secondItem="v90-oF-LMx" secondAttribute="bottom" id="tTk-IJ-eza"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="tableView" destination="v90-oF-LMx" id="ggb-8J-Wzz"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="zRv-xG-37r" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2893" y="2354"/>
+        </scene>
+        <!--My Related Projects View Controller-->
         <scene sceneID="wlN-ZG-d27">
             <objects>
-                <viewController storyboardIdentifier="MyApplicationsViewController" id="VYH-HC-GNl" customClass="MyApplicationsViewController" customModule="Join" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MyRelatedProjectsViewController" id="VYH-HC-GNl" customClass="MyRelatedProjectsViewController" customModule="Join" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="P5K-Cd-HKM">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -151,7 +181,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="EPL-eV-Hv4" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2893" y="2389"/>
+            <point key="canvasLocation" x="5335" y="1639"/>
         </scene>
         <!--My Posts View Controller-->
         <scene sceneID="t0v-9o-lJp">
@@ -355,7 +385,102 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="j0k-kp-8ok" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6122" y="909"/>
+            <point key="canvasLocation" x="5335" y="232"/>
+        </scene>
+        <!--Portfolio Detail View Controller-->
+        <scene sceneID="oMW-eW-iwu">
+            <objects>
+                <viewController storyboardIdentifier="PortfolioDetailViewController" id="xYC-C4-j6q" customClass="PortfolioDetailViewController" customModule="Join" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="3W0-mZ-ZH7">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="8bS-Vg-HdP">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="MyMasterpieceTableViewCell" rowHeight="157" id="4uL-gS-H4L" customClass="MyMasterpieceTableViewCell" customModule="Join" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="44.5" width="414" height="157"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="4uL-gS-H4L" id="EV1-P8-aip">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="157"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="eGv-Mn-7dj">
+                                                    <rect key="frame" x="0.0" y="0.0" width="414" height="157"/>
+                                                </imageView>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U0h-L0-bBr">
+                                                    <rect key="frame" x="362" y="12" width="36" height="36"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="36" id="I4w-6r-z4E"/>
+                                                        <constraint firstAttribute="width" secondItem="U0h-L0-bBr" secondAttribute="height" multiplier="1:1" id="TQc-Zv-WmP"/>
+                                                    </constraints>
+                                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                    <state key="normal" image="link" catalog="system"/>
+                                                    <connections>
+                                                        <action selector="goToLinkPage:" destination="4uL-gS-H4L" eventType="touchUpInside" id="mSV-Ka-BQl"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="U0h-L0-bBr" secondAttribute="trailing" constant="16" id="79q-Mj-8ZP"/>
+                                                <constraint firstItem="U0h-L0-bBr" firstAttribute="top" secondItem="EV1-P8-aip" secondAttribute="top" constant="12" id="Fqj-oH-OlA"/>
+                                                <constraint firstItem="eGv-Mn-7dj" firstAttribute="top" secondItem="EV1-P8-aip" secondAttribute="top" id="GN8-vs-7xp"/>
+                                                <constraint firstAttribute="bottom" secondItem="eGv-Mn-7dj" secondAttribute="bottom" id="MyT-ba-39u"/>
+                                                <constraint firstAttribute="trailing" secondItem="eGv-Mn-7dj" secondAttribute="trailing" id="tEz-t2-fot"/>
+                                                <constraint firstItem="eGv-Mn-7dj" firstAttribute="leading" secondItem="EV1-P8-aip" secondAttribute="leading" id="xTa-s2-gay"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="linkButton" destination="U0h-L0-bBr" id="2eq-ep-N4o"/>
+                                            <outlet property="myMasterpieceImageView" destination="eGv-Mn-7dj" id="Ees-wd-b2z"/>
+                                            <outlet property="myMasterpieceImageViewBottomConstraint" destination="MyT-ba-39u" id="9PB-VZ-pWW"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ai0-HD-jfg">
+                                <rect key="frame" x="26" y="812" width="24" height="24"/>
+                                <color key="backgroundColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" image="Icons_24px_More"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4st-Mk-Pqo">
+                                <rect key="frame" x="362" y="26" width="32" height="32"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="32" id="som-q3-vVP"/>
+                                    <constraint firstAttribute="width" secondItem="4st-Mk-Pqo" secondAttribute="height" multiplier="1:1" id="yTB-av-OOt"/>
+                                </constraints>
+                                <inset key="contentEdgeInsets" minX="4" minY="4" maxX="4" maxY="4"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" image="Icons_24px_Close"/>
+                                <connections>
+                                    <action selector="close:" destination="xYC-C4-j6q" eventType="touchUpInside" id="UnB-D6-his"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="cRX-SG-9nE"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="Ai0-HD-jfg" firstAttribute="bottom" secondItem="cRX-SG-9nE" secondAttribute="bottom" constant="-26" id="8Uc-xL-IO6"/>
+                            <constraint firstItem="4st-Mk-Pqo" firstAttribute="top" secondItem="3W0-mZ-ZH7" secondAttribute="top" constant="26" id="A95-pA-2Ac"/>
+                            <constraint firstItem="cRX-SG-9nE" firstAttribute="trailing" secondItem="4st-Mk-Pqo" secondAttribute="trailing" constant="20" id="GYb-iU-orA"/>
+                            <constraint firstAttribute="bottom" secondItem="8bS-Vg-HdP" secondAttribute="bottom" id="QWa-kR-q7U"/>
+                            <constraint firstItem="8bS-Vg-HdP" firstAttribute="top" secondItem="3W0-mZ-ZH7" secondAttribute="top" id="T76-xe-RQi"/>
+                            <constraint firstItem="8bS-Vg-HdP" firstAttribute="leading" secondItem="cRX-SG-9nE" secondAttribute="leading" id="X2J-qm-EaX"/>
+                            <constraint firstItem="cRX-SG-9nE" firstAttribute="trailing" secondItem="8bS-Vg-HdP" secondAttribute="trailing" id="e1d-1n-wEI"/>
+                            <constraint firstItem="Ai0-HD-jfg" firstAttribute="leading" secondItem="3W0-mZ-ZH7" secondAttribute="leading" constant="26" id="e2W-ya-4AH"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="closeButton" destination="4st-Mk-Pqo" id="RFy-Ah-BKU"/>
+                        <outlet property="moreActionButton" destination="Ai0-HD-jfg" id="Tm0-Vc-t2k"/>
+                        <outlet property="tableView" destination="8bS-Vg-HdP" id="4QS-mG-PV2"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="efO-QJ-TZu" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="6159" y="232"/>
         </scene>
         <!--Item-->
         <scene sceneID="BFG-DT-NJj">
@@ -378,6 +503,9 @@
         </scene>
     </scenes>
     <resources>
+        <image name="Icons_24px_Close" width="24" height="24"/>
+        <image name="Icons_24px_More" width="24" height="24"/>
+        <image name="link" catalog="system" width="128" height="122"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

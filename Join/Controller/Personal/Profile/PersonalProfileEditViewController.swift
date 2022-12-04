@@ -39,9 +39,12 @@ class PersonalProfileEditViewController: BaseViewController {
             tableView.delegate = self
             tableView.dataSource = self
             tableView.separatorStyle = .none
+
+            tableView.backgroundColor = backgroundColor
         }
     }
     var rightBarButton: PillButton?
+    let backgroundColor = UIColor.Gray6
 
     let firebaseManager = FirebaseManager.shared
     var notloadedFromDBYet = true
@@ -60,12 +63,18 @@ class PersonalProfileEditViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        title = Constant.Personal.editPageTitle
+
         let config = UIButton.Configuration.filled()
         rightBarButton = PillButton(configuration: config)
         rightBarButton!.setTitle(Constant.Common.save, for: .normal)
         rightBarButton!.addTarget(self, action: #selector(saveToAccount), for: .touchUpInside)
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: rightBarButton!)
         checkCanSave()
+
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            image: UIImage(named: JImages.Icons_24px_Close.rawValue), style: .plain,
+            target: self, action: #selector(backToPreviousPage))
 
         guard let myID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey) else {
             fatalError("Doesn't have my id")
@@ -119,7 +128,7 @@ class PersonalProfileEditViewController: BaseViewController {
                         }
                     }
                 }
-            } else {
+            } else if (user.thumbnailURL ?? "").isEmpty {
                 group.enter()
                 user.thumbnailURL = "\(FindPartnersFormSections.placeholderImageURL)"
                 group.leave()
@@ -179,6 +188,10 @@ class PersonalProfileEditViewController: BaseViewController {
             }
         }
     }
+
+    @objc func backToPreviousPage() {
+        navigationController?.popViewController(animated: true)
+    }
 }
 
 // MARK: - Table View Delegate
@@ -195,7 +208,7 @@ extension PersonalProfileEditViewController: UITableViewDelegate {
         } else if section == .basic {
             return 90
         } else if section == .introduction {
-            return 160
+            return 200
         } else {
             return 50
         }
@@ -225,6 +238,7 @@ extension PersonalProfileEditViewController: UITableViewDataSource {
                 fatalError("Cannot create personal main thumbnail cell")
             }
             cell.layoutCell(isEditing: true)
+            cell.contentView.backgroundColor = backgroundColor
             cell.updateImage = { [weak self] image in
                 self?.newImage = image
             }
@@ -257,6 +271,7 @@ extension PersonalProfileEditViewController: UITableViewDataSource {
                     self?.user?.email = email
                 }
             }
+            cell.contentView.backgroundColor = backgroundColor
             return cell
 
         } else if section == .introduction {
@@ -267,6 +282,7 @@ extension PersonalProfileEditViewController: UITableViewDataSource {
             }
             cell.sourceType = .personalEditIntroduction
             cell.layoutCellForEditProfile(introduction: user.introduction ?? "")
+            cell.contentView.backgroundColor = backgroundColor
             cell.textView.delegate = self
             return cell
 
@@ -328,6 +344,7 @@ extension PersonalProfileEditViewController: UITableViewDataSource {
                     self.navigationController?.pushViewController(addPortfolioVC, animated: true)
                 }
             }
+            cell.contentView.backgroundColor = backgroundColor
             return cell
         }
     }

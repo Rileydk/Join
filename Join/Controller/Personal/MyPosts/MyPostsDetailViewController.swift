@@ -25,7 +25,7 @@ class MyPostsDetailViewController: BaseViewController {
 
     enum Item: Hashable {
         case bigImage(URLString)
-        case projectName(String)
+        case projectName(Project)
         //        case categories
         case recruiting(Project)
         case skills(Project)
@@ -83,6 +83,17 @@ class MyPostsDetailViewController: BaseViewController {
         }
     }
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        let backIcon = UIImage(named: JImages.Icons_24px_Back.rawValue)
+        backIcon?.withRenderingMode(.alwaysTemplate)
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            image: backIcon,
+            style: .plain, target: self, action: #selector(backToPreviousPage))
+        guard let project = project else { return }
+        title = project.name
+    }
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         guard let project = project else { return }
@@ -106,6 +117,10 @@ class MyPostsDetailViewController: BaseViewController {
                 JProgressHUD.shared.showFailure(text: err.localizedDescription,view: self.view)
             }
         }
+    }
+
+    @objc func backToPreviousPage() {
+        navigationController?.popViewController(animated: true)
     }
 }
 
@@ -131,7 +146,7 @@ extension MyPostsDetailViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let section = Section.allCases[section]
-        if section == .description || section == .applicants  {
+        if section == .description || section == .applicants {
             guard let headerView = tableView.dequeueReusableHeaderFooterView(
                 withIdentifier: DetailTitleHeaderView.identifier) as? DetailTitleHeaderView else {
                 return nil
@@ -170,11 +185,42 @@ extension MyPostsDetailViewController {
             cell.layoutCell(imageURL: imageURL)
             return cell
 
-        case .projectName(let projectName):
+        case .projectName(let project):
             guard let cell = tableView.dequeueReusableCell(withIdentifier: ProjectTitleCell.identifier, for: indexPath) as? ProjectTitleCell else {
                 fatalError("Cannot create recruiting title cell")
             }
-            cell.layoutCell(title: projectName)
+            cell.layoutCell(project: project)
+            cell.saveHandler = { [weak self] (action, project) in
+                guard let self = self,
+                      let myID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey) else { return }
+                let ref = FirestoreEndpoint.projects.ref.document(project.projectID)
+                let fieldName = ProjectDocumentArrayFieldType.collectors.rawValue
+                JProgressHUD.shared.showSaving(view: self.view)
+                switch action {
+                case .save:
+                    self.firebaseManager.addNewValueToArray(ref: ref, field: fieldName, values: [myID]) { result in
+                        switch result {
+                        case .success:
+                            self.getAllApplicants(applicantsID: project.applicants)
+                            JProgressHUD.shared.showSuccess(text: Constant.Personal.saveSuccessfully, view: self.view)
+                        case .failure(let err):
+                            print(err)
+                            JProgressHUD.shared.showFailure(text: Constant.Common.errorShouldRetry, view: self.view)
+                        }
+                    }
+                case .remove:
+                    self.firebaseManager.removeValueOfArray(ref: ref, field: fieldName, values: [myID]) { result in
+                        switch result {
+                        case .success:
+                            self.getAllApplicants(applicantsID: project.applicants)
+                            JProgressHUD.shared.showSuccess(text: Constant.Personal.removeSuccessfully, view: self.view)
+                        case .failure(let err):
+                            print(err)
+                            JProgressHUD.shared.showFailure(text: Constant.Common.errorShouldRetry, view: self.view)
+                        }
+                    }
+                }
+            }
             return cell
 
         case .recruiting(let project):
@@ -271,7 +317,7 @@ extension MyPostsDetailViewController {
         if let urlString = project.imageURL {
             snapshot.appendItems([.bigImage(urlString)], toSection: .bigImage)
         }
-        snapshot.appendItems([.projectName(project.name)], toSection: .projectName)
+        snapshot.appendItems([.projectName(project)], toSection: .projectName)
         snapshot.appendItems([.recruiting(project)], toSection: .recruiting)
         snapshot.appendItems([.skills(project)], toSection: .skills)
         snapshot.appendItems([.deadline(project)], toSection: .deadline)

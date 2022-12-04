@@ -109,6 +109,11 @@ enum FirestoreEndpoint {
     }
 }
 
+enum ProjectDocumentArrayFieldType: String {
+    case applicants
+    case collectors
+}
+
 enum FirestoreMyDocumentEndpoint {
     case myPosts
     case myFriends
@@ -1265,12 +1270,14 @@ class FirebaseManager {
         }
     }
 
-    func getAllMyApplications(completion: @escaping (Result<[Project], Error>) -> Void) {
+    func getAllMyRelativeInfoInDocuments(type: ProjectDocumentArrayFieldType, completion: @escaping (Result<[Project], Error>) -> Void) {
         guard let myID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey) else {
             fatalError("Doesn't have user id")
         }
         let ref = FirestoreEndpoint.projects.ref
-        ref.whereField("applicants", arrayContains: myID).getDocuments { (snapshot, err) in
+        let fieldName = type.rawValue
+
+        ref.whereField(fieldName, arrayContains: myID).getDocuments { (snapshot, err) in
             if let err = err {
                 completion(.failure(err))
                 return

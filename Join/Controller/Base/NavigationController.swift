@@ -15,6 +15,8 @@ class NavigationController: UINavigationController {
         navBarAppearance.configureWithOpaqueBackground()
         navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.White]
         navBarAppearance.backgroundColor = .Blue1
+        navBarAppearance.shadowColor = nil
+        navBarAppearance.shadowImage = UIImage()
         self.navigationBar.standardAppearance = navBarAppearance
         self.navigationBar.scrollEdgeAppearance = navBarAppearance
         self.navigationBar.tintColor = .White

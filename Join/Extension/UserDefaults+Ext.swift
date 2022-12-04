@@ -27,4 +27,11 @@ extension UserDefaults {
         UserDefaults.standard.setValue(user.name, forKey: UserDefaults.UserKey.userNameKey)
         UserDefaults.standard.setValue(user.interests, forKey: UserDefaults.UserKey.userInterestsKey)
     }
+
+    func clearUserInfo() {
+        UserDefaults.standard.setValue(nil, forKey: UserDefaults.UserKey.uidKey)
+        UserDefaults.standard.setValue(nil, forKey: UserDefaults.UserKey.userThumbnailURLKey)
+        UserDefaults.standard.setValue(nil, forKey: UserDefaults.UserKey.userNameKey)
+        UserDefaults.standard.setValue(nil, forKey: UserDefaults.UserKey.userInterestsKey)
+    }
 }

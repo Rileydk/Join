@@ -44,6 +44,16 @@ struct Constant {
     }
 
     struct Personal {
+        enum EntryButtonsGroup: String, CaseIterable {
+            case profile = "我的主頁"
+            case myProject = "我的專案"
+            case myApplications = "我的應徵"
+        }
+
+        static let saveSuccessfully = "收藏成功"
+        static let removeSuccessfully = "移除收藏"
+
+        static let editPageTitle = "編輯我的個人資料"
         static let report = "檢舉此個人頁面"
 
         static let blockAlertTitle = "確定要封鎖此用戶嗎？"
@@ -51,17 +61,19 @@ struct Constant {
         static let blockAlertYesActionTitle = "我確定要封鎖"
         static let blockAlertCancelActionTitle = "取消"
         static let block = "封鎖此用戶"
-        static let blocked = "已為您封鎖此用戶，您可以在個人頁面「我的黑名單」中查看及編輯"
+        static let blocked = "已為您封鎖此用戶，您可以在個人頁面「個人設定」中查看及編輯"
 
         static let deleteFriend = "刪除好友"
 
         static let myFriends = "我的好友"
-        static let myBlockList = "黑名單"
+        static let myBlockList = "封鎖名單"
     }
 
     struct Portfolio {
+        static let addPortfolio = "新增作品"
         static let sectionHeader = "作品集"
         static let uploadFile = "上傳附件"
+        static let report = "檢舉此作品集"
     }
 
     struct Login {
@@ -70,7 +82,7 @@ struct Constant {
     }
 
     struct Edit {
-        static let editIntroduction = "請填寫個人簡介"
+        static let editIntroduction = "個人簡介"
         static let editSkills = "編輯我的技能"
         static let editInterests = "編輯我的興趣"
         static let addPortfolio = "新增我的作品"
@@ -89,6 +101,7 @@ struct Constant {
         static let errorShouldRetry = "發生錯誤，請重新操作"
         static let notValidURL = "這不是有效的URL，請重新輸入"
         static let emptyURL = "URL不可為空白"
+        static let duplicatedURL = "重複的URL"
     }
 
     struct Link {
@@ -99,6 +112,16 @@ struct Constant {
         static let fromLibrary = "從相簿選取"
         static let openCamera = "開啟相機"
         static let scanDocument = "掃描文件或圖片"
-        static let pasteURL = "貼上網址"
+        static let pasteURL = "貼上網址（請先複製）"
+    }
+
+    struct AppleIdentifier {
+        static let sectionHeaderElementKind = "section-header-element-kind"
+        static let sectionFooterElementKind = "section-footer-element-kind"
+    }
+
+    struct ColorTheme {
+        static let lightBackgroundColor = UIColor.Gray6
+        static let darkBackgroundColor = UIColor.Blue1
     }
 }

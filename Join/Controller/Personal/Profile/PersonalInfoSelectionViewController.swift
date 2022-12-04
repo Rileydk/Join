@@ -48,10 +48,16 @@ class PersonalInfoSelectionViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.rightBarButtonItem = UIBarButtonItem(
-            title: "Save", style: .done, target: self, action: #selector(tapSave))
+        let config = UIButton.Configuration.filled()
+        let rightBarButton = PillButton(configuration: config)
+        rightBarButton.isEnabled = true
+        rightBarButton.setTitle(Constant.Common.save, for: .normal)
+        rightBarButton.addTarget(self, action: #selector(tapSave), for: .touchUpInside)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: rightBarButton)
+
         navigationItem.leftBarButtonItem = UIBarButtonItem(
-            title: "Discard", style: .plain, target: self, action: #selector(backToPreviousPage))
+            image: UIImage(named: JImages.Icons_24px_Close.rawValue), style: .plain,
+            target: self, action: #selector(backToPreviousPage))
     }
 
     override func viewWillAppear(_ animated: Bool) {
