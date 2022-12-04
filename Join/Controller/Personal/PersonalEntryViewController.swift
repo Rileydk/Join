@@ -48,6 +48,8 @@ class PersonalEntryViewController: UIViewController {
         navBarAppearance.configureWithOpaqueBackground()
         navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.White]
         navBarAppearance.backgroundColor = .Blue1
+        navBarAppearance.shadowColor = .clear
+        navBarAppearance.shadowImage = UIImage()
         navVC.navigationBar.standardAppearance = navBarAppearance
         navVC.navigationBar.scrollEdgeAppearance = navBarAppearance
         navVC.navigationBar.tintColor = .White

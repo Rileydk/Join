@@ -39,9 +39,12 @@ class PersonalProfileEditViewController: BaseViewController {
             tableView.delegate = self
             tableView.dataSource = self
             tableView.separatorStyle = .none
+
+            tableView.backgroundColor = backgroundColor
         }
     }
     var rightBarButton: PillButton?
+    let backgroundColor = UIColor.Gray6
 
     let firebaseManager = FirebaseManager.shared
     var notloadedFromDBYet = true
@@ -235,6 +238,7 @@ extension PersonalProfileEditViewController: UITableViewDataSource {
                 fatalError("Cannot create personal main thumbnail cell")
             }
             cell.layoutCell(isEditing: true)
+            cell.contentView.backgroundColor = backgroundColor
             cell.updateImage = { [weak self] image in
                 self?.newImage = image
             }
@@ -267,6 +271,7 @@ extension PersonalProfileEditViewController: UITableViewDataSource {
                     self?.user?.email = email
                 }
             }
+            cell.contentView.backgroundColor = backgroundColor
             return cell
 
         } else if section == .introduction {
@@ -277,6 +282,7 @@ extension PersonalProfileEditViewController: UITableViewDataSource {
             }
             cell.sourceType = .personalEditIntroduction
             cell.layoutCellForEditProfile(introduction: user.introduction ?? "")
+            cell.contentView.backgroundColor = backgroundColor
             cell.textView.delegate = self
             return cell
 
@@ -338,6 +344,7 @@ extension PersonalProfileEditViewController: UITableViewDataSource {
                     self.navigationController?.pushViewController(addPortfolioVC, animated: true)
                 }
             }
+            cell.contentView.backgroundColor = backgroundColor
             return cell
         }
     }

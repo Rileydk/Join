@@ -15,7 +15,8 @@ class GoNextPageTableViewCell: TableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        button.backgroundColor = .Gray3
+        button.backgroundColor = .Blue1?.withAlphaComponent(0.8)
+
         button.setTitleColor(.White, for: .normal)
         rightArrowImageView.tintColor = .White
     }

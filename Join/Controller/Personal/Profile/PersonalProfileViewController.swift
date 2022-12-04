@@ -67,6 +67,7 @@ class PersonalProfileViewController: BaseViewController {
             collectionView.setCollectionViewLayout(createLayout(), animated: true)
             configureDatasource()
             collectionView.delegate = self
+            collectionView.backgroundColor = .Gray6
         }
     }
 
@@ -77,7 +78,9 @@ class PersonalProfileViewController: BaseViewController {
         let navBarAppearance = UINavigationBarAppearance()
         navBarAppearance.configureWithOpaqueBackground()
         navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.Gray1]
-        navBarAppearance.backgroundColor = .White
+        navBarAppearance.backgroundColor = .Gray6
+        navBarAppearance.shadowColor = .clear
+        navBarAppearance.shadowImage = UIImage()
         navVC.navigationBar.standardAppearance = navBarAppearance
         navVC.navigationBar.scrollEdgeAppearance = navBarAppearance
         navVC.navigationBar.tintColor = .Gray1
@@ -99,14 +102,9 @@ class PersonalProfileViewController: BaseViewController {
 
     func layoutViews() {
         title = userData?.name
-        collectionView.backgroundColor = .Gray6
         navigationItem.leftBarButtonItem = UIBarButtonItem(
             image: UIImage(named: JImages.Icons_24px_Back.rawValue), style: .plain,
             target: self, action: #selector(backToPreviousPage))
-
-//        if let myID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey), myID == userID {
-//
-//        }
     }
 
     func updateData(completion: (() -> Void)? = nil) {

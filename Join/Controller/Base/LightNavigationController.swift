@@ -15,6 +15,8 @@ class LightNavigationController: UINavigationController {
         navBarAppearance.configureWithOpaqueBackground()
         navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.Gray1 ?? .gray]
         navBarAppearance.backgroundColor = .White
+        navBarAppearance.shadowColor = nil
+        navBarAppearance.shadowImage = UIImage()
         self.navigationBar.standardAppearance = navBarAppearance
         self.navigationBar.scrollEdgeAppearance = navBarAppearance
         self.navigationBar.tintColor = .Gray1

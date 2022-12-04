@@ -41,12 +41,24 @@ class PersonalSettingsViewController: BaseViewController {
             tableView.delegate = self
             tableView.dataSource = self
             tableView.separatorStyle = .none
-            tableView.backgroundColor = .Gray5
+            tableView.backgroundColor = .Blue1
+            tableView.sectionHeaderTopPadding = 0
         }
     }
 
     let appleSignInManager = AppleSignInManager.shared
     let firebaseManager = FirebaseManager.shared
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        title = "個人設定"
+        let backIcon = UIImage(named: JImages.Icons_24px_Back.rawValue)
+        backIcon?.withRenderingMode(.alwaysTemplate)
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            image: backIcon,
+            style: .plain, target: self, action: #selector(backToPreviousPage))
+
+    }
 
     func deleteAccount(completion: @escaping (Result<String, Error>) -> Void) {
         let user = Auth.auth().currentUser
@@ -162,6 +174,10 @@ class PersonalSettingsViewController: BaseViewController {
         alert.addAction(yesAction)
         present(alert, animated: true)
     }
+
+    @objc func backToPreviousPage() {
+        navigationController?.popViewController(animated: true)
+    }
 }
 
 // MARK: - Table View Delegate
@@ -171,7 +187,13 @@ extension PersonalSettingsViewController: UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        60
+        40
+    }
+
+    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        guard let header = view as? UITableViewHeaderFooterView else { return }
+        header.textLabel?.font = UIFont.systemFont(ofSize: 15)
+        header.textLabel?.textColor = .White
     }
 }
 

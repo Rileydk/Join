@@ -62,10 +62,11 @@ class AddPortfolioViewController: BaseViewController {
             tableView.delegate = self
             configureDatasource()
             tableView.separatorStyle = .none
-            tableView.backgroundColor = .White
+            tableView.backgroundColor = backgroundColor
         }
     }
     var rightBarButton: PillButton?
+    let backgroundColor = Constant.ColorTheme.lightBackgroundColor
     private var provider = LPMetadataProvider()
 
     typealias WorkDatasource = UITableViewDiffableDataSource<Section, Item>
@@ -97,6 +98,7 @@ class AddPortfolioViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        title = Constant.Portfolio.addPortfolio
         let rightButtonConfig = UIButton.Configuration.filled()
         rightBarButton = PillButton(configuration: rightButtonConfig)
         rightBarButton!.setTitle(Constant.Common.save, for: .normal)
@@ -234,6 +236,7 @@ extension AddPortfolioViewController: UITableViewDelegate {
                 fatalError("Cannot load Work Header View")
             }
             header.layoutHeader(addButtonShouldEnabled: editableRecords.isEmpty)
+            header.backgroundColor = backgroundColor
             header.delegate = self
             header.alertPresentHandler = { [weak self] alert in
                 self?.present(alert, animated: true)
@@ -288,6 +291,7 @@ extension AddPortfolioViewController {
                 fatalError("Cannot load single line input cell")
             }
             cell.layoutCell(withTitle: .workName, value: work.name)
+            cell.contentView.backgroundColor = backgroundColor
             cell.updateWorkName = { [weak self] workName in
                 guard let self = self else { return }
                 self.work.name = workName
@@ -308,6 +312,7 @@ extension AddPortfolioViewController {
             } else {
                 cell.layoutCell(recordImage: editableRecord.image!)
             }
+            cell.contentView.backgroundColor = backgroundColor
             return cell
         }
     }

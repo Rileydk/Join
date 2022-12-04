@@ -18,7 +18,6 @@ class WorkRecordCell: TableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         deleteButton.tintColor = .Red
-        contentView.backgroundColor = .White
         containerView.layer.cornerRadius = 10
         deleteButton.tintColor = .Red?.withAlphaComponent(0.7)
     }

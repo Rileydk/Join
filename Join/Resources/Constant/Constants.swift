@@ -67,6 +67,7 @@ struct Constant {
     }
 
     struct Portfolio {
+        static let addPortfolio = "新增作品"
         static let sectionHeader = "作品集"
         static let uploadFile = "上傳附件"
         static let report = "檢舉此作品集"
@@ -114,5 +115,10 @@ struct Constant {
     struct AppleIdentifier {
         static let sectionHeaderElementKind = "section-header-element-kind"
         static let sectionFooterElementKind = "section-footer-element-kind"
+    }
+
+    struct ColorTheme {
+        static let lightBackgroundColor = UIColor.Gray6
+        static let darkBackgroundColor = UIColor.Blue1
     }
 }
