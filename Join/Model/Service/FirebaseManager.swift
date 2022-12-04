@@ -355,7 +355,7 @@ class FirebaseManager {
         let ref = FirestoreEndpoint.projects.ref
 
         let now = FirebaseFirestore.Timestamp(date: Date())
-        ref.order(by: "createTime", descending: false).getDocuments { querySnapshot, error in
+        ref.getDocuments { querySnapshot, error in
             if let error = error {
                 completion(.failure(error))
                 return
@@ -372,6 +372,26 @@ class FirebaseManager {
                     }
                 }
                 completion(.success(projects))
+            } else {
+                completion(.failure(CommonError.noValidQuerysnapshot))
+            }
+        }
+    }
+
+    func getProject(projectID: ProjectID, completion: @escaping (Result<Project, Error>) -> Void) {
+        let ref = FirestoreEndpoint.projects.ref.document(projectID)
+        ref.getDocument { snapshot, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            if let snapshot = snapshot {
+                do {
+                    let project = try snapshot.data(as: Project.self, decoder: FirebaseManager.decoder)
+                    completion(.success(project))
+                } catch {
+                    completion(.failure(error))
+                }
             } else {
                 completion(.failure(CommonError.noValidQuerysnapshot))
             }
@@ -1218,13 +1238,6 @@ class FirebaseManager {
     }
 
     func getAllMyProjectsItems(testID: String? = nil, completion: @escaping (Result<[ProjectItem], Error>) -> Void) {
-//        var ref: CollectionReference
-//        if let testID = testID {
-//            ref = FirestoreEndpoint.users.ref.document(testID).collection("Posts")
-//        } else {
-//            ref = FirestoreMyDocumentEndpoint.myPosts.ref
-//        }
-        //////以上為測試
         let ref = FirestoreMyDocumentEndpoint.myPosts.ref
         ref.getDocuments { (snapshot, err) in
             if let err = err {
@@ -2035,7 +2048,16 @@ class FirebaseManager {
             }
             completion(.success("Success"))
         }
+    }
 
+    func updateField(ref: DocumentReference, field: String, value: Any, completion: @escaping (Result<String, Error>) -> Void) {
+        ref.updateData([field: value]) { err in
+            if let err = err {
+                completion(.failure(err))
+                return
+            }
+            completion(.success("Success"))
+        }
     }
 
     func addNewValueToArray(ref: DocumentReference, field: String, values: [Any], completion: @escaping (Result<String, Error>) -> Void) {
