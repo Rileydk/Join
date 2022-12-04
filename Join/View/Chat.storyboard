@@ -12,7 +12,7 @@
         <!--Chat List View Controller-->
         <scene sceneID="TNE-iG-QSU">
             <objects>
-                <viewController id="xzF-Dt-Vic" customClass="ChatListViewController" customModule="Join" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ChatListViewController" id="xzF-Dt-Vic" customClass="ChatListViewController" customModule="Join" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="nia-Tp-On7">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -48,7 +48,7 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="DAu-Py-tgo">
-                        <barButtonItem key="rightBarButtonItem" title="建立群組" id="0ds-7h-Qdn">
+                        <barButtonItem key="rightBarButtonItem" title="建立群組" image="person.2.fill" catalog="system" id="0ds-7h-Qdn">
                             <color key="tintColor" name="AccentColor"/>
                             <connections>
                                 <action selector="addGroupChatroom:" destination="xzF-Dt-Vic" id="dNV-5a-Ibc"/>
@@ -267,6 +267,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="person.2.fill" catalog="system" width="128" height="80"/>
         <namedColor name="AccentColor">
             <color red="0.0" green="0.46000000000000002" blue="0.89000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

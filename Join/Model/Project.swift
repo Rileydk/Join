@@ -25,6 +25,7 @@ struct Project: Hashable, Codable {
     var contact: UserID
     var applicants = [UserID]()
     var collectors: [UserID]?
+    var chatroom: ChatroomID?
     var createTime: Date?
 
     static let mockProject = Project(contact: "")
@@ -46,6 +47,7 @@ struct Project: Hashable, Codable {
             "contact": contact as Any,
             "applicants": applicants as Any,
             "collectors": collectors as Any,
+            "chatroom": chatroom as Any,
             "createTime": createTime as Any
         ]
     }

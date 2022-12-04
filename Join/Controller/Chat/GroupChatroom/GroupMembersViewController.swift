@@ -40,6 +40,7 @@ class GroupMembersViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        title = "編輯群組"
         guard let admin = chatroomInfo?.admin else {
             print("No chatroom id")
             return
@@ -49,6 +50,11 @@ class GroupMembersViewController: BaseViewController {
             editAction()
         } else {
             addExitButton()
+        }
+
+        if let backImage = UIImage(named: JImages.Icons_24px_Back.rawValue) {
+            backImage.withRenderingMode(.alwaysTemplate)
+            navigationItem.leftBarButtonItem = UIBarButtonItem(image: backImage, style: .plain, target: self, action: #selector(backToPreviousPage))
         }
     }
 
@@ -165,6 +171,10 @@ class GroupMembersViewController: BaseViewController {
                 print(err)
             }
         }
+    }
+
+    @objc func backToPreviousPage() {
+        navigationController?.popViewController(animated: true)
     }
 }
 

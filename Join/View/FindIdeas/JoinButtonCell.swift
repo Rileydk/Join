@@ -8,8 +8,29 @@
 import UIKit
 
 class JoinButtonCell: TableViewCell {
+    enum UsageType: String {
+        case joinProject = "Join"
+        case createProjectGroup = "建立工作群組"
+        case goToProjectGroup = "進入工作群組"
+
+        var backgroundColor: UIColor {
+            switch self {
+            case .joinProject, .createProjectGroup: return .Blue1 ?? .black
+            case .goToProjectGroup: return .Yellow1 ?? .white
+            }
+        }
+
+        var titleColor: UIColor {
+            switch self {
+            case .joinProject, .createProjectGroup: return .White ?? .white
+            case .goToProjectGroup: return .Gray1 ?? .black
+            }
+        }
+    }
+
     @IBOutlet weak var joinButton: UIButton!
-    var joinHandler: (() -> Void)?
+    var tapHandler: ((UsageType) -> Void)?
+    var usageType: UsageType = .joinProject
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -22,8 +43,15 @@ class JoinButtonCell: TableViewCell {
         // Configure the view for the selected state
     }
 
+    func layoutCell(type: UsageType) {
+        joinButton.setTitle(type.rawValue, for: .normal)
+        joinButton.setTitleColor(type.titleColor, for: .normal)
+        joinButton.backgroundColor = type.backgroundColor
+        usageType = type
+    }
+
     @IBAction func joinProject() {
-        joinHandler?()
+        tapHandler?(usageType)
     }
 
 }

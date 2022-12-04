@@ -17,10 +17,14 @@ class ContactCell: TableViewCell {
     @IBOutlet weak var thumbnailImageView: UIImageView!
     @IBOutlet weak var nameButton: UIButton!
     @IBOutlet weak var messageButton: UIButton!
-
+    @IBOutlet weak var acceptJoinButton: UIButton!
+    
     let firebaseManager = FirebaseManager.shared
     var tapHandler: (() -> Void)?
     var messageHandler: (() -> Void)?
+    var acceptHandler: ((JUser) -> Void)?
+    var user: JUser?
+    var isMember: Bool?
 
     override func prepareForReuse() {
         super.prepareForReuse()
@@ -40,23 +44,36 @@ class ContactCell: TableViewCell {
         thumbnailImageView.layer.cornerRadius = thumbnailImageView.frame.size.width / 2
     }
 
-    func layoutCell(user: JUser, from source: Source) {
+    func layoutCell(user: JUser, from source: Source, isMember: Bool? = nil) {
         thumbnailImageView.loadImage(user.thumbnailURL ?? FindPartnersFormSections.placeholderImageURL)
-//        firebaseManager.downloadImage(urlString: user.thumbnailURL ?? FindPartnersFormSections.placeholderImageURL) { [weak self] result in
-//            switch result {
-//            case .success(let image):
-//                self?.thumbnailImageView.image = image
-//            case .failure(let error):
-//                print(error)
-//            }
-//        }
         nameButton.setTitle(user.name, for: .normal)
         let myID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey) ?? ""
-        if source == .myPostContact || (source == .projectDetails && user.id == myID) {
+        if source == .myPostContact || source == .myPostApplicant ||
+            (source == .projectDetails && user.id == myID) {
             messageButton.isHidden = true
         } else {
             messageButton.isHidden = false
         }
+
+        if source == .myPostApplicant {
+            acceptJoinButton.isHidden = false
+            guard let isMember = isMember else { return }
+            self.isMember = isMember
+            if isMember {
+                acceptJoinButton.setTitle("已是團隊成員", for: .normal)
+                acceptJoinButton.setTitleColor(.Blue1, for: .normal)
+                acceptJoinButton.backgroundColor = .clear
+                acceptJoinButton.contentEdgeInsets = .init(top: 6, left: 12, bottom: 6, right: 0)
+            } else {
+                acceptJoinButton.setTitle("接受", for: .normal)
+                acceptJoinButton.setTitleColor(.White, for: .normal)
+                acceptJoinButton.backgroundColor = .Blue3
+                acceptJoinButton.contentEdgeInsets = .init(top: 6, left: 12, bottom: 6, right: 12)
+            }
+        } else {
+            acceptJoinButton.isHidden = true
+        }
+        self.user = user
     }
 
     @IBAction func goProfilePage(_ sender: UIButton) {
@@ -65,5 +82,11 @@ class ContactCell: TableViewCell {
 
     @IBAction func sendMessage(_ sender: UIButton) {
         messageHandler?()
+    }
+    @IBAction func acceptJoin(_ sender: Any) {
+        guard let user = user, let isMember = isMember else { return }
+        if !isMember {
+            acceptHandler?(user)
+        }
     }
 }

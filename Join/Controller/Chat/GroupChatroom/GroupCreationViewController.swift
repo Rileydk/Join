@@ -8,6 +8,11 @@
 import UIKit
 
 class GroupCreationViewController: BaseViewController {
+    enum SourceType {
+        case chatlist
+        case project
+    }
+
     enum Section: CaseIterable {
         case header
         case members
@@ -39,6 +44,8 @@ class GroupCreationViewController: BaseViewController {
     typealias GroupDatasource = UICollectionViewDiffableDataSource<Section, Item>
     private var datasource: GroupDatasource!
     let firebaseManager = FirebaseManager.shared
+    var sourceType: SourceType = .chatlist
+    var linkedProject: Project?
     var selectedFriends = [JUser]()
     var groupChatroom = GroupChatroom(
         id: "", name: "", imageURL: "", admin: "", createdTime: Date()
@@ -64,12 +71,13 @@ class GroupCreationViewController: BaseViewController {
         )
         if let backImage = UIImage(named: JImages.Icons_24px_Back.rawValue) {
             backImage.withRenderingMode(.alwaysTemplate)
-            backImage.withTintColor(.White ?? .white)
             navigationItem.leftBarButtonItem = UIBarButtonItem(image: backImage, style: .plain, target: self, action: #selector(backToPreviousPage))
         }
     }
 
+    // swiftlint:disable cyclomatic_complexity
     @objc func createGroup() {
+        JProgressHUD.shared.showLoading(text: Constant.Common.processing, view: self.view)
         firebaseManager.firebaseQueue.async { [weak self] in
             guard let strongSelf = self else { return }
 
@@ -112,6 +120,7 @@ class GroupCreationViewController: BaseViewController {
                         group.leave()
                         group.notify(queue: .main) {
                             print(err)
+                            JProgressHUD.shared.showFailure(view: strongSelf.view)
                         }
                     }
                 }
@@ -131,28 +140,70 @@ class GroupCreationViewController: BaseViewController {
                     group.leave()
                     group.notify(queue: .main) {
                         print(err)
+                        JProgressHUD.shared.showFailure(view: strongSelf.view)
                     }
                 }
             }
 
-            group.notify(queue: .main) {
+            group.wait()
+            group.enter()
+            if strongSelf.linkedProject == nil {
+                group.leave()
+            } else {
+                guard let linkedProject = strongSelf.linkedProject else { return }
+                strongSelf.firebaseManager.updateField(ref: FirestoreEndpoint.projects.ref.document(linkedProject.projectID), field: "chatroom", value: strongSelf.chatroomID) { result in
+                    switch result {
+                    case .success:
+                        group.leave()
+                    case .failure(let err):
+                        group.leave()
+                        group.notify(queue: .main) {
+                            print(err)
+                            JProgressHUD.shared.showFailure(view: strongSelf.view)
+                        }
+                    }
+                }
+            }
+
+            group.notify(queue: .main) { [weak self] in
+                guard let self = self else { return }
                 let chatStoryboard = UIStoryboard(name: StoryboardCategory.chat.rawValue, bundle: nil)
                 guard let chatroomVC =  chatStoryboard.instantiateViewController(
                     withIdentifier: GroupChatroomViewController.identifier
-                ) as? GroupChatroomViewController else {
+                    ) as? GroupChatroomViewController else {
                     fatalError("Cannot get chatroom vc")
                 }
                 chatroomVC.chatroomID = strongSelf.chatroomID
                 chatroomVC.title = strongSelf.groupChatroom.name
-                guard let rootVC = strongSelf.navigationController?.viewControllers.first! as? ChatListViewController else {
-                    fatalError("Cannot get chat list vc")
-                }
 
-                self?.hidesBottomBarWhenPushed = true
-                DispatchQueue.main.async {
-                    self?.hidesBottomBarWhenPushed = false
+                switch self.sourceType {
+                case .chatlist:
+                    guard let rootVC = strongSelf.navigationController?.viewControllers.first! as? ChatListViewController else {
+                        fatalError("Cannot create chatlist vc")
+                    }
+                    self.hidesBottomBarWhenPushed = true
+                    DispatchQueue.main.async {
+                        self.hidesBottomBarWhenPushed = false
+                    }
+                    self.navigationController?.setViewControllers([rootVC, chatroomVC], animated: true)
+
+                case .project:
+                    guard let rootVC = strongSelf.navigationController?.viewControllers[0] as? PersonalEntryViewController else {
+                        fatalError("Cannot create personal entry vc")
+                    }
+                    guard let projectVC = strongSelf.navigationController?.viewControllers[1] as? MyPostsViewController else {
+                        fatalError("Cannot create my posts vc")
+                    }
+                    guard let projectDetailVC = strongSelf.navigationController?.viewControllers[2] as? MyPostsDetailViewController else {
+                        fatalError("Cannot create my post detail vc")
+                    }
+                    projectDetailVC.project = strongSelf.linkedProject
+                    self.hidesBottomBarWhenPushed = true
+                    DispatchQueue.main.async {
+                        self.hidesBottomBarWhenPushed = false
+                    }
+                    self.navigationController?.setViewControllers([rootVC, projectVC, projectDetailVC, chatroomVC], animated: true)
                 }
-                self?.navigationController?.setViewControllers([rootVC, chatroomVC], animated: true)
             }
         }
     }
@@ -176,11 +227,12 @@ class GroupCreationViewController: BaseViewController {
     }
 
     @objc func backToPreviousPage() {
-        guard let firstPage = navigationController?.viewControllers.dropLast().last as? FriendSelectionViewController else {
-            fatalError("Cannot get friend selection page")
+        if let firstPage = navigationController?.viewControllers.dropLast().last as? FriendSelectionViewController {
+            firstPage.selectedFriends = selectedFriends
+            navigationController?.popViewController(animated: true)
+        } else {
+            navigationController?.popViewController(animated: true)
         }
-        firstPage.selectedFriends = selectedFriends
-        navigationController?.popViewController(animated: true)
     }
 }
 
@@ -255,9 +307,7 @@ extension GroupCreationViewController {
                 fatalError("Cannot create personal basic cell")
             }
             cell.delegate = self
-            if let userImageURL = UserDefaults.standard.string(forKey: UserDefaults.UserKey.userThumbnailURLKey) {
-                cell.layoutCell(defaultGroupName: groupName, imageURL: userImageURL)
-            }
+            cell.layoutCell(defaultGroupName: groupName)
             cell.alertPresentHandler = { [weak self] alert in
                 self?.present(alert, animated: true)
             }

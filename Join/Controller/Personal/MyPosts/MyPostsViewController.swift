@@ -202,6 +202,11 @@ extension MyPostsViewController: UICollectionViewDelegate {
                 fatalError("Cannot create my post detail vc")
             }
             detailVC.project = myPosts[indexPath.row]
+
+            hidesBottomBarWhenPushed = true
+            DispatchQueue.main.async { [weak self] in
+                self?.hidesBottomBarWhenPushed = false
+            }
             navigationController?.pushViewController(detailVC, animated: true)
         }
     }

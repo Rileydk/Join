@@ -88,7 +88,8 @@ class FindIdeasViewController: BaseViewController {
                 guard let self = self else { return }
                 switch result {
                 case .success(let projects):
-                    self.projects = projects.sorted(by: { $0.createTime! > $1.createTime! })
+                    self.projects = projects.filter { $0.deadline! > Date() }
+                        .sorted(by: { $0.createTime! > $1.createTime! })
                     group.leave()
                 case .failure(let error):
                     shouldContinue = false

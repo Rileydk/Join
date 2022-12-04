@@ -48,8 +48,8 @@ class GroupCreationHeaderCell: CollectionViewCell {
         imageEditButton.layer.cornerRadius = imageEditButton.frame.width / 2
     }
 
-    func layoutCell(defaultGroupName: String, imageURL: URLString) {
-        groupImageView.loadImage(imageURL)
+    func layoutCell(defaultGroupName: String) {
+        groupImageView.image = UIImage(named: JImages.Icons_24px_GroupchatDefault.rawValue)
         groupNameTextField.attributedPlaceholder = NSAttributedString(
             string: defaultGroupName, attributes: [
                 NSAttributedString.Key.foregroundColor: (UIColor.Gray3?.withAlphaComponent(0.7) ?? .lightGray)

@@ -7,7 +7,6 @@
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -20,60 +19,68 @@
                 <rect key="frame" x="0.0" y="0.0" width="414" height="80"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="UHC-0B-S3F">
-                        <rect key="frame" x="16" y="18.5" width="382" height="43"/>
+                    <stackView opaque="NO" contentMode="scaleToFill" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="g6T-W0-M3M">
+                        <rect key="frame" x="16" y="18.5" width="99" height="43"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="g6T-W0-M3M">
-                                <rect key="frame" x="0.0" y="0.0" width="99" height="43"/>
-                                <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="iDO-fW-XP1">
-                                        <rect key="frame" x="0.0" y="0.0" width="43" height="43"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" secondItem="iDO-fW-XP1" secondAttribute="height" multiplier="1:1" id="Gpx-gK-sex"/>
-                                            <constraint firstAttribute="width" constant="43" id="XHB-po-9nH"/>
-                                        </constraints>
-                                    </imageView>
-                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="leading" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Za-l2-8Yg">
-                                        <rect key="frame" x="51" y="0.0" width="48" height="43"/>
-                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                        <state key="normal" title="Name">
-                                            <color key="titleColor" systemColor="labelColor"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="goProfilePage:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="Z1K-my-0pD"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
-                            </stackView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SV4-Vk-044">
-                                <rect key="frame" x="350" y="5.5" width="32" height="32"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="iDO-fW-XP1">
+                                <rect key="frame" x="0.0" y="0.0" width="43" height="43"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" secondItem="SV4-Vk-044" secondAttribute="height" multiplier="1:1" id="3AE-Ek-uWe"/>
-                                    <constraint firstAttribute="width" constant="32" id="u0T-kw-jBh"/>
+                                    <constraint firstAttribute="width" secondItem="iDO-fW-XP1" secondAttribute="height" multiplier="1:1" id="Gpx-gK-sex"/>
+                                    <constraint firstAttribute="width" constant="43" id="XHB-po-9nH"/>
                                 </constraints>
-                                <color key="tintColor" name="Blue3"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="leading" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Za-l2-8Yg">
+                                <rect key="frame" x="51" y="0.0" width="48" height="43"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                <state key="normal">
-                                    <imageReference key="image" image="paperplane" catalog="system" symbolScale="large"/>
+                                <state key="normal" title="Name">
+                                    <color key="titleColor" name="Gray1"/>
                                 </state>
                                 <connections>
-                                    <action selector="sendMessage:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="udO-PR-WV2"/>
+                                    <action selector="goProfilePage:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="Z1K-my-0pD"/>
                                 </connections>
                             </button>
                         </subviews>
-                        <constraints>
-                            <constraint firstItem="SV4-Vk-044" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="g6T-W0-M3M" secondAttribute="trailing" constant="20" id="E2k-0C-oBD"/>
-                        </constraints>
                     </stackView>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SV4-Vk-044">
+                        <rect key="frame" x="366" y="24" width="32" height="32"/>
+                        <constraints>
+                            <constraint firstAttribute="width" secondItem="SV4-Vk-044" secondAttribute="height" multiplier="1:1" id="3AE-Ek-uWe"/>
+                            <constraint firstAttribute="width" constant="32" id="u0T-kw-jBh"/>
+                        </constraints>
+                        <color key="tintColor" name="Blue3"/>
+                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                        <state key="normal">
+                            <imageReference key="image" image="paperplane" catalog="system" symbolScale="large"/>
+                        </state>
+                        <connections>
+                            <action selector="sendMessage:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="udO-PR-WV2"/>
+                        </connections>
+                    </button>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TC7-Pj-uxy">
+                        <rect key="frame" x="337" y="23" width="61" height="34"/>
+                        <color key="backgroundColor" name="Blue2"/>
+                        <inset key="contentEdgeInsets" minX="12" minY="6" maxX="12" maxY="6"/>
+                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                        <state key="normal" title="接受">
+                            <color key="titleColor" name="White"/>
+                        </state>
+                        <connections>
+                            <action selector="acceptJoin:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="Osm-fF-W3P"/>
+                        </connections>
+                    </button>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="UHC-0B-S3F" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="4EG-Tm-Lp2"/>
-                    <constraint firstItem="UHC-0B-S3F" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="I5h-66-S28"/>
-                    <constraint firstAttribute="trailing" secondItem="UHC-0B-S3F" secondAttribute="trailing" constant="16" id="xg0-0b-VdG"/>
+                    <constraint firstAttribute="trailing" secondItem="SV4-Vk-044" secondAttribute="trailing" constant="16" id="21Z-dJ-W0y"/>
+                    <constraint firstItem="TC7-Pj-uxy" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="4jE-ch-9Pt"/>
+                    <constraint firstAttribute="trailing" secondItem="TC7-Pj-uxy" secondAttribute="trailing" constant="16" id="MFG-W1-H5r"/>
+                    <constraint firstItem="g6T-W0-M3M" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="ehf-5h-f7F"/>
+                    <constraint firstItem="g6T-W0-M3M" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="tX6-Gl-x8y"/>
+                    <constraint firstItem="SV4-Vk-044" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="ve6-FS-ZfT"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
+                <outlet property="acceptJoinButton" destination="TC7-Pj-uxy" id="RYc-Ca-Aze"/>
                 <outlet property="messageButton" destination="SV4-Vk-044" id="cqg-81-ld7"/>
                 <outlet property="nameButton" destination="5Za-l2-8Yg" id="peZ-jf-UgS"/>
                 <outlet property="thumbnailImageView" destination="iDO-fW-XP1" id="lj0-W2-jXM"/>
@@ -83,11 +90,17 @@
     </objects>
     <resources>
         <image name="paperplane" catalog="system" width="128" height="118"/>
+        <namedColor name="Blue2">
+            <color red="0.0" green="0.50588235294117645" blue="0.77254901960784317" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="Blue3">
             <color red="0.29411764705882354" green="0.7686274509803922" blue="0.94509803921568625" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
-        <systemColor name="labelColor">
-            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
+        <namedColor name="Gray1">
+            <color red="0.22745098039215686" green="0.22745098039215686" blue="0.22745098039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="White">
+            <color red="0.98039215686274506" green="0.98039215686274506" blue="0.98039215686274506" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
     </resources>
 </document>
