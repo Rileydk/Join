@@ -170,7 +170,7 @@
                             </userDefinedRuntimeAttribute>
                         </userDefinedRuntimeAttributes>
                     </label>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9PQ-0q-vtM">
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" changesSelectionAsPrimaryAction="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9PQ-0q-vtM">
                         <rect key="frame" x="370" y="20" width="28" height="34"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="28" id="Ukb-8y-f4I"/>
@@ -181,6 +181,9 @@
                         <state key="normal">
                             <imageReference key="image" image="bookmark" catalog="system" symbolScale="large"/>
                         </state>
+                        <connections>
+                            <action selector="saveToCollection:" destination="gTV-IL-0wX" eventType="touchUpInside" id="z0d-iA-ugE"/>
+                        </connections>
                     </button>
                 </subviews>
             </view>

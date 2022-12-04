@@ -7,19 +7,25 @@
 
 import UIKit
 
-class MyApplicationsViewController: BaseViewController {
+class MyRelatedProjectsViewController: BaseViewController {
+    enum ProjectsType {
+        case applications
+        case collections
+    }
+
     enum Section: CaseIterable {
-        case myApplications
+        case projects
     }
 
     enum Item: Hashable {
-        case myApplication(Project)
+        case project(Project)
     }
 
     typealias ApplicationsDatasource = UICollectionViewDiffableDataSource<Section, Item>
     private var datasource: ApplicationsDatasource!
     let firebaseManager = FirebaseManager.shared
     var projects = [Project]()
+    var projectsType: ProjectsType = .applications
 
     @IBOutlet weak var collectionView: UICollectionView! {
         didSet {
@@ -44,7 +50,7 @@ class MyApplicationsViewController: BaseViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        getMyApplications()
+        getRelatedProjects()
     }
 
     func layoutViews() {
@@ -58,8 +64,13 @@ class MyApplicationsViewController: BaseViewController {
             style: .plain, target: self, action: #selector(backToPreviousPage))
     }
 
-    func getMyApplications() {
-        firebaseManager.getAllMyApplications { [weak self] result in
+    func getRelatedProjects() {
+        var type: ProjectDocumentArrayFieldType = .applicants
+        switch projectsType {
+        case .applications: type = .applicants
+        case .collections: type = .collectors
+        }
+        firebaseManager.getAllMyRelativeInfoInDocuments(type: type) { [weak self] result in
             switch result {
             case .success(let projects):
                 self?.projects = projects
@@ -76,7 +87,7 @@ class MyApplicationsViewController: BaseViewController {
 }
 
 // MARK: - Layout
-extension MyApplicationsViewController {
+extension MyRelatedProjectsViewController {
     func createMyApplicationSection() -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1),
@@ -100,7 +111,7 @@ extension MyApplicationsViewController {
         let section = datasource.snapshot().sectionIdentifiers[index]
 
         switch section {
-        case .myApplications:
+        case .projects:
             return createMyApplicationSection()
         }
     }
@@ -113,7 +124,7 @@ extension MyApplicationsViewController {
 }
 
 // MARK: - Data Source
-extension MyApplicationsViewController {
+extension MyRelatedProjectsViewController {
     func configureDataSource() {
         // swiftlint:disable line_length
         datasource = ApplicationsDatasource(collectionView: collectionView) { [weak self] (collectionView, indexPath, idea) -> UICollectionViewCell? in
@@ -126,11 +137,42 @@ extension MyApplicationsViewController {
     // swiftlint:disable line_length
     func createCell(collectionView: UICollectionView ,indexPath: IndexPath, item: Item) -> UICollectionViewCell {
         switch item {
-        case .myApplication(let project):
+        case .project(let project):
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: IdeaCell.identifier, for: indexPath) as? IdeaCell else {
                 fatalError("Cannot create Idea Cell")
             }
             cell.layoutCell(project: project)
+            cell.saveHandler = { [weak self] (action, project) in
+                guard let self = self,
+                      let myID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey) else { return }
+                let ref = FirestoreEndpoint.projects.ref.document(project.projectID)
+                let fieldName = ProjectDocumentArrayFieldType.collectors.rawValue
+                JProgressHUD.shared.showSaving(view: self.view)
+                switch action {
+                case .save:
+                    self.firebaseManager.addNewValueToArray(ref: ref, field: fieldName, values: [myID]) { result in
+                        switch result {
+                        case .success:
+                            self.getRelatedProjects()
+                            JProgressHUD.shared.showSuccess(text: Constant.Personal.saveSuccessfully, view: self.view)
+                        case .failure(let err):
+                            print(err)
+                            JProgressHUD.shared.showFailure(text: Constant.Common.errorShouldRetry, view: self.view)
+                        }
+                    }
+                case .remove:
+                    self.firebaseManager.removeValueOfArray(ref: ref, field: fieldName, values: [myID]) { result in
+                        switch result {
+                        case .success:
+                            self.getRelatedProjects()
+                            JProgressHUD.shared.showSuccess(text: Constant.Personal.removeSuccessfully, view: self.view)
+                        case .failure(let err):
+                            print(err)
+                            JProgressHUD.shared.showFailure(text: Constant.Common.errorShouldRetry, view: self.view)
+                        }
+                    }
+                }
+            }
             return cell
         }
     }
@@ -138,18 +180,18 @@ extension MyApplicationsViewController {
     func updateDatasource() {
         var snapshot = NSDiffableDataSourceSnapshot<Section, Item>()
         snapshot.appendSections(Section.allCases)
-        snapshot.appendItems(projects.map { .myApplication($0) }, toSection: .myApplications)
+        snapshot.appendItems(projects.map { .project($0) }, toSection: .projects)
 
         datasource.apply(snapshot, animatingDifferences: false)
     }
 }
 
 // MARK: - Collection View Delegate
-extension MyApplicationsViewController: UICollectionViewDelegate {
+extension MyRelatedProjectsViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let section = Section.allCases[indexPath.section]
         switch section {
-        case .myApplications:
+        case .projects:
             let findIdeasStoryboard = UIStoryboard(name: StoryboardCategory.findIdeas.rawValue, bundle: nil)
             guard let detailVC = findIdeasStoryboard.instantiateViewController(withIdentifier: ProjectDetailsViewController.identifier) as? ProjectDetailsViewController else {
                 fatalError("Cannot create my post detail vc")

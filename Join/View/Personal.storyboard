@@ -137,10 +137,10 @@
             </objects>
             <point key="canvasLocation" x="2893" y="2354"/>
         </scene>
-        <!--My Applications View Controller-->
+        <!--My Related Projects View Controller-->
         <scene sceneID="wlN-ZG-d27">
             <objects>
-                <viewController storyboardIdentifier="MyApplicationsViewController" id="VYH-HC-GNl" customClass="MyApplicationsViewController" customModule="Join" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MyRelatedProjectsViewController" id="VYH-HC-GNl" customClass="MyRelatedProjectsViewController" customModule="Join" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="P5K-Cd-HKM">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

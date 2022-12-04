@@ -43,6 +43,7 @@ class PersonalSettingsViewController: BaseViewController {
             tableView.separatorStyle = .none
             tableView.backgroundColor = .Blue1
             tableView.sectionHeaderTopPadding = 0
+            tableView.allowsSelection = false
         }
     }
 

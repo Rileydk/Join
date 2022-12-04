@@ -50,6 +50,9 @@ struct Constant {
             case myApplications = "我的應徵"
         }
 
+        static let saveSuccessfully = "收藏成功"
+        static let removeSuccessfully = "移除收藏"
+
         static let editPageTitle = "編輯我的個人資料"
         static let report = "檢舉此個人頁面"
 

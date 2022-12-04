@@ -8,6 +8,11 @@
 import UIKit
 
 class IdeaCell: CollectionViewCell {
+    enum Action {
+        case save
+        case remove
+    }
+
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var deadlineLabel: UILabel!
     @IBOutlet weak var locationLabel: UILabel!
@@ -20,10 +25,13 @@ class IdeaCell: CollectionViewCell {
     @IBOutlet weak var moreImageView: UIImageView!
 
     let firebaseManager = FirebaseManager.shared
+    var project: Project?
+    var saveHandler: ((Action, Project) -> Void)?
 
     override func prepareForReuse() {
         super.prepareForReuse()
         imageView.image = nil
+        project = nil
     }
 
     override func awakeFromNib() {
@@ -78,6 +86,24 @@ class IdeaCell: CollectionViewCell {
         } else {
             imageView.isHidden = true
         }
+
+        guard let myID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey) else { return }
+        if myID == project.contact {
+            savingButton.isHidden = true
+        } else {
+            self.project = project
+            print("collectors in cell:", project.name, project.collectors)
+            savingButton.isHidden = false
+            savingButton.tintColor = .Yellow1
+            let largeConfig = UIImage.SymbolConfiguration(pointSize: 20, weight: .regular, scale: .large)
+            savingButton.setImage(UIImage(systemName: "bookmark", withConfiguration: largeConfig), for: .normal)
+            savingButton.setImage(UIImage(systemName: "bookmark.fill", withConfiguration: largeConfig), for: .selected)
+            if let collectors = project.collectors, collectors.contains(myID) {
+                savingButton.isSelected = true
+            } else {
+                savingButton.isSelected = false
+            }
+        }
     }
 
     func layoutCellWithApplicants(project: Project) {
@@ -86,6 +112,15 @@ class IdeaCell: CollectionViewCell {
         if !project.applicants.isEmpty {
             applicantsAmountLabel.isHidden = false
             applicantsAmountLabel.text = "應徵數: \(project.applicants.count)"
+        }
+    }
+
+    @IBAction func saveToCollection(_ sender: UIButton) {
+        guard let project = project else { return }
+        if savingButton.isSelected {
+            saveHandler?(.save, project)
+        } else {
+            saveHandler?(.remove, project)
         }
     }
 }

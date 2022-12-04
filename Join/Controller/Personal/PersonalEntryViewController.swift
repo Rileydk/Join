@@ -38,6 +38,7 @@ class PersonalEntryViewController: UIViewController {
             tableView.dataSource = self
             tableView.isScrollEnabled = false
             tableView.separatorStyle = .none
+            tableView.allowsSelection = false
         }
     }
 
@@ -73,12 +74,19 @@ class PersonalEntryViewController: UIViewController {
             navigationController?.pushViewController(friendsListVC, animated: true)
 
         case .collection:
-            break
+            let personalStoryboard = UIStoryboard(name: StoryboardCategory.personal.rawValue, bundle: nil)
+            guard let myCollectionsVC = personalStoryboard.instantiateViewController(
+                withIdentifier: MyRelatedProjectsViewController.identifier
+                ) as? MyRelatedProjectsViewController else {
+                fatalError("Cannot create personal profile vc")
+            }
+            myCollectionsVC.projectsType = .collections
+            navigationController?.pushViewController(myCollectionsVC, animated: true)
         case .settings:
             let personalStoryboard = UIStoryboard(name: StoryboardCategory.personal.rawValue, bundle: nil)
             guard let personalSettingsVC = personalStoryboard.instantiateViewController(
                 withIdentifier: PersonalSettingsViewController.identifier
-            ) as? PersonalSettingsViewController else {
+                ) as? PersonalSettingsViewController else {
                 fatalError("Cannot create personal profile vc")
             }
             navigationController?.pushViewController(personalSettingsVC, animated: true)
@@ -158,8 +166,8 @@ extension PersonalEntryViewController: UITableViewDataSource {
                 case .myApplications:
                     let personalStoryboard = UIStoryboard(name: StoryboardCategory.personal.rawValue, bundle: nil)
                     guard let myApplicationsVC = personalStoryboard.instantiateViewController(
-                        withIdentifier: MyApplicationsViewController.identifier
-                    ) as? MyApplicationsViewController else {
+                        withIdentifier: MyRelatedProjectsViewController.identifier
+                    ) as? MyRelatedProjectsViewController else {
                         fatalError("Cannot create personal profile vc")
                     }
                     self.navigationController?.pushViewController(myApplicationsVC, animated: true)

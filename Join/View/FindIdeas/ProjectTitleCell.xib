@@ -2,7 +2,6 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -19,14 +18,30 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f9k-MW-O8E">
-                        <rect key="frame" x="16" y="8" width="288" height="28"/>
+                        <rect key="frame" x="16" y="8" width="248" height="28"/>
                         <fontDescription key="fontDescription" type="boldSystem" pointSize="26"/>
                         <color key="textColor" name="Blue1"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" changesSelectionAsPrimaryAction="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6Vo-cu-jF0">
+                        <rect key="frame" x="276" y="4" width="28" height="36"/>
+                        <constraints>
+                            <constraint firstAttribute="width" secondItem="6Vo-cu-jF0" secondAttribute="height" multiplier="17:22" id="CBh-pa-XfT"/>
+                            <constraint firstAttribute="width" constant="28" id="gYZ-KD-cIi"/>
+                        </constraints>
+                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                        <state key="normal" image="bookmark" catalog="system">
+                            <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large"/>
+                        </state>
+                        <connections>
+                            <action selector="saveToCollection:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="7bs-fY-w5W"/>
+                        </connections>
+                    </button>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="trailing" secondItem="f9k-MW-O8E" secondAttribute="trailing" constant="16" id="TgQ-iO-g13"/>
+                    <constraint firstAttribute="trailing" secondItem="6Vo-cu-jF0" secondAttribute="trailing" constant="16" id="Haf-dk-n6b"/>
+                    <constraint firstItem="6Vo-cu-jF0" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="Km3-73-gNw"/>
+                    <constraint firstItem="6Vo-cu-jF0" firstAttribute="leading" secondItem="f9k-MW-O8E" secondAttribute="trailing" constant="12" id="PH6-Z5-7QT"/>
                     <constraint firstItem="f9k-MW-O8E" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="aIB-Ja-O76"/>
                     <constraint firstItem="f9k-MW-O8E" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="ktm-6A-ATP"/>
                     <constraint firstItem="f9k-MW-O8E" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="xaX-QC-45T"/>
@@ -36,11 +51,13 @@
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
                 <outlet property="recruitingTitleLabel" destination="f9k-MW-O8E" id="szQ-bb-AFV"/>
+                <outlet property="savingButton" destination="6Vo-cu-jF0" id="LJW-74-eFe"/>
             </connections>
-            <point key="canvasLocation" x="139" y="121"/>
+            <point key="canvasLocation" x="137.68115942028987" y="120.53571428571428"/>
         </tableViewCell>
     </objects>
     <resources>
+        <image name="bookmark" catalog="system" width="112" height="128"/>
         <namedColor name="Blue1">
             <color red="0.0" green="0.22352941176470589" blue="0.38823529411764707" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
