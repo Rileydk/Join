@@ -107,6 +107,36 @@
             </objects>
             <point key="canvasLocation" x="2893" y="1639"/>
         </scene>
+        <!--Personal Settings View Controller-->
+        <scene sceneID="XAx-GI-dpP">
+            <objects>
+                <viewController storyboardIdentifier="PersonalSettingsViewController" id="eGQ-Hx-QbT" customClass="PersonalSettingsViewController" customModule="Join" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="ham-uw-KMi">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="v90-oF-LMx">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </tableView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="Q4D-FA-pZW"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="Q4D-FA-pZW" firstAttribute="trailing" secondItem="v90-oF-LMx" secondAttribute="trailing" id="NXT-gG-Nr8"/>
+                            <constraint firstItem="v90-oF-LMx" firstAttribute="top" secondItem="ham-uw-KMi" secondAttribute="top" id="PZA-sY-M0h"/>
+                            <constraint firstItem="v90-oF-LMx" firstAttribute="leading" secondItem="Q4D-FA-pZW" secondAttribute="leading" id="RNu-xs-BWx"/>
+                            <constraint firstAttribute="bottom" secondItem="v90-oF-LMx" secondAttribute="bottom" id="tTk-IJ-eza"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="tableView" destination="v90-oF-LMx" id="ggb-8J-Wzz"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="zRv-xG-37r" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2893" y="2354"/>
+        </scene>
         <!--My Applications View Controller-->
         <scene sceneID="wlN-ZG-d27">
             <objects>
@@ -151,7 +181,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="EPL-eV-Hv4" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2893" y="2389"/>
+            <point key="canvasLocation" x="5335" y="1639"/>
         </scene>
         <!--My Posts View Controller-->
         <scene sceneID="t0v-9o-lJp">

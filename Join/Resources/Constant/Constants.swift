@@ -58,12 +58,12 @@ struct Constant {
         static let blockAlertYesActionTitle = "我確定要封鎖"
         static let blockAlertCancelActionTitle = "取消"
         static let block = "封鎖此用戶"
-        static let blocked = "已為您封鎖此用戶，您可以在個人頁面「我的黑名單」中查看及編輯"
+        static let blocked = "已為您封鎖此用戶，您可以在個人頁面「個人設定」中查看及編輯"
 
         static let deleteFriend = "刪除好友"
 
         static let myFriends = "我的好友"
-        static let myBlockList = "黑名單"
+        static let myBlockList = "封鎖名單"
     }
 
     struct Portfolio {
