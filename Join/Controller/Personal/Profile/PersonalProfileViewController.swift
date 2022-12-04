@@ -73,12 +73,28 @@ class PersonalProfileViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.setHidesBackButton(true, animated: false)
+        guard let navVC = navigationController else { return }
+        let navBarAppearance = UINavigationBarAppearance()
+        navBarAppearance.configureWithOpaqueBackground()
+        navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.Gray1]
+        navBarAppearance.backgroundColor = .White
+        navVC.navigationBar.standardAppearance = navBarAppearance
+        navVC.navigationBar.scrollEdgeAppearance = navBarAppearance
+        navVC.navigationBar.tintColor = .Gray1
+
         collectionView.addRefreshHeader { [weak self] in
             self?.updateData {
                 self?.layoutViews()
             }
         }
         collectionView.beginHeaderRefreshing()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        updateData { [weak self] in
+            self?.layoutViews()
+        }
     }
 
     func layoutViews() {
@@ -88,24 +104,15 @@ class PersonalProfileViewController: BaseViewController {
             image: UIImage(named: JImages.Icons_24px_Back.rawValue), style: .plain,
             target: self, action: #selector(backToPreviousPage))
 
-        if let myID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey), myID == userID {
-            guard let navVC = navigationController else { return }
-            let navBarAppearance = UINavigationBarAppearance()
-            navBarAppearance.configureWithOpaqueBackground()
-            navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.Gray1]
-            navBarAppearance.backgroundColor = .White
-            navVC.navigationBar.standardAppearance = navBarAppearance
-            navVC.navigationBar.scrollEdgeAppearance = navBarAppearance
-            navVC.navigationBar.tintColor = .Gray1
-        }
+//        if let myID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey), myID == userID {
+//
+//        }
     }
 
     func updateData(completion: (() -> Void)? = nil) {
         guard let userID = userID else {
             fatalError("Doesn't have user id")
         }
-
-//        JProgressHUD.shared.showLoading(view: self.view)
 
         let group = DispatchGroup()
         var shouldContinue = true
@@ -188,7 +195,6 @@ class PersonalProfileViewController: BaseViewController {
                 if shouldContinue {
                     self.updateDatasource()
                     self.collectionView.endHeaderRefreshing()
-//                    JProgressHUD.shared.dismiss()
                     completion?()
                 } else {
                     self.collectionView.endHeaderRefreshing()

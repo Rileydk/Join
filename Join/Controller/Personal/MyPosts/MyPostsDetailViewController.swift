@@ -83,6 +83,17 @@ class MyPostsDetailViewController: BaseViewController {
         }
     }
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        let backIcon = UIImage(named: JImages.Icons_24px_Back.rawValue)
+        backIcon?.withRenderingMode(.alwaysTemplate)
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            image: backIcon,
+            style: .plain, target: self, action: #selector(backToPreviousPage))
+        guard let project = project else { return }
+        title = project.name
+    }
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         guard let project = project else { return }
@@ -106,6 +117,10 @@ class MyPostsDetailViewController: BaseViewController {
                 JProgressHUD.shared.showFailure(text: err.localizedDescription,view: self.view)
             }
         }
+    }
+
+    @objc func backToPreviousPage() {
+        navigationController?.popViewController(animated: true)
     }
 }
 

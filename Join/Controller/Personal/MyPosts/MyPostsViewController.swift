@@ -54,8 +54,14 @@ class MyPostsViewController: BaseViewController {
 //    }
 
     func layoutViews() {
-        title = "我發佈的專案"
+        title = "我的專案"
         collectionView.backgroundColor = UIColor.Gray6
+
+        let backIcon = UIImage(named: JImages.Icons_24px_Back.rawValue)
+        backIcon?.withRenderingMode(.alwaysTemplate)
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            image: backIcon,
+            style: .plain, target: self, action: #selector(backToPreviousPage))
     }
 
     func getProjects() {
@@ -109,6 +115,10 @@ class MyPostsViewController: BaseViewController {
                 }
             }
         }
+    }
+
+    @objc func backToPreviousPage() {
+        navigationController?.popViewController(animated: true)
     }
 }
 

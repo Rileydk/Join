@@ -12,20 +12,18 @@ import SafariServices
 
 class PersonalEntryViewController: UIViewController {
     enum Section: CaseIterable {
-        case person
+        case buttonsGroup
         case goNextPage
         case signout
-        case deleteAccount
+//        case deleteAccount
     }
 
     enum NextPage: String, CaseIterable {
-        case profile = "我的主頁"
-        case posts = "我的專案"
-        case applications = "我的應徵"
         case friends = "我的好友"
-        case blockList = "黑名單"
+        case collection = "我的收藏"
+//        case blockList = "黑名單"
         case preference = "個人設定"
-        case privacyPolicy = "隱私權政策"
+//        case privacyPolicy = "隱私權政策"
     }
 
     @IBOutlet var tableView: UITableView! {
@@ -35,11 +33,16 @@ class PersonalEntryViewController: UIViewController {
                 forCellReuseIdentifier: PersonalMainThumbnailCell.identifier
             )
             tableView.register(
+                UINib(nibName: ButtonsGroupTableViewCell.identifier, bundle: nil),
+                forCellReuseIdentifier: ButtonsGroupTableViewCell.identifier)
+            tableView.register(
                 UINib(nibName: GoNextPageButtonCell.identifier, bundle: nil),
                 forCellReuseIdentifier: GoNextPageButtonCell.identifier
             )
             tableView.delegate = self
             tableView.dataSource = self
+            tableView.isScrollEnabled = false
+            tableView.separatorStyle = .none
         }
     }
 
@@ -48,7 +51,7 @@ class PersonalEntryViewController: UIViewController {
         guard let navVC = navigationController else { return }
         let navBarAppearance = UINavigationBarAppearance()
         navBarAppearance.configureWithOpaqueBackground()
-        navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.Gray1]
+        navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.White]
         navBarAppearance.backgroundColor = .Blue1
         navVC.navigationBar.standardAppearance = navBarAppearance
         navVC.navigationBar.scrollEdgeAppearance = navBarAppearance
@@ -63,57 +66,25 @@ class PersonalEntryViewController: UIViewController {
     func goToNextPage(index: Int) {
         let nextPage = NextPage.allCases[index]
         switch nextPage {
-        case .profile:
-            let personalStoryboard = UIStoryboard(name: StoryboardCategory.personal.rawValue, bundle: nil)
-            guard let profileVC = personalStoryboard.instantiateViewController(
-                withIdentifier: PersonalProfileViewController.identifier
-            ) as? PersonalProfileViewController else {
-                fatalError("Cannot create personal profile vc")
-            }
-            profileVC.userID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey)
-            hidesBottomBarWhenPushed = true
-            DispatchQueue.main.async { [weak self] in
-                self?.hidesBottomBarWhenPushed = false
-            }
-            navigationController?.pushViewController(profileVC, animated: true)
-
-        case .posts:
-            let personalStoryboard = UIStoryboard(name: StoryboardCategory.personal.rawValue, bundle: nil)
-            guard let myPostsVC = personalStoryboard.instantiateViewController(
-                withIdentifier: MyPostsViewController.identifier
-                ) as? MyPostsViewController else {
-                fatalError("Cannot create personal profile vc")
-            }
-            navigationController?.pushViewController(myPostsVC, animated: true)
-
-        case .applications:
-            let personalStoryboard = UIStoryboard(name: StoryboardCategory.personal.rawValue, bundle: nil)
-            guard let myApplicationsVC = personalStoryboard.instantiateViewController(
-                withIdentifier: MyApplicationsViewController.identifier
-                ) as? MyApplicationsViewController else {
-                fatalError("Cannot create personal profile vc")
-            }
-            navigationController?.pushViewController(myApplicationsVC, animated: true)
-
-        case .friends, .blockList:
+        case .friends:
             let personalStoryboard = UIStoryboard(name: StoryboardCategory.personal.rawValue, bundle: nil)
             guard let friendsListVC = personalStoryboard.instantiateViewController(
                 withIdentifier: UsersListViewController.identifier
                 ) as? UsersListViewController else {
                 fatalError("Cannot create personal profile vc")
             }
-            if nextPage == .blockList {
-                friendsListVC.usageType = .blockList
-            }
+//            if nextPage == .blockList {
+//                friendsListVC.usageType = .blockList
+//            }
             navigationController?.pushViewController(friendsListVC, animated: true)
 
-        case .privacyPolicy:
-            if let url = URL(string: Constant.Link.privacyPolicyURL) {
-                let safari = SFSafariViewController(url: url)
-                present(safari, animated: true)
-            }
+//        case .privacyPolicy:
+//            if let url = URL(string: Constant.Link.privacyPolicyURL) {
+//                let safari = SFSafariViewController(url: url)
+//                present(safari, animated: true)
+//            }
 
-        case .preference:
+        default:
             return
         }
     }
@@ -244,10 +215,10 @@ class PersonalEntryViewController: UIViewController {
 // MARK: - Table View Delegate
 extension PersonalEntryViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.section == 0 {
-            return 190
-        } else {
-            return 60
+        let section = Section.allCases[indexPath.section]
+        switch section {
+        case .buttonsGroup: return 280
+        default: return 55
         }
     }
 }
@@ -269,13 +240,46 @@ extension PersonalEntryViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let section = Section.allCases[indexPath.section]
         switch section {
-        case .person:
-            guard let cell = tableView.dequeueReusableCell(
-                withIdentifier: PersonalMainThumbnailCell.identifier,
-                for: indexPath) as? PersonalMainThumbnailCell else {
-                fatalError("Cannot create person main thumbnail cell")
+        case .buttonsGroup:
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: ButtonsGroupTableViewCell.identifier, for: indexPath) as? ButtonsGroupTableViewCell else {
+                fatalError("Cannot create buttons group table view cell")
             }
-            cell.layoutCell(isEditing: false)
+            cell.layoutCell()
+            cell.goNextPageHandler = { [weak self] button in
+                guard let self = self else { return }
+                let personalStoryboard = UIStoryboard(name: StoryboardCategory.personal.rawValue, bundle: nil)
+
+                switch button {
+                case .profile:
+                    guard let profileVC = personalStoryboard.instantiateViewController(
+                        withIdentifier: PersonalProfileViewController.identifier
+                        ) as? PersonalProfileViewController else {
+                        fatalError("Cannot create personal profile vc")
+                    }
+                    profileVC.userID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey)
+                    self.hidesBottomBarWhenPushed = true
+                    DispatchQueue.main.async { [weak self] in
+                        self?.hidesBottomBarWhenPushed = false
+                    }
+                    self.navigationController?.pushViewController(profileVC, animated: true)
+                case .myProject:
+                    let personalStoryboard = UIStoryboard(name: StoryboardCategory.personal.rawValue, bundle: nil)
+                    guard let myPostsVC = personalStoryboard.instantiateViewController(
+                        withIdentifier: MyPostsViewController.identifier
+                    ) as? MyPostsViewController else {
+                        fatalError("Cannot create personal profile vc")
+                    }
+                    self.navigationController?.pushViewController(myPostsVC, animated: true)
+                case .myApplications:
+                    let personalStoryboard = UIStoryboard(name: StoryboardCategory.personal.rawValue, bundle: nil)
+                    guard let myApplicationsVC = personalStoryboard.instantiateViewController(
+                        withIdentifier: MyApplicationsViewController.identifier
+                    ) as? MyApplicationsViewController else {
+                        fatalError("Cannot create personal profile vc")
+                    }
+                    self.navigationController?.pushViewController(myApplicationsVC, animated: true)
+                }
+            }
             return cell
 
         case .signout:
@@ -304,17 +308,17 @@ extension PersonalEntryViewController: UITableViewDataSource {
             }
             return cell
 
-        case .deleteAccount:
-            guard let cell = tableView.dequeueReusableCell(
-                withIdentifier: GoNextPageButtonCell.identifier,
-                for: indexPath) as? GoNextPageButtonCell else {
-                fatalError("Cannot create go next page button cell")
-            }
-            cell.layoutCellForDeleteAccount()
-            cell.tapHandler = { [weak self] in
-                self?.alertReauthentication()
-            }
-            return cell
+//        case .deleteAccount:
+//            guard let cell = tableView.dequeueReusableCell(
+//                withIdentifier: GoNextPageButtonCell.identifier,
+//                for: indexPath) as? GoNextPageButtonCell else {
+//                fatalError("Cannot create go next page button cell")
+//            }
+//            cell.layoutCellForDeleteAccount()
+//            cell.tapHandler = { [weak self] in
+//                self?.alertReauthentication()
+//            }
+//            return cell
 
         default:
             guard let cell = tableView.dequeueReusableCell(

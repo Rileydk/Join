@@ -120,7 +120,16 @@ class ProjectDetailsViewController: BaseViewController {
             button.menu = menu
 
             navigationItem.rightBarButtonItem = UIBarButtonItem(customView: button)
+
         }
+        let backIcon = UIImage(named: JImages.Icons_24px_Back.rawValue)
+        backIcon?.withRenderingMode(.alwaysTemplate)
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            image: backIcon,
+            style: .plain, target: self, action: #selector(backToPreviousPage))
+
+        guard let project = project else { return }
+        title = project.name
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -211,6 +220,10 @@ class ProjectDetailsViewController: BaseViewController {
                 JProgressHUD.shared.showFailure(text: Constant.Common.errorShouldRetry, view: self.view)
             }
         }
+    }
+
+    @objc func backToPreviousPage() {
+        navigationController?.popViewController(animated: true)
     }
 }
 

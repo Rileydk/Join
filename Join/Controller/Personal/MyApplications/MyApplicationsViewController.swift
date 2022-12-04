@@ -50,6 +50,12 @@ class MyApplicationsViewController: BaseViewController {
     func layoutViews() {
         title = "我的應徵"
         collectionView.backgroundColor = UIColor.Gray6
+
+        let backIcon = UIImage(named: JImages.Icons_24px_Back.rawValue)
+        backIcon?.withRenderingMode(.alwaysTemplate)
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            image: backIcon,
+            style: .plain, target: self, action: #selector(backToPreviousPage))
     }
 
     func getMyApplications() {
@@ -62,6 +68,10 @@ class MyApplicationsViewController: BaseViewController {
                 print(err)
             }
         }
+    }
+
+    @objc func backToPreviousPage() {
+        navigationController?.popViewController(animated: true)
     }
 }
 

@@ -482,7 +482,6 @@ extension FindPartnersBasicViewController: UITableViewDataSource {
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: DatePickerCell.identifier, for: indexPath) as? DatePickerCell else {
                     fatalError("Cannot create date picker cell")
                 }
-                print("project deadline:", project.deadline)
                 cell.layoutCell(item: formState.items[indexPath.row], deadline: project.deadline)
                 project.deadline = cell.datePicker.date
                 cell.updateDateHandler = { [weak self] deadline in
