@@ -20,7 +20,7 @@ enum JImages: String {
     case Icons_24px_Tools
     case Icons_24px_Person
     case Icons_24px_VerticalMore
-    case Icons_24px_GroupchatDefault
+    case Icons_GroupchatDefault
 }
 
 extension UIImage {

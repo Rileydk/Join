@@ -176,7 +176,10 @@ extension ChatListViewController: UITableViewDelegate {
             }
             chatroomVC.chatroomID = chatroomID
             chatroomVC.title = chatroomName
-
+            hidesBottomBarWhenPushed = true
+            DispatchQueue.main.async { [weak self] in
+                self?.hidesBottomBarWhenPushed = false
+            }
             navigationController?.pushViewController(chatroomVC, animated: true)
 
         } else {

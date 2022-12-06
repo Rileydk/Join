@@ -42,6 +42,7 @@ class ContactCell: TableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         thumbnailImageView.layer.cornerRadius = thumbnailImageView.frame.size.width / 2
+        acceptJoinButton.layer.cornerRadius = 8
     }
 
     func layoutCell(user: JUser, from source: Source, isMember: Bool? = nil) {
@@ -65,9 +66,9 @@ class ContactCell: TableViewCell {
                 acceptJoinButton.backgroundColor = .clear
                 acceptJoinButton.contentEdgeInsets = .init(top: 6, left: 12, bottom: 6, right: 0)
             } else {
-                acceptJoinButton.setTitle("接受", for: .normal)
-                acceptJoinButton.setTitleColor(.White, for: .normal)
-                acceptJoinButton.backgroundColor = .Blue3
+                acceptJoinButton.setTitle("Join", for: .normal)
+                acceptJoinButton.setTitleColor(.Blue1?.withAlphaComponent(0.7), for: .normal)
+                acceptJoinButton.backgroundColor = .Blue1?.withAlphaComponent(0.2)
                 acceptJoinButton.contentEdgeInsets = .init(top: 6, left: 12, bottom: 6, right: 12)
             }
         } else {
