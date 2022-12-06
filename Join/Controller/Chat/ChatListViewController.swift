@@ -65,10 +65,10 @@ class ChatListViewController: BaseViewController {
     }
 
     func getMessageList() {
-        self.messageList = []
         JProgressHUD.shared.showLoading(view: self.view)
 
         if type == .group {
+            self.groupMessageList = []
             firebaseManager.getAllGroupMessages { [weak self] result in
                 guard let self = self else { return }
                 switch result {
@@ -89,6 +89,7 @@ class ChatListViewController: BaseViewController {
             }
 
         } else {
+            self.messageList = []
             firebaseManager.firebaseQueue.async { [weak self] in
                 guard let self = self else { return }
                 let group = DispatchGroup()
@@ -127,7 +128,7 @@ class ChatListViewController: BaseViewController {
                         self.messageList = rawMessageList
                         group.leave()
                         group.notify(queue: .main) {
-                            self.tableView.reloadData()
+//                            self.tableView.reloadData()
                             JProgressHUD.shared.dismiss()
                         }
                     case .failure(let err):
