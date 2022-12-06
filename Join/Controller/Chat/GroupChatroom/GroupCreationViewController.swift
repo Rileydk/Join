@@ -178,6 +178,7 @@ class GroupCreationViewController: BaseViewController {
 
                 switch self.sourceType {
                 case .chatlist:
+                    chatroomVC.sourceType = .chatlist
                     guard let rootVC = strongSelf.navigationController?.viewControllers.first! as? ChatListViewController else {
                         fatalError("Cannot create chatlist vc")
                     }
@@ -188,6 +189,7 @@ class GroupCreationViewController: BaseViewController {
                     self.navigationController?.setViewControllers([rootVC, chatroomVC], animated: true)
 
                 case .project:
+                    chatroomVC.sourceType = .project
                     guard let rootVC = strongSelf.navigationController?.viewControllers[0] as? PersonalEntryViewController else {
                         fatalError("Cannot create personal entry vc")
                     }
@@ -198,11 +200,12 @@ class GroupCreationViewController: BaseViewController {
                         fatalError("Cannot create my post detail vc")
                     }
                     projectDetailVC.project = strongSelf.linkedProject
-                    self.hidesBottomBarWhenPushed = true
+
+                    strongSelf.hidesBottomBarWhenPushed = true
                     DispatchQueue.main.async {
-                        self.hidesBottomBarWhenPushed = false
+                        strongSelf.hidesBottomBarWhenPushed = false
                     }
-                    self.navigationController?.setViewControllers([rootVC, projectVC, projectDetailVC, chatroomVC], animated: true)
+                    strongSelf.navigationController?.setViewControllers([rootVC, projectVC, projectDetailVC, chatroomVC], animated: true)
                 }
             }
         }

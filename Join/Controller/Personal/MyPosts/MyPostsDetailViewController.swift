@@ -508,6 +508,7 @@ extension MyPostsDetailViewController {
                         fatalError("Cannot get chatroom vc")
                     }
                     chatroomVC.chatroomID = self.project?.chatroom
+                    chatroomVC.sourceType = .project
 
                     guard let rootVC = self.navigationController?.viewControllers[0] as? PersonalEntryViewController else {
                         fatalError("Cannot create personal entry vc")

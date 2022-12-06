@@ -30,8 +30,7 @@ class GroupMessageCell: TableViewCell {
             bottom: inset, right: inset
         )
         messageTextView.layer.cornerRadius = 12
-        messageTextView.layer.borderWidth = 0.5
-        messageTextView.layer.borderColor = UIColor.Gray3?.cgColor
+        messageTextView.backgroundColor = .White
         messageTextView.isUserInteractionEnabled = false
         messageTextView.isScrollEnabled = false
 

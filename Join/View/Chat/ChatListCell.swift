@@ -20,15 +20,16 @@ class ChatListCell: TableViewCell {
         userThumbnailImageView.image = nil
         nameLabel.text = ""
         latestMessageLabel.text = ""
-        unreadMessagesAmountButton.isHidden = true
+        self.unreadMessagesAmountButton.isHidden = true
     }
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        unreadMessagesAmountButton.isHidden = true
+
         contentView.backgroundColor = .Gray6
         nameLabel.text = ""
         latestMessageLabel.text = ""
+        unreadMessagesAmountButton.isHidden = true
     }
 
     override func layoutSubviews() {
@@ -40,29 +41,22 @@ class ChatListCell: TableViewCell {
 
     func layoutCell(messageItem: MessageListItem) {
         firebaseManager.getUserInfo(id: messageItem.objectID) { [weak self] result in
+            guard let self = self else { return }
             switch result {
             case .success(let user):
-//                self?.firebaseManager.downloadImage(urlString: user.thumbnailURL ?? FindPartnersFormSections.placeholderImageURL) { [weak self] result in
-//                    switch result {
-//                    case .success(let image):
-//                        self?.userThumbnailImageView.image = image
-//
-//                    case .failure(let error):
-//                        print(error)
-//                    }
-//                }
-                self?.userThumbnailImageView.loadImage(user.thumbnailURL ?? Constant.Placeholder.coverURLString)
-                self?.nameLabel.text = user.name
+                self.userThumbnailImageView.loadImage(user.thumbnailURL ?? Constant.Placeholder.coverURLString)
+                self.nameLabel.text = user.name
                 if let latesMessage = messageItem.messages.first {
-                    self?.latestMessageLabel.text = latesMessage.content
+                    self.latestMessageLabel.text = latesMessage.content
                 }
-
                 let amountOfUnreadMessages = messageItem.messages.filter {
-                    $0.time > messageItem.lastTimeInChatroom
+                    return $0.time > messageItem.lastTimeInChatroom
                 }.count
                 if amountOfUnreadMessages != 0 {
-                    self?.unreadMessagesAmountButton.setTitle("\(amountOfUnreadMessages)", for: .normal)
-                    self?.unreadMessagesAmountButton.isHidden = false
+                    self.unreadMessagesAmountButton.setTitle("\(amountOfUnreadMessages)", for: .normal)
+                    self.unreadMessagesAmountButton.isHidden = false
+                } else {
+                    self.unreadMessagesAmountButton.isHidden = true
                 }
             case .failure(let error):
                 print(error)
