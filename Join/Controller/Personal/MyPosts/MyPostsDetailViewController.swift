@@ -119,6 +119,16 @@ class MyPostsDetailViewController: BaseViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        var navBarAppearance = UINavigationBarAppearance()
+        navBarAppearance.configureWithOpaqueBackground()
+        navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.White]
+        navBarAppearance.backgroundColor = .Blue1
+        navBarAppearance.shadowColor = nil
+        navBarAppearance.shadowImage = UIImage()
+        navigationController?.navigationBar.standardAppearance = navBarAppearance
+        navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
+        navigationController?.navigationBar.tintColor = .White
+
         guard let project = project else { return }
         guard !project.applicants.isEmpty else {
             print("No applicants")
@@ -128,7 +138,6 @@ class MyPostsDetailViewController: BaseViewController {
     }
 
     func updateData() {
-        JProgressHUD.shared.showLoading(view: self.view)
         firebaseManager.firebaseQueue.async { [weak self] in
             guard let self = self, let project = self.project else { return }
             let group = DispatchGroup()
@@ -144,6 +153,7 @@ class MyPostsDetailViewController: BaseViewController {
                     shouldContinue = false
                     group.leave()
                     group.notify(queue: .main) {
+                        self.tableView.endHeaderRefreshing()
                         JProgressHUD.shared.showFailure(view: self.view)
                     }
                 }
@@ -159,12 +169,13 @@ class MyPostsDetailViewController: BaseViewController {
                     self.applicants = applicants
                     group.leave()
                     group.notify(queue: .main) {
-                        JProgressHUD.shared.dismiss()
+                        self.tableView.endHeaderRefreshing()
                         self.updateDatasource()
                     }
                 case .failure(let err):
                     group.leave()
                     group.notify(queue: .main) {
+                        self.tableView.endHeaderRefreshing()
                         JProgressHUD.shared.showFailure(text: err.localizedDescription,view: self.view)
                     }
                 }
@@ -509,9 +520,6 @@ extension MyPostsDetailViewController {
                     }
                     projectDetailVC.project = self.project
                     self.hidesBottomBarWhenPushed = true
-                    DispatchQueue.main.async {
-                        self.hidesBottomBarWhenPushed = false
-                    }
                     self.navigationController?.setViewControllers([rootVC, projectVC, projectDetailVC, chatroomVC], animated: true)
                 default:
                     break

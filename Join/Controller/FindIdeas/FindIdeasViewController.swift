@@ -67,6 +67,10 @@ class FindIdeasViewController: BaseViewController {
                 fatalError("Cannot create ProjectDetailsVC")
             }
             detailVC.project = project
+            hidesBottomBarWhenPushed = true
+            DispatchQueue.main.async { [weak self] in
+                self?.hidesBottomBarWhenPushed = false
+            }
         }
     }
 

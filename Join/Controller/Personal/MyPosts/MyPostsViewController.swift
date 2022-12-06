@@ -36,6 +36,10 @@ class MyPostsViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         layoutViews()
+        collectionView.addRefreshHeader { [weak self] in
+            self?.getProjects()
+        }
+        collectionView.beginHeaderRefreshing()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -65,8 +69,6 @@ class MyPostsViewController: BaseViewController {
     }
 
     func getProjects() {
-        JProgressHUD.shared.showLoading(view: self.view)
-
         firebaseManager.firebaseQueue.async { [weak self] in
             guard let self = self else { return }
             var shouldContinue = true
@@ -74,14 +76,14 @@ class MyPostsViewController: BaseViewController {
 
             let group = DispatchGroup()
             group.enter()
-            self.firebaseManager.getAllMyProjectsItems { result in
+            self.firebaseManager.getAllMyProjectsItems { [weak self] result in
+                guard let self = self else { return }
                 switch result {
                 case .success(let postsItems):
                     projectsID = postsItems.map { $0.projectID }
                     guard !projectsID.isEmpty else {
                         // TODO: - 改為顯示提示畫面
-                        print("No projects")
-                        JProgressHUD.shared.dismiss()
+                        self.collectionView.endHeaderRefreshing()
                         shouldContinue = false
                         group.leave()
                         return
@@ -90,6 +92,7 @@ class MyPostsViewController: BaseViewController {
                 case .failure(let err):
                     group.leave()
                     group.notify(queue: .main) {
+                        self.collectionView.endHeaderRefreshing()
                         JProgressHUD.shared.showFailure(text: err.localizedDescription, view: self.view)
                         shouldContinue = false
                     }
@@ -105,11 +108,12 @@ class MyPostsViewController: BaseViewController {
                     group.notify(queue: .main) {
                         self.myPosts = posts
                         self.updateDatasource()
-                        JProgressHUD.shared.dismiss()
+                        self.collectionView.endHeaderRefreshing()
                     }
                 case .failure(let err):
                     group.leave()
                     group.notify(queue: .main) {
+                        self.collectionView.endHeaderRefreshing()
                         JProgressHUD.shared.showFailure(text: err.localizedDescription, view: self.view)
                     }
                 }

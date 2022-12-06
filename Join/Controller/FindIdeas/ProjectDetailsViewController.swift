@@ -415,9 +415,6 @@ extension ProjectDetailsViewController {
                 fatalError("Cannot create join button cell")
             }
             cell.layoutCell(type: .joinProject)
-            if sourceType == .myApplications {
-                cell.joinButton.backgroundColor = .Gray2?.withAlphaComponent(0.7)
-            }
             cell.tapHandler = { [weak self] _ in
                 guard let project = self?.project else { return }
                 self?.checkAlreadyApplied(project: project)
