@@ -89,6 +89,10 @@ class PersonalEntryViewController: UIViewController {
                 ) as? PersonalSettingsViewController else {
                 fatalError("Cannot create personal profile vc")
             }
+            hidesBottomBarWhenPushed = true
+            DispatchQueue.main.async { [weak self] in
+                self?.hidesBottomBarWhenPushed = false
+            }
             navigationController?.pushViewController(personalSettingsVC, animated: true)
         }
     }

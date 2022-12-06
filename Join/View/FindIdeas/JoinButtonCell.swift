@@ -16,25 +16,35 @@ class JoinButtonCell: TableViewCell {
         var backgroundColor: UIColor {
             switch self {
             case .joinProject, .createProjectGroup: return .Blue1 ?? .black
-            case .goToProjectGroup: return .Yellow1 ?? .white
+            // case .goToProjectGroup: return .Yellow1 ?? .white
+            case .goToProjectGroup: return .Yellow1?.withAlphaComponent(0.2) ?? .white
             }
         }
 
         var titleColor: UIColor {
             switch self {
             case .joinProject, .createProjectGroup: return .White ?? .white
-            case .goToProjectGroup: return .Gray1 ?? .black
+            // case .goToProjectGroup: return .Gray1 ?? .black
+            case .goToProjectGroup: return .Yellow1?.withAlphaComponent(0.9) ?? .white
+            }
+        }
+
+        var borderColor: UIColor? {
+            switch self {
+            case .joinProject, .createProjectGroup: return nil
+            case .goToProjectGroup: return .Yellow1?.withAlphaComponent(0.9) ?? .white
             }
         }
     }
 
     @IBOutlet weak var joinButton: UIButton!
     var tapHandler: ((UsageType) -> Void)?
-    var usageType: UsageType = .joinProject
+    lazy var usageType: UsageType = .joinProject
 
     override func awakeFromNib() {
         super.awakeFromNib()
         contentView.backgroundColor = .White
+        joinButton.layer.borderWidth = 1
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -47,6 +57,13 @@ class JoinButtonCell: TableViewCell {
         joinButton.setTitle(type.rawValue, for: .normal)
         joinButton.setTitleColor(type.titleColor, for: .normal)
         joinButton.backgroundColor = type.backgroundColor
+        if let borderColor = type.borderColor {
+            print("=== border color", borderColor)
+            joinButton.layer.borderColor = borderColor.cgColor
+        } else {
+            joinButton.layer.borderColor = nil
+        }
+
         usageType = type
     }
 

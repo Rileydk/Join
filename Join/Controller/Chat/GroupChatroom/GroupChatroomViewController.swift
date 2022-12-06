@@ -64,7 +64,7 @@ class GroupChatroomViewController: BaseViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        tabBarController?.tabBar.isHidden = true
+//        tabBarController?.tabBar.isHidden = true
 
         guard chatroomID != nil else { return }
         getNecessaryInfo()
@@ -77,7 +77,7 @@ class GroupChatroomViewController: BaseViewController {
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        tabBarController?.tabBar.isHidden = false
+//        tabBarController?.tabBar.isHidden = false
         updateInoutStatus(to: .out)
     }
 

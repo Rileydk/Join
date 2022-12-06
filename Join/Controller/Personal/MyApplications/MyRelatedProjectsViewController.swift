@@ -46,6 +46,10 @@ class MyRelatedProjectsViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         layoutViews()
+        collectionView.addRefreshHeader { [weak self] in
+            self?.getRelatedProjects()
+        }
+        collectionView.beginHeaderRefreshing()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -71,10 +75,12 @@ class MyRelatedProjectsViewController: BaseViewController {
         case .collections: type = .collectors
         }
         firebaseManager.getAllMyRelativeInfoInDocuments(type: type) { [weak self] result in
+            guard let self = self else { return }
             switch result {
             case .success(let projects):
-                self?.projects = projects
-                self?.updateDatasource()
+                self.projects = projects
+                self.collectionView.endHeaderRefreshing()
+                self.updateDatasource()
             case .failure(let err):
                 print(err)
             }
@@ -198,6 +204,10 @@ extension MyRelatedProjectsViewController: UICollectionViewDelegate {
             }
             detailVC.sourceType = .myApplications
             detailVC.project = projects[indexPath.row]
+            hidesBottomBarWhenPushed = true
+            DispatchQueue.main.async { [weak self] in
+                self?.hidesBottomBarWhenPushed = false
+            }
             navigationController?.pushViewController(detailVC, animated: true)
         }
     }
