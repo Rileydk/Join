@@ -53,7 +53,9 @@ class GroupChatroomViewController: BaseViewController {
     var members = [JUser]()
     var wholeInfoMessages = [WholeInfoMessage]() {
         didSet {
-            tableView.reloadData()
+            if tableView != nil && !wholeInfoMessages.isEmpty {
+                tableView.reloadData()
+            }
         }
     }
 
