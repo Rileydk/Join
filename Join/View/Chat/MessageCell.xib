@@ -2,7 +2,6 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -19,7 +18,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" alignment="top" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="rqP-qy-Irv">
-                        <rect key="frame" x="12" y="2" width="240" height="56"/>
+                        <rect key="frame" x="12" y="2" width="240" height="46"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="mec-AQ-BWR">
                                 <rect key="frame" x="0.0" y="0.0" width="38" height="38"/>
@@ -29,7 +28,7 @@
                                 </constraints>
                             </imageView>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="esc-zN-3iC">
-                                <rect key="frame" x="46" y="0.0" width="194" height="56"/>
+                                <rect key="frame" x="46" y="0.0" width="194" height="46"/>
                                 <color key="backgroundColor" name="Gray4"/>
                                 <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                 <color key="textColor" name="Gray1"/>
@@ -42,8 +41,8 @@
                             <constraint firstAttribute="bottom" secondItem="esc-zN-3iC" secondAttribute="bottom" id="YXg-qI-iWG"/>
                         </constraints>
                     </stackView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="24:59" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tCd-pG-nsU">
-                        <rect key="frame" x="255" y="43.5" width="34" height="15"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="24:59" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tCd-pG-nsU">
+                        <rect key="frame" x="255" y="33.5" width="34" height="14.5"/>
                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                         <color key="textColor" name="Gray3"/>
                         <nil key="highlightedColor"/>
@@ -53,8 +52,8 @@
                     <constraint firstItem="rqP-qy-Irv" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="2" id="09t-ax-9Hz"/>
                     <constraint firstItem="tCd-pG-nsU" firstAttribute="leading" secondItem="rqP-qy-Irv" secondAttribute="trailing" constant="4" id="5EQ-QP-WIZ"/>
                     <constraint firstItem="rqP-qy-Irv" firstAttribute="width" relation="lessThanOrEqual" secondItem="H2p-sc-9uM" secondAttribute="width" multiplier="0.75" id="6zi-rJ-6w9"/>
-                    <constraint firstAttribute="bottom" secondItem="rqP-qy-Irv" secondAttribute="bottom" constant="2" id="9cN-oL-pSn"/>
-                    <constraint firstAttribute="bottom" secondItem="tCd-pG-nsU" secondAttribute="bottom" constant="2" id="cd5-Vb-6RS"/>
+                    <constraint firstAttribute="bottom" secondItem="rqP-qy-Irv" secondAttribute="bottom" constant="12" id="9cN-oL-pSn"/>
+                    <constraint firstItem="tCd-pG-nsU" firstAttribute="bottom" secondItem="esc-zN-3iC" secondAttribute="bottom" id="P3d-zG-CJG"/>
                     <constraint firstItem="rqP-qy-Irv" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="12" id="iVj-S3-IbL"/>
                 </constraints>
             </tableViewCellContentView>
@@ -69,7 +68,7 @@
     </objects>
     <resources>
         <namedColor name="Gray1">
-            <color red="0.24705882352941178" green="0.22745098039215686" blue="0.22745098039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.22745098039215686" green="0.22745098039215686" blue="0.22745098039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="Gray3">
             <color red="0.53333333333333333" green="0.53333333333333333" blue="0.53333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

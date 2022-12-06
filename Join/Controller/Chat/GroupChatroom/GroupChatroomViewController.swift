@@ -12,6 +12,11 @@ class GroupChatroomViewController: BaseViewController {
         firebaseManager.detachNewMessageListener()
     }
 
+    enum SourceType {
+        case chatlist
+        case project
+    }
+
     @IBOutlet weak var messageTypingSuperview: MessageTypingSuperview! {
         didSet {
             messageTypingSuperview.delegate = self
@@ -40,6 +45,7 @@ class GroupChatroomViewController: BaseViewController {
 
     let firebaseManager = FirebaseManager.shared
     let myID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey) ?? ""
+    var sourceType: SourceType = .chatlist
     var chatroomID: ChatroomID?
     var chatroomInfo: GroupChatroom?
     var messages = [Message]()
@@ -64,9 +70,8 @@ class GroupChatroomViewController: BaseViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-//        tabBarController?.tabBar.isHidden = true
-
         guard chatroomID != nil else { return }
+        tabBarController?.tabBar.isHidden = true
         getNecessaryInfo()
     }
 
@@ -77,7 +82,9 @@ class GroupChatroomViewController: BaseViewController {
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-//        tabBarController?.tabBar.isHidden = false
+        if sourceType == .chatlist {
+            tabBarController?.tabBar.isHidden = false
+        }
         updateInoutStatus(to: .out)
     }
 

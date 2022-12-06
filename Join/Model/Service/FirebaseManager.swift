@@ -843,6 +843,15 @@ class FirebaseManager {
         }
     }
 
+    func addNoneStopCollectionListener(to ref: CollectionReference, completion: @escaping () -> Void) {
+        ref.addSnapshotListener { _, err in
+            if let err = err {
+                return
+            }
+            completion()
+        }
+    }
+
     func listenToNewMessages(chatroomID: ChatroomID, completion: @escaping (Result<[Message], Error>) -> Void) {
         let ref = FirestoreEndpoint.messages(chatroomID).ref
         newMessageListener = ref.addSnapshotListener { (querySnapshot, error) in

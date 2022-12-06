@@ -49,9 +49,8 @@ class ChatListCell: TableViewCell {
                 if let latesMessage = messageItem.messages.first {
                     self.latestMessageLabel.text = latesMessage.content
                 }
-
                 let amountOfUnreadMessages = messageItem.messages.filter {
-                    $0.time > messageItem.lastTimeInChatroom
+                    return $0.time > messageItem.lastTimeInChatroom
                 }.count
                 if amountOfUnreadMessages != 0 {
                     self.unreadMessagesAmountButton.setTitle("\(amountOfUnreadMessages)", for: .normal)

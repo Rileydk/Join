@@ -128,7 +128,6 @@ class ChatListViewController: BaseViewController {
                         self.messageList = rawMessageList
                         group.leave()
                         group.notify(queue: .main) {
-//                            self.tableView.reloadData()
                             JProgressHUD.shared.dismiss()
                         }
                     case .failure(let err):
