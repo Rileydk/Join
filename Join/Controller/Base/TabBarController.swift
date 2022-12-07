@@ -94,7 +94,7 @@ class TabBarController: UITabBarController {
         let tabs: [Tab] = [.findIdeas, .findPartners, .chat, .personal]
         viewControllers = tabs.map { $0.controller() }
         tabBar.tintColor = .Blue1
-        addListenerToAllChatrooms()
+//        addListenerToAllChatrooms()
     }
 
     func updateTotalUnreadMessages() {
