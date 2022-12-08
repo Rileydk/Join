@@ -50,6 +50,7 @@ struct Constant {
             case myApplications = "我的應徵"
         }
 
+        static let sending = "發送中..."
         static let saveSuccessfully = "收藏成功"
         static let removeSuccessfully = "移除收藏"
 

@@ -35,6 +35,9 @@ class PersonalProfileViewController: BaseViewController {
     typealias ProfileDatasource = UICollectionViewDiffableDataSource<Section, Item>
     private var datasource: ProfileDatasource!
     let firebaseManager = FirebaseManager.shared
+    let firestoreManager = FirestoreManager.shared
+    let userManager = UserManager.shared
+
     let cellBackgroundColor: UIColor = .Gray6 ?? .white
     var userID: UserID?
     var userData: JUser?
@@ -108,146 +111,38 @@ class PersonalProfileViewController: BaseViewController {
     }
 
     func updateData(completion: (() -> Void)? = nil) {
-        guard let userID = userID else {
-            fatalError("Doesn't have user id")
-        }
+        guard let userID = userID else { fatalError("Doesn't have user id") }
 
-        let group = DispatchGroup()
-        var shouldContinue = true
-
-        firebaseManager.firebaseQueue.async { [weak self] in
+        DispatchQueue.global().async { [weak self] in
             guard let self = self else { return }
+            let group = DispatchGroup()
+
             group.enter()
-            self.firebaseManager.getUserInfo(id: userID) { result in
-                switch result {
-                case .success(let userData):
-                    self.userData = userData
-                    group.leave()
-                case .failure(let err):
-                    group.leave()
-                    group.notify(queue: .main) {
-                        self.collectionView.endHeaderRefreshing()
-                        JProgressHUD.shared.showFailure(text: err.localizedDescription, view: self.view)
-                        shouldContinue = false
-                    }
-                }
+            self.userManager.getSingleUserData(userID: userID) { user in
+                self.userData = user
+                group.leave()
             }
 
-            if userID != UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey) {
+            if let myID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey), userID != myID {
                 group.enter()
-                self.getRelationship { result in
-                    switch result {
-                    case .success:
-                        group.leave()
-                    case .failure(let err):
-                        group.leave()
-                        group.notify(queue: .main) {
-                            self.collectionView.endHeaderRefreshing()
-                            JProgressHUD.shared.showFailure(text: err.localizedDescription, view: self.view)
-                            shouldContinue = false
-                        }
-                    }
+                self.userManager.getRelationship(userID: userID) { relationship in
+                    self.relationship = relationship
+                    group.leave()
                 }
             } else {
                 self.relationship = .mySelf
             }
 
             group.enter()
-            self.firebaseManager.getUserWorks(userID: userID) { result in
-                switch result {
-                case .success(let works):
-                    self.workItems = works.map {
-                        WorkItem(workID: $0.workID, name: $0.name,
-                                 description: $0.description,
-                                 latestUpdatedTime: $0.latestUpdatedTime, records: [])
-                    }.sorted { $0.latestUpdatedTime > $1.latestUpdatedTime }
-                    group.leave()
-                case .failure(let err):
-                    group.leave()
-                    group.notify(queue: .main) {
-                        self.collectionView.endHeaderRefreshing()
-                        JProgressHUD.shared.showFailure(text: err.localizedDescription, view: self.view)
-                        shouldContinue = false
-                    }
-                }
+            self.userManager.getPortfolio(userID: userID) { workItems in
+                self.workItems = workItems.sorted { $0.latestUpdatedTime > $1.latestUpdatedTime }
+                group.leave()
             }
 
-            group.wait()
-            guard shouldContinue else { return }
-            for i in 0 ..< self.workItems.count {
-                guard shouldContinue else { break }
-                group.enter()
-                self.firebaseManager.getWorkRecords(userID: userID, by: self.workItems[i].workID) { result in
-                    switch result {
-                    case .success(let records):
-                        self.workItems[i].records = records
-                        group.leave()
-                    case .failure(let err):
-                        print(err)
-                        shouldContinue = false
-                        group.leave()
-                    }
-                }
-            }
             group.notify(queue: .main) {
-                if shouldContinue {
-                    self.updateDatasource()
-                    self.collectionView.endHeaderRefreshing()
-                    completion?()
-                } else {
-                    self.collectionView.endHeaderRefreshing()
-                    JProgressHUD.shared.showFailure(view: self.view)
-                }
-            }
-        }
-    }
-
-    func getRelationship(completion: @escaping (Result<String, Error>) -> Void) {
-        firebaseManager.firebaseQueue.async { [weak self] in
-            var shouldContinue = true
-
-            let group = DispatchGroup()
-            group.enter()
-            guard let objectID = self?.userID else { return }
-            self?.firebaseManager.checkIsFriend(id: objectID) { result in
-                switch result {
-                case .success:
-                    self?.relationship = .friend
-                    shouldContinue = false
-                    group.leave()
-                    group.notify(queue: .main) {
-                        completion(.success("Success"))
-                    }
-                case .failure(let error):
-                    print(error)
-                    group.leave()
-                }
-            }
-
-            group.wait()
-            guard shouldContinue else { return }
-            group.enter()
-            let myID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey) ?? ""
-            self?.firebaseManager.getUserInfo(id: myID) { result in
-                switch result {
-                case .success(let myData):
-                    if myData.sentRequests.contains(objectID) {
-                        self?.relationship = .sentRequest
-                    } else if myData.receivedRequests.contains(objectID) {
-                        self?.relationship = .receivedRequest
-                    } else {
-                        self?.relationship = .unknown
-                    }
-                    group.leave()
-                    group.notify(queue: .main) {
-                        completion(.success("Success"))
-                    }
-                case .failure(let err):
-                    group.leave()
-                    group.notify(queue: .main) {
-                        completion(.failure(err))
-                    }
-                }
+                self.updateDatasource()
+                self.collectionView.endHeaderRefreshing()
+                completion?()
             }
         }
     }
@@ -268,32 +163,41 @@ class PersonalProfileViewController: BaseViewController {
         navigationController?.popViewController(animated: true)
     }
 
-    func sendFriendRequest(id: UserID?) {
-        guard let id = id else { fatalError("Cannot get userID") }
-        self.firebaseManager.sendFriendRequest(to: id) { [unowned self] result in
+    func sendFriendRequest(userID: UserID?) {
+        JProgressHUD.shared.showLoading(text: Constant.Personal.sending, view: view)
+        guard let userID = userID else { return }
+        userManager.sendFriendRequest(to: userID) { [weak self] result in
+            guard let self = self else { return }
             switch result {
             case .success:
                 self.updateData()
+                JProgressHUD.shared.showSuccess(view: self.view)
             case .failure(let error):
                 print(error)
+                JProgressHUD.shared.showFailure(view: self.view)
             }
         }
     }
 
-    func acceptFriendRequest(id: UserID?) {
-        guard let id = id else { fatalError("Cannot get userID") }
-        self.firebaseManager.acceptFriendRequest(from: id) { [unowned self] result in
+    func acceptFriendRequest(userID: UserID?) {
+        JProgressHUD.shared.showLoading(text: Constant.Personal.sending, view: view)
+        guard let userID = userID else { return }
+        userManager.acceptFriendRequest(from: userID) { [weak self] result in
+            guard let self = self else { return }
             switch result {
             case .success:
                 self.updateData()
+                JProgressHUD.shared.showSuccess(view: self.view)
             case .failure(let error):
                 print(error)
+                JProgressHUD.shared.showFailure(view: self.view)
             }
         }
     }
 
     func goChatroom() {
         guard let id = userID else { return }
+
         firebaseManager.getChatroom(id: id) { [unowned self] result in
             switch result {
             case .success(let chatroomID):
@@ -550,10 +454,10 @@ extension PersonalProfileViewController {
                 }
                 cell.layoutCell(with: relationship, isBlocked: sourceType == .blockList)
                 cell.sendFriendRequestHandler = { [weak self] in
-                    self?.sendFriendRequest(id: self?.userID)
+                    self?.sendFriendRequest(userID: self?.userID)
                 }
                 cell.acceptFriendRequestHandler = { [weak self] in
-                    self?.acceptFriendRequest(id: self?.userID)
+                    self?.acceptFriendRequest(userID: self?.userID)
                 }
                 cell.goChatroomHandler = { [weak self] in
                     guard let self = self else { return }

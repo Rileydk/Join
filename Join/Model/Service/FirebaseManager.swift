@@ -61,6 +61,8 @@ enum FirestoreEndpoint {
     case groupMembers(ChatroomID)
     case interests
     case reports
+    case works(UserID)
+    case workRecords(UserID, WorkID)
 
     var ref: CollectionReference {
         let db = Firestore.firestore()
@@ -77,6 +79,8 @@ enum FirestoreEndpoint {
         let members = "Members"
         let infoCategories = "Categories"
         let reports = "Reports"
+        let works = "Works"
+        let workRecords = "Records"
 
         switch self {
         case .projects:
@@ -105,6 +109,10 @@ enum FirestoreEndpoint {
             return db.collection(infoCategories)
         case .reports:
             return db.collection(reports)
+        case .works(let userID):
+            return users.document(userID).collection(works)
+        case .workRecords(let userID, let workID):
+            return users.document(userID).collection(works).document(workID).collection(workRecords)
         }
     }
 }
@@ -114,7 +122,7 @@ enum ProjectDocumentArrayFieldType: String {
     case collectors
 }
 
-enum FirestoreMyDocumentEndpoint {
+enum FirestoreMyDocEndpoint {
     case myPosts
     case myFriends
     case mySentRequests
@@ -341,7 +349,7 @@ class FirebaseManager {
     }
 
     func saveProjectIDToContact(projectID: ProjectID, completion: @escaping (Result<String, Error>) -> Void) {
-        let ref = FirestoreMyDocumentEndpoint.myPosts.ref
+        let ref = FirestoreMyDocEndpoint.myPosts.ref
         ref.document(projectID).setData(["projectID": projectID]) { err in
             if let err = err {
                 completion(.failure(err))
@@ -415,6 +423,7 @@ class FirebaseManager {
         }
     }
 
+    // FIXME: - Delete
     func getUserInfo(id: UserID, completion: @escaping (Result<JUser, Error>) -> Void) {
         let ref = FirestoreEndpoint.users.ref
         ref.whereField("id", isEqualTo: id).getDocuments { querySnapshot, error in
@@ -435,32 +444,33 @@ class FirebaseManager {
         }
     }
 
-    func getSingleDocument<T: Decodable>(from ref: CollectionReference, match field: DocFieldName? = nil, with stringCondition: String? = nil, completion: @escaping (Result<T, Error>) -> Void) {
-        if let field = field, let stringCondition = stringCondition {
-            ref.whereField(field.rawValue, isEqualTo: stringCondition).getDocuments { snapshot, err in
-                if let err = err {
-                    completion(.failure(err))
-                    return
-                }
-                if snapshot != nil {
-                    do {
-                        if let decodedResult = try snapshot?.documents.first?.data(as: T.self, decoder: FirebaseManager.decoder) {
-                            completion(.success(decodedResult))
-                        } else {
-                            completion(.failure(CommonError.notFriendYet))
-                        }
-                    } catch {
-                        completion(.failure(error))
-                    }
-                } else {
-                    completion(.failure(CommonError.noValidQuerysnapshot))
-                }
-            }
-        }
-    }
+//    func getSingleDocument<T: Decodable>(from ref: CollectionReference, match field: DocFieldName? = nil, with stringCondition: String? = nil, completion: @escaping (Result<T, Error>) -> Void) {
+//        if let field = field, let stringCondition = stringCondition {
+//            ref.whereField(field.rawValue, isEqualTo: stringCondition).getDocuments { snapshot, err in
+//                if let err = err {
+//                    completion(.failure(err))
+//                    return
+//                }
+//                if snapshot != nil {
+//                    do {
+//                        if let decodedResult = try snapshot?.documents.first?.data(as: T.self, decoder: FirebaseManager.decoder) {
+//                            completion(.success(decodedResult))
+//                        } else {
+//                            completion(.failure(CommonError.notFriendYet))
+//                        }
+//                    } catch {
+//                        completion(.failure(error))
+//                    }
+//                } else {
+//                    completion(.failure(CommonError.noValidQuerysnapshot))
+//                }
+//            }
+//        }
+//    }
 
+    // FIXME: - Delete
     func checkIsFriend(id: UserID, completion: @escaping (Result<Friend, Error>) -> Void) {
-        let ref = FirestoreMyDocumentEndpoint.myFriends.ref
+        let ref = FirestoreMyDocEndpoint.myFriends.ref
         ref.whereField("id", isEqualTo: id).getDocuments { (querySnapshot, error) in
             if let error = error {
                 completion(.failure(error))
@@ -483,129 +493,8 @@ class FirebaseManager {
     }
 
     func checkHasSentRequest(to id: UserID, completion: (Result<UserID, Error>) -> Void) {
-        let ref = FirestoreMyDocumentEndpoint.mySentRequests.ref
+        let ref = FirestoreMyDocEndpoint.mySentRequests.ref
         ref.whereField("id", isEqualTo: id).getDocuments { (snapshot, err) in
-        }
-    }
-
-    func checkHasReceivedRequest(from id: UserID, completion: (Result<UserID, Error>) -> Void) {
-
-    }
-
-    func sendFriendRequest(to id: UserID, completion: @escaping (Result<String, Error>) -> Void) {
-        guard let myID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey) else {
-            fatalError("Doesn't have user id")
-        }
-        let myDocRef = FirestoreEndpoint.users.ref.document(myID)
-        firebaseQueue.async { [weak self] in
-            let group = DispatchGroup()
-            group.enter()
-            let objectDocRef = FirestoreEndpoint.users.ref.document(id)
-            objectDocRef.updateData(["receivedRequests": FieldValue.arrayUnion([myID])]) { error in
-                if let error = error {
-                    group.leave()
-                    group.notify(queue: .main) {
-                        completion(.failure(error))
-                    }
-                    return
-                }
-                group.leave()
-            }
-
-            group.enter()
-            myDocRef.updateData(["sentRequests": FieldValue.arrayUnion([id])]) { error in
-                if let error = error {
-                    group.leave()
-                    group.notify(queue: .main) {
-                        completion(.failure(error))
-                    }
-                    return
-                }
-                group.leave()
-            }
-            group.notify(queue: .main) {
-                completion(.success("Successfully send request!"))
-            }
-        }
-    }
-
-    func acceptFriendRequest(from id: UserID, completion: @escaping (Result<String, Error>) -> Void) {
-        guard let myID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey) else {
-            fatalError("Doesn't have user id")
-        }
-        let myDocRef = FirestoreEndpoint.users.ref.document(myID)
-        let friendDocRef = FirestoreEndpoint.users.ref.document(id)
-        let group = DispatchGroup()
-        group.enter()
-        myDocRef.collection("Friends").document(id).setData(["id": id]) { error in
-            if let error = error {
-                group.leave()
-                group.notify(queue: .main) {
-                    completion(.failure(error))
-                }
-                return
-            }
-            group.leave()
-        }
-
-        group.enter()
-        myDocRef.updateData(["receivedRequests": FieldValue.arrayRemove([id])]) { error in
-            if let error  = error {
-                group.leave()
-                group.notify(queue: .main) {
-                    completion(.failure(error))
-                }
-                return
-            }
-            group.leave()
-        }
-
-        group.enter()
-        friendDocRef.collection("Friends").document(myID).setData(["id": myID]) { error in
-            if let error  = error {
-                group.leave()
-                group.notify(queue: .main) {
-                    completion(.failure(error))
-                }
-                return
-            }
-            group.leave()
-        }
-
-        group.enter()
-        friendDocRef.updateData(["sentRequests": FieldValue.arrayRemove([myID])]) { error in
-            if let error  = error {
-                group.leave()
-                group.notify(queue: .main) {
-                    completion(.failure(error))
-                }
-                return
-            }
-            group.leave()
-        }
-
-        group.enter()
-        self.checkUnknownChatroom(id: id) { [unowned self] result in
-            switch result {
-            case .success(let chatroom):
-                self.move(unknownChat: chatroom, to: id) {
-                    group.leave()
-                }
-            case .failure(let error):
-                if error as? CommonError == CommonError.noExistChatroom {
-                    group.leave()
-                } else {
-                    group.leave()
-                    group.notify(queue: .main) {
-                        completion(.failure(error))
-                    }
-                    return
-                }
-            }
-        }
-
-        group.notify(queue: .main) {
-            completion(.success("Success"))
         }
     }
 
@@ -790,18 +679,6 @@ class FirebaseManager {
             if let error = error {
                 print(error)
             }
-        }
-    }
-
-    func move(unknownChat: ChatroomID, to friend: UserID, completion: @escaping () -> Void) {
-        saveChatroomID(to: .friend, id: friend, chatroomID: unknownChat) { [unowned self] result in
-            switch result {
-            case .success:
-                removeUnknownChat(of: friend)
-            case .failure(let error):
-                print(error)
-            }
-            completion()
         }
     }
 
@@ -1114,7 +991,7 @@ class FirebaseManager {
     }
 
     func addNewWork(work: Work,completion: @escaping (Result<WorkID, Error>) -> Void ) {
-        let ref = FirestoreMyDocumentEndpoint.myWorks.ref
+        let ref = FirestoreMyDocEndpoint.myWorks.ref
         let workID = ref.document().documentID
         var work = work
         work.workID = workID
@@ -1130,7 +1007,7 @@ class FirebaseManager {
     }
 
     func addNewRecords(records: [WorkRecord],to myWorkID: WorkID, completion: @escaping (Result<[RecordID], Error>) -> Void) {
-        let ref = FirestoreMyDocumentEndpoint.myRecordsOfWork(myWorkID).ref
+        let ref = FirestoreMyDocEndpoint.myRecordsOfWork(myWorkID).ref
         let recordID = ref.document().documentID
 
         let group = DispatchGroup()
@@ -1162,7 +1039,7 @@ class FirebaseManager {
     }
 
     func updateWorkRecordsOrder(of workID: WorkID, by ordersIDs: [RecordID], completion: @escaping (Result<String, Error>) -> Void) {
-        let ref = FirestoreMyDocumentEndpoint.myWorks.ref
+        let ref = FirestoreMyDocEndpoint.myWorks.ref
         ref.document(workID).updateData(["recordsOrder": ordersIDs]) { err in
             if let err = err {
                 completion(.failure(err))
@@ -1172,6 +1049,7 @@ class FirebaseManager {
         }
     }
 
+    // FIXME: - Delete
     func getUserWorks(userID: UserID, completion: @escaping (Result<[Work], Error>) -> Void) {
         let ref = FirestoreEndpoint.users.ref.document(userID).collection("Works")
         ref.getDocuments { (snapshot, err) in
@@ -1193,8 +1071,8 @@ class FirebaseManager {
         }
     }
 
+    // FIXME: - Delete
     func getWorkRecords(userID: UserID, by workID: WorkID, completion: @escaping (Result<[WorkRecord], Error>) -> Void) {
-//        let ref = FirestoreMyDocumentEndpoint.myRecordsOfWork(workID).ref
         let ref = FirestoreEndpoint.users.ref.document(userID).collection("Works").document(workID).collection("Records")
         ref.getDocuments { (snapshot, err) in
             if let err = err {
@@ -1247,7 +1125,7 @@ class FirebaseManager {
     }
 
     func getAllMyProjectsItems(testID: String? = nil, completion: @escaping (Result<[ProjectItem], Error>) -> Void) {
-        let ref = FirestoreMyDocumentEndpoint.myPosts.ref
+        let ref = FirestoreMyDocEndpoint.myPosts.ref
         ref.getDocuments { (snapshot, err) in
             if let err = err {
                 completion(.failure(err))
@@ -1560,7 +1438,7 @@ class FirebaseManager {
     }
 
     func getAllSavedGroupChatroomIDs(completion: @escaping (Result<[ChatroomID], Error>) -> Void) {
-        let ref = FirestoreMyDocumentEndpoint.myGroupChat.ref
+        let ref = FirestoreMyDocEndpoint.myGroupChat.ref
         ref.getDocuments { (snapshot, err) in
             if let err = err {
                 completion(.failure(err))
@@ -2172,7 +2050,7 @@ class FirebaseManager {
                             deleteProjectsUnderUserGroup.leave()
                         }
                     }
-                    let myProjectRef = FirestoreMyDocumentEndpoint.myPosts.ref
+                    let myProjectRef = FirestoreMyDocEndpoint.myPosts.ref
                     projectIDs.forEach {
                         deleteProjectsUnderUserGroup.enter()
                         self.deleteDocument(ref: myProjectRef.document($0.projectID)) {
@@ -2261,7 +2139,7 @@ class FirebaseManager {
 
                     self.firebaseQueue.async {
                         // 刪除自己帳號下的好友
-                        let myFriendsRef = FirestoreMyDocumentEndpoint.myFriends.ref
+                        let myFriendsRef = FirestoreMyDocEndpoint.myFriends.ref
                         friendsIDs.forEach {
                             deleteFriendsGroup.enter()
                             self.deleteDocument(ref: myFriendsRef.document($0)) {
@@ -2368,7 +2246,7 @@ class FirebaseManager {
                     let groupDeleteGroup = DispatchGroup()
                     for chatroomID in groupChatroomIDs {
                         groupDeleteGroup.enter()
-                        let myGroupRef = FirestoreMyDocumentEndpoint.myGroupChat.ref
+                        let myGroupRef = FirestoreMyDocEndpoint.myGroupChat.ref
                         self.deleteDocument(ref: myGroupRef.document(chatroomID)) {
                             groupDeleteGroup.leave()
                         }

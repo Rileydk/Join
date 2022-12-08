@@ -113,6 +113,13 @@ struct ChatroomMember: Codable {
 struct SavedChat: Codable {
     let id: UserID
     var chatroomID: ChatroomID?
+
+    var toDict: [String: Any] {
+        return [
+            "id": id as Any,
+            "chatroomID": chatroomID as Any
+        ]
+    }
 }
 
 struct MessageListItem: Codable {
