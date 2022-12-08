@@ -222,9 +222,9 @@ extension PersonalEntryViewController: UITableViewDataSource {
 
 extension UIViewController {
     func backToRoot() {
-        if let rootVC = view.window?.rootViewController as? MockLoginViewController {
-            rootVC.dismiss(animated: false)
-        } else {
+//        if let rootVC = view.window?.rootViewController as? MockLoginViewController {
+//            rootVC.dismiss(animated: false)
+//        } else {
             // 下一行是假登入用
 //            tabBarController?.selectedIndex = 0
 
@@ -244,6 +244,6 @@ extension UIViewController {
 
             loginVC.modalPresentationStyle = .fullScreen
             present(loginVC, animated: false)
-        }
+//        }
     }
 }
