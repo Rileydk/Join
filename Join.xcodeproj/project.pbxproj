@@ -46,6 +46,8 @@
 		BF2681EB294184B1007DCFBE /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2681EA294184B1007DCFBE /* UserManager.swift */; };
 		BF2681ED2941E2A0007DCFBE /* ChatroomManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2681EC2941E2A0007DCFBE /* ChatroomManager.swift */; };
 		BF2681EF2941F7BD007DCFBE /* NSLock+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2681EE2941F7BD007DCFBE /* NSLock+Ext.swift */; };
+		BF26821629422AE8007DCFBE /* JoinTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF26821529422AE8007DCFBE /* JoinTests.swift */; };
+		BF26821D29422DF6007DCFBE /* DateExtensionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF26821C29422DF6007DCFBE /* DateExtensionTests.swift */; };
 		BF326C0D292BB40E00898444 /* BottomLinedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF326C0C292BB40E00898444 /* BottomLinedTextField.swift */; };
 		BF326C0F292BB5E200898444 /* BottomLinedTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF326C0E292BB5E200898444 /* BottomLinedTextView.swift */; };
 		BF326C11292BBAB200898444 /* TableViewSimpleHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF326C10292BBAB200898444 /* TableViewSimpleHeaderView.swift */; };
@@ -197,6 +199,16 @@
 		BFF919552933D04100D8CEFC /* team-work-animation.json in Resources */ = {isa = PBXBuildFile; fileRef = BFF919542933D04100D8CEFC /* team-work-animation.json */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		BF26821729422AE8007DCFBE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BF42FA29290BE2AA00501789 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BF42FA30290BE2AA00501789;
+			remoteInfo = Join;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		95A33A59C05820643F8B2FFB /* Pods_Join.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Join.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF0271402920D093000EA2F8 /* UIColor+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Ext.swift"; sourceTree = "<group>"; };
@@ -238,6 +250,9 @@
 		BF2681EA294184B1007DCFBE /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
 		BF2681EC2941E2A0007DCFBE /* ChatroomManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatroomManager.swift; sourceTree = "<group>"; };
 		BF2681EE2941F7BD007DCFBE /* NSLock+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSLock+Ext.swift"; sourceTree = "<group>"; };
+		BF26821329422AE7007DCFBE /* JoinTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JoinTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		BF26821529422AE8007DCFBE /* JoinTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinTests.swift; sourceTree = "<group>"; };
+		BF26821C29422DF6007DCFBE /* DateExtensionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtensionTests.swift; sourceTree = "<group>"; };
 		BF326C0C292BB40E00898444 /* BottomLinedTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomLinedTextField.swift; sourceTree = "<group>"; };
 		BF326C0E292BB5E200898444 /* BottomLinedTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomLinedTextView.swift; sourceTree = "<group>"; };
 		BF326C10292BBAB200898444 /* TableViewSimpleHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewSimpleHeaderView.swift; sourceTree = "<group>"; };
@@ -394,6 +409,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		BF26821029422AE7007DCFBE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		BF42FA2E290BE2AA00501789 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -456,6 +478,15 @@
 				BF2681BE2935CC98007DCFBE /* LinkTextView.swift */,
 			);
 			path = Util;
+			sourceTree = "<group>";
+		};
+		BF26821429422AE8007DCFBE /* JoinTests */ = {
+			isa = PBXGroup;
+			children = (
+				BF26821C29422DF6007DCFBE /* DateExtensionTests.swift */,
+				BF26821529422AE8007DCFBE /* JoinTests.swift */,
+			);
+			path = JoinTests;
 			sourceTree = "<group>";
 		};
 		BF326C31292F466400898444 /* Service */ = {
@@ -556,6 +587,7 @@
 			isa = PBXGroup;
 			children = (
 				BF42FA33290BE2AA00501789 /* Join */,
+				BF26821429422AE8007DCFBE /* JoinTests */,
 				BF42FA32290BE2AA00501789 /* Products */,
 				09D811129905FA3D45C81FF1 /* Pods */,
 				9161D55750AF9927F85CBE4F /* Frameworks */,
@@ -566,6 +598,7 @@
 			isa = PBXGroup;
 			children = (
 				BF42FA31290BE2AA00501789 /* Join.app */,
+				BF26821329422AE7007DCFBE /* JoinTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -895,6 +928,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		BF26821229422AE7007DCFBE /* JoinTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BF26821B29422AE8007DCFBE /* Build configuration list for PBXNativeTarget "JoinTests" */;
+			buildPhases = (
+				BF26820F29422AE7007DCFBE /* Sources */,
+				BF26821029422AE7007DCFBE /* Frameworks */,
+				BF26821129422AE7007DCFBE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				BF26821829422AE8007DCFBE /* PBXTargetDependency */,
+			);
+			name = JoinTests;
+			productName = JoinTests;
+			productReference = BF26821329422AE7007DCFBE /* JoinTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		BF42FA30290BE2AA00501789 /* Join */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = BF42FA45290BE2AC00501789 /* Build configuration list for PBXNativeTarget "Join" */;
@@ -926,6 +977,10 @@
 				LastSwiftUpdateCheck = 1340;
 				LastUpgradeCheck = 1340;
 				TargetAttributes = {
+					BF26821229422AE7007DCFBE = {
+						CreatedOnToolsVersion = 13.4.1;
+						TestTargetID = BF42FA30290BE2AA00501789;
+					};
 					BF42FA30290BE2AA00501789 = {
 						CreatedOnToolsVersion = 13.4.1;
 					};
@@ -945,11 +1000,19 @@
 			projectRoot = "";
 			targets = (
 				BF42FA30290BE2AA00501789 /* Join */,
+				BF26821229422AE7007DCFBE /* JoinTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		BF26821129422AE7007DCFBE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		BF42FA2F290BE2AA00501789 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1098,6 +1161,15 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		BF26820F29422AE7007DCFBE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BF26821629422AE8007DCFBE /* JoinTests.swift in Sources */,
+				BF26821D29422DF6007DCFBE /* DateExtensionTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		BF42FA2D290BE2AA00501789 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1234,6 +1306,14 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		BF26821829422AE8007DCFBE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BF42FA30290BE2AA00501789 /* Join */;
+			targetProxy = BF26821729422AE8007DCFBE /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
 		BF42FA3A290BE2AA00501789 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
@@ -1254,6 +1334,45 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		BF26821929422AE8007DCFBE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = LC7DCZXZ89;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.raywenderlich.JoinTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Join.app/Join";
+			};
+			name = Debug;
+		};
+		BF26821A29422AE8007DCFBE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = LC7DCZXZ89;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.raywenderlich.JoinTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Join.app/Join";
+			};
+			name = Release;
+		};
 		BF42FA43290BE2AC00501789 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1447,6 +1566,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		BF26821B29422AE8007DCFBE /* Build configuration list for PBXNativeTarget "JoinTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BF26821929422AE8007DCFBE /* Debug */,
+				BF26821A29422AE8007DCFBE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		BF42FA2C290BE2AA00501789 /* Build configuration list for PBXProject "Join" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
