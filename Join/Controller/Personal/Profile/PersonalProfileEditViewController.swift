@@ -75,10 +75,14 @@ class PersonalProfileEditViewController: BaseViewController {
         navigationItem.leftBarButtonItem = UIBarButtonItem(
             image: UIImage(named: JImages.Icons_24px_Close.rawValue), style: .plain,
             target: self, action: #selector(backToPreviousPage))
+    }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         guard let myID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey) else {
             fatalError("Doesn't have my id")
         }
+
         JProgressHUD.shared.showLoading(view: view)
         firebaseManager.getUserInfo(id: myID) { [weak self] result in
             guard let self = self else { return }
