@@ -37,11 +37,16 @@
                BlueprintName = "JoinTests"
                ReferencedContainer = "container:Join.xcodeproj">
             </BuildableReference>
-            <SkippedTests>
-               <Test
-                  Identifier = "JoinTests">
-               </Test>
-            </SkippedTests>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "BF2682232942DD02007DCFBE"
+               BuildableName = "JoinSlowTests.xctest"
+               BlueprintName = "JoinSlowTests"
+               ReferencedContainer = "container:Join.xcodeproj">
+            </BuildableReference>
          </TestableReference>
       </Testables>
    </TestAction>

@@ -11,6 +11,7 @@ import XCTest
 class UserManagerTests: XCTestCase {
 
     var sut: UserManager!
+    let networkMonitor = NetworkMonitor.shared
 
     override func setUpWithError() throws {
         try super.setUpWithError()
@@ -19,15 +20,16 @@ class UserManagerTests: XCTestCase {
 
     override func tearDownWithError() throws {
         sut = nil
+        networkMonitor.stopMonitoring()
         try super.tearDownWithError()
     }
 
     func testGetUserInfoOfMySelf() throws {
-        let myID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey)
-        try XCTSkipUnless(myID != nil, "My ID is nil")
+        try XCTSkipUnless(networkMonitor.isReachable, "Network is unreachable")
+        let myID = try XCTUnwrap(UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey))
 
         let promise = expectation(description: "Got my user info!")
-        sut.getSingleUserData(userID: myID!) { user in
+        sut.getSingleUserData(userID: myID) { user in
             promise.fulfill()
             if let user = user {
                 XCTAssertEqual(myID, user.id, "Get the wrong user info")

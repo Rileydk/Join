@@ -54,7 +54,7 @@ class PersonalProfileEditViewController: BaseViewController {
                 notloadedFromDBYet = false
                 tableView.reloadData()
             }
-            checkCanSave()
+            navigationItem.rightBarButtonItem?.isEnabled = isSavable()
         }
     }
     var oldUserInfo: JUser?
@@ -70,7 +70,7 @@ class PersonalProfileEditViewController: BaseViewController {
         rightBarButton!.setTitle(Constant.Common.save, for: .normal)
         rightBarButton!.addTarget(self, action: #selector(saveToAccount), for: .touchUpInside)
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: rightBarButton!)
-        checkCanSave()
+        navigationItem.rightBarButtonItem?.isEnabled = isSavable()
 
         navigationItem.leftBarButtonItem = UIBarButtonItem(
             image: UIImage(named: JImages.Icons_24px_Close.rawValue), style: .plain,
@@ -94,13 +94,9 @@ class PersonalProfileEditViewController: BaseViewController {
         }
     }
 
-    func checkCanSave() {
-        guard var user = user else { return }
-        if !(user.name.isEmpty || user.email.isEmpty) {
-            navigationItem.rightBarButtonItem?.isEnabled = true
-        } else {
-            navigationItem.rightBarButtonItem?.isEnabled = false
-        }
+    func isSavable() -> Bool {
+        guard let user = user else { return false }
+        return !(user.name.isEmpty || user.email.isEmpty)
     }
 
     @objc func saveToAccount() {
