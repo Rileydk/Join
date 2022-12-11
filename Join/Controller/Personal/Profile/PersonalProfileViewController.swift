@@ -533,12 +533,16 @@ extension PersonalProfileViewController {
 // MARK: - Collection View Delegate
 extension PersonalProfileViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let personalStoryboard = UIStoryboard(name: StoryboardCategory.personal.rawValue, bundle: nil)
-        let portfolioDetailVC = personalStoryboard.instantiateViewController(identifier: PortfolioDetailViewController.identifier, creator: { [weak self] coder -> PortfolioDetailViewController? in
-            guard let self = self, let userData = self.userData else { return nil }
-            return PortfolioDetailViewController(coder: coder, user: userData, workItem: self.workItems[indexPath.row])
-        })
-        portfolioDetailVC.modalPresentationStyle = .fullScreen
-        present(portfolioDetailVC, animated: true)
+
+        let section = Section.allCases[indexPath.section]
+        if section == .portfolio {
+            let personalStoryboard = UIStoryboard(name: StoryboardCategory.personal.rawValue, bundle: nil)
+            let portfolioDetailVC = personalStoryboard.instantiateViewController(identifier: PortfolioDetailViewController.identifier, creator: { [weak self] coder -> PortfolioDetailViewController? in
+                guard let self = self, let userData = self.userData else { return nil }
+                return PortfolioDetailViewController(coder: coder, user: userData, workItem: self.workItems[indexPath.row])
+            })
+            portfolioDetailVC.modalPresentationStyle = .fullScreen
+            present(portfolioDetailVC, animated: true)
+        }
     }
 }

@@ -47,19 +47,15 @@ class RelationshipButtonsCell: CollectionViewCell {
 
         switch relationship {
         case .friend:
-            self.relationshipButton.isEnabled = true
             self.relationshipButton.setTitle(Relationship.friend.title, for: .normal)
             self.tag = 0
         case .sentRequest:
-            self.relationshipButton.isEnabled = false
             self.relationshipButton.setTitle(Relationship.sentRequest.title, for: .normal)
             self.relationshipButton.tag = 1
         case .receivedRequest:
-            self.relationshipButton.isEnabled = true
             self.relationshipButton.setTitle(Relationship.receivedRequest.title, for: .normal)
             self.relationshipButton.tag = 2
         case .unknown:
-            self.relationshipButton.isEnabled = true
             self.relationshipButton.setTitle(Relationship.unknown.title, for: .normal)
             self.relationshipButton.tag = 3
         default:
@@ -90,7 +86,12 @@ class RelationshipButtonsCell: CollectionViewCell {
             sendFriendRequestHandler?()
         case .receivedRequest:
             acceptFriendRequestHandler?()
-        default: break
+        case .sentRequest:
+            print("sent request")
+        case .friend:
+            print("friend")
+        default:
+            break
         }
     }
 
