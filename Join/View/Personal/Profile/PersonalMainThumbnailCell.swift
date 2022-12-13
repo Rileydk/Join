@@ -46,7 +46,11 @@ class PersonalMainThumbnailCell: TableViewCell {
 
     func layoutCell(isEditing: Bool) {
         nameLabel.text = UserDefaults.standard.string(forKey: UserDefaults.UserKey.userNameKey)
-        thumbnailImageView.loadImage(UserDefaults.standard.string(forKey: UserDefaults.UserKey.userThumbnailURLKey)!)
+        if let imageURL = UserDefaults.standard.string(forKey: UserDefaults.UserKey.userThumbnailURLKey) {
+            thumbnailImageView.loadImage(imageURL)
+        } else {
+            thumbnailImageView.image = UIImage(named: JImages.Icon_UserDefault.rawValue)
+        }
 
         if isEditing {
             thumbnailImageView.isUserInteractionEnabled = true

@@ -138,7 +138,7 @@ class FriendSelectionViewController: BaseViewController {
             )
         }
         navigationItem.leftBarButtonItem = UIBarButtonItem(
-            image: UIImage(named: JImages.Icons_24px_Close.rawValue), style: .plain,
+            image: UIImage(named: JImages.Icon_24px_Close.rawValue), style: .plain,
             target: self, action: #selector(backToPreviousPage))
     }
 

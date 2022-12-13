@@ -21,7 +21,7 @@ class BadgeSupplementaryView: UICollectionReusableView {
 
     private func configure() {
         backgroundColor = .White?.withAlphaComponent(0.9)
-        let closeIconImageView = UIImageView(image: UIImage(named: JImages.Icons_24px_Close.rawValue))
+        let closeIconImageView = UIImageView(image: UIImage(named: JImages.Icon_24px_Close.rawValue))
         addSubview(closeIconImageView)
         NSLayoutConstraint.activate([
             closeIconImageView.centerXAnchor.constraint(equalTo: centerXAnchor),

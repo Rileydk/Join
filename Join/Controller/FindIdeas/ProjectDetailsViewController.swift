@@ -99,7 +99,7 @@ class ProjectDetailsViewController: BaseViewController {
             project.contact != myID {
             let button = UIButton()
             let verticalMoreImage = UIImage(
-                named: JImages.Icons_24px_VerticalMore.rawValue)?
+                named: JImages.Icon_24px_VerticalMore.rawValue)?
                 .withRenderingMode(.alwaysTemplate)
             button.setImage(verticalMoreImage, for: .normal)
             button.tintColor = .White
@@ -122,7 +122,7 @@ class ProjectDetailsViewController: BaseViewController {
             navigationItem.rightBarButtonItem = UIBarButtonItem(customView: button)
 
         }
-        let backIcon = UIImage(named: JImages.Icons_24px_Back.rawValue)
+        let backIcon = UIImage(named: JImages.Icon_24px_Back.rawValue)
         backIcon?.withRenderingMode(.alwaysTemplate)
         navigationItem.leftBarButtonItem = UIBarButtonItem(
             image: backIcon,

@@ -44,7 +44,12 @@ class ChatListCell: TableViewCell {
             guard let self = self else { return }
             switch result {
             case .success(let user):
-                self.userThumbnailImageView.loadImage(user.thumbnailURL ?? Constant.Placeholder.coverURLString)
+
+                if let imageURL = user.thumbnailURL {
+                    self.userThumbnailImageView.loadImage(imageURL)
+                } else {
+                    self.userThumbnailImageView.image = UIImage(named: JImages.Icon_UserDefault.rawValue)
+                }
                 self.nameLabel.text = user.name
                 if let latesMessage = messageItem.messages.first {
                     self.latestMessageLabel.text = latesMessage.content
@@ -65,23 +70,28 @@ class ChatListCell: TableViewCell {
     }
 
     func layoutCell(groupMessageItem: GroupMessageListItem) {
-        firebaseManager.downloadImage(urlString: groupMessageItem.chatroom.imageURL) { [weak self] result in
-            switch result {
-            case .success(let image):
-                self?.userThumbnailImageView.image = image
-                self?.nameLabel.text = groupMessageItem.chatroom.name
-                self?.latestMessageLabel.text = groupMessageItem.messages.first?.content ?? ""
-
-                let amountOfUnreadMessages = groupMessageItem.messages.filter {
-                    $0.time > groupMessageItem.lastTimeInChatroom
-                }.count
-                if amountOfUnreadMessages != 0 {
-                    self?.unreadMessagesAmountButton.setTitle("\(amountOfUnreadMessages)", for: .normal)
-                    self?.unreadMessagesAmountButton.isHidden = false
+        if let imageURL = groupMessageItem.chatroom.imageURL {
+            firebaseManager.downloadImage(urlString: imageURL) { [weak self] result in
+                switch result {
+                case .success(let image):
+                    self?.userThumbnailImageView.image = image
+                case .failure(let err):
+                    print(err)
                 }
-            case .failure(let err):
-                print(err)
             }
+        } else {
+            userThumbnailImageView.image = UIImage(named: JImages.Icon_GroupchatDefault.rawValue)
+        }
+
+        self.nameLabel.text = groupMessageItem.chatroom.name
+        self.latestMessageLabel.text = groupMessageItem.messages.first?.content ?? ""
+
+        let amountOfUnreadMessages = groupMessageItem.messages.filter {
+            $0.time > groupMessageItem.lastTimeInChatroom
+        }.count
+        if amountOfUnreadMessages != 0 {
+            self.unreadMessagesAmountButton.setTitle("\(amountOfUnreadMessages)", for: .normal)
+            self.unreadMessagesAmountButton.isHidden = false
         }
     }
 }

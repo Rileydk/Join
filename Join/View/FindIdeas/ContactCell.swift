@@ -46,7 +46,11 @@ class ContactCell: TableViewCell {
     }
 
     func layoutCell(user: JUser, from source: Source, isMember: Bool? = nil) {
-        thumbnailImageView.loadImage(user.thumbnailURL ?? FindPartnersFormSections.placeholderImageURL)
+        if let imageURL = user.thumbnailURL {
+            thumbnailImageView.loadImage(imageURL)
+        } else {
+            thumbnailImageView.image = UIImage(named: JImages.Icon_UserDefault.rawValue)
+        }
         nameButton.setTitle(user.name, for: .normal)
         let myID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey) ?? ""
         if source == .myPostContact || source == .myPostApplicant ||

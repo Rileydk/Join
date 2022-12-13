@@ -61,7 +61,7 @@ struct Chatroom: Codable {
 struct GroupChatroom: Codable {
     var id: ChatroomID
     var name: String
-    var imageURL: URLString
+    var imageURL: URLString?
     var admin: UserID
     var createdTime: Date
 

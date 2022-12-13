@@ -116,7 +116,7 @@ class FindPartnersBasicViewController: BaseViewController {
            formState == FindPartnersFormSections.detailSection {
             navigationItem.leftBarButtonItem = UIBarButtonItem(
                 image: UIImage(
-                    named: JImages.Icons_24px_Back.rawValue),
+                    named: JImages.Icon_24px_Back.rawValue),
                     style: .plain, target: self, action: #selector(backToPreviousPage))
         }
     }

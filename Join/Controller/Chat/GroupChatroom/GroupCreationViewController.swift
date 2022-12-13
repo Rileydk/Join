@@ -69,7 +69,7 @@ class GroupCreationViewController: BaseViewController {
             title: "Create", style: .done,
             target: self, action: #selector(createGroup)
         )
-        if let backImage = UIImage(named: JImages.Icons_24px_Back.rawValue) {
+        if let backImage = UIImage(named: JImages.Icon_24px_Back.rawValue) {
             backImage.withRenderingMode(.alwaysTemplate)
             navigationItem.leftBarButtonItem = UIBarButtonItem(image: backImage, style: .plain, target: self, action: #selector(backToPreviousPage))
         }
@@ -125,7 +125,7 @@ class GroupCreationViewController: BaseViewController {
                     }
                 }
             } else {
-                strongSelf.groupChatroom.imageURL = UserDefaults.standard.string(forKey: UserDefaults.UserKey.userThumbnailURLKey) ?? FindPartnersFormSections.placeholderImageURL
+                strongSelf.groupChatroom.imageURL = nil
                 group.leave()
             }
 
@@ -355,7 +355,7 @@ extension GroupCreationViewController {
             id: UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey)!,
             name: UserDefaults.standard.string(forKey: UserDefaults.UserKey.userNameKey)!,
             email: "",
-            thumbnailURL: UserDefaults.standard.string(forKey: UserDefaults.UserKey.userThumbnailURLKey)!)
+            thumbnailURL: UserDefaults.standard.string(forKey: UserDefaults.UserKey.userThumbnailURLKey))
         snapshot.appendItems([.member(JUser.mockUser), .member(myUserData)] + selectedFriends.map { .member($0) }, toSection: .members)
 
         datasource.apply(snapshot, animatingDifferences: false)

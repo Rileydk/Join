@@ -18,8 +18,8 @@ class GroupMemberCircleCollectionViewCell: CollectionViewCell {
         super.awakeFromNib()
         if !deleteBadgeButton.isHidden {
             deleteBadgeButton.backgroundColor = .White?.withAlphaComponent(0.9)
-            deleteBadgeButton.layer.borderWidth = 2
-            deleteBadgeButton.layer.borderColor = UIColor.White?.withAlphaComponent(0.9).cgColor
+            deleteBadgeButton.setImage(UIImage(named: JImages.Icon_24px_Close.rawValue), for: .normal)
+            deleteBadgeButton.contentEdgeInsets = .init(top: 2, left: 2, bottom: 2, right: 2)
             deleteBadgeButton.layer.shadowOpacity = 0.2
             deleteBadgeButton.layer.shadowRadius = 2
             deleteBadgeButton.layer.shadowOffset = CGSize(width: 2, height: 2)
@@ -44,6 +44,8 @@ class GroupMemberCircleCollectionViewCell: CollectionViewCell {
         if  let imageURL = user.thumbnailURL,
             let url = URL(string: imageURL) {
             thumbnailImageView.kf.setImage(with: url)
+        } else {
+            thumbnailImageView.image = UIImage(named: JImages.Icon_UserDefault.rawValue)
         }
         nameLabel.text = user.name
     }

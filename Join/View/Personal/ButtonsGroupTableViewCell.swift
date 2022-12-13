@@ -44,11 +44,14 @@ class ButtonsGroupTableViewCell: TableViewCell {
     }
 
     func layoutCell() {
-        guard let name = UserDefaults.standard.string(forKey: UserDefaults.UserKey.userNameKey),
-              let imageURL = UserDefaults.standard.string(forKey: UserDefaults.UserKey.userThumbnailURLKey) else {
+        guard let name = UserDefaults.standard.string(forKey: UserDefaults.UserKey.userNameKey) else {
             return
         }
-        thumbnailImageView.loadImage(imageURL)
+        if let imageURL = UserDefaults.standard.string(forKey: UserDefaults.UserKey.userThumbnailURLKey) {
+            thumbnailImageView.loadImage(imageURL)
+        } else {
+            thumbnailImageView.image = UIImage(named: JImages.Icon_UserDefault.rawValue)
+        }
         nameLabel.text = name
     }
 

@@ -45,7 +45,11 @@ class MessageCell: TableViewCell {
     }
 
     func layoutCell(imageURL: URLString?, message: Message) {
-        thumbnailImageView.loadImage(imageURL ?? Constant.Placeholder.coverURLString)
+        if let imageURL = imageURL {
+            thumbnailImageView.loadImage(imageURL)
+        } else {
+            thumbnailImageView.image = UIImage(named: JImages.Icon_UserDefault.rawValue)
+        }
         messageTextView.text = message.content
         timeLabel.text = message.time.formattedTime
     }

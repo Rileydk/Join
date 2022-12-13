@@ -40,7 +40,7 @@
                             <button opaque="NO" contentMode="scaleToFill" showsMenuAsPrimaryAction="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uoZ-gh-3PN">
                                 <rect key="frame" x="258" y="0.0" width="24" height="30"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                <state key="normal" image="Icons_24px_More"/>
+                                <state key="normal" image="Icon_24px_More"/>
                             </button>
                         </subviews>
                     </stackView>
@@ -61,6 +61,6 @@
         </collectionViewCell>
     </objects>
     <resources>
-        <image name="Icons_24px_More" width="24" height="24"/>
+        <image name="Icon_24px_More" width="24" height="24"/>
     </resources>
 </document>

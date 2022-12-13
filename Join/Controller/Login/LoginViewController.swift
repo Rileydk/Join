@@ -18,7 +18,6 @@ class LoginViewController: BaseViewController {
     @IBOutlet weak var loginProviderStackView: UIStackView!
     @IBOutlet weak var statementTextView: LinkTextView!
 
-
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .Blue1
@@ -125,7 +124,7 @@ extension LoginViewController: ASAuthorizationControllerDelegate {
                         email: initUser.email,
                         thumbnailURL: initUser.thumbnail != nil
                             ? String(describing: initUser.thumbnail)
-                            : FindPartnersFormSections.placeholderImageURL)
+                            : nil)
                     self.firebaseManager.set(user: newUser) { result in
                         switch result {
                         case .success(let user):

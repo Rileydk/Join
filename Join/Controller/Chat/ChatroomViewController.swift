@@ -162,8 +162,6 @@ extension ChatroomViewController: UITableViewDataSource {
                 }
                 profileVC.userID = self?.userData?.id
                 profileVC.sourceType = .chatroom
-//                profileVC.modalPresentationStyle = .fullScreen
-//                self?.navigationController?.pushViewController(profileVC, animated: true)
                 self?.present(profileVC, animated: true)
             }
             return cell

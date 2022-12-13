@@ -104,7 +104,7 @@ class MyPostsDetailViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        let backIcon = UIImage(named: JImages.Icons_24px_Back.rawValue)
+        let backIcon = UIImage(named: JImages.Icon_24px_Back.rawValue)
         backIcon?.withRenderingMode(.alwaysTemplate)
         navigationItem.leftBarButtonItem = UIBarButtonItem(
             image: backIcon,

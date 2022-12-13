@@ -49,7 +49,7 @@ class GroupCreationHeaderCell: CollectionViewCell {
     }
 
     func layoutCell(defaultGroupName: String) {
-        groupImageView.image = UIImage(named: JImages.Icons_GroupchatDefault.rawValue)
+        groupImageView.image = UIImage(named: JImages.Icon_GroupchatDefault.rawValue)
         groupNameTextField.attributedPlaceholder = NSAttributedString(
             string: defaultGroupName, attributes: [
                 NSAttributedString.Key.foregroundColor: (UIColor.Gray3?.withAlphaComponent(0.7) ?? .lightGray)
