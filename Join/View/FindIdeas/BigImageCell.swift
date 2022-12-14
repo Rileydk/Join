@@ -14,7 +14,7 @@ class BigImageCell: TableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        contentView.backgroundColor = .White
+        contentView.backgroundColor = .Gray6
     }
 
     func layoutCell(imageURL: URLString) {

@@ -88,7 +88,7 @@ class ProjectDetailsViewController: BaseViewController {
             if #available(iOS 15, *) {
                 tableView.sectionHeaderTopPadding = 0
             }
-            tableView.backgroundColor = .White
+            tableView.backgroundColor = .Gray6
         }
     }
 

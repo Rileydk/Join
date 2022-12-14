@@ -98,7 +98,7 @@ class MyPostsDetailViewController: BaseViewController {
             if #available(iOS 15, *) {
                 tableView.sectionHeaderTopPadding = 0
             }
-            tableView.backgroundColor = .White
+            tableView.backgroundColor = .Gray6
         }
     }
 
@@ -413,7 +413,7 @@ extension MyPostsDetailViewController {
                     }
                 }
             }
-            cell.acceptHandler = { [weak self] user in
+            cell.acceptApplicationHandler = { [weak self] user in
                 guard let self = self, var project = self.project else { return }
                 let alert = UIAlertController(title: "確定要將\(user.name)加入團隊中嗎？", message: nil, preferredStyle: .alert)
                 let yesAction = UIAlertAction(title: "Yes", style: .default) { _ in

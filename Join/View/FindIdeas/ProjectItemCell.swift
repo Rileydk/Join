@@ -14,7 +14,7 @@ class ProjectItemCell: TableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        contentView.backgroundColor = .White
+        contentView.backgroundColor = .Gray6
     }
 
     func layoutCellWithPosition(project: Project) {
