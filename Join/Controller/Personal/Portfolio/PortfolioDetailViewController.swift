@@ -76,11 +76,13 @@ class PortfolioDetailViewController: BaseViewController {
         if let user = user, let myID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey), user.id != myID {
             moreActionButton.showsMenuAsPrimaryAction = true
             let reportAction = UIAction(title: Constant.Portfolio.report, attributes: [], state: .off) { [weak self] _ in
-                self?.reportUser()
+                self?.reportPortfolio()
             }
             var elements: [UIAction] = [reportAction]
             let menu = UIMenu(children: elements)
             moreActionButton.menu = menu
+        } else {
+            moreActionButton.isHidden = true
         }
     }
 
@@ -151,7 +153,7 @@ class PortfolioDetailViewController: BaseViewController {
        dismiss(animated: true)
     }
 
-    func reportUser() {
+    func reportPortfolio() {
         let alert = UIAlertController(title: Constant.FindIdeas.reportAlert, message: nil, preferredStyle: .actionSheet)
         let yesAction = UIAlertAction(title: Constant.Common.confirm, style: .destructive) { [weak self] _ in
             guard let self = self, let user = self.user, let workItem = self.workItem else { return }

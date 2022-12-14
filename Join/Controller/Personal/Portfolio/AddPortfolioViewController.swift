@@ -8,7 +8,27 @@
 import UIKit
 import VisionKit
 import LinkPresentation
-import SwiftUI
+
+struct EditableWorkRecord: Hashable {
+    var recordID: RecordID
+    var type: RecordType
+    var image: UIImage?
+    var url: URLString?
+
+    init(recordID: RecordID, type: RecordType, image: UIImage?, url: URLString?) {
+        self.recordID = recordID
+        self.type = type
+        self.image = image
+        self.url = url
+    }
+
+    init(recordID: RecordID, type: RecordType, url: URLString?) {
+        self.recordID = recordID
+        self.type = type
+        self.image = nil
+        self.url = url
+    }
+}
 
 class AddPortfolioViewController: BaseViewController {
     enum Section: String, CaseIterable {
@@ -21,27 +41,6 @@ class AddPortfolioViewController: BaseViewController {
         case name(Work)
 //        case description(String)
         case file(EditableWorkRecord)
-    }
-
-    struct EditableWorkRecord: Hashable {
-        var recordID: RecordID
-        var type: RecordType
-        var image: UIImage?
-        var url: URLString?
-
-        init(recordID: RecordID, type: RecordType, image: UIImage?, url: URLString?) {
-            self.recordID = recordID
-            self.type = type
-            self.image = image
-            self.url = url
-        }
-
-        init(recordID: RecordID, type: RecordType, url: URLString?) {
-            self.recordID = recordID
-            self.type = type
-            self.image = nil
-            self.url = url
-        }
     }
 
     @IBOutlet weak var tableView: UITableView! {
@@ -84,14 +83,16 @@ class AddPortfolioViewController: BaseViewController {
         didSet {
             guard let scannedContent = scannedContent else { return }
             for index in 0 ..< scannedContent.pageCount {
-                editableRecords.append(EditableWorkRecord(recordID: "", type: .image, image: scannedContent.imageOfPage(at: index), url: ""))
+                editableRecords.append(
+                    EditableWorkRecord(recordID: "", type: .image,
+                                       image: scannedContent.imageOfPage(at: index), url: "")
+                )
             }
         }
     }
     var editableRecords = [EditableWorkRecord]() {
         didSet {
             checkCanSave()
-            updateDatasource()
         }
     }
     var finalRecords = [WorkRecord]()
@@ -257,10 +258,14 @@ extension AddPortfolioViewController: UITableViewDelegate {
                     return
                 }
                 if let copiedText = UIPasteboard.general.string, URL(string: copiedText) != nil {
-                    if self.editableRecords.contains { $0.url == copiedText } {
+                    if self.editableRecords.contains(where: { $0.url == copiedText }) {
                         JProgressHUD.shared.showFailure(text: Constant.Common.duplicatedURL, view: self.view)
                     } else {
-                        self.editableRecords.append(EditableWorkRecord(recordID: "", type: .hyperlink, url: copiedText))
+                        let workRecord = EditableWorkRecord(recordID: "", type: .hyperlink, url: copiedText)
+                        self.editableRecords.append(workRecord)
+                        var snapshot = self.datasource.snapshot()
+                        snapshot.appendItems([.file(workRecord)])
+                        self.datasource.apply(snapshot, animatingDifferences: true)
                     }
 
                 } else {
@@ -301,17 +306,28 @@ extension AddPortfolioViewController {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: WorkRecordCell.identifier, for: indexPath) as? WorkRecordCell else {
                 fatalError("Cannot load work record cell")
             }
-            if let urlString = editableRecord.url, let url = URL(string: urlString) {
-                cell.layoutCell(url: url) { [weak self] in
-                    guard let self = self else { return }
-                    self.editableRecords.remove(at: self.editableRecords.firstIndex(of: editableRecord)!)
-                }
+
+            cell.layoutCell(record: editableRecord) { [weak self] in
+                guard let self = self else { return }
+                self.editableRecords.remove(at: self.editableRecords.firstIndex(of: editableRecord)!)
+                var snapshot = self.datasource.snapshot()
+                snapshot.deleteItems([.file(editableRecord)])
+                self.datasource.apply(snapshot, animatingDifferences: true)
+            }
+            cell.deleteHandler = { [weak self] workRecord in
+                guard let self = self else { return }
+                self.editableRecords.remove(at: self.editableRecords.firstIndex(of: workRecord)!)
+                var snapshot = self.datasource.snapshot()
+                snapshot.deleteItems([.file(workRecord)])
+                self.datasource.apply(snapshot, animatingDifferences: true)
+            }
+
+            if editableRecord.type == .hyperlink {
                 cell.alertHandler = { [weak self] alert in
                     self?.present(alert, animated: true)
                 }
-            } else {
-                cell.layoutCell(recordImage: editableRecord.image!)
             }
+
             cell.contentView.backgroundColor = backgroundColor
             return cell
         }

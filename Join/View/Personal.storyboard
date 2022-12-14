@@ -406,7 +406,7 @@
                                 <rect key="frame" x="26" y="812" width="24" height="24"/>
                                 <color key="backgroundColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                <state key="normal" image="Icons_24px_More"/>
+                                <state key="normal" image="Icon_24px_More"/>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4st-Mk-Pqo">
                                 <rect key="frame" x="362" y="26" width="32" height="32"/>
@@ -416,7 +416,7 @@
                                 </constraints>
                                 <inset key="contentEdgeInsets" minX="4" minY="4" maxX="4" maxY="4"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                <state key="normal" image="Icons_24px_Close"/>
+                                <state key="normal" image="Icon_24px_Close"/>
                                 <connections>
                                     <action selector="close:" destination="xYC-C4-j6q" eventType="touchUpInside" id="UnB-D6-his"/>
                                 </connections>
@@ -466,8 +466,8 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Icons_24px_Close" width="24" height="24"/>
-        <image name="Icons_24px_More" width="24" height="24"/>
+        <image name="Icon_24px_Close" width="24" height="24"/>
+        <image name="Icon_24px_More" width="24" height="24"/>
         <image name="link" catalog="system" width="128" height="122"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
