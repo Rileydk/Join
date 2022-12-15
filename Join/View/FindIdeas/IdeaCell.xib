@@ -136,14 +136,14 @@
                                         <real key="value" value="8"/>
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="number" keyPath="paddingTop">
-                                        <real key="value" value="0.0"/>
+                                        <real key="value" value="2"/>
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="number" keyPath="paddingBottom">
-                                        <real key="value" value="0.0"/>
+                                        <real key="value" value="2"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </label>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="252" image="Icons_24px_More" translatesAutoresizingMaskIntoConstraints="NO" id="Yso-Ks-wDf">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="252" image="Icon_24px_More" translatesAutoresizingMaskIntoConstraints="NO" id="Yso-Ks-wDf">
                                 <rect key="frame" x="33.5" y="0.0" width="24" height="10.5"/>
                                 <color key="tintColor" name="Gray4"/>
                             </imageView>
@@ -221,12 +221,12 @@
         </collectionViewCell>
     </objects>
     <resources>
-        <image name="Icons_24px_More" width="24" height="24"/>
-        <image name="bookmark" catalog="system" width="112" height="128"/>
-        <image name="clock" catalog="system" width="128" height="121"/>
-        <image name="mappin.and.ellipse" catalog="system" width="118" height="128"/>
-        <image name="person" catalog="system" width="128" height="117"/>
-        <image name="photo.artframe" catalog="system" width="128" height="93"/>
+        <image name="Icon_24px_More" width="24" height="24"/>
+        <image name="bookmark" catalog="system" width="32" height="32"/>
+        <image name="clock" catalog="system" width="32" height="32"/>
+        <image name="mappin.and.ellipse" catalog="system" width="32" height="32"/>
+        <image name="person" catalog="system" width="32" height="32"/>
+        <image name="photo.artframe" catalog="system" width="32" height="32"/>
         <namedColor name="Blue1">
             <color red="0.0" green="0.22352941176470589" blue="0.38823529411764707" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
