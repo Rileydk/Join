@@ -115,7 +115,7 @@
                                     <constraint firstAttribute="height" constant="45" id="qYa-oj-vtk"/>
                                 </constraints>
                             </stackView>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="FIA-F2-75Z" customClass="LinkTextView" customModule="Join" customModuleProvider="target">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="center" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FIA-F2-75Z" customClass="LinkTextView" customModule="Join" customModuleProvider="target">
                                 <rect key="frame" x="40" y="800" width="334" height="48"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <string key="text">cccccccc
