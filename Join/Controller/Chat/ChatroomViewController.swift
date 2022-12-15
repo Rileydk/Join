@@ -42,13 +42,16 @@ class ChatroomViewController: BaseViewController {
     var chatroomID: ChatroomID?
     var messages = [Message]()
     var userData: JUser?
-    var wholeInfoMessages = [WholeInfoMessage]() {
-        didSet {
-            if let tableView = tableView, !messages.isEmpty {
-                tableView.reloadData()
-            }
-        }
-    }
+//    var wholeInfoMessages = [WholeInfoMessage]() {
+//        didSet {
+//            if let tableView = tableView, !messages.isEmpty {
+//                tableView.reloadData()
+//                tableView.scrollToRow(
+//                    at: IndexPath(row: wholeInfoMessages.count - 1, section: 0),
+//                    at: .bottom, animated: false)
+//            }
+//        }
+//    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -94,7 +97,11 @@ class ChatroomViewController: BaseViewController {
         }
 
         group.notify(queue: .main) { [weak self] in
-            self?.tableView.reloadData()
+            guard let self = self else { return }
+            self.tableView.reloadData()
+            self.tableView.scrollToRow(
+                at: IndexPath(row: self.messages.count - 1, section: 0),
+                at: .bottom, animated: false)
         }
     }
 
