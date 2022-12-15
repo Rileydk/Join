@@ -51,11 +51,13 @@ class WorkHeaderView: TableViewHeaderFooterView {
             self.showCamera()
             alert.dismiss(animated: true)
         }
-        let photoLibraryAction = UIAlertAction(title: Constant.ImageRelated.fromLibrary, style: .default) { _ in
+        let photoLibraryAction = UIAlertAction(
+            title: Constant.ImageRelated.fromLibrary, style: .default) { _ in
             self.showPhotoLibrary()
             alert.dismiss(animated: true)
         }
-        let scanDocumentAction = UIAlertAction(title: Constant.ImageRelated.scanDocument, style: .default) { _ in
+        let scanDocumentAction = UIAlertAction(
+            title: Constant.ImageRelated.scanDocument, style: .default) { _ in
             self.startScanning()
             alert.dismiss(animated: true)
         }
