@@ -71,14 +71,15 @@ class ChatListCell: TableViewCell {
 
     func layoutCell(groupMessageItem: GroupMessageListItem) {
         if let imageURL = groupMessageItem.chatroom.imageURL {
-            firebaseManager.downloadImage(urlString: imageURL) { [weak self] result in
-                switch result {
-                case .success(let image):
-                    self?.userThumbnailImageView.image = image
-                case .failure(let err):
-                    print(err)
-                }
-            }
+            userThumbnailImageView.loadImage(imageURL)
+//            firebaseManager.downloadImage(urlString: imageURL) { [weak self] result in
+//                switch result {
+//                case .success(let image):
+//                    self?.userThumbnailImageView.image = image
+//                case .failure(let err):
+//                    print(err)
+//                }
+//            }
         } else {
             userThumbnailImageView.image = UIImage(named: JImages.Icon_GroupchatDefault.rawValue)
         }

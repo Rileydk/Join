@@ -48,7 +48,7 @@ class GroupCreationViewController: BaseViewController {
     var linkedProject: Project?
     var selectedFriends = [JUser]()
     var groupChatroom = GroupChatroom(
-        id: "", name: "", imageURL: "", admin: "", createdTime: Date()
+        id: "", name: "", admin: "", createdTime: Date()
     )
     var defaultGroupName: String {
         var defaultGroupName = "\(UserDefaults.standard.string(forKey: UserDefaults.UserKey.userNameKey)!)"
@@ -125,7 +125,6 @@ class GroupCreationViewController: BaseViewController {
                     }
                 }
             } else {
-                strongSelf.groupChatroom.imageURL = UserDefaults.standard.string(forKey: UserDefaults.UserKey.userThumbnailURLKey) ?? FindPartnersFormSections.placeholderImageURL
                 group.leave()
             }
 
