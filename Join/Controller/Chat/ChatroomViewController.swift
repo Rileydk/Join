@@ -40,14 +40,11 @@ class ChatroomViewController: BaseViewController {
     let firebaseManager = FirebaseManager.shared
     let myID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey) ?? ""
     var chatroomID: ChatroomID?
-    var messages = [Message]() {
+    var messages = [Message]()
+    var userData: JUser?
+    var wholeInfoMessages = [WholeInfoMessage]() {
         didSet {
-            tableView.reloadData()
-        }
-    }
-    var userData: JUser? {
-        didSet {
-            if let tableView = tableView {
+            if let tableView = tableView, !messages.isEmpty {
                 tableView.reloadData()
             }
         }
@@ -56,25 +53,13 @@ class ChatroomViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = userData?.name
-
-        guard let chatroomID = chatroomID else { return }
-        firebaseManager.listenToNewMessages(chatroomID: chatroomID) { [weak self] result in
-            switch result {
-            case .success(let messages):
-                self?.messages += messages
-            case .failure(let error):
-                print(error)
-            }
-        }
+        updateData()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setNavBarAppearance(to: .dark)
-
-        updateUserData()
-        guard let chatroomID = chatroomID else { return }
-        updateMessages(chatroomID: chatroomID)
+        guard chatroomID != nil else { return }
         updateInoutStatus(to: .in)
     }
 
@@ -83,8 +68,21 @@ class ChatroomViewController: BaseViewController {
         updateInoutStatus(to: .out)
     }
 
-    func updateUserData() {
-        guard let chattingObject = userData else { return }
+    func updateData() {
+        guard let chatroomID = chatroomID, let chattingObject = userData else { return }
+        let group = DispatchGroup()
+        group.enter()
+        firebaseManager.listenToNewMessages(chatroomID: chatroomID) { [weak self] result in
+            switch result {
+            case .success(let messages):
+                self?.messages += messages
+            case .failure(let error):
+                print(error)
+            }
+            group.leave()
+        }
+
+        group.enter()
         firebaseManager.getUserInfo(id: chattingObject.id) { [unowned self] result in
             switch result {
             case .success(let user):
@@ -92,6 +90,11 @@ class ChatroomViewController: BaseViewController {
             case .failure(let error):
                 print(error)
             }
+            group.leave()
+        }
+
+        group.notify(queue: .main) { [weak self] in
+            self?.tableView.reloadData()
         }
     }
 
@@ -101,17 +104,6 @@ class ChatroomViewController: BaseViewController {
             switch result {
             case .success:
                 print("success")
-            case .failure(let error):
-                print(error)
-            }
-        }
-    }
-
-    func updateMessages(chatroomID: ChatroomID) {
-        firebaseManager.getMessages(of: chatroomID) { [unowned self] result in
-            switch result {
-            case .success(let messages):
-                self.messages = messages
             case .failure(let error):
                 print(error)
             }
