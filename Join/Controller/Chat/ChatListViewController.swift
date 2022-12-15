@@ -52,14 +52,15 @@ class ChatListViewController: BaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         getMessageList()
+        tableView.allowsSelection = true
     }
 
     func layoutViews() {
         view.backgroundColor = .Gray6
 
         let types = ChatroomType.allCases
-        for i in 0 ..< types.count {
-            tabSegmentedControl.setTitle(types[i].buttonTitle, forSegmentAt: i)
+        for index in 0 ..< types.count {
+            tabSegmentedControl.setTitle(types[index].buttonTitle, forSegmentAt: index)
         }
         tabSegmentedControl.selectedSegmentIndex = types.firstIndex(of: .friend)!
         addGroupChatroomBarButton.tintColor = .White
@@ -165,6 +166,7 @@ extension ChatListViewController: UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.allowsSelection = false
 
         if type == .group {
             let chatroomID = groupMessageList[indexPath.row].chatroomID
