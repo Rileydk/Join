@@ -55,6 +55,9 @@ class GroupChatroomViewController: BaseViewController {
         didSet {
             if tableView != nil && !wholeInfoMessages.isEmpty {
                 tableView.reloadData()
+                tableView.scrollToRow(
+                    at: IndexPath(row: wholeInfoMessages.count - 1, section: 0),
+                    at: .bottom, animated: false)
             }
         }
     }
@@ -247,8 +250,8 @@ extension GroupChatroomViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let message = messages[indexPath.row]
-        if message.sender == myID {
+        let message = wholeInfoMessages[indexPath.row]
+        if message.sender.id == myID {
             guard let cell = tableView.dequeueReusableCell(
                 withIdentifier: MyMessageCell.identifier, for: indexPath
             ) as? MyMessageCell else {

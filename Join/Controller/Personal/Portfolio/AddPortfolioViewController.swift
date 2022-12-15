@@ -79,17 +79,6 @@ class AddPortfolioViewController: BaseViewController {
             }
         }
 
-    var scannedContent: VNDocumentCameraScan? {
-        didSet {
-            guard let scannedContent = scannedContent else { return }
-            for index in 0 ..< scannedContent.pageCount {
-                editableRecords.append(
-                    EditableWorkRecord(recordID: "", type: .image,
-                                       image: scannedContent.imageOfPage(at: index), url: "")
-                )
-            }
-        }
-    }
     var editableRecords = [EditableWorkRecord]() {
         didSet {
             checkCanSave()
@@ -350,15 +339,28 @@ extension AddPortfolioViewController {
 // MARK: - Work Header View Delegate
 extension AddPortfolioViewController: WorkHeaderViewDelegate {
     func workHeaderView(_ cell: WorkHeaderView, didSetImage image: UIImage) {
-        editableRecords.append(EditableWorkRecord(recordID: "", type: .image, image: image, url: ""))
+        let workRecord = EditableWorkRecord(recordID: "", type: .image, image: image, url: "")
+        editableRecords.append(workRecord)
+        var snapshot = self.datasource.snapshot()
+        snapshot.appendItems([.file(workRecord)])
+        self.datasource.apply(snapshot, animatingDifferences: true)
     }
 }
 
 // MARK: - VNDocumentViewController Delegate
 extension AddPortfolioViewController: VNDocumentCameraViewControllerDelegate {
     func documentCameraViewController(_ controller: VNDocumentCameraViewController, didFinishWith scan: VNDocumentCameraScan) {
-        scannedContent = scan
         dismiss(animated: true)
+
+        for index in 0 ..< scan.pageCount {
+            let workRecord = EditableWorkRecord(
+                recordID: "", type: .image,
+                image: scan.imageOfPage(at: index), url: "")
+            editableRecords.append(workRecord)
+            var snapshot = self.datasource.snapshot()
+            snapshot.appendItems([.file(workRecord)])
+            self.datasource.apply(snapshot, animatingDifferences: true)
+        }
     }
 
     func documentCameraViewController(_ controller: VNDocumentCameraViewController, didFailWithError error: Error) {

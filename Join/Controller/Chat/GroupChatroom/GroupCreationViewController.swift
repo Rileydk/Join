@@ -48,7 +48,7 @@ class GroupCreationViewController: BaseViewController {
     var linkedProject: Project?
     var selectedFriends = [JUser]()
     var groupChatroom = GroupChatroom(
-        id: "", name: "", imageURL: "", admin: "", createdTime: Date()
+        id: "", name: "", admin: "", createdTime: Date()
     )
     var defaultGroupName: String {
         var defaultGroupName = "\(UserDefaults.standard.string(forKey: UserDefaults.UserKey.userNameKey)!)"
@@ -71,12 +71,21 @@ class GroupCreationViewController: BaseViewController {
         )
         if let backImage = UIImage(named: JImages.Icon_24px_Back.rawValue) {
             backImage.withRenderingMode(.alwaysTemplate)
-            navigationItem.leftBarButtonItem = UIBarButtonItem(image: backImage, style: .plain, target: self, action: #selector(backToPreviousPage))
+            navigationItem.leftBarButtonItem = UIBarButtonItem(
+                image: backImage, style: .plain,
+                target: self, action: #selector(backToPreviousPage))
         }
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationItem.rightBarButtonItem?.isEnabled = true
     }
 
     // swiftlint:disable cyclomatic_complexity
     @objc func createGroup() {
+        navigationItem.rightBarButtonItem?.isEnabled = false
+
         JProgressHUD.shared.showLoading(text: Constant.Common.processing, view: self.view)
         firebaseManager.firebaseQueue.async { [weak self] in
             guard let strongSelf = self else { return }
@@ -125,7 +134,6 @@ class GroupCreationViewController: BaseViewController {
                     }
                 }
             } else {
-                strongSelf.groupChatroom.imageURL = UserDefaults.standard.string(forKey: UserDefaults.UserKey.userThumbnailURLKey) ?? FindPartnersFormSections.placeholderImageURL
                 group.leave()
             }
 

@@ -880,7 +880,7 @@ class FirebaseManager {
                             chatroomID: $0.chatroomID ?? "",
                             objectID: $0.id, lastTimeInChatroom: Date()
                         )
-                    }.filter { !($0.chatroomID ?? "").isEmpty }
+                    }.filter { !$0.chatroomID.isEmpty }
                     group.leave()
                 case .failure(let error):
                     shouldContinue = false

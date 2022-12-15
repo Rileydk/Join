@@ -468,7 +468,7 @@
     <resources>
         <image name="Icon_24px_Close" width="24" height="24"/>
         <image name="Icon_24px_More" width="24" height="24"/>
-        <image name="link" catalog="system" width="128" height="122"/>
+        <image name="link" catalog="system" width="32" height="32"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

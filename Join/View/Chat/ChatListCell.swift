@@ -51,9 +51,8 @@ class ChatListCell: TableViewCell {
                     self.userThumbnailImageView.image = UIImage(named: JImages.Icon_UserDefault.rawValue)
                 }
                 self.nameLabel.text = user.name
-                if let latesMessage = messageItem.messages.first {
-                    self.latestMessageLabel.text = latesMessage.content
-                }
+                let latesMessage = messageItem.messages.sorted(by: { $0.time > $1.time }).first!
+                self.latestMessageLabel.text = latesMessage.content
                 let amountOfUnreadMessages = messageItem.messages.filter {
                     return $0.time > messageItem.lastTimeInChatroom
                 }.count
@@ -71,14 +70,7 @@ class ChatListCell: TableViewCell {
 
     func layoutCell(groupMessageItem: GroupMessageListItem) {
         if let imageURL = groupMessageItem.chatroom.imageURL {
-            firebaseManager.downloadImage(urlString: imageURL) { [weak self] result in
-                switch result {
-                case .success(let image):
-                    self?.userThumbnailImageView.image = image
-                case .failure(let err):
-                    print(err)
-                }
-            }
+            userThumbnailImageView.loadImage(imageURL)
         } else {
             userThumbnailImageView.image = UIImage(named: JImages.Icon_GroupchatDefault.rawValue)
         }
