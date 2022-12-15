@@ -55,6 +55,9 @@ class GroupChatroomViewController: BaseViewController {
         didSet {
             if tableView != nil && !wholeInfoMessages.isEmpty {
                 tableView.reloadData()
+                tableView.scrollToRow(
+                    at: IndexPath(row: wholeInfoMessages.count - 1, section: 0),
+                    at: .bottom, animated: false)
             }
         }
     }

@@ -43,6 +43,9 @@ class ChatroomViewController: BaseViewController {
     var messages = [Message]() {
         didSet {
             tableView.reloadData()
+            tableView.scrollToRow(
+                at: IndexPath(row: messages.count - 1, section: 0),
+                at: .bottom, animated: false)
         }
     }
     var userData: JUser?
@@ -50,6 +53,7 @@ class ChatroomViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = userData?.name
+        updateData()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -57,7 +61,6 @@ class ChatroomViewController: BaseViewController {
         setNavBarAppearance(to: .dark)
         guard chatroomID != nil else { return }
         updateInoutStatus(to: .in)
-        updateData()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -87,7 +90,9 @@ class ChatroomViewController: BaseViewController {
                 switch result {
                 case .success(let messages):
                     group.notify(queue: .main) { [weak self] in
-                        self?.messages += messages
+                        self?.messages += messages.sorted(by: {
+                            $0.time < $1.time
+                        })
                     }
                 case .failure(let error):
                     group.notify(queue: .main) { [weak self] in

@@ -51,9 +51,8 @@ class ChatListCell: TableViewCell {
                     self.userThumbnailImageView.image = UIImage(named: JImages.Icon_UserDefault.rawValue)
                 }
                 self.nameLabel.text = user.name
-                if let latesMessage = messageItem.messages.first {
-                    self.latestMessageLabel.text = latesMessage.content
-                }
+                let latesMessage = messageItem.messages.sorted(by: { $0.time > $1.time }).first!
+                self.latestMessageLabel.text = latesMessage.content
                 let amountOfUnreadMessages = messageItem.messages.filter {
                     return $0.time > messageItem.lastTimeInChatroom
                 }.count
