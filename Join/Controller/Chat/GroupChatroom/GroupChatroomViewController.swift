@@ -247,8 +247,8 @@ extension GroupChatroomViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let message = messages[indexPath.row]
-        if message.sender == myID {
+        let message = wholeInfoMessages[indexPath.row]
+        if message.sender.id == myID {
             guard let cell = tableView.dequeueReusableCell(
                 withIdentifier: MyMessageCell.identifier, for: indexPath
             ) as? MyMessageCell else {
