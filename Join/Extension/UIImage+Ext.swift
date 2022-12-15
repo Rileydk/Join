@@ -10,17 +10,18 @@ import UIKit
 enum JImages: String {
     // swiftlint:disable identifier_name
     case cover_image_placeholder_vertical
-    case Icons_24px_Back
-    case Icons_24px_Calendar
-    case Icons_24px_Close
-    case Icons_24px_GoNext
-    case Icons_24px_Hourglass
-    case Icons_24px_Location
-    case Icons_24px_More
-    case Icons_24px_Tools
-    case Icons_24px_Person
-    case Icons_24px_VerticalMore
-    case Icons_GroupchatDefault
+    case Icon_24px_Back
+    case Icon_24px_Calendar
+    case Icon_24px_Close
+    case Icon_24px_GoNext
+    case Icon_24px_Hourglass
+    case Icon_24px_Location
+    case Icon_24px_More
+    case Icon_24px_Tools
+    case Icon_24px_Person
+    case Icon_24px_VerticalMore
+    case Icon_GroupchatDefault
+    case Icon_UserDefault
 }
 
 extension UIImage {

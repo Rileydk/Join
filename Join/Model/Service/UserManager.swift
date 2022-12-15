@@ -213,7 +213,7 @@ class UserManager {
                     self.lock.with { errors.append(error) }
                 default: break
                 }
-
+                group.leave()
             }
 
             // 將自己加入對方的好友
@@ -225,6 +225,7 @@ class UserManager {
                     self.lock.with { errors.append(error) }
                 default: break
                 }
+                group.leave()
             }
 
             // 清除好友邀請
@@ -235,6 +236,7 @@ class UserManager {
                     self.lock.with { errors.append(error) }
                 default: break
                 }
+                group.leave()
             }
 
             // 若有陌生訊息，刪除雙方的陌生訊息（已經移至好友）

@@ -44,28 +44,13 @@ class MyPostsViewController: BaseViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        setNavBarAppearance(to: .dark)
         getProjects()
     }
-
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        if segue.identifier == SegueIdentifier.GoProjectDetailPage {
-//            guard let detailVC = segue.destination as? ProjectDetailsViewController,
-//                  let project = sender as? Project else {
-//                fatalError("Cannot create ProjectDetailsVC")
-//            }
-//            detailVC.project = project
-//        }
-//    }
 
     func layoutViews() {
         title = "我的專案"
         collectionView.backgroundColor = UIColor.Gray6
-
-        let backIcon = UIImage(named: JImages.Icons_24px_Back.rawValue)
-        backIcon?.withRenderingMode(.alwaysTemplate)
-        navigationItem.leftBarButtonItem = UIBarButtonItem(
-            image: backIcon,
-            style: .plain, target: self, action: #selector(backToPreviousPage))
     }
 
     func getProjects() {
@@ -119,10 +104,6 @@ class MyPostsViewController: BaseViewController {
                 }
             }
         }
-    }
-
-    @objc func backToPreviousPage() {
-        navigationController?.popViewController(animated: true)
     }
 }
 
@@ -206,7 +187,7 @@ extension MyPostsViewController: UICollectionViewDelegate {
                 fatalError("Cannot create my post detail vc")
             }
             detailVC.project = myPosts[indexPath.row]
-
+            navigationItem.backButtonDisplayMode = .minimal
             hidesBottomBarWhenPushed = true
             DispatchQueue.main.async { [weak self] in
                 self?.hidesBottomBarWhenPushed = false

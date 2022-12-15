@@ -43,7 +43,11 @@ class FriendCell: TableViewCell {
 
     func layoutCell(friend: JUser, source: Source) {
         nameLabel.text = friend.name
-        thumbnailImageView.loadImage(friend.thumbnailURL ?? Constant.Placeholder.coverURLString)
+        if let imageURL = friend.thumbnailURL {
+            thumbnailImageView.loadImage(imageURL)
+        } else {
+            thumbnailImageView.image = UIImage(named: JImages.Icon_UserDefault.rawValue)
+        }
         if source == .friendSelection {
             selectImageView.isHidden = false
         } else {

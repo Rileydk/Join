@@ -12,7 +12,7 @@ class MultilineCell: TableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        contentView.backgroundColor = .White
+        contentView.backgroundColor = .Gray6
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

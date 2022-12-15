@@ -9,10 +9,10 @@ import UIKit
 
 class DetailTitleHeaderView: TableViewHeaderFooterView {
     @IBOutlet weak var titleLabel: UILabel!
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
-        contentView.backgroundColor = .White
+        contentView.backgroundColor = .Gray6
     }
 
     func layoutHeaderView(title: String) {

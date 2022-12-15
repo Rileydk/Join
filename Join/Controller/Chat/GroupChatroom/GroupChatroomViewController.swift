@@ -63,15 +63,11 @@ class GroupChatroomViewController: BaseViewController {
         super.viewDidLoad()
         layoutViews()
         listenToNewMessages()
-
-        if let backImage = UIImage(named: JImages.Icons_24px_Back.rawValue) {
-            backImage.withRenderingMode(.alwaysTemplate)
-            navigationItem.leftBarButtonItem = UIBarButtonItem(image: backImage, style: .plain, target: self, action: #selector(backToPreviousPage))
-        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        setNavBarAppearance(to: .dark)
         guard chatroomID != nil else { return }
         tabBarController?.tabBar.isHidden = true
         getNecessaryInfo()
@@ -241,10 +237,6 @@ class GroupChatroomViewController: BaseViewController {
                 print(err)
             }
         }
-    }
-
-    @objc func backToPreviousPage() {
-        navigationController?.popViewController(animated: true)
     }
 }
 

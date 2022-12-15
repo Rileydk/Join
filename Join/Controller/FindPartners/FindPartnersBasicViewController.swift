@@ -116,7 +116,7 @@ class FindPartnersBasicViewController: BaseViewController {
            formState == FindPartnersFormSections.detailSection {
             navigationItem.leftBarButtonItem = UIBarButtonItem(
                 image: UIImage(
-                    named: JImages.Icons_24px_Back.rawValue),
+                    named: JImages.Icon_24px_Back.rawValue),
                     style: .plain, target: self, action: #selector(backToPreviousPage))
         }
     }
@@ -229,7 +229,8 @@ class FindPartnersBasicViewController: BaseViewController {
             switch result {
             case .success:
                 JProgressHUD.shared.showSuccess(view: self.view) {
-                    let findPartnerStoryboard = UIStoryboard(name: StoryboardCategory.findPartners.rawValue, bundle: nil)
+                    let findPartnerStoryboard = UIStoryboard(
+                        name: StoryboardCategory.findPartners.rawValue, bundle: nil)
                     guard let basicVC = findPartnerStoryboard.instantiateViewController(
                         withIdentifier: FindPartnersBasicViewController.identifier
                         ) as? FindPartnersBasicViewController else {
@@ -245,8 +246,9 @@ class FindPartnersBasicViewController: BaseViewController {
     }
 
     @objc func backToPreviousPage() {
-        guard let basicVC = navigationController?.viewControllers.dropLast().first as? FindPartnersBasicViewController,
-            basicVC.formState == FindPartnersFormSections.basicSection else {
+        guard let basicVC = navigationController?.viewControllers.dropLast().first
+                as? FindPartnersBasicViewController,
+            basicVC.formState == FindPartnersFormSections.basicSection  else {
             fatalError("Cannot load find partners basic vc basic part")
         }
         basicVC.project = project
@@ -300,6 +302,7 @@ extension FindPartnersBasicViewController: UITableViewDelegate {
         }
     }
 
+    // swiftlint:disable line_length
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             if formState == FindPartnersFormSections.basicSection {
@@ -479,7 +482,9 @@ extension FindPartnersBasicViewController: UITableViewDataSource {
                 }
                 return cell
             } else if inputType == .datePicker {
-                guard let cell = tableView.dequeueReusableCell(withIdentifier: DatePickerCell.identifier, for: indexPath) as? DatePickerCell else {
+                guard let cell = tableView.dequeueReusableCell(
+                    withIdentifier: DatePickerCell.identifier,
+                    for: indexPath) as? DatePickerCell else {
                     fatalError("Cannot create date picker cell")
                 }
                 cell.layoutCell(item: formState.items[indexPath.row], deadline: project.deadline)
@@ -560,7 +565,7 @@ extension FindPartnersBasicViewController: UITextViewDelegate {
     }
 }
 
-//// MARK: - Member Card Delegate
+// MARK: - Member Card Delegate
 extension FindPartnersBasicViewController: MemberCardDelegate {
     func memberCardViewController(_ controller: MemberCardViewController, didSetMembers members: [Member]) {
         project.members = members

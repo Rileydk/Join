@@ -42,19 +42,14 @@ class PersonalEntryViewController: UIViewController {
         }
     }
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        navigationItem.backButtonDisplayMode = .minimal
+    }
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        guard let navVC = navigationController else { return }
-        let navBarAppearance = UINavigationBarAppearance()
-        navBarAppearance.configureWithOpaqueBackground()
-        navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.White]
-        navBarAppearance.backgroundColor = .Blue1
-        navBarAppearance.shadowColor = .clear
-        navBarAppearance.shadowImage = UIImage()
-        navVC.navigationBar.standardAppearance = navBarAppearance
-        navVC.navigationBar.scrollEdgeAppearance = navBarAppearance
-        navVC.navigationBar.tintColor = .White
-
+        setNavBarAppearance(to: .dark)
         tableView.reloadData()
     }
 
@@ -159,6 +154,7 @@ extension PersonalEntryViewController: UITableViewDataSource {
                         self?.hidesBottomBarWhenPushed = false
                     }
                     self.navigationController?.pushViewController(profileVC, animated: true)
+
                 case .myProject:
                     let personalStoryboard = UIStoryboard(name: StoryboardCategory.personal.rawValue, bundle: nil)
                     guard let myPostsVC = personalStoryboard.instantiateViewController(
@@ -167,6 +163,7 @@ extension PersonalEntryViewController: UITableViewDataSource {
                         fatalError("Cannot create personal profile vc")
                     }
                     self.navigationController?.pushViewController(myPostsVC, animated: true)
+
                 case .myApplications:
                     let personalStoryboard = UIStoryboard(name: StoryboardCategory.personal.rawValue, bundle: nil)
                     guard let myApplicationsVC = personalStoryboard.instantiateViewController(

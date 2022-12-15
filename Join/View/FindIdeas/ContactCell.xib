@@ -6,7 +6,6 @@
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -19,18 +18,19 @@
                 <rect key="frame" x="0.0" y="0.0" width="414" height="80"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <stackView opaque="NO" contentMode="scaleToFill" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="g6T-W0-M3M">
-                        <rect key="frame" x="16" y="18.5" width="99" height="43"/>
+                    <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="g6T-W0-M3M">
+                        <rect key="frame" x="16" y="19" width="95" height="42"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="iDO-fW-XP1">
-                                <rect key="frame" x="0.0" y="0.0" width="43" height="43"/>
+                                <rect key="frame" x="0.0" y="0.0" width="42" height="42"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="iDO-fW-XP1" secondAttribute="height" multiplier="1:1" id="Gpx-gK-sex"/>
-                                    <constraint firstAttribute="width" constant="43" id="XHB-po-9nH"/>
+                                    <constraint firstAttribute="width" constant="42" id="XHB-po-9nH"/>
                                 </constraints>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="leading" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Za-l2-8Yg">
-                                <rect key="frame" x="51" y="0.0" width="48" height="43"/>
+                                <rect key="frame" x="50" y="0.0" width="45" height="42"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" title="Name">
                                     <color key="titleColor" name="Gray1"/>

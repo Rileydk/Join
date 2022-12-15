@@ -70,6 +70,8 @@ class ChatroomViewController: BaseViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        setNavBarAppearance(to: .dark)
+
         updateUserData()
         guard let chatroomID = chatroomID else { return }
         updateMessages(chatroomID: chatroomID)
@@ -162,8 +164,6 @@ extension ChatroomViewController: UITableViewDataSource {
                 }
                 profileVC.userID = self?.userData?.id
                 profileVC.sourceType = .chatroom
-//                profileVC.modalPresentationStyle = .fullScreen
-//                self?.navigationController?.pushViewController(profileVC, animated: true)
                 self?.present(profileVC, animated: true)
             }
             return cell

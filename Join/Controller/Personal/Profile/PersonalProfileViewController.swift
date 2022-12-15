@@ -76,18 +76,6 @@ class PersonalProfileViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.setHidesBackButton(true, animated: false)
-        guard let navVC = navigationController else { return }
-        let navBarAppearance = UINavigationBarAppearance()
-        navBarAppearance.configureWithOpaqueBackground()
-        navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.Gray1]
-        navBarAppearance.backgroundColor = .Gray6
-        navBarAppearance.shadowColor = .clear
-        navBarAppearance.shadowImage = UIImage()
-        navVC.navigationBar.standardAppearance = navBarAppearance
-        navVC.navigationBar.scrollEdgeAppearance = navBarAppearance
-        navVC.navigationBar.tintColor = .Gray1
-
         collectionView.addRefreshHeader { [weak self] in
             self?.updateData {
                 self?.layoutViews()
@@ -98,6 +86,7 @@ class PersonalProfileViewController: BaseViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        setNavBarAppearance(to: .light)
         updateData { [weak self] in
             self?.layoutViews()
         }
@@ -105,9 +94,6 @@ class PersonalProfileViewController: BaseViewController {
 
     func layoutViews() {
         title = userData?.name
-        navigationItem.leftBarButtonItem = UIBarButtonItem(
-            image: UIImage(named: JImages.Icons_24px_Back.rawValue), style: .plain,
-            target: self, action: #selector(backToPreviousPage))
     }
 
     func updateData(completion: (() -> Void)? = nil) {
@@ -154,13 +140,8 @@ class PersonalProfileViewController: BaseViewController {
             ) as? PersonalProfileEditViewController else {
             fatalError("Cannot load personal profile edit vc")
         }
-
         hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(personalProfileEditVC, animated: true)
-    }
-
-    @objc func backToPreviousPage() {
-        navigationController?.popViewController(animated: true)
     }
 
     func sendFriendRequest(userID: UserID?) {
@@ -533,12 +514,16 @@ extension PersonalProfileViewController {
 // MARK: - Collection View Delegate
 extension PersonalProfileViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let personalStoryboard = UIStoryboard(name: StoryboardCategory.personal.rawValue, bundle: nil)
-        let portfolioDetailVC = personalStoryboard.instantiateViewController(identifier: PortfolioDetailViewController.identifier, creator: { [weak self] coder -> PortfolioDetailViewController? in
-            guard let self = self, let userData = self.userData else { return nil }
-            return PortfolioDetailViewController(coder: coder, user: userData, workItem: self.workItems[indexPath.row])
-        })
-        portfolioDetailVC.modalPresentationStyle = .fullScreen
-        present(portfolioDetailVC, animated: true)
+
+        let section = Section.allCases[indexPath.section]
+        if section == .portfolio {
+            let personalStoryboard = UIStoryboard(name: StoryboardCategory.personal.rawValue, bundle: nil)
+            let portfolioDetailVC = personalStoryboard.instantiateViewController(identifier: PortfolioDetailViewController.identifier, creator: { [weak self] coder -> PortfolioDetailViewController? in
+                guard let self = self, let userData = self.userData else { return nil }
+                return PortfolioDetailViewController(coder: coder, user: userData, workItem: self.workItems[indexPath.row])
+            })
+            portfolioDetailVC.modalPresentationStyle = .fullScreen
+            present(portfolioDetailVC, animated: true)
+        }
     }
 }

@@ -52,7 +52,7 @@ class GroupMembersViewController: BaseViewController {
             addExitButton()
         }
 
-        if let backImage = UIImage(named: JImages.Icons_24px_Back.rawValue) {
+        if let backImage = UIImage(named: JImages.Icon_24px_Back.rawValue) {
             backImage.withRenderingMode(.alwaysTemplate)
             navigationItem.leftBarButtonItem = UIBarButtonItem(image: backImage, style: .plain, target: self, action: #selector(backToPreviousPage))
         }

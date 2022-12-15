@@ -32,7 +32,11 @@ class PersonalMainThumbnailCollectionCell: CollectionViewCell {
 
     func layoutCell(user: JUser, backgroundColor: UIColor) {
         nameLabel.text = user.name
-        thumbnailImageView.loadImage(user.thumbnailURL)
+        if let imageURL = user.thumbnailURL {
+            thumbnailImageView.loadImage(imageURL)
+        } else {
+            thumbnailImageView.image = UIImage(named: JImages.Icon_UserDefault.rawValue)
+        }
         contentView.backgroundColor = backgroundColor
     }
 

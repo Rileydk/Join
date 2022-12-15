@@ -12,6 +12,7 @@ class ContactCell: TableViewCell {
         case projectDetails
         case myPostContact
         case myPostApplicant
+        case receivedRequest
     }
 
     @IBOutlet weak var thumbnailImageView: UIImageView!
@@ -22,8 +23,10 @@ class ContactCell: TableViewCell {
     let firebaseManager = FirebaseManager.shared
     var tapHandler: (() -> Void)?
     var messageHandler: (() -> Void)?
-    var acceptHandler: ((JUser) -> Void)?
+    var acceptApplicationHandler: ((JUser) -> Void)?
+    var acceptFriendRequestHandler: ((FriendItem) -> Void)?
     var user: JUser?
+    var friendListUser: FriendItem?
     var isMember: Bool?
 
     override func prepareForReuse() {
@@ -33,7 +36,7 @@ class ContactCell: TableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        contentView.backgroundColor = .White
+        contentView.backgroundColor = .Gray6
         thumbnailImageView.isUserInteractionEnabled = true
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(goProfilePage))
         thumbnailImageView.addGestureRecognizer(tapGestureRecognizer)
@@ -45,15 +48,36 @@ class ContactCell: TableViewCell {
         acceptJoinButton.layer.cornerRadius = 8
     }
 
+    /// Used to layout cell for friend request in Friend List
+    func layoutCell(user: FriendItem, from source: Source, isMember: Bool? = nil) {
+        if let imageURL = user.userInfo.thumbnailURL {
+            thumbnailImageView.loadImage(imageURL)
+        } else {
+            thumbnailImageView.image = UIImage(named: JImages.Icon_UserDefault.rawValue)
+        }
+        nameButton.setTitle(user.userInfo.name, for: .normal)
+        let myID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey) ?? ""
+
+        messageButton.isHidden = true
+        acceptJoinButton.isHidden = false
+
+        self.friendListUser = user
+    }
+
+    /// Used to layout cell for situation except friend request in Friend List
     func layoutCell(user: JUser, from source: Source, isMember: Bool? = nil) {
-        thumbnailImageView.loadImage(user.thumbnailURL ?? FindPartnersFormSections.placeholderImageURL)
+        if let imageURL = user.thumbnailURL {
+            thumbnailImageView.loadImage(imageURL)
+        } else {
+            thumbnailImageView.image = UIImage(named: JImages.Icon_UserDefault.rawValue)
+        }
         nameButton.setTitle(user.name, for: .normal)
         let myID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey) ?? ""
-        if source == .myPostContact || source == .myPostApplicant ||
-            (source == .projectDetails && user.id == myID) {
-            messageButton.isHidden = true
-        } else {
+
+        if (source == .projectDetails && user.id != myID) {
             messageButton.isHidden = false
+        } else {
+            messageButton.isHidden = true
         }
 
         if source == .myPostApplicant {
@@ -74,6 +98,7 @@ class ContactCell: TableViewCell {
         } else {
             acceptJoinButton.isHidden = true
         }
+
         self.user = user
     }
 
@@ -85,9 +110,10 @@ class ContactCell: TableViewCell {
         messageHandler?()
     }
     @IBAction func acceptJoin(_ sender: Any) {
-        guard let user = user, let isMember = isMember else { return }
-        if !isMember {
-            acceptHandler?(user)
+        if let user = user, let isMember = isMember, !isMember {
+            acceptApplicationHandler?(user)
+        } else if let friendListUser = friendListUser, friendListUser.type == .friendRequest {
+            acceptFriendRequestHandler?(friendListUser)
         }
     }
 }
