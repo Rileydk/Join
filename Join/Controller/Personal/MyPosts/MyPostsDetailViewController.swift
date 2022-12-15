@@ -104,11 +104,6 @@ class MyPostsDetailViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        let backIcon = UIImage(named: JImages.Icon_24px_Back.rawValue)
-        backIcon?.withRenderingMode(.alwaysTemplate)
-        navigationItem.leftBarButtonItem = UIBarButtonItem(
-            image: backIcon,
-            style: .plain, target: self, action: #selector(backToPreviousPage))
         guard let project = project else { return }
         title = project.name
 
@@ -119,15 +114,7 @@ class MyPostsDetailViewController: BaseViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        var navBarAppearance = UINavigationBarAppearance()
-        navBarAppearance.configureWithOpaqueBackground()
-        navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.White]
-        navBarAppearance.backgroundColor = .Blue1
-        navBarAppearance.shadowColor = nil
-        navBarAppearance.shadowImage = UIImage()
-        navigationController?.navigationBar.standardAppearance = navBarAppearance
-        navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
-        navigationController?.navigationBar.tintColor = .White
+        setNavBarAppearance(to: .dark)
 
         guard let project = project else { return }
         guard !project.applicants.isEmpty else {
@@ -229,10 +216,6 @@ class MyPostsDetailViewController: BaseViewController {
                 }
             }
         }
-    }
-
-    @objc func backToPreviousPage() {
-        navigationController?.popViewController(animated: true)
     }
 }
 
@@ -375,12 +358,13 @@ extension MyPostsDetailViewController {
         case .applicant(let applicant):
             guard let cell = tableView.dequeueReusableCell(
                 withIdentifier: ContactCell.identifier, for: indexPath
-            ) as? ContactCell else {
+                ) as? ContactCell else {
                 fatalError("Cannot create contact cell")
             }
             let isMember = (project!.members.map { $0.id }).contains(applicant.user.id)
             cell.layoutCell(user: applicant.user, from: .myPostApplicant, isMember: isMember)
             cell.tapHandler = { [weak self] in
+                guard let self = self else { return }
                 let personalStoryboard = UIStoryboard(name: StoryboardCategory.personal.rawValue, bundle: nil)
                 guard let profileVC = personalStoryboard.instantiateViewController(
                     withIdentifier: PersonalProfileViewController.identifier
@@ -388,8 +372,8 @@ extension MyPostsDetailViewController {
                     fatalError("Cannot create others profile vc")
                 }
                 profileVC.userID = applicant.user.id
-
-                self?.navigationController?.pushViewController(profileVC, animated: true)
+                self.navigationItem.backButtonDisplayMode = .minimal
+                self.navigationController?.pushViewController(profileVC, animated: true)
             }
             cell.messageHandler = { [weak self] in
                 self?.firebaseManager.getChatroom(id: applicant.user.id) { [unowned self] result in

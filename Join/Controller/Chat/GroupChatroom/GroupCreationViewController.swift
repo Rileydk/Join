@@ -125,7 +125,7 @@ class GroupCreationViewController: BaseViewController {
                     }
                 }
             } else {
-                strongSelf.groupChatroom.imageURL = nil
+                strongSelf.groupChatroom.imageURL = UserDefaults.standard.string(forKey: UserDefaults.UserKey.userThumbnailURLKey) ?? FindPartnersFormSections.placeholderImageURL
                 group.leave()
             }
 
@@ -355,7 +355,7 @@ extension GroupCreationViewController {
             id: UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey)!,
             name: UserDefaults.standard.string(forKey: UserDefaults.UserKey.userNameKey)!,
             email: "",
-            thumbnailURL: UserDefaults.standard.string(forKey: UserDefaults.UserKey.userThumbnailURLKey))
+            thumbnailURL: UserDefaults.standard.string(forKey: UserDefaults.UserKey.userThumbnailURLKey)!)
         snapshot.appendItems([.member(JUser.mockUser), .member(myUserData)] + selectedFriends.map { .member($0) }, toSection: .members)
 
         datasource.apply(snapshot, animatingDifferences: false)

@@ -45,6 +45,7 @@ class FriendSelectionViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationItem.backButtonDisplayMode = .minimal
         getFriendsData()
         layoutViews()
     }

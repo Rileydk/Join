@@ -55,11 +55,6 @@ class UsersListViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        let backIcon = UIImage(named: JImages.Icon_24px_Back.rawValue)
-        navigationItem.leftBarButtonItem = UIBarButtonItem(
-            image: backIcon,
-            style: .plain, target: self, action: #selector(backToPreviousPage))
-
         tableView.addRefreshHeader { [weak self] in
             self?.updateData()
         }
@@ -71,6 +66,11 @@ class UsersListViewController: BaseViewController {
         }
         tableView.beginHeaderRefreshing()
         layoutViews()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setNavBarAppearance(to: .dark)
     }
 
     func updateData() {
@@ -226,10 +226,6 @@ class UsersListViewController: BaseViewController {
             }
         }
     }
-
-    @objc func backToPreviousPage() {
-        navigationController?.popViewController(animated: true)
-    }
 }
 
 // MARK: - Table View Delegate
@@ -249,6 +245,7 @@ extension UsersListViewController: UITableViewDelegate {
         if usageType == .blockList {
             profileVC.sourceType = .blockList
         }
+        navigationItem.backButtonDisplayMode = .minimal
         navigationController?.pushViewController(profileVC, animated: true)
     }
 }

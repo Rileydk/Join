@@ -52,6 +52,7 @@
 		BF26822E2942DD3A007DCFBE /* UserManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF26822D2942DD3A007DCFBE /* UserManagerTests.swift */; };
 		BF2682312942E1E3007DCFBE /* NetworkMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2682302942E1E3007DCFBE /* NetworkMonitor.swift */; };
 		BF2682332942ECC1007DCFBE /* PersonalProfileEditTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2682322942ECC1007DCFBE /* PersonalProfileEditTests.swift */; };
+		BF268248294AC813007DCFBE /* UIViewController+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF268247294AC812007DCFBE /* UIViewController+Ext.swift */; };
 		BF326C0D292BB40E00898444 /* BottomLinedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF326C0C292BB40E00898444 /* BottomLinedTextField.swift */; };
 		BF326C0F292BB5E200898444 /* BottomLinedTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF326C0E292BB5E200898444 /* BottomLinedTextView.swift */; };
 		BF326C11292BBAB200898444 /* TableViewSimpleHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF326C10292BBAB200898444 /* TableViewSimpleHeaderView.swift */; };
@@ -269,6 +270,7 @@
 		BF26822D2942DD3A007DCFBE /* UserManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManagerTests.swift; sourceTree = "<group>"; };
 		BF2682302942E1E3007DCFBE /* NetworkMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMonitor.swift; sourceTree = "<group>"; };
 		BF2682322942ECC1007DCFBE /* PersonalProfileEditTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalProfileEditTests.swift; sourceTree = "<group>"; };
+		BF268247294AC812007DCFBE /* UIViewController+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Ext.swift"; sourceTree = "<group>"; };
 		BF326C0C292BB40E00898444 /* BottomLinedTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomLinedTextField.swift; sourceTree = "<group>"; };
 		BF326C0E292BB5E200898444 /* BottomLinedTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomLinedTextView.swift; sourceTree = "<group>"; };
 		BF326C10292BBAB200898444 /* TableViewSimpleHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewSimpleHeaderView.swift; sourceTree = "<group>"; };
@@ -748,6 +750,7 @@
 				BF2681C32938DEF8007DCFBE /* URL+Ext.swift */,
 				BF2681C52938DF69007DCFBE /* LPLinkMetadata+Ext.swift */,
 				BF2681EE2941F7BD007DCFBE /* NSLock+Ext.swift */,
+				BF268247294AC812007DCFBE /* UIViewController+Ext.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -1349,6 +1352,7 @@
 				BFF8A4C92913EE4C00ADC950 /* PersonalMainThumbnailCell.swift in Sources */,
 				BFF8A4BC2913B39900ADC950 /* TableViewHeaderFooterView.swift in Sources */,
 				BF42FAB7290FBE2D00501789 /* AddNewLineSectionCell.swift in Sources */,
+				BF268248294AC813007DCFBE /* UIViewController+Ext.swift in Sources */,
 				BFF8A4D02914C2E300ADC950 /* PersonalProfileViewController.swift in Sources */,
 				BF3D83782928D9B8009F903F /* SelfIntroductionCell.swift in Sources */,
 				BF42FA76290D1CD800501789 /* FindPartnersBasicViewController.swift in Sources */,

@@ -333,5 +333,6 @@ extension FindIdeasViewController: UICollectionViewDelegate {
         case .newIdeas:
             performSegue(withIdentifier: SegueIdentifier.GoProjectDetailPage, sender: restProjects[indexPath.row])
         }
+        navigationItem.backButtonDisplayMode = .minimal
     }
 }

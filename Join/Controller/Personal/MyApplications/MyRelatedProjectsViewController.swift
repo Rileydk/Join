@@ -54,18 +54,13 @@ class MyRelatedProjectsViewController: BaseViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        setNavBarAppearance(to: .dark)
         getRelatedProjects()
     }
 
     func layoutViews() {
         title = "我的應徵"
         collectionView.backgroundColor = UIColor.Gray6
-
-        let backIcon = UIImage(named: JImages.Icon_24px_Back.rawValue)
-        backIcon?.withRenderingMode(.alwaysTemplate)
-        navigationItem.leftBarButtonItem = UIBarButtonItem(
-            image: backIcon,
-            style: .plain, target: self, action: #selector(backToPreviousPage))
     }
 
     func getRelatedProjects() {
@@ -85,10 +80,6 @@ class MyRelatedProjectsViewController: BaseViewController {
                 print(err)
             }
         }
-    }
-
-    @objc func backToPreviousPage() {
-        navigationController?.popViewController(animated: true)
     }
 }
 
@@ -208,6 +199,7 @@ extension MyRelatedProjectsViewController: UICollectionViewDelegate {
             DispatchQueue.main.async { [weak self] in
                 self?.hidesBottomBarWhenPushed = false
             }
+            navigationItem.backButtonDisplayMode = .minimal
             navigationController?.pushViewController(detailVC, animated: true)
         }
     }

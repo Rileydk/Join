@@ -70,6 +70,8 @@ class ChatroomViewController: BaseViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        setNavBarAppearance(to: .dark)
+
         updateUserData()
         guard let chatroomID = chatroomID else { return }
         updateMessages(chatroomID: chatroomID)

@@ -45,6 +45,7 @@ class ChatListViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationItem.backButtonDisplayMode = .minimal
         layoutViews()
     }
 

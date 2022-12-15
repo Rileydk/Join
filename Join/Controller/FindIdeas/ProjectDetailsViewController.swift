@@ -94,6 +94,7 @@ class ProjectDetailsViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         if  let myID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey),
             let project = project,
             project.contact != myID {
@@ -122,11 +123,6 @@ class ProjectDetailsViewController: BaseViewController {
             navigationItem.rightBarButtonItem = UIBarButtonItem(customView: button)
 
         }
-        let backIcon = UIImage(named: JImages.Icon_24px_Back.rawValue)
-        backIcon?.withRenderingMode(.alwaysTemplate)
-        navigationItem.leftBarButtonItem = UIBarButtonItem(
-            image: backIcon,
-            style: .plain, target: self, action: #selector(backToPreviousPage))
 
         guard let project = project else { return }
         title = project.name
@@ -139,6 +135,7 @@ class ProjectDetailsViewController: BaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         getContactInfo()
+        setNavBarAppearance(to: .dark)
     }
 
     func getContactInfo() {
@@ -223,10 +220,6 @@ class ProjectDetailsViewController: BaseViewController {
                 JProgressHUD.shared.showFailure(text: Constant.Common.errorShouldRetry, view: self.view)
             }
         }
-    }
-
-    @objc func backToPreviousPage() {
-        navigationController?.popViewController(animated: true)
     }
 }
 
@@ -380,7 +373,6 @@ extension ProjectDetailsViewController {
                     fatalError("Cannot create others profile vc")
                 }
                 profileVC.userID = self?.userData?.id
-
                 self?.navigationController?.pushViewController(profileVC, animated: true)
             }
             cell.messageHandler = { [weak self] in
@@ -406,6 +398,8 @@ extension ProjectDetailsViewController {
                     }
                 }
             }
+            navigationItem.backButtonDisplayMode = .minimal
+
             return cell
 
         case .joinButton:

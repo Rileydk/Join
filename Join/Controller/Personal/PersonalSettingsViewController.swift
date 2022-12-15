@@ -53,12 +53,12 @@ class PersonalSettingsViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "個人設定"
-        let backIcon = UIImage(named: JImages.Icon_24px_Back.rawValue)
-        backIcon?.withRenderingMode(.alwaysTemplate)
-        navigationItem.leftBarButtonItem = UIBarButtonItem(
-            image: backIcon,
-            style: .plain, target: self, action: #selector(backToPreviousPage))
+        navigationItem.backButtonDisplayMode = .minimal
+    }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setNavBarAppearance(to: .dark)
     }
 
     func deleteAccount(completion: @escaping (Result<String, Error>) -> Void) {
@@ -174,10 +174,6 @@ class PersonalSettingsViewController: BaseViewController {
         alert.addAction(cancelAction)
         alert.addAction(yesAction)
         present(alert, animated: true)
-    }
-
-    @objc func backToPreviousPage() {
-        navigationController?.popViewController(animated: true)
     }
 }
 
