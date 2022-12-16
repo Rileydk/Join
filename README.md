@@ -33,25 +33,25 @@ Join: 找夥伴(Finding Partners) is an app that enables you to share your ideas
 
 ### Create Personal Profile and Portfolio
 - Edit personal information, including a summary and all the techniques you equipped.
-- Provide your interests. The app will recommed you with the projects that fit with your interests.
-- Enrich your portfolio by uploading images, scan substantial work and convert it into images, paste the url of your work to show what you've made.
+- Provide your interests. The app will recommend you the projects that fit your interests.
+- Enrich your portfolio by uploading images, scan substantial works and convert them into images, or paste the url of your works to show what you've made.
 
 <p align="middle">
   <image src="https://user-images.githubusercontent.com/63045187/208041190-fd415342-b5f6-4ec3-9e02-bdd30eb73541.png" width="440"/>
 </p>
 
 ### Find Ideas
-- Find great ideas that you're interested or fit with your skills.
+- Find great ideas that you're interested in or fit with your skills.
 - Contact with the project contact to ask about the details.
 - Apply for the position right away and track what projects you've applied for.
-- Saved the projects you're intereseted in, and read them again afterward
+- Saved the projects you're interested in, and read them again afterward.
 
 <p align="middle">
   <image src="https://user-images.githubusercontent.com/63045187/208041274-8c6ffd73-f56c-4e97-bb43-b887957b11f1.png" width="440"/>
 </p>
 
 ### Find Partners
-- Post your ideas and the skills you need to fulfill it to find the one that fit with the position.
+- Post your ideas and the skills you need to fulfill the idea to find the one that fit with the position.
 - Bind your team with your projects.
 - Track who had applied for your projects.
 - Accept application to join a new member into your group.
@@ -61,9 +61,9 @@ Join: 找夥伴(Finding Partners) is an app that enables you to share your ideas
 </p>
 
 ### Communicate and Collaborate
-- Send, received and accept friend request from the community.
-- Start a one-on-one chat with strangers or your friend.
-- Create a group chatroom with your friends, communicate with a team.
+- Send, receive and accept friend requests from the community of Join: 找夥伴.
+- Start a one-on-one chat with strangers or your friends.
+- Create a group chatroom with your friends, communicate with a whole team.
 - Establish a working group chatroom based on your team instantly.
 
 <p align="middle">
