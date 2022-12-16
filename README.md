@@ -21,7 +21,13 @@ Join: 找夥伴(Finding Partners) is an app that enables you to share your ideas
 ## Tables
 - [Features](#features)
 - [Techniques](#techniques)
-
+- [Setup the Project](#setup-the-project)
+- [Libraries](#libraries)
+- [Credit](#credit)
+- [Version](#version)
+- [Release Note](#release-note)
+- [Author](#author)
+- [License](#license)
 
 ## Features
 
