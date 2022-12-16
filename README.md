@@ -1,7 +1,7 @@
 # Join: 找夥伴
 
 <p align="middle">
-  <image src="https://github.com/Rileydk/Join/blob/7ddd4a4412fbb4a8b7545e4fe5f91f20c478b4c1/Join/Resources/Assets.xcassets/AppIcon.appiconset/144.png" width="220"/>
+  <image src="https://user-images.githubusercontent.com/63045187/208042063-1787d017-9688-42f8-8ce9-9c325810eaaa.png" width="160"/>
 </p>
 
 <p align="center">
@@ -37,7 +37,7 @@ Join: 找夥伴(Finding Partners) is an app that enables you to share your ideas
 - Enrich your portfolio by uploading images, scan substantial work and convert it into images, paste the url of your work to show what you've made.
 
 <p align="middle">
-  <image src="https://github.com/Rileydk/Join/blob/7ddd4a4412fbb4a8b7545e4fe5f91f20c478b4c1/Join/Resources/Assets.xcassets/AppIcon.appiconset/144.png" width="220"/>
+  <image src="https://user-images.githubusercontent.com/63045187/208041190-fd415342-b5f6-4ec3-9e02-bdd30eb73541.png" width="440"/>
 </p>
 
 ### Find Ideas
@@ -47,7 +47,7 @@ Join: 找夥伴(Finding Partners) is an app that enables you to share your ideas
 - Saved the projects you're intereseted in, and read them again afterward
 
 <p align="middle">
-  <image src="https://github.com/Rileydk/Join/blob/7ddd4a4412fbb4a8b7545e4fe5f91f20c478b4c1/Join/Resources/Assets.xcassets/AppIcon.appiconset/144.png" width="220"/>
+  <image src="https://user-images.githubusercontent.com/63045187/208041274-8c6ffd73-f56c-4e97-bb43-b887957b11f1.png" width="440"/>
 </p>
 
 ### Find Partners
@@ -57,7 +57,7 @@ Join: 找夥伴(Finding Partners) is an app that enables you to share your ideas
 - Accept application to join a new member into your group.
 
 <p align="middle">
-  <image src="https://github.com/Rileydk/Join/blob/7ddd4a4412fbb4a8b7545e4fe5f91f20c478b4c1/Join/Resources/Assets.xcassets/AppIcon.appiconset/144.png" width="220"/>
+  <image src="https://user-images.githubusercontent.com/63045187/208041371-64ccac79-59d5-4419-8553-187ab0056d86.png" width="440"/>
 </p>
 
 ### Communicate and Collaborate
@@ -67,7 +67,7 @@ Join: 找夥伴(Finding Partners) is an app that enables you to share your ideas
 - Establish a working group chatroom based on your team instantly.
 
 <p align="middle">
-  <image src="https://github.com/Rileydk/Join/blob/7ddd4a4412fbb4a8b7545e4fe5f91f20c478b4c1/Join/Resources/Assets.xcassets/AppIcon.appiconset/144.png" width="220"/>
+  <image src="https://user-images.githubusercontent.com/63045187/208041471-26bfbcf1-389c-4043-a401-b8b213885207.png" width="440"/>
 </p>
 
 ## Techniques
@@ -124,12 +124,12 @@ The project didn't include the "GoogleService-Info.plist" file for Firebase serv
 
 ## Credit
 
-- Some of the icons used in this app was made by authors listed below and was downloaded from [Flaticon](https://www.flaticon.com/) :
-    - [Pixel perfect](https://www.flaticon.com/authors/pixel-perfect)
-    - [Freepik](https://www.freepik.com) 
-    - [Kirill Kazachek](https://www.iconfinder.com/kirill.kazachek)
-    - [Bamicon](https://www.flaticon.com/authors/bamicon)
-    - [kmg design](https://www.flaticon.com/authors/kmg-design)
+Some of the icons used in this app was made by authors listed below and was downloaded from [Flaticon](https://www.flaticon.com/) :
+- [Pixel perfect](https://www.flaticon.com/authors/pixel-perfect)
+- [Freepik](https://www.freepik.com) 
+- [Kirill Kazachek](https://www.iconfinder.com/kirill.kazachek)
+- [Bamicon](https://www.flaticon.com/authors/bamicon)
+- [kmg design](https://www.flaticon.com/authors/kmg-design)
 
 ## Version
 
@@ -155,4 +155,3 @@ Riley Lai | <dakimi07@gmail.com>
 ## License
 
 Join: 找夥伴 is released under the MIT license. See [LICENSE](https://github.com/Rileydk/Join/blob/7ddd4a4412fbb4a8b7545e4fe5f91f20c478b4c1/LICENSE) for details.
-
