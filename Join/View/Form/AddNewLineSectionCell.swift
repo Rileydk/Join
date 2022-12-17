@@ -41,7 +41,7 @@ class AddNewLineSectionCell: TableViewCell {
                 case .success(let users):
                     membersInfo = users
 
-                    for i in 0 ..< members.count {
+                    for index in 0 ..< members.count {
                         let positionLabel = UILabel()
                         if self?.traitCollection.userInterfaceStyle == .dark {
                             positionLabel.textColor = .white
@@ -49,7 +49,7 @@ class AddNewLineSectionCell: TableViewCell {
                             positionLabel.textColor = .black
                         }
                         positionLabel.font = UIFont.systemFont(ofSize: 16)
-                        positionLabel.text = "\(membersInfo[i].name) \(members[i].role)"
+                        positionLabel.text = "\(membersInfo[index].name) \(members[index].role)"
                         self?.containerStackView.insertArrangedSubview(positionLabel, at: 0)
                     }
                 case .failure(let error):

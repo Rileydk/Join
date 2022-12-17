@@ -156,7 +156,7 @@ class GroupChatroomViewController: BaseViewController {
             group.wait()
             guard shouldContinue else { return }
             group.enter()
-            guard let chatroomInfo = self.chatroomInfo else { return }
+            guard self.chatroomInfo != nil else { return }
             let membersUserIDs = self.membersInfos.map { $0.userID }
             self.firebaseManager.getAllMatchedUsersDetail(usersID: membersUserIDs) { result in
                 switch result {
@@ -219,7 +219,7 @@ class GroupChatroomViewController: BaseViewController {
     }
 
     @objc func openSettingPage() {
-        guard let chatroomID = chatroomID else { return }
+        guard chatroomID != nil else { return }
         let chatStoryboard = UIStoryboard(name: StoryboardCategory.chat.rawValue, bundle: nil)
         guard let groupMembersVC = chatStoryboard.instantiateViewController(
             withIdentifier: GroupMembersViewController.identifier

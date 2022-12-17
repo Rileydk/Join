@@ -7,6 +7,8 @@
 
 import UIKit
 
+typealias AllMessagesList = (group: [GroupMessageListItem], `private`: [MessageListItem])
+
 enum Tab {
     case findIdeas
     case findPartners
@@ -121,25 +123,29 @@ class TabBarController: UITabBarController {
             let groupChatroomIDs = allChatrooms.group.map { $0.chatroomID }
             let privateChatroomIDs = allChatrooms.private.map { $0.chatroomID }
             groupChatroomIDs.forEach {
-                self.firebaseManager.addNoneStopCollectionListener(to: FirestoreEndpoint.groupMessages($0).ref) { [weak self] in
+                self.firebaseManager.addNoneStopCollectionListener(
+                    to: FirestoreEndpoint.groupMessages($0).ref) { [weak self] in
                     self?.updateTotalUnreadMessages()
                 }
-                self.firebaseManager.addNoneStopCollectionListener(to: FirestoreEndpoint.groupMembers($0).ref) { [weak self] in
+                self.firebaseManager.addNoneStopCollectionListener(
+                    to: FirestoreEndpoint.groupMembers($0).ref) { [weak self] in
                     self?.updateTotalUnreadMessages()
                 }
             }
             privateChatroomIDs.forEach {
-                self.firebaseManager.addNoneStopCollectionListener(to: FirestoreEndpoint.messages($0).ref) { [weak self] in
+                self.firebaseManager.addNoneStopCollectionListener(
+                    to: FirestoreEndpoint.messages($0).ref) { [weak self] in
                     self?.updateTotalUnreadMessages()
                 }
-                self.firebaseManager.addNoneStopCollectionListener(to: FirestoreEndpoint.privateChatroomMembers($0).ref) { [weak self] in
+                self.firebaseManager.addNoneStopCollectionListener(
+                    to: FirestoreEndpoint.privateChatroomMembers($0).ref) { [weak self] in
                     self?.updateTotalUnreadMessages()
                 }
             }
         }
     }
 
-    func getMessageList(completion: @escaping ((group: [GroupMessageListItem], `private`: [MessageListItem])) -> Void) {
+    func getMessageList(completion: @escaping (AllMessagesList) -> Void) {
         var blockList = [UserID]()
         var groupMessageItems = [GroupMessageListItem]()
         var friendMessageItems = [MessageListItem]()
@@ -153,7 +159,8 @@ class TabBarController: UITabBarController {
                 switch result {
                 case .success(let list):
                     blockList = list
-                case .failure(let err):
+                case .failure(let error):
+                    print(error)
                     // JProgressHUD.shared.showFailure(view: self.view)
                     blockList = []
                 }

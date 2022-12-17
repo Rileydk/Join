@@ -80,7 +80,6 @@ class FindIdeasViewController: BaseViewController {
     }
 
     func getProjects() {
-        var friendsProjects = [Project]()
         var interestProjects = [Project]()
 
         firebaseManager.firebaseQueue.async { [unowned self] in
@@ -123,28 +122,7 @@ class FindIdeasViewController: BaseViewController {
                 }
             }
 
-            //// 暫時沒有好友推薦
-//            group.wait()
-//            group.enter()
-//            self.firebaseManager.getAllFriendsAndChatroomsInfo(type: .friend) { [unowned self] result in
-//                switch result {
-//                case .success(let friends):
-//                    friendsProjects = self.projects.filter { project in
-//                        friends.contains { friend in
-//                            project.contact == friend.id
-//                        }
-//                    }
-//                    group.leave()
-//                case .failure(let error):
-//                    group.leave()
-//                    group.notify(queue: .main) {
-//                        JProgressHUD.shared.showFailure(text: error.localizedDescription, view: self.view)
-//                    }
-//                }
-//            }
-
             group.enter()
-            // TODO: - 改為使用 UserDefaults 取得興趣類別
             guard shouldContinue else { return }
             guard let id = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey) else {
                 fatalError("Doesn't have user id")
@@ -169,8 +147,9 @@ class FindIdeasViewController: BaseViewController {
                     }
                 case .failure(let err):
                     group.leave()
-                    group.notify(queue: .main) {
-                        collectionView.endHeaderRefreshing()
+                    group.notify(queue: .main) { [weak self] in
+                        guard let self = self else { return }
+                        self.collectionView.endHeaderRefreshing()
                         JProgressHUD.shared.showFailure(text: err.localizedDescription, view: self.view)
                     }
                 }
@@ -251,7 +230,9 @@ extension FindIdeasViewController {
     }
 
     // swiftlint:disable line_length
-    func createCell(collectionView: UICollectionView ,indexPath: IndexPath, item: Item) -> UICollectionViewCell {
+    func createCell(
+        collectionView: UICollectionView ,
+        indexPath: IndexPath, item: Item) -> UICollectionViewCell {
         switch item {
         case .recommendation(let data):
             guard let cell = collectionView.dequeueReusableCell(

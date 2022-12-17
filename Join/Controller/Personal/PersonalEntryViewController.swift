@@ -133,7 +133,9 @@ extension PersonalEntryViewController: UITableViewDataSource {
         let section = Section.allCases[indexPath.section]
         switch section {
         case .buttonsGroup:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: ButtonsGroupTableViewCell.identifier, for: indexPath) as? ButtonsGroupTableViewCell else {
+            guard let cell = tableView.dequeueReusableCell(
+                withIdentifier: ButtonsGroupTableViewCell.identifier,
+                for: indexPath) as? ButtonsGroupTableViewCell else {
                 fatalError("Cannot create buttons group table view cell")
             }
             cell.layoutCell()
@@ -156,7 +158,9 @@ extension PersonalEntryViewController: UITableViewDataSource {
                     self.navigationController?.pushViewController(profileVC, animated: true)
 
                 case .myProject:
-                    let personalStoryboard = UIStoryboard(name: StoryboardCategory.personal.rawValue, bundle: nil)
+                    let personalStoryboard = UIStoryboard(
+                        name: StoryboardCategory.personal.rawValue,
+                        bundle: nil)
                     guard let myPostsVC = personalStoryboard.instantiateViewController(
                         withIdentifier: MyPostsViewController.identifier
                     ) as? MyPostsViewController else {
@@ -165,7 +169,9 @@ extension PersonalEntryViewController: UITableViewDataSource {
                     self.navigationController?.pushViewController(myPostsVC, animated: true)
 
                 case .myApplications:
-                    let personalStoryboard = UIStoryboard(name: StoryboardCategory.personal.rawValue, bundle: nil)
+                    let personalStoryboard = UIStoryboard(
+                        name: StoryboardCategory.personal.rawValue,
+                        bundle: nil)
                     guard let myApplicationsVC = personalStoryboard.instantiateViewController(
                         withIdentifier: MyRelatedProjectsViewController.identifier
                     ) as? MyRelatedProjectsViewController else {
@@ -219,28 +225,13 @@ extension PersonalEntryViewController: UITableViewDataSource {
 
 extension UIViewController {
     func backToRoot() {
-//        if let rootVC = view.window?.rootViewController as? MockLoginViewController {
-//            rootVC.dismiss(animated: false)
-//        } else {
-            // 下一行是假登入用
-//            tabBarController?.selectedIndex = 0
-
-            let mainStoryboard = UIStoryboard(name: StoryboardCategory.main.rawValue, bundle: nil)
-            guard let loginVC = mainStoryboard.instantiateViewController(
-                withIdentifier: LoginViewController.identifier
-                ) as? LoginViewController else {
-                fatalError("Cannot instantiate log in vc")
-            }
-
-            // 下一段是假登入用
-//            guard let loginVC = mainStoryboard.instantiateViewController(
-//                withIdentifier: MockLoginViewController.identifier
-//            ) as? MockLoginViewController else {
-//                fatalError("Cannot instantiate log in vc")
-//            }
-
-            loginVC.modalPresentationStyle = .fullScreen
-            present(loginVC, animated: false)
-//        }
+        let mainStoryboard = UIStoryboard(name: StoryboardCategory.main.rawValue, bundle: nil)
+        guard let loginVC = mainStoryboard.instantiateViewController(
+            withIdentifier: LoginViewController.identifier
+            ) as? LoginViewController else {
+            fatalError("Cannot instantiate log in vc")
+        }
+        loginVC.modalPresentationStyle = .fullScreen
+        present(loginVC, animated: false)
     }
 }

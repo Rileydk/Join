@@ -11,9 +11,9 @@ class NavigationController: UINavigationController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        var navBarAppearance = UINavigationBarAppearance()
+        let navBarAppearance = UINavigationBarAppearance()
         navBarAppearance.configureWithOpaqueBackground()
-        navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.White]
+        navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.White ?? .white]
         navBarAppearance.backgroundColor = .Blue1
         navBarAppearance.shadowColor = nil
         navBarAppearance.shadowImage = UIImage()

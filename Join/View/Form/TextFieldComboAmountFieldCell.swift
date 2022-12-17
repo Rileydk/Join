@@ -27,12 +27,16 @@ class TextFieldComboAmountFieldCell: TableViewCell {
         // Configure the view for the selected state
     }
 
-    func layoutCell(longFieldTitle: String, longFieldValue: String, shortFieldTitle: String, shortFieldValue: String) {
+    func layoutCell(
+        longFieldTitle: String, longFieldValue: String,
+        shortFieldTitle: String, shortFieldValue: String) {
         longTextFieldTitleLabel.text = longFieldTitle
         longTextField.text = longFieldValue
         longTextField.attributedPlaceholder = NSAttributedString(
             string: Constant.FindPartners.recruitingRolePlaceholder, attributes: [
-                NSAttributedString.Key.foregroundColor: (UIColor.Gray3?.withAlphaComponent(0.7) ?? .lightGray).cgColor
+                NSAttributedString.Key.foregroundColor: (
+                    UIColor.Gray3?.withAlphaComponent(0.7) ??
+                    .lightGray).cgColor
             ])
 
         shortTextFieldTitleLabel.text = shortFieldTitle

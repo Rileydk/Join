@@ -106,9 +106,15 @@ class ProjectDetailsViewController: BaseViewController {
             button.tintColor = .White
 
             button.showsMenuAsPrimaryAction = true
-            let reportAction = UIAction(title: Constant.FindIdeas.report, attributes: [], state: .off) { [weak self] _ in
-                let alert = UIAlertController(title: Constant.FindIdeas.reportAlert, message: nil, preferredStyle: .actionSheet)
-                let yesAction = UIAlertAction(title: Constant.Common.confirm, style: .destructive) { [weak self] _ in
+            let reportAction = UIAction(
+                title: Constant.FindIdeas.report,
+                attributes: [], state: .off) { [weak self] _ in
+                let alert = UIAlertController(
+                    title: Constant.FindIdeas.reportAlert,
+                    message: nil, preferredStyle: .actionSheet)
+                let yesAction = UIAlertAction(
+                    title: Constant.Common.confirm,
+                    style: .destructive) { [weak self] _ in
                     self?.sendReport()
                 }
                 let cancelAction = UIAlertAction(title: Constant.Common.cancel, style: .cancel)
@@ -159,7 +165,9 @@ class ProjectDetailsViewController: BaseViewController {
     func checkAlreadyApplied(project: Project) {
         firebaseManager.firebaseQueue.async { [weak self] in
             guard let self = self else { return }
-            self.firebaseManager.getAllApplicants(projectID: project.projectID, applicantID: self.myID) { result in
+            self.firebaseManager.getAllApplicants(
+                projectID: project.projectID,
+                applicantID: self.myID) { result in
                 switch result {
                 case .success(let applicants):
                     if applicants.contains(self.myID) {
@@ -210,7 +218,10 @@ class ProjectDetailsViewController: BaseViewController {
         guard let project = project else { return }
 
         JProgressHUD.shared.showLoading(text: Constant.Common.processing, view: self.view)
-        let report = Report(reportID: "", type: .idea, reportedObjectID: project.projectID, reportTime: Date(), reason: nil)
+        let report = Report(
+            reportID: "", type: .idea,
+            reportedObjectID: project.projectID,
+            reportTime: Date(), reason: nil)
         firebaseManager.addNewReport(report: report) { result in
             switch result {
             case .success:
@@ -245,7 +256,7 @@ extension ProjectDetailsViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let section = Section.allCases[section]
-        if section == .description || section == .contact  {
+        if section == .description || section == .contact {
             guard let headerView = tableView.dequeueReusableHeaderFooterView(
                 withIdentifier: DetailTitleHeaderView.identifier) as? DetailTitleHeaderView else {
                 return nil
@@ -412,21 +423,6 @@ extension ProjectDetailsViewController {
             cell.tapHandler = { [weak self] _ in
                 guard let project = self?.project else { return }
                 self?.checkAlreadyApplied(project: project)
-
-                // 選項暫時只有一人，因此不需要 picker
-//                guard let strongSelf = self else { return }
-//                let positionPicker = UIPickerView()
-//                positionPicker.translatesAutoresizingMaskIntoConstraints = false
-//                positionPicker.delegate = self
-//                positionPicker.dataSource = self
-//                strongSelf.view.addSubview(positionPicker)
-//
-//                NSLayoutConstraint.activate([
-//                    positionPicker.leadingAnchor.constraint(equalTo: strongSelf.view.leadingAnchor),
-//                    positionPicker.trailingAnchor.constraint(equalTo: strongSelf.view.trailingAnchor),
-//                    positionPicker.bottomAnchor.constraint(equalTo: strongSelf.view.bottomAnchor),
-//                    positionPicker.heightAnchor.constraint(equalToConstant: 300)
-//                ])
             }
             return cell
         }
@@ -456,25 +452,3 @@ extension ProjectDetailsViewController {
         datasource.apply(snapshot, animatingDifferences: false)
     }
 }
-
-// MARK: - Picker View Delegate
-// extension ProjectDetailsViewController: UIPickerViewDelegate {
-//
-// }
-
-// MARK: - Picker View Datasource
-// extension ProjectDetailsViewController: UIPickerViewDataSource {
-//    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-//        1
-//    }
-//
-//    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-//        project?.recruiting.count ?? 0
-//    }
-//
-//    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-//        guard let project = project else { return nil }
-//        let item = project.recruiting[component]
-//        return item.role
-//    }
-// }

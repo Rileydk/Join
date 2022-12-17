@@ -58,7 +58,6 @@ class JoinButtonCell: TableViewCell {
         joinButton.setTitleColor(type.titleColor, for: .normal)
         joinButton.backgroundColor = type.backgroundColor
         if let borderColor = type.borderColor {
-            print("=== border color", borderColor)
             joinButton.layer.borderColor = borderColor.cgColor
         } else {
             joinButton.layer.borderColor = nil

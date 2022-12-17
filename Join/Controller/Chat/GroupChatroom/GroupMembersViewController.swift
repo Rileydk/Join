@@ -54,7 +54,9 @@ class GroupMembersViewController: BaseViewController {
 
         if let backImage = UIImage(named: JImages.Icon_24px_Back.rawValue) {
             backImage.withRenderingMode(.alwaysTemplate)
-            navigationItem.leftBarButtonItem = UIBarButtonItem(image: backImage, style: .plain, target: self, action: #selector(backToPreviousPage))
+            navigationItem.leftBarButtonItem = UIBarButtonItem(
+                image: backImage, style: .plain, target: self,
+                action: #selector(backToPreviousPage))
         }
     }
 
@@ -163,7 +165,9 @@ class GroupMembersViewController: BaseViewController {
             print("No chatroom id")
             return
         }
-        firebaseManager.updateGroupChatroomMemberStatus(setTo: .exit, membersIDs: [myID], chatroomID: chatroomID) { [weak self] result in
+        firebaseManager.updateGroupChatroomMemberStatus(
+            setTo: .exit, membersIDs: [myID],
+            chatroomID: chatroomID) { [weak self] result in
             switch result {
             case .success:
                 self?.navigationController?.popToRootViewController(animated: true)

@@ -92,12 +92,15 @@ class IdeaCell: CollectionViewCell {
             savingButton.isHidden = true
         } else {
             self.project = project
-            print("collectors in cell:", project.name, project.collectors)
             savingButton.isHidden = false
             savingButton.tintColor = .Yellow1
             let largeConfig = UIImage.SymbolConfiguration(pointSize: 20, weight: .regular, scale: .large)
-            savingButton.setImage(UIImage(systemName: "bookmark", withConfiguration: largeConfig), for: .normal)
-            savingButton.setImage(UIImage(systemName: "bookmark.fill", withConfiguration: largeConfig), for: .selected)
+            savingButton.setImage(
+                UIImage(systemName: "bookmark",
+                        withConfiguration: largeConfig), for: .normal)
+            savingButton.setImage(
+                UIImage(systemName: "bookmark.fill",
+                        withConfiguration: largeConfig), for: .selected)
             if let collectors = project.collectors, collectors.contains(myID) {
                 savingButton.isSelected = true
             } else {

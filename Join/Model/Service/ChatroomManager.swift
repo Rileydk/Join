@@ -16,6 +16,4 @@ class ChatroomManager {
     }
 
     let firestoreManager = FirestoreManager.shared
-
-    
 }

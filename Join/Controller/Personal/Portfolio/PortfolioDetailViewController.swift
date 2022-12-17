@@ -17,16 +17,19 @@ struct WorkRecordWithImage: Hashable {
 
 class PortfolioDetailViewController: BaseViewController {
     enum Section: CaseIterable {
-        case myMasterpiece
+        case myWork
     }
 
     enum Item: Hashable {
-        case myMasterpiece(WorkRecordWithImage)
+        case myWork(WorkRecordWithImage)
     }
 
     @IBOutlet weak var tableView: UITableView! {
         didSet {
-            tableView.register(UINib(nibName: CreatorHeaderFooterView.identifier, bundle: nil), forCellReuseIdentifier: CreatorHeaderFooterView.identifier)
+            tableView.register(
+                UINib(nibName: CreatorHeaderFooterView.identifier,
+                      bundle: nil),
+                forCellReuseIdentifier: CreatorHeaderFooterView.identifier)
             tableView.delegate = self
             configureDatasource()
             tableView.rowHeight = UITableView.automaticDimension
@@ -34,14 +37,13 @@ class PortfolioDetailViewController: BaseViewController {
             tableView.separatorStyle = .none
             tableView.backgroundColor = .Gray5
             tableView.sectionHeaderTopPadding = 0
-            // tableView.contentInsetAdjustmentBehavior = .never
         }
     }
     @IBOutlet weak var closeButton: UIButton!
     @IBOutlet weak var moreActionButton: UIButton!
 
-    typealias MyMasterpieceDatasource = UITableViewDiffableDataSource<Section, Item>
-    var datasource: MyMasterpieceDatasource!
+    typealias MyWorkDatasource = UITableViewDiffableDataSource<Section, Item>
+    var datasource: MyWorkDatasource!
     var workItem: WorkItem?
     var workRecordsWithImages = [WorkRecordWithImage]()
     var user: JUser?
@@ -73,12 +75,16 @@ class PortfolioDetailViewController: BaseViewController {
         moreActionButton.layer.shadowColor = UIColor.Gray1?.cgColor
         moreActionButton.contentEdgeInsets = .init(top: 4, left: 10, bottom: 4, right: 10)
 
-        if let user = user, let myID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey), user.id != myID {
+        if let user = user, let myID =
+            UserDefaults.standard.string(
+                forKey: UserDefaults.UserKey.uidKey), user.id != myID {
             moreActionButton.showsMenuAsPrimaryAction = true
-            let reportAction = UIAction(title: Constant.Portfolio.report, attributes: [], state: .off) { [weak self] _ in
+            let reportAction = UIAction(
+                title: Constant.Portfolio.report, attributes: [],
+                state: .off) { [weak self] _ in
                 self?.reportPortfolio()
             }
-            var elements: [UIAction] = [reportAction]
+            let elements: [UIAction] = [reportAction]
             let menu = UIMenu(children: elements)
             moreActionButton.menu = menu
         } else {
@@ -119,8 +125,8 @@ class PortfolioDetailViewController: BaseViewController {
                         switch result {
                         case .success(let image):
                             recordImage = image
-                        case .failure(let err):
-                            break
+                        case .failure(let error):
+                            print(error)
                         }
                         group.leave()
                     }
@@ -141,7 +147,9 @@ class PortfolioDetailViewController: BaseViewController {
                     }
                 }
                 group.wait()
-                return WorkRecordWithImage(recordID: $0.recordID, type: $0.type, image: recordImage, url: $0.url)
+                return WorkRecordWithImage(
+                    recordID: $0.recordID, type: $0.type,
+                    image: recordImage, url: $0.url)
             }
             group.notify(queue: .main) { [weak self] in
                 self?.updateDatasource()
@@ -154,11 +162,16 @@ class PortfolioDetailViewController: BaseViewController {
     }
 
     func reportPortfolio() {
-        let alert = UIAlertController(title: Constant.FindIdeas.reportAlert, message: nil, preferredStyle: .actionSheet)
+        let alert = UIAlertController(
+            title: Constant.FindIdeas.reportAlert,
+            message: nil, preferredStyle: .actionSheet)
         let yesAction = UIAlertAction(title: Constant.Common.confirm, style: .destructive) { [weak self] _ in
-            guard let self = self, let user = self.user, let workItem = self.workItem else { return }
+            guard let self = self, self.user != nil,
+                  let workItem = self.workItem else { return }
             JProgressHUD.shared.showLoading(text: Constant.Common.processing, view: self.view)
-            let report = Report(reportID: "", type: .portfolio, reportedObjectID: workItem.workID as! String, reportTime: Date(), reason: nil)
+            let report = Report(reportID: "", type: .portfolio,
+                                reportedObjectID: workItem.workID as! String,
+                                reportTime: Date(), reason: nil)
             FirebaseManager.shared.addNewReport(report: report) { result in
                 switch result {
                 case .success:
@@ -206,7 +219,8 @@ extension PortfolioDetailViewController: UITableViewDelegate {
 // MARK: - Datasource
 extension PortfolioDetailViewController {
     func configureDatasource() {
-        datasource = UITableViewDiffableDataSource(tableView: tableView) { [weak self] tableView, indexPath, item in
+        datasource = UITableViewDiffableDataSource(
+            tableView: tableView) { [weak self] tableView, indexPath, item in
             return self?.createCell(tableView: tableView, indexPath: indexPath, item: item)
         }
         updateDatasource()
@@ -214,8 +228,10 @@ extension PortfolioDetailViewController {
 
     func createCell(tableView: UITableView, indexPath: IndexPath, item: Item) -> UITableViewCell {
         switch item {
-        case .myMasterpiece(let workRecordWithImage):
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: MyMasterpieceTableViewCell.identifier, for: indexPath) as? MyMasterpieceTableViewCell else {
+        case .myWork(let workRecordWithImage):
+            guard let cell = tableView.dequeueReusableCell(
+                withIdentifier: MyWorkTableViewCell.identifier,
+                for: indexPath) as? MyWorkTableViewCell else {
                 fatalError("Cannot create my masterpiece table view cell")
             }
             if indexPath.row == workRecordsWithImages.count - 1 {
@@ -237,7 +253,7 @@ extension PortfolioDetailViewController {
     func updateDatasource() {
         var snapshot = NSDiffableDataSourceSnapshot<Section, Item>()
         snapshot.appendSections(Section.allCases)
-        snapshot.appendItems(workRecordsWithImages.map { .myMasterpiece($0) }, toSection: .myMasterpiece)
+        snapshot.appendItems(workRecordsWithImages.map { .myWork($0) }, toSection: .myWork)
         datasource.apply(snapshot, animatingDifferences: true)
     }
 }
