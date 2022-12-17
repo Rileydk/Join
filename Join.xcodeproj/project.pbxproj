@@ -137,6 +137,11 @@
 		BF42FAD92912960D00501789 /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FAD82912960D00501789 /* CollectionViewCell.swift */; };
 		BF42FADC2912967900501789 /* IdeaCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42FADA2912967900501789 /* IdeaCell.swift */; };
 		BF42FADD2912967900501789 /* IdeaCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF42FADB2912967900501789 /* IdeaCell.xib */; };
+		BF7572BC294D755500C5749D /* ProjectManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7572BB294D755500C5749D /* ProjectManager.swift */; };
+		BF7572BE294D75E300C5749D /* FirebaseStorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7572BD294D75E300C5749D /* FirebaseStorageManager.swift */; };
+		BF7572C0294D77D400C5749D /* WorkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7572BF294D77D400C5749D /* WorkManager.swift */; };
+		BF7572C2294D789000C5749D /* GroupChatroomManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7572C1294D789000C5749D /* GroupChatroomManager.swift */; };
+		BF7572C4294D7B6800C5749D /* AccountManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7572C3294D7B6800C5749D /* AccountManager.swift */; };
 		BF9A86742918FA3500BF934D /* UsersListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9A86732918FA3500BF934D /* UsersListViewController.swift */; };
 		BF9A867D2918FB1800BF934D /* FriendCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9A867B2918FB1800BF934D /* FriendCell.swift */; };
 		BF9A867E2918FB1800BF934D /* FriendCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF9A867C2918FB1800BF934D /* FriendCell.xib */; };
@@ -353,6 +358,11 @@
 		BF42FAD82912960D00501789 /* CollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewCell.swift; sourceTree = "<group>"; };
 		BF42FADA2912967900501789 /* IdeaCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdeaCell.swift; sourceTree = "<group>"; };
 		BF42FADB2912967900501789 /* IdeaCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = IdeaCell.xib; sourceTree = "<group>"; };
+		BF7572BB294D755500C5749D /* ProjectManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectManager.swift; sourceTree = "<group>"; };
+		BF7572BD294D75E300C5749D /* FirebaseStorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseStorageManager.swift; sourceTree = "<group>"; };
+		BF7572BF294D77D400C5749D /* WorkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkManager.swift; sourceTree = "<group>"; };
+		BF7572C1294D789000C5749D /* GroupChatroomManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupChatroomManager.swift; sourceTree = "<group>"; };
+		BF7572C3294D7B6800C5749D /* AccountManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountManager.swift; sourceTree = "<group>"; };
 		BF9A86732918FA3500BF934D /* UsersListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersListViewController.swift; sourceTree = "<group>"; };
 		BF9A867B2918FB1800BF934D /* FriendCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendCell.swift; sourceTree = "<group>"; };
 		BF9A867C2918FB1800BF934D /* FriendCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FriendCell.xib; sourceTree = "<group>"; };
@@ -527,13 +537,18 @@
 		BF326C31292F466400898444 /* Service */ = {
 			isa = PBXGroup;
 			children = (
-				BF42FACA2911473A00501789 /* FirebaseManager.swift */,
+				BF2681EA294184B1007DCFBE /* UserManager.swift */,
+				BF7572BF294D77D400C5749D /* WorkManager.swift */,
+				BF7572BB294D755500C5749D /* ProjectManager.swift */,
+				BF2681EC2941E2A0007DCFBE /* ChatroomManager.swift */,
+				BF7572C1294D789000C5749D /* GroupChatroomManager.swift */,
+				BF7572C3294D7B6800C5749D /* AccountManager.swift */,
+				BF2681E829407E9C007DCFBE /* FirestoreManager.swift */,
+				BF7572BD294D75E300C5749D /* FirebaseStorageManager.swift */,
 				BF326C32292F515C00898444 /* FirebaseAuthManager.swift */,
 				BF326C2F292F465A00898444 /* AppleSignInManager.swift */,
-				BF2681E829407E9C007DCFBE /* FirestoreManager.swift */,
+				BF42FACA2911473A00501789 /* FirebaseManager.swift */,
 				BF326C3D292F6D7A00898444 /* HTTP.swift */,
-				BF2681EA294184B1007DCFBE /* UserManager.swift */,
-				BF2681EC2941E2A0007DCFBE /* ChatroomManager.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -1306,6 +1321,7 @@
 				BF42FAB2290FAC2000501789 /* Project.swift in Sources */,
 				BF9A86742918FA3500BF934D /* UsersListViewController.swift in Sources */,
 				BFB72ED82933604C006F4651 /* NoApplicantTableViewCell.swift in Sources */,
+				BF7572C2294D789000C5749D /* GroupChatroomManager.swift in Sources */,
 				BF3D83652927A1B6009F903F /* KingFisherWrapper.swift in Sources */,
 				BF326C0F292BB5E200898444 /* BottomLinedTextView.swift in Sources */,
 				BF326C3C292F6D3200898444 /* Data+Ext.swift in Sources */,
@@ -1317,6 +1333,7 @@
 				BF9A8691291BCF9F00BF934D /* MyPostsDetailViewController.swift in Sources */,
 				BF326C1F292CABB400898444 /* LightNavigationController.swift in Sources */,
 				BF42FA73290D197000501789 /* TableViewCell.swift in Sources */,
+				BF7572BC294D755500C5749D /* ProjectManager.swift in Sources */,
 				BF326C17292C5C2900898444 /* PaddingableTextView.swift in Sources */,
 				BF326C33292F515C00898444 /* FirebaseAuthManager.swift in Sources */,
 				BF2681EB294184B1007DCFBE /* UserManager.swift in Sources */,
@@ -1347,6 +1364,7 @@
 				BF1294402929D85B00AA631E /* Constants.swift in Sources */,
 				BF0271412920D093000EA2F8 /* UIColor+Ext.swift in Sources */,
 				BF326C1D292C92B500898444 /* PillButton.swift in Sources */,
+				BF7572C4294D7B6800C5749D /* AccountManager.swift in Sources */,
 				BF326C3E292F6D7A00898444 /* HTTP.swift in Sources */,
 				BF3D835B29278208009F903F /* Work.swift in Sources */,
 				BF42FAD62912945F00501789 /* RecommendedProjectCell.swift in Sources */,
@@ -1366,6 +1384,7 @@
 				BF3D83742928D11D009F903F /* ProfileActionButtonsCell.swift in Sources */,
 				BF42FA37290BE2AA00501789 /* SceneDelegate.swift in Sources */,
 				BFF8A4BF2913B46600ADC950 /* JoinButtonCell.swift in Sources */,
+				BF7572C0294D77D400C5749D /* WorkManager.swift in Sources */,
 				BFF8A4AE2913A92300ADC950 /* ProjectDetailsViewController.swift in Sources */,
 				BF3D835E2927873C009F903F /* AddPortfolioViewController.swift in Sources */,
 				BF326C35292F529900898444 /* KeychainManager.swift in Sources */,
@@ -1374,6 +1393,7 @@
 				BFF8A4F129164FA200ADC950 /* Chat.swift in Sources */,
 				BF42FACB2911473A00501789 /* FirebaseManager.swift in Sources */,
 				BFF8A4B82913AE8400ADC950 /* DetailTitleHeaderView.swift in Sources */,
+				BF7572BE294D75E300C5749D /* FirebaseStorageManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
