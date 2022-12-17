@@ -55,7 +55,6 @@ class MemberCell: TableViewCell {
     func layoutCell(info: Member) {
         friendNameTextField.text = info.id
         roleTextField.text = info.role
-        var skills = ""
         skillTextField.text = info.skills
 
         friendNameTextField.addTarget(self, action: #selector(textFieldDidChanged), for: .editingChanged)

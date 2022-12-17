@@ -3,87 +3,11 @@
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
-        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Mock Login View Controller-->
-        <scene sceneID="8MK-dM-aOd">
-            <objects>
-                <viewController storyboardIdentifier="MockLoginViewController" id="1NE-3J-0Fa" customClass="MockLoginViewController" customModule="Join" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="x7i-qJ-YkP">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gys-rA-fxC">
-                                <rect key="frame" x="89" y="489" width="72" height="35"/>
-                                <color key="backgroundColor" name="Blue1"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="22"/>
-                                <inset key="contentEdgeInsets" minX="6" minY="4" maxX="6" maxY="4"/>
-                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                <state key="normal" title="Friend"/>
-                                <connections>
-                                    <action selector="chooseFriend:" destination="1NE-3J-0Fa" eventType="touchUpInside" id="n7M-V8-lGg"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ckf-uB-PJB">
-                                <rect key="frame" x="111.5" y="374" width="191" height="35"/>
-                                <color key="backgroundColor" name="Blue1"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="22"/>
-                                <inset key="contentEdgeInsets" minX="6" minY="4" maxX="6" maxY="4"/>
-                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                <state key="normal" title="以大琪的身份登入"/>
-                                <connections>
-                                    <action selector="chooseRiley:" destination="1NE-3J-0Fa" eventType="touchUpInside" id="zYi-4v-V6f"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Let-2Y-2cx">
-                                <rect key="frame" x="151" y="590" width="112" height="35"/>
-                                <color key="backgroundColor" name="Blue1"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="22"/>
-                                <inset key="contentEdgeInsets" minX="6" minY="4" maxX="6" maxY="4"/>
-                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                <state key="normal" title="Passenger"/>
-                                <connections>
-                                    <action selector="choosePassenger:" destination="1NE-3J-0Fa" eventType="touchUpInside" id="7wb-Ni-cph"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xvs-K2-f4a">
-                                <rect key="frame" x="200" y="489" width="140" height="35"/>
-                                <color key="backgroundColor" name="Blue1"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="22"/>
-                                <inset key="contentEdgeInsets" minX="6" minY="4" maxX="6" maxY="4"/>
-                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                <state key="normal" title="New Member"/>
-                                <connections>
-                                    <action selector="chooseNewMember:" destination="1NE-3J-0Fa" eventType="touchUpInside" id="uBf-uG-QF0"/>
-                                </connections>
-                            </button>
-                        </subviews>
-                        <viewLayoutGuide key="safeArea" id="hFF-GX-KZx"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <constraints>
-                            <constraint firstItem="Let-2Y-2cx" firstAttribute="top" secondItem="xvs-K2-f4a" secondAttribute="bottom" constant="66" id="5te-Uq-XZX"/>
-                            <constraint firstItem="Ckf-uB-PJB" firstAttribute="top" secondItem="hFF-GX-KZx" secondAttribute="top" constant="330" id="7Om-zh-yOO"/>
-                            <constraint firstItem="xvs-K2-f4a" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Gys-rA-fxC" secondAttribute="trailing" constant="8" symbolic="YES" id="FNb-b9-dAu"/>
-                            <constraint firstItem="Gys-rA-fxC" firstAttribute="baseline" secondItem="xvs-K2-f4a" secondAttribute="baseline" id="JA1-dF-k5L"/>
-                            <constraint firstItem="Let-2Y-2cx" firstAttribute="centerX" secondItem="x7i-qJ-YkP" secondAttribute="centerX" id="KWj-rx-lbh"/>
-                            <constraint firstItem="hFF-GX-KZx" firstAttribute="trailing" secondItem="xvs-K2-f4a" secondAttribute="trailing" constant="74" id="eLc-j4-Y1C"/>
-                            <constraint firstItem="Gys-rA-fxC" firstAttribute="leading" secondItem="hFF-GX-KZx" secondAttribute="leading" constant="89" id="twA-Ze-TF9"/>
-                            <constraint firstItem="Gys-rA-fxC" firstAttribute="top" secondItem="Ckf-uB-PJB" secondAttribute="bottom" constant="80" id="vfa-dF-Fe3"/>
-                            <constraint firstItem="Ckf-uB-PJB" firstAttribute="centerX" secondItem="x7i-qJ-YkP" secondAttribute="centerX" id="wyv-Uo-KCn"/>
-                        </constraints>
-                    </view>
-                    <connections>
-                        <segue destination="AWW-iZ-ttW" kind="show" identifier="GoToMainPage" id="A9e-Bt-MQk"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="IuZ-Rg-EH1" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-772" y="-293"/>
-        </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="Vag-jx-ymv">
             <objects>
@@ -140,21 +64,14 @@ fffff</string>
                     <connections>
                         <outlet property="loginProviderStackView" destination="xXt-pa-GFz" id="nWz-V3-gTY"/>
                         <outlet property="statementTextView" destination="FIA-F2-75Z" id="Db6-AA-KfW"/>
-                        <segue destination="AWW-iZ-ttW" kind="show" id="Wum-Uz-8pD"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="d62-zk-yHj" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-772.46376811594212" y="406.47321428571428"/>
+            <point key="canvasLocation" x="-577" y="92"/>
         </scene>
     </scenes>
-    <inferredMetricsTieBreakers>
-        <segue reference="Wum-Uz-8pD"/>
-    </inferredMetricsTieBreakers>
     <resources>
-        <namedColor name="Blue1">
-            <color red="0.0" green="0.22352941176470589" blue="0.38823529411764707" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

@@ -52,10 +52,6 @@ class AppleSignInManager {
     let keychainManager = KeychainManager.shared
     let decoder = JSONDecoder()
 
-    // get refresh token and save in Keychain
-    // revoke authorization
-    // deleteUser
-
     fileprivate var currentNonce: String?
 
     private func randomNonceString(length: Int = 32) -> String {
@@ -103,7 +99,7 @@ class AppleSignInManager {
         return hashString
     }
 
-    func generateAuthRequest() ->  ASAuthorizationAppleIDRequest {
+    func generateAuthRequest() -> ASAuthorizationAppleIDRequest {
         let nonce = randomNonceString()
         currentNonce = nonce
         let appleIDProvider = ASAuthorizationAppleIDProvider()
@@ -113,7 +109,9 @@ class AppleSignInManager {
         return request
     }
 
-    func signInApple(authorization: ASAuthorization, completion: @escaping (Result<UserInitInfo, Error>) -> Void) {
+    func signInApple(
+        authorization: ASAuthorization,
+        completion: @escaping (Result<UserInitInfo, Error>) -> Void) {
         getRefreshToken()
 
         var fullName = ""
@@ -151,10 +149,10 @@ class AppleSignInManager {
                     completion(.failure(error))
                     return
                 }
-                if var firUser = Auth.auth().currentUser {
+                if let firUser = Auth.auth().currentUser {
                     let adjustedUser = UserInitInfo(
                         id: firUser.uid,
-                        name: ((firUser.displayName ?? fullName) ?? ""),
+                        name: ((firUser.displayName ?? fullName)),
                         email: firUser.email ?? "",
                         thumbnail: nil)
                     completion(.success(adjustedUser))
@@ -166,9 +164,15 @@ class AppleSignInManager {
     }
 
     func getRefreshToken() {
-        if let authCode = keychainManager.getStringContent(by: UserDefaults.AppleSignInKey.authorizationCodeKey),
+        if let authCode = keychainManager.getStringContent(
+            by: UserDefaults.AppleSignInKey.authorizationCodeKey),
            let jwtToken = generateJWTToken(),
-           let url = URL(string: "https://appleid.apple.com/auth/token?client_id=\(AppleAuthConfig.bundleID.rawValue)&client_secret=\(jwtToken)&code=\(authCode)&grant_type=authorization_code") {
+           let url = URL(string: """
+               https://appleid.apple.com/auth/token?
+               client_id=\(AppleAuthConfig.bundleID.rawValue)&
+               client_secret=\(jwtToken)&
+               code=\(authCode)&grant_type=authorization_code
+               """) {
 
             var request = URLRequest(url: url)
             request.httpMethod = JHTTPMethod.post.rawValue
@@ -188,8 +192,9 @@ class AppleSignInManager {
                     do {
                         self.decoder.keyDecodingStrategy = .convertFromSnakeCase
                         let response = try self.decoder.decode(RefreshTokenResponse.self, from: data)
-                        self.keychainManager.save(stringContent: response.refreshToken, by: UserDefaults.AppleSignInKey.refreshTokenKey)
-                        let refreshToken = self.keychainManager.getStringContent(by: UserDefaults.AppleSignInKey.refreshTokenKey)
+                        self.keychainManager.save(
+                            stringContent: response.refreshToken,
+                            by: UserDefaults.AppleSignInKey.refreshTokenKey)
                     } catch {
                         print(error)
                         return
@@ -200,17 +205,23 @@ class AppleSignInManager {
     }
 
     func revokeCredential(completion: @escaping (Result<String, Error>) -> Void) {
-        if let refreshToken = keychainManager.getStringContent(by: UserDefaults.AppleSignInKey.refreshTokenKey),
+        if let refreshToken = keychainManager.getStringContent(
+            by: UserDefaults.AppleSignInKey.refreshTokenKey),
            let jwtToken = generateJWTToken(),
-           let url = URL(string: "https://appleid.apple.com/auth/revoke?client_id=\(AppleAuthConfig.bundleID.rawValue)&client_secret=\(jwtToken)&token=\(refreshToken)&token_type_hint=refresh_token") {
+           let url = URL(string: """
+                         https://appleid.apple.com/auth/revoke?\
+                         client_id=\(AppleAuthConfig.bundleID.rawValue)&\
+                         client_secret=\(jwtToken)&\
+                         token=\(refreshToken)&\
+                         token_type_hint=refresh_token
+                         """) {
 
             var request = URLRequest(url: url)
             request.httpMethod = JHTTPMethod.post.rawValue
             request.setValue(JHTTPHeaderField.contentType.rawValue,
                              forHTTPHeaderField: JHTTPHeaderValue.xwwwFormURLEncoded.rawValue)
 
-            URLSession.shared.dataTask(with: request) { [weak self] (_, response, err) in
-                guard let self = self else { return }
+            URLSession.shared.dataTask(with: request) { (_, response, err) in
                 if let err = err {
                     completion(.failure(err))
                     return
@@ -242,7 +253,9 @@ class AppleSignInManager {
                                 sub: AppleAuthConfig.bundleID.rawValue)
         var myJWT = JWT(header: myHeader, claims: myClaims)
 
-        if let filePath = Bundle.main.path(forResource: AppleAuthConfig.privateKeyFileName.rawValue, ofType: "p8") {
+        if let filePath = Bundle.main.path(
+            forResource: AppleAuthConfig.privateKeyFileName.rawValue,
+            ofType: "p8") {
             do {
                 let privateContent = try String(contentsOfFile: filePath)
                 if let privateKey = privateContent.data(using: .utf8) {

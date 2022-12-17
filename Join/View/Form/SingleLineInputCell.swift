@@ -22,7 +22,6 @@ class SingleLineInputCell: TableViewCell {
             case .workName: return "請輸入作品名稱"
             case .projectName: return "請輸入專案名稱"
             case .location: return "線上/地址"
-            default: return ""
             }
         }
     }

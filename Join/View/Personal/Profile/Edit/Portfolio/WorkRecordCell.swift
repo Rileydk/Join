@@ -50,7 +50,9 @@ class WorkRecordCell: TableViewCell {
                   let url = URL(string: urlStirng) else {
 
                 indicator.stopAnimating()
-                let alert = UIAlertController(title: Constant.Common.notValidURL, message: nil, preferredStyle: .alert)
+                let alert = UIAlertController(
+                    title: Constant.Common.notValidURL,
+                    message: nil, preferredStyle: .alert)
                 let action = UIAlertAction(title: Constant.Common.ok, style: .default)
                 alert.addAction(action)
                 self.alertHandler?(alert)
@@ -76,7 +78,9 @@ class WorkRecordCell: TableViewCell {
                     ])
                 } else {
                     indicator.stopAnimating()
-                    let alert = UIAlertController(title: Constant.Common.notValidURL, message: nil, preferredStyle: .alert)
+                    let alert = UIAlertController(
+                        title: Constant.Common.notValidURL,
+                        message: nil, preferredStyle: .alert)
                     let action = UIAlertAction(title: Constant.Common.ok, style: .default)
                     alert.addAction(action)
                     self.alertHandler?(alert)

@@ -233,11 +233,16 @@ class PersonalProfileViewController: BaseViewController {
     }
 
     func reportUser() {
-        let alert = UIAlertController(title: Constant.FindIdeas.reportAlert, message: nil, preferredStyle: .actionSheet)
+        let alert = UIAlertController(
+            title: Constant.FindIdeas.reportAlert,
+            message: nil, preferredStyle: .actionSheet)
         let yesAction = UIAlertAction(title: Constant.Common.confirm, style: .destructive) { [weak self] _ in
             guard let self = self else { return }
             JProgressHUD.shared.showLoading(text: Constant.Common.processing, view: self.view)
-            let report = Report(reportID: "", type: .personalProfile, reportedObjectID: self.userID as! String, reportTime: Date(), reason: nil)
+            let report = Report(
+                reportID: "", type: .personalProfile,
+                reportedObjectID: self.userID as! String,
+                reportTime: Date(), reason: nil)
             self.firebaseManager.addNewReport(report: report) { result in
                 switch result {
                 case .success:
@@ -403,7 +408,9 @@ extension PersonalProfileViewController {
     }
 
     // swiftlint:disable line_length
-    func createCell(collectionView: UICollectionView, indexPath: IndexPath, item: Item) -> UICollectionViewCell {
+    func createCell(
+        collectionView: UICollectionView,
+        indexPath: IndexPath, item: Item) -> UICollectionViewCell {
         switch item {
         case .person(let user):
             guard let cell = collectionView.dequeueReusableCell(

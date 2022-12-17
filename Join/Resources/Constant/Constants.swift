@@ -22,8 +22,10 @@ struct Constant {
         static let reportResult = "已經收到您的檢舉"
         static let noApplicantAlertMessage = "目前尚無人應徵"
 
-        static let projectsTopHorizontalScrollingContentInsets: NSDirectionalEdgeInsets = .init(top: 28, leading: 16, bottom: 20, trailing: 0)
-        static let projectsPageContentInsets: NSDirectionalEdgeInsets = .init(top: 16, leading: 16, bottom: 20, trailing: 16)
+        static let projectsTopHorizontalScrollingContentInsets: NSDirectionalEdgeInsets =
+            .init(top: 28, leading: 16, bottom: 20, trailing: 0)
+        static let projectsPageContentInsets: NSDirectionalEdgeInsets =
+            .init(top: 16, leading: 16, bottom: 20, trailing: 16)
         static let projectsInterGroupSpacing: CGFloat = 24
     }
 
@@ -54,7 +56,11 @@ struct Constant {
         static let report = "檢舉此個人頁面"
 
         static let blockAlertTitle = "確定要封鎖此用戶嗎？"
-        static let blockAlertMessage = "封鎖期間您將無法看到此用戶的個人頁面、所發佈的貼文及您與該用戶間的歷史訊息，對方也不會顯示在您的好友列表中。您隨時可以在個人頁面「我的黑名單」中變更此狀態。"
+        static let blockAlertMessage = """
+            封鎖期間您將無法看到此用戶的個人頁面、所發佈的貼文\
+            及您與該用戶間的歷史訊息，對方也不會顯示在您的好友列表中。\
+            您隨時可以在個人頁面「我的黑名單」中變更此狀態。
+            """
         static let blockAlertYesActionTitle = "我確定要封鎖"
         static let blockAlertCancelActionTitle = "取消"
         static let block = "封鎖此用戶"
@@ -102,7 +108,10 @@ struct Constant {
     }
 
     struct Link {
-        static let privacyPolicyURL = "https://www.privacypolicies.com/live/d6a88da8-fa04-4360-a5b6-dafad6c03f26"
+        static let privacyPolicyURL = """
+            https://www.privacypolicies.\
+            com/live/d6a88da8-fa04-4360-a5b6-dafad6c03f26
+            """
     }
 
     struct ImageRelated {

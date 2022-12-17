@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import Kingfisher
 
 class PersonBasicCell: CollectionViewCell {
     let firebaseManager = FirebaseManager.shared
@@ -31,8 +30,11 @@ class PersonBasicCell: CollectionViewCell {
 
     private func layoutCell(with user: JUser) {
         nameLabel.text = user.name
-        let imageURL = URL(string: user.thumbnailURL!) ?? URL(string: FindPartnersFormSections.placeholderImageURL)!
-        thumbnailImageView.kf.setImage(with: imageURL)
+        if let imageURL = user.thumbnailURL {
+            thumbnailImageView.loadImage(imageURL)
+        } else {
+            thumbnailImageView.image = UIImage(named: JImages.Icon_UserDefault.rawValue)
+        }
     }
 
     func layoutCell(withSelf user: JUser) {

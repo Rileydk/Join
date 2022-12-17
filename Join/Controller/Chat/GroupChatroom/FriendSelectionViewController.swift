@@ -127,15 +127,18 @@ class FriendSelectionViewController: BaseViewController {
             )
         } else if source == .addNewMembers {
             navigationItem.rightBarButtonItem = UIBarButtonItem(
-                title: "Invite", style: .done, target: self, action: #selector(addNewMembersToExistedGroupChatroom)
+                title: "Invite", style: .done, target: self,
+                action: #selector(addNewMembersToExistedGroupChatroom)
             )
         } else if source == .addMembers {
             navigationItem.rightBarButtonItem = UIBarButtonItem(
-                title: "Add", style: .done, target: self, action: #selector(addNewMembers)
+                title: "Add", style: .done, target: self,
+                action: #selector(addNewMembers)
             )
         } else {
             navigationItem.rightBarButtonItem = UIBarButtonItem(
-                title: "Add", style: .done, target: self, action: #selector(addNewMembersToExistedGroupChatroom)
+                title: "Add", style: .done, target: self,
+                action: #selector(addNewMembersToExistedGroupChatroom)
             )
         }
         navigationItem.leftBarButtonItem = UIBarButtonItem(

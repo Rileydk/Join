@@ -82,7 +82,8 @@ class MyPostsDetailViewController: BaseViewController {
                 forHeaderFooterViewReuseIdentifier: DetailTitleHeaderView.identifier
             )
             tableView.register(
-                UINib(nibName: NoApplicantTableViewCell.identifier, bundle: nil), forCellReuseIdentifier: NoApplicantTableViewCell.identifier)
+                UINib(nibName: NoApplicantTableViewCell.identifier, bundle: nil),
+                forCellReuseIdentifier: NoApplicantTableViewCell.identifier)
             tableView.register(
                 UINib(nibName: JoinButtonCell.identifier, bundle: nil),
                 forCellReuseIdentifier: JoinButtonCell.identifier
@@ -136,7 +137,8 @@ class MyPostsDetailViewController: BaseViewController {
                 case .success(let project):
                     self.project = project
                     group.leave()
-                case .failure(let err):
+                case .failure(let error):
+                    print(error)
                     shouldContinue = false
                     group.leave()
                     group.notify(queue: .main) {

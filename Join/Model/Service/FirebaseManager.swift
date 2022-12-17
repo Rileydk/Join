@@ -1,4 +1,3 @@
-// swiftlint:disable file_length
 //
 //  FirestoreManager.swift
 //  Join
@@ -72,7 +71,7 @@ enum FirestoreEndpoint {
         let chatrooms = "Chatroom"
         let groupChats = "GroupChats"
         let groupChatrooms = "GroupChatrooms"
-        let posts = "Posts"
+        // let posts = "Posts"
         let friends = "Friends"
         let unknownChat = "UnknownChat"
         let messages = "Messages"
@@ -215,7 +214,9 @@ class FirebaseManager {
         }
     }
 
-    func updateAuthentication(oldInfo: JUser, newInfo: JUser ,completion: @escaping (Result<String, Error>) -> Void) {
+    func updateAuthentication(
+        oldInfo: JUser, newInfo: JUser ,
+        completion: @escaping (Result<String, Error>) -> Void) {
         let changeRequest = Auth.auth().currentUser?.createProfileChangeRequest()
         firebaseQueue.async { [weak self] in
             let group = DispatchGroup()
@@ -362,7 +363,6 @@ class FirebaseManager {
     func getAllProjects(completion: @escaping (Result<[Project], Error>) -> Void) {
         let ref = FirestoreEndpoint.projects.ref
 
-        let now = FirebaseFirestore.Timestamp(date: Date())
         ref.getDocuments { querySnapshot, error in
             if let error = error {
                 completion(.failure(error))
@@ -423,7 +423,6 @@ class FirebaseManager {
         }
     }
 
-    // FIXME: - Delete
     func getUserInfo(id: UserID, completion: @escaping (Result<JUser, Error>) -> Void) {
         let ref = FirestoreEndpoint.users.ref
         ref.whereField("id", isEqualTo: id).getDocuments { querySnapshot, error in
@@ -444,31 +443,6 @@ class FirebaseManager {
         }
     }
 
-//    func getSingleDocument<T: Decodable>(from ref: CollectionReference, match field: DocFieldName? = nil, with stringCondition: String? = nil, completion: @escaping (Result<T, Error>) -> Void) {
-//        if let field = field, let stringCondition = stringCondition {
-//            ref.whereField(field.rawValue, isEqualTo: stringCondition).getDocuments { snapshot, err in
-//                if let err = err {
-//                    completion(.failure(err))
-//                    return
-//                }
-//                if snapshot != nil {
-//                    do {
-//                        if let decodedResult = try snapshot?.documents.first?.data(as: T.self, decoder: FirebaseManager.decoder) {
-//                            completion(.success(decodedResult))
-//                        } else {
-//                            completion(.failure(CommonError.notFriendYet))
-//                        }
-//                    } catch {
-//                        completion(.failure(error))
-//                    }
-//                } else {
-//                    completion(.failure(CommonError.noValidQuerysnapshot))
-//                }
-//            }
-//        }
-//    }
-
-    // FIXME: - Delete
     func checkIsFriend(id: UserID, completion: @escaping (Result<Friend, Error>) -> Void) {
         let ref = FirestoreMyDocEndpoint.myFriends.ref
         ref.whereField("id", isEqualTo: id).getDocuments { (querySnapshot, error) in
@@ -489,12 +463,6 @@ class FirebaseManager {
             } else {
                 completion(.failure(CommonError.noValidQuerysnapshot))
             }
-        }
-    }
-
-    func checkHasSentRequest(to id: UserID, completion: (Result<UserID, Error>) -> Void) {
-        let ref = FirestoreMyDocEndpoint.mySentRequests.ref
-        ref.whereField("id", isEqualTo: id).getDocuments { (snapshot, err) in
         }
     }
 
@@ -723,6 +691,7 @@ class FirebaseManager {
     func addNoneStopCollectionListener(to ref: CollectionReference, completion: @escaping () -> Void) {
         ref.addSnapshotListener { _, err in
             if let err = err {
+                print(err)
                 return
             }
             completion()
@@ -793,9 +762,9 @@ class FirebaseManager {
 
         firebaseQueue.async {
             let group = DispatchGroup()
-            for i in 0 ..< chatrooms.count {
+            for index in 0 ..< chatrooms.count {
                 group.enter()
-                let ref = FirestoreEndpoint.messages(chatrooms[i]).ref
+                let ref = FirestoreEndpoint.messages(chatrooms[index]).ref
                 ref.order(by: "time", descending: true).getDocuments { (snapshot, error) in
                     if let error = error {
                         group.leave()
@@ -818,10 +787,8 @@ class FirebaseManager {
                             }
                         }
 
-                        for item in messagesList {
-                            if item.chatroomID == messagesList[i].chatroomID {
-                                messagesList[i].messages = messages
-                            }
+                        for item in messagesList where item.chatroomID == messagesList[index].chatroomID {
+                                messagesList[index].messages = messages
                         }
                         group.leave()
 
@@ -1008,7 +975,6 @@ class FirebaseManager {
 
     func addNewRecords(records: [WorkRecord],to myWorkID: WorkID, completion: @escaping (Result<[RecordID], Error>) -> Void) {
         let ref = FirestoreMyDocEndpoint.myRecordsOfWork(myWorkID).ref
-        let recordID = ref.document().documentID
 
         let group = DispatchGroup()
         var shouldContinue = true
@@ -1021,6 +987,7 @@ class FirebaseManager {
             record.recordID = recordID
             ref.document(recordID).setData(record.toDict) { err in
                 if let err = err {
+                    print(err)
                     group.leave()
                     shouldContinue = false
                     return
@@ -1049,7 +1016,6 @@ class FirebaseManager {
         }
     }
 
-    // FIXME: - Delete
     func getUserWorks(userID: UserID, completion: @escaping (Result<[Work], Error>) -> Void) {
         let ref = FirestoreEndpoint.users.ref.document(userID).collection("Works")
         ref.getDocuments { (snapshot, err) in
@@ -1071,7 +1037,6 @@ class FirebaseManager {
         }
     }
 
-    // FIXME: - Delete
     func getWorkRecords(userID: UserID, by workID: WorkID, completion: @escaping (Result<[WorkRecord], Error>) -> Void) {
         let ref = FirestoreEndpoint.users.ref.document(userID).collection("Works").document(workID).collection("Records")
         ref.getDocuments { (snapshot, err) in
@@ -1241,7 +1206,6 @@ class FirebaseManager {
 
     func addNewGroupChatMembers(chatroomID: ChatroomID, selectedMembers: [ChatroomMember], completion: @escaping (Result<String, Error>) -> Void) {
         firebaseQueue.async { [weak self] in
-            var allMembersIncludingExit = [ChatroomMember]()
             var newMembers = [ChatroomMember]()
             var exitedMembers = [ChatroomMember]()
 
@@ -1492,10 +1456,8 @@ class FirebaseManager {
                             }
                         }
 
-                        for i in 0 ..< messagesItems.count {
-                            if messagesItems[i].chatroomID == chatroomID {
-                                messagesItems[i].messages = messages
-                            }
+                        for index in 0 ..< messagesItems.count where messagesItems[index].chatroomID == chatroomID {
+                                messagesItems[index].messages = messages
                         }
 
                         group.leave()
@@ -1534,7 +1496,6 @@ class FirebaseManager {
                     }
                 }
             }
-
 
             group.wait()
             if chatroomIDsBox.isEmpty {
@@ -1713,8 +1674,7 @@ class FirebaseManager {
             fatalError("Doesn't have user id")
         }
         let membersRef = FirestoreEndpoint.groupMembers(chatroomID).ref
-        firebaseQueue.async { [weak self] in
-            guard let strongSelf = self else { return }
+        firebaseQueue.async {
             let group = DispatchGroup()
             group.enter()
             membersRef.document(myID).updateData(["currentInoutStatus": status.rawValue]) { err in
@@ -1752,8 +1712,7 @@ class FirebaseManager {
             fatalError("Doesn't have user id")
         }
         let membersRef = FirestoreEndpoint.privateChatroomMembers(chatroomID).ref
-        firebaseQueue.async { [weak self] in
-            guard let strongSelf = self else { return }
+        firebaseQueue.async {
             let group = DispatchGroup()
             group.enter()
             membersRef.document(myID).updateData(["currentInoutStatus": status.rawValue]) { err in
@@ -1806,10 +1765,8 @@ class FirebaseManager {
                 if let snapshot = snapshot {
                     do {
                         let myMemberInfo = try snapshot.data(as: ChatroomMember.self, decoder: FirebaseManager.decoder)
-                        for i in 0 ..< messagesItems.count {
-                            if messagesItems[i].chatroomID == item.chatroomID {
-                                messagesItems[i].lastTimeInChatroom = myMemberInfo.lastTimeInChatroom
-                            }
+                        for index in 0 ..< messagesItems.count where messagesItems[index].chatroomID == item.chatroomID {
+                                messagesItems[index].lastTimeInChatroom = myMemberInfo.lastTimeInChatroom
                         }
                         group.leave()
                     } catch {
@@ -1874,10 +1831,8 @@ class FirebaseManager {
                 if let snapshot = snapshot {
                     do {
                         let myMemberInfo = try snapshot.data(as: ChatroomMember.self, decoder: FirebaseManager.decoder)
-                        for i in 0 ..< messagesItems.count {
-                            if messagesItems[i].chatroomID == item.chatroomID {
-                                messagesItems[i].lastTimeInChatroom = myMemberInfo.lastTimeInChatroom
-                            }
+                        for index in 0 ..< messagesItems.count where messagesItems[index].chatroomID == item.chatroomID {
+                                messagesItems[index].lastTimeInChatroom = myMemberInfo.lastTimeInChatroom
                         }
                         group.leave()
                     } catch {
@@ -1970,6 +1925,7 @@ class FirebaseManager {
     func deleteDocument(ref: DocumentReference, completion: (() -> Void)? = nil) {
         ref.delete { err in
             if let err = err {
+                print(err)
                 completion?()
                 return
             }

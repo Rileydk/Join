@@ -60,7 +60,11 @@ class LoginViewController: BaseViewController {
 
     func setupAnimation() {
         let animationView = LottieAnimationView(name: "team-work-animation")
-        animationView.frame = CGRect(x: 0 - UIScreen.main.bounds.width * 0.25, y: 160, width: UIScreen.main.bounds.width * 1.6, height: UIScreen.main.bounds.width * 1.6 * 1080/1920)
+        animationView.frame = CGRect(
+            x: 0 - UIScreen.main.bounds.width * 0.25,
+            y: 160,
+            width: UIScreen.main.bounds.width * 1.6,
+            height: UIScreen.main.bounds.width * 1.6 * 1080/1920)
         animationView.contentMode = .scaleAspectFill
         view.addSubview(animationView)
 

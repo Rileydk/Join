@@ -161,7 +161,9 @@ class PersonalProfileEditViewController: BaseViewController {
                             guard let self = self else { return }
                             switch self.sourceType {
                             case .signup:
-                                let mainStoryboard = UIStoryboard(name: StoryboardCategory.main.rawValue, bundle: nil)
+                                let mainStoryboard = UIStoryboard(
+                                    name: StoryboardCategory.main.rawValue,
+                                    bundle: nil)
                                 guard let tabBarController = mainStoryboard.instantiateViewController(
                                     withIdentifier: TabBarController.identifier
                                     ) as? TabBarController else {

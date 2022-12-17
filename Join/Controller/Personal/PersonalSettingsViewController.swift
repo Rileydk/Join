@@ -91,7 +91,8 @@ class PersonalSettingsViewController: BaseViewController {
                 switch result {
                 case .success:
                     group.leave()
-                case .failure(let err):
+                case .failure(let error):
+                    print(error)
                     shouldContinue = false
                     group.leave()
                 }
@@ -101,7 +102,6 @@ class PersonalSettingsViewController: BaseViewController {
             group.enter()
             user?.delete { err in
                 if let err = err {
-                    // TODO: - Reauthenticate
                     shouldContinue = false
                     group.leave()
                     group.notify(queue: .main) {
@@ -129,8 +129,10 @@ class PersonalSettingsViewController: BaseViewController {
     }
 
     func alertReauthentication() {
-        let alert = UIAlertController(title: "是否確定刪除帳號？",
-                                      message: "您的所有專案、訊息及好友都將被刪除，未來也無任何方法可取回。\n若您確定要刪除帳號，為確保您的資料不會意外被刪除，會將您自動登出，並請您重新登入以確認您的身份", preferredStyle: .actionSheet)
+        let alert = UIAlertController(
+            title: "是否確定刪除帳號？",
+            message: "您的所有專案、訊息及好友都將被刪除，未來也無任何方法可取回。\n若您確定要刪除帳號，為確保您的資料不會意外被刪除，會將您自動登出，並請您重新登入以確認您的身份",
+            preferredStyle: .actionSheet)
         let yesAction = UIAlertAction(title: "我要刪除，開始重新登入", style: .destructive) { [weak self]  _ in
             guard let self = self else { return }
             let request = self.appleSignInManager.generateAuthRequest()
@@ -210,7 +212,9 @@ extension PersonalSettingsViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let section = Section.allCases[indexPath.section]
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: GoNextPageTableViewCell.identifier, for: indexPath) as? GoNextPageTableViewCell else {
+        guard let cell = tableView.dequeueReusableCell(
+            withIdentifier: GoNextPageTableViewCell.identifier,
+            for: indexPath) as? GoNextPageTableViewCell else {
             fatalError("Cannot create go next page table view cell")
         }
         cell.layoutCell(title: section.rowsTitles[indexPath.row])
@@ -221,7 +225,9 @@ extension PersonalSettingsViewController: UITableViewDataSource {
             switch row {
             case .blockList:
                 cell.tapHandler = { [weak self] in
-                    let personalStoryboard = UIStoryboard(name: StoryboardCategory.personal.rawValue, bundle: nil)
+                    let personalStoryboard = UIStoryboard(
+                        name: StoryboardCategory.personal.rawValue,
+                        bundle: nil)
                     guard let friendsListVC = personalStoryboard.instantiateViewController(
                         withIdentifier: UsersListViewController.identifier
                     ) as? UsersListViewController else {

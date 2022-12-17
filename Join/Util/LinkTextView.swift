@@ -29,17 +29,21 @@ class LinkTextView: UITextView, UITextViewDelegate {
         guard attributedText.length > 0 else { return }
         let myText = NSMutableAttributedString(attributedString: attributedText)
         let font: UIFont = .systemFont(ofSize: 12, weight: .bold)
-        for (linkText, urlString) in links {
-            if !linkText.isEmpty {
+        for (linkText, urlString) in links where !linkText.isEmpty {
                 let linkRange = myText.mutableString.range(of: linkText)
                 myText.addAttribute(.link, value: urlString, range: linkRange)
-                myText.addAttributes([.font: font, .underlineStyle: NSUnderlineStyle.single.rawValue], range: linkRange)
-            }
+                myText.addAttributes(
+                    [.font: font,
+                     .underlineStyle: NSUnderlineStyle.single.rawValue],
+                    range: linkRange)
         }
         attributedText = myText
     }
 
-    func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
+    func textView(
+        _ textView: UITextView, shouldInteractWith URL: URL,
+        in characterRange: NSRange,
+        interaction: UITextItemInteraction) -> Bool {
         onLinkTap?(URL) ?? true
     }
 

@@ -9,7 +9,7 @@ import UIKit
 
 class MultilineCell: TableViewCell {
     @IBOutlet weak var multilineLabel: UILabel!
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
         contentView.backgroundColor = .Gray6
@@ -24,5 +24,4 @@ class MultilineCell: TableViewCell {
     func layoutCell(project: Project) {
         multilineLabel.text = project.description
     }
-    
 }

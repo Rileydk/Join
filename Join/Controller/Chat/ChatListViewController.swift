@@ -76,7 +76,8 @@ class ChatListViewController: BaseViewController {
                 switch result {
                 case .success(let groupMessagesList):
                     let listItem = groupMessagesList.sorted(by: {
-                        $0.messages.first?.time ?? $0.chatroom.createdTime > $1.messages.first?.time ?? $0.chatroom.createdTime
+                        ($0.messages.first?.time ?? $0.chatroom.createdTime) >
+                        $1.messages.first?.time ?? $0.chatroom.createdTime
                     })
                     self.groupMessageList = listItem
                     JProgressHUD.shared.dismiss()

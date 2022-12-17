@@ -1,5 +1,5 @@
 //
-//  MyMasterpieceTableViewCell.swift
+//  MyWorkTableViewCell.swift
 //  Join
 //
 //  Created by Riley Lai on 2022/12/2.
@@ -7,9 +7,9 @@
 
 import UIKit
 
-class MyMasterpieceTableViewCell: TableViewCell {
-    @IBOutlet weak var myMasterpieceImageView: UIImageView!
-    @IBOutlet weak var myMasterpieceImageViewBottomConstraint: NSLayoutConstraint!
+class MyWorkTableViewCell: TableViewCell {
+    @IBOutlet weak var myWorkImageView: UIImageView!
+    @IBOutlet weak var myWorkImageViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var linkButton: UIButton!
     var url: URL?
 
@@ -29,8 +29,8 @@ class MyMasterpieceTableViewCell: TableViewCell {
 
     func layoutCell(workRecordWithImage: WorkRecordWithImage, cellPadding: CGFloat = 0) {
         guard let image = workRecordWithImage.image else { return }
-        myMasterpieceImageViewBottomConstraint.constant = cellPadding
-        myMasterpieceImageView.image = image
+        myWorkImageViewBottomConstraint.constant = cellPadding
+        myWorkImageView.image = image
         if workRecordWithImage.type == .hyperlink,
            let recordURL = URL(string: workRecordWithImage.url) {
             url = recordURL
