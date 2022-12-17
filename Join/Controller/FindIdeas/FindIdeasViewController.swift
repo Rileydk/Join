@@ -307,13 +307,18 @@ extension FindIdeasViewController: UICollectionViewDelegate {
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let findIdeasStoryboard = UIStoryboard(name: StoryboardCategory.findIdeas.rawValue, bundle: nil)
+        guard let projectDetailVC = findIdeasStoryboard.instantiateViewController(withIdentifier: ProjectDetailsViewController.identifier) as? ProjectDetailsViewController else {
+            fatalError("Cannot create project detail vc")
+        }
         let section = recommendedProjects.isEmpty ? Array(Section.allCases[1 ..< Section.allCases.count])[indexPath.section] : Section.allCases[indexPath.section]
         switch section {
         case .recommendations:
-            performSegue(withIdentifier: SegueIdentifier.GoProjectDetailPage, sender: recommendedProjects[indexPath.row])
+            projectDetailVC.project = recommendedProjects[indexPath.row]
         case .newIdeas:
-            performSegue(withIdentifier: SegueIdentifier.GoProjectDetailPage, sender: restProjects[indexPath.row])
+            projectDetailVC.project = projects[indexPath.row]
         }
         navigationItem.backButtonDisplayMode = .minimal
+        navigationController?.pushViewController(projectDetailVC, animated: true)
     }
 }
