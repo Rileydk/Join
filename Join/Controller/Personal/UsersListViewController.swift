@@ -78,7 +78,9 @@ class UsersListViewController: BaseViewController {
         switch usageType {
         case .friend:
             firebaseManager.firebaseQueue.async { [weak self] in
-                guard let self = self, let myID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey) else { return }
+                guard let self = self,
+                      let myID = UserDefaults.standard.string(
+                        forKey: UserDefaults.UserKey.uidKey) else { return }
                 var receivedRequest: [UserID]?
 
                 let group = DispatchGroup()
@@ -171,7 +173,8 @@ class UsersListViewController: BaseViewController {
                         shouldContinue = false
                         group.leave()
                         print(err)
-                        JProgressHUD.shared.showFailure(text: Constant.Common.errorShouldRetry, view: self.view)
+                        JProgressHUD.shared.showFailure(
+                            text: Constant.Common.errorShouldRetry, view: self.view)
                     }
                 }
 
@@ -194,7 +197,8 @@ class UsersListViewController: BaseViewController {
                     case .failure(let err):
                         print(err)
                         group.notify(queue: .main) {
-                            JProgressHUD.shared.showFailure(text: Constant.Common.errorShouldRetry, view: self.view)
+                            JProgressHUD.shared.showFailure(
+                                text: Constant.Common.errorShouldRetry, view: self.view)
                         }
                     }
                 }

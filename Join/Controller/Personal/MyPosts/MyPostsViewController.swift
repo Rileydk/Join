@@ -67,7 +67,7 @@ class MyPostsViewController: BaseViewController {
                 case .success(let postsItems):
                     projectsID = postsItems.map { $0.projectID }
                     guard !projectsID.isEmpty else {
-                        // TODO: - 改為顯示提示畫面
+                        // TODO: - 顯示提示畫面
                         self.collectionView.endHeaderRefreshing()
                         shouldContinue = false
                         group.leave()

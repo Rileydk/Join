@@ -31,13 +31,17 @@ class RelationshipButtonsCell: CollectionViewCell {
         sendMessageButton.backgroundColor = .White
 
         moreActionButton.showsMenuAsPrimaryAction = true
-        let reportAction = UIAction(title: Constant.Personal.report, attributes: [], state: .off) { [weak self] _ in
+        let reportAction = UIAction(
+            title: Constant.Personal.report,
+            attributes: [], state: .off) { [weak self] _ in
             self?.reportUserHandler?()
         }
-        let blockAction = UIAction(title: Constant.Personal.block, attributes: [], state: .off) { [weak self] _ in
+        let blockAction = UIAction(
+            title: Constant.Personal.block,
+            attributes: [], state: .off) { [weak self] _ in
             self?.blockUser()
         }
-        var elements: [UIAction] = [reportAction, blockAction]
+        let elements: [UIAction] = [reportAction, blockAction]
         let menu = UIMenu(children: elements)
         moreActionButton.menu = menu
     }
@@ -63,12 +67,16 @@ class RelationshipButtonsCell: CollectionViewCell {
         }
 
         moreActionButton.showsMenuAsPrimaryAction = true
-        let reportAction = UIAction(title: Constant.Personal.report, attributes: [], state: .off) { [weak self] _ in
+        let reportAction = UIAction(
+            title: Constant.Personal.report,
+            attributes: [], state: .off) { [weak self] _ in
             self?.reportUserHandler?()
         }
         var elements: [UIAction] = [reportAction]
         if !isBlocked {
-            let blockAction = UIAction(title: Constant.Personal.block, attributes: [], state: .off) { [weak self] _ in
+            let blockAction = UIAction(
+                title: Constant.Personal.block,
+                attributes: [], state: .off) { [weak self] _ in
                 self?.blockUser()
             }
             elements += [blockAction]

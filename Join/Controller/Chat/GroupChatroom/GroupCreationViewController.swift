@@ -83,6 +83,7 @@ class GroupCreationViewController: BaseViewController {
     }
 
     // swiftlint:disable cyclomatic_complexity
+    // swiftlint:disable function_body_length
     @objc func createGroup() {
         navigationItem.rightBarButtonItem?.isEnabled = false
 
@@ -139,7 +140,9 @@ class GroupCreationViewController: BaseViewController {
 
             group.wait()
             group.enter()
-            strongSelf.firebaseManager.createGroupChatroom(groupChatroom: strongSelf.groupChatroom, members: strongSelf.selectedMembers) { result in
+            strongSelf.firebaseManager.createGroupChatroom(
+                groupChatroom: strongSelf.groupChatroom,
+                members: strongSelf.selectedMembers) { result in
                 switch result {
                 case .success(let chatroomID):
                     strongSelf.chatroomID = chatroomID
@@ -159,7 +162,12 @@ class GroupCreationViewController: BaseViewController {
                 group.leave()
             } else {
                 guard let linkedProject = strongSelf.linkedProject else { return }
-                strongSelf.firebaseManager.updateField(ref: FirestoreEndpoint.projects.ref.document(linkedProject.projectID), field: "chatroom", value: strongSelf.chatroomID) { result in
+                strongSelf.firebaseManager.updateField(
+                    ref: FirestoreEndpoint.projects.ref
+                        .document(linkedProject.projectID),
+                    field: "chatroom",
+                    value: strongSelf.chatroomID) { result in
+
                     switch result {
                     case .success:
                         group.leave()
@@ -187,7 +195,9 @@ class GroupCreationViewController: BaseViewController {
                 switch self.sourceType {
                 case .chatlist:
                     chatroomVC.sourceType = .chatlist
-                    guard let rootVC = strongSelf.navigationController?.viewControllers.first! as? ChatListViewController else {
+                    guard let rootVC = strongSelf
+                        .navigationController?.viewControllers.first!
+                        as? ChatListViewController else {
                         fatalError("Cannot create chatlist vc")
                     }
                     self.hidesBottomBarWhenPushed = true
@@ -198,13 +208,19 @@ class GroupCreationViewController: BaseViewController {
 
                 case .project:
                     chatroomVC.sourceType = .project
-                    guard let rootVC = strongSelf.navigationController?.viewControllers[0] as? PersonalEntryViewController else {
+                    guard let rootVC = strongSelf
+                        .navigationController?.viewControllers[0]
+                        as? PersonalEntryViewController else {
                         fatalError("Cannot create personal entry vc")
                     }
-                    guard let projectVC = strongSelf.navigationController?.viewControllers[1] as? MyPostsViewController else {
+                    guard let projectVC = strongSelf
+                        .navigationController?.viewControllers[1]
+                        as? MyPostsViewController else {
                         fatalError("Cannot create my posts vc")
                     }
-                    guard let projectDetailVC = strongSelf.navigationController?.viewControllers[2] as? MyPostsDetailViewController else {
+                    guard let projectDetailVC = strongSelf
+                        .navigationController?.viewControllers[2]
+                        as? MyPostsDetailViewController else {
                         fatalError("Cannot create my post detail vc")
                     }
                     projectDetailVC.project = strongSelf.linkedProject
@@ -213,7 +229,8 @@ class GroupCreationViewController: BaseViewController {
                     DispatchQueue.main.async {
                         strongSelf.hidesBottomBarWhenPushed = false
                     }
-                    strongSelf.navigationController?.setViewControllers([rootVC, projectVC, projectDetailVC, chatroomVC], animated: true)
+                    strongSelf.navigationController?
+                        .setViewControllers([rootVC, projectVC, projectDetailVC, chatroomVC], animated: true)
                 }
             }
         }
@@ -238,7 +255,9 @@ class GroupCreationViewController: BaseViewController {
     }
 
     @objc func backToPreviousPage() {
-        if let firstPage = navigationController?.viewControllers.dropLast().last as? FriendSelectionViewController {
+        if let firstPage = navigationController?
+            .viewControllers.dropLast().last
+            as? FriendSelectionViewController {
             firstPage.selectedFriends = selectedFriends
             navigationController?.popViewController(animated: true)
         } else {

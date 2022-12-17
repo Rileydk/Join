@@ -13,7 +13,7 @@ class GoNextPageCell: TableViewCell {
     @IBOutlet weak var button: UIButton!
 
     var tapHandler: (() -> Void)?
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
         contentView.backgroundColor = .White

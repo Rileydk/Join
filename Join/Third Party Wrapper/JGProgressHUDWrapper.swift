@@ -13,7 +13,7 @@ class JProgressHUD {
     private init() {}
 
     let hud = JGProgressHUD(style: .dark)
-    // TODO: - 沒有正常顯示？
+    // TODO: - 改用 root view
 //    var view: UIView { SceneDelegate.shared.window!.rootViewController!.view }
 
     func showSuccess(text: String = "Success", view: UIView, completion: (() -> Void)? = nil) {
@@ -68,7 +68,6 @@ class JProgressHUD {
             return
         }
         hud.indicatorView = JGProgressHUDIndeterminateIndicatorView()
-        hud.vibrancyEnabled = true
         hud.textLabel.text = text
         hud.show(in: view)
     }

@@ -31,7 +31,10 @@ class FirestoreManager {
     }
 
     // add new document to collection
-    func setData(_ docData: [String: Any], to docRef: DocumentReference, completion: @escaping (Result<String, Error>) -> Void) {
+    func setData(
+        _ docData: [String: Any],
+        to docRef: DocumentReference,
+        completion: @escaping (Result<String, Error>) -> Void) {
         docRef.setData(docData) { error in
             if let error = error {
                 completion(.failure(error))
@@ -42,7 +45,9 @@ class FirestoreManager {
     }
 
     // update document field
-    func addNewValueToArray(ref: DocumentReference, field: String, values: [Any], completion: @escaping (Result<String, Error>) -> Void) {
+    func addNewValueToArray(
+        ref: DocumentReference, field: String, values: [Any],
+        completion: @escaping (Result<String, Error>) -> Void) {
         ref.updateData([field: FieldValue.arrayUnion(values)]) { error in
             if let error = error {
                 completion(.failure(error))
@@ -53,7 +58,9 @@ class FirestoreManager {
     }
 
     // remove value from array
-    func removeValueFromArray(ref: DocumentReference, field: String, values: [Any], completion: @escaping (Result<String, Error>) -> Void) {
+    func removeValueFromArray(
+        ref: DocumentReference, field: String, values: [Any],
+        completion: @escaping (Result<String, Error>) -> Void) {
         ref.updateData([field: FieldValue.arrayRemove(values)]) { error in
             if let error = error {
                 completion(.failure(error))

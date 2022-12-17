@@ -13,10 +13,7 @@ class NoApplicantTableViewCell: TableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         emptyAlertLabel.text = Constant.FindIdeas.noApplicantAlertMessage
-        emptyAlertLabel.textColor = .Gray3?.withAlphaComponent(0.7)
-        backgroundColor = .White
-        contentView.backgroundColor = .Gray3?.withAlphaComponent(0.3)
-        contentView.layer.borderWidth = 12
-        contentView.layer.borderColor = UIColor.White?.cgColor
+        emptyAlertLabel.textColor = .Gray3?.withAlphaComponent(0.9)
+        contentView.backgroundColor = .Gray6
     }
 }

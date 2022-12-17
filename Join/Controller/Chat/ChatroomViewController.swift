@@ -42,10 +42,12 @@ class ChatroomViewController: BaseViewController {
     var chatroomID: ChatroomID?
     var messages = [Message]() {
         didSet {
-            tableView.reloadData()
-            tableView.scrollToRow(
-                at: IndexPath(row: messages.count - 1, section: 0),
-                at: .bottom, animated: false)
+            if tableView != nil && !messages.isEmpty {
+                tableView.reloadData()
+                tableView.scrollToRow(
+                    at: IndexPath(row: messages.count - 1, section: 0),
+                    at: .bottom, animated: false)
+            }
         }
     }
     var userData: JUser?
@@ -95,7 +97,7 @@ class ChatroomViewController: BaseViewController {
                         })
                     }
                 case .failure(let error):
-                    group.notify(queue: .main) { [weak self] in
+                    group.notify(queue: .main) {
                         print(error)
                     }
                 }

@@ -19,7 +19,7 @@ class ContactCell: TableViewCell {
     @IBOutlet weak var nameButton: UIButton!
     @IBOutlet weak var messageButton: UIButton!
     @IBOutlet weak var acceptJoinButton: UIButton!
-    
+
     let firebaseManager = FirebaseManager.shared
     var tapHandler: (() -> Void)?
     var messageHandler: (() -> Void)?
@@ -56,7 +56,8 @@ class ContactCell: TableViewCell {
             thumbnailImageView.image = UIImage(named: JImages.Icon_UserDefault.rawValue)
         }
         nameButton.setTitle(user.userInfo.name, for: .normal)
-        let myID = UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey) ?? ""
+        let myID = UserDefaults.standard.string(
+            forKey: UserDefaults.UserKey.uidKey) ?? ""
 
         messageButton.isHidden = true
         acceptJoinButton.isHidden = false

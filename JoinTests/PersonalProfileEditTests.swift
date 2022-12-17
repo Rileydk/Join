@@ -14,7 +14,7 @@ class PersonalProfileEditTests: XCTestCase {
         case emptyName
         case emptyEmail
         case filledUser
-        
+
         var data: JUser {
             switch self {
             case .emptyUser: return JUser(id: "", name: "", email: "")

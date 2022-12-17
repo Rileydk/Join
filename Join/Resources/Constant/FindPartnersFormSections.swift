@@ -50,7 +50,6 @@ struct FindPartnersFormSections {
 
     static let detailSection = SectionInfo(
         title: "最後一步了",
-        // TODO: - 未來改為"預覽"
         buttonTitle: "Post",
         items: [
             ItemInfo(
@@ -83,11 +82,7 @@ struct FindPartnersFormSections {
     static let countIncorrectError = "Messages count not match with users"
     static let decodeFailedError = "Decode failed"
     static let nilResultError = "nil result"
-
-    static let placeholderImageURL = "https://firebasestorage.googleapis.com:443/v0/b/join-82f54.appspot.com/o/F5986CC3-D3EF-4408-AC79-D9D7FC1F8450?alt=media&token=44e11625-5d08-46c7-a8ac-90737e656591"
     static let placeholderImage = "person.circle"
-    // 這個似乎是錯誤的
-    // static let datePickerLocale = "zh_TW"
 }
 
 struct SectionInfo: Equatable {
@@ -102,9 +97,9 @@ struct SectionInfo: Equatable {
 
 struct ItemInfo {
     let name: String
-    var subtitle: String? = nil
+    var subtitle: String?
     let instruction: String?
-    var note: String? = nil
+    var note: String?
     let must: Bool
     let type: InputType
 }

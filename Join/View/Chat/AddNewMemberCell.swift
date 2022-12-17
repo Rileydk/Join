@@ -12,7 +12,7 @@ class AddNewMemberCell: TableViewCell {
     @IBOutlet weak var titleLabel: UILabel!
 
     var tapHandler: (() -> Void)?
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
         addButton.layer.borderWidth = 1
@@ -24,7 +24,7 @@ class AddNewMemberCell: TableViewCell {
         super.layoutSubviews()
         addButton.layer.cornerRadius = addButton.frame.size.width / 2
     }
-    
+
     @IBAction func addNewMembers(_ sender: UIButton) {
         tapHandler?()
     }

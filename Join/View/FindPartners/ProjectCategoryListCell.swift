@@ -25,5 +25,4 @@ class ProjectCategoryListCell: TableViewCell {
         nameLabel.text = content
         nameLabel.textColor = .Gray1
     }
-    
 }
