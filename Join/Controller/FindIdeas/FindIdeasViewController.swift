@@ -60,20 +60,6 @@ class FindIdeasViewController: BaseViewController {
         }
     }
 
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == SegueIdentifier.GoProjectDetailPage {
-            guard let detailVC = segue.destination as? ProjectDetailsViewController,
-                  let project = sender as? Project else {
-                fatalError("Cannot create ProjectDetailsVC")
-            }
-            detailVC.project = project
-            hidesBottomBarWhenPushed = true
-            DispatchQueue.main.async { [weak self] in
-                self?.hidesBottomBarWhenPushed = false
-            }
-        }
-    }
-
     func layoutViews() {
         title = Tab.findIdeas.title
         collectionView.backgroundColor = UIColor.Gray6
@@ -319,6 +305,10 @@ extension FindIdeasViewController: UICollectionViewDelegate {
             projectDetailVC.project = projects[indexPath.row]
         }
         navigationItem.backButtonDisplayMode = .minimal
+        hidesBottomBarWhenPushed = true
+        DispatchQueue.main.async { [weak self] in
+            self?.hidesBottomBarWhenPushed = false
+        }
         navigationController?.pushViewController(projectDetailVC, animated: true)
     }
 }
