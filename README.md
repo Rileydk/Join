@@ -67,7 +67,7 @@ Join: 找夥伴(Finding Partners) is an app that enables you to share your ideas
 ### Communicate and Collaborate
 - Send, receive and accept friend requests from the community of Join: 找夥伴.
 - Start a one-on-one chat with strangers or your friends.
-- Create a group chatroom with your friends, communicate with a whole team.
+- Create a group chatroom with your friends and communicate with a whole team.
 - Establish a working group chatroom based on your team instantly.
 
 <p align="middle">
@@ -79,13 +79,13 @@ Join: 找夥伴(Finding Partners) is an app that enables you to share your ideas
 
 - Fetched web preview images and created rich links through **LinkPresentation**.
 - Scanned documents and converted them into images using **VisionKit**.
-- Upload photos using **PhotoKit**.
+- Created photos uploading feature using **PhotoKit**.
 - Ensured data assembled correctly with **GCD** and prevented race condition with **NSLock**.
 - Achieved flexible UI and easily identifiable data combined with cells using **UICollectionViewDiffableDatasource** and **UITableViewDiffableDatasource**.
 - Managed data with **Firebase SDK** including **Cloud Firestore** and **Storage**, obtained real-time messages by adding listeners to Firestore documents.
 - Implemented **Sign-in with Apple** and **Firebase Authentication** to offer customized service and data management. 
 - Reused views and cells with **Xib** and Storyboard to avoid duplicated code.
-- Manage button state automaically by **UIButtonConfiguration**.
+- Manipulated button state automaically by **UIButtonConfiguration**.
 - Constructed clean project through **MVC** design patterns.
 
 ## Setup Project
