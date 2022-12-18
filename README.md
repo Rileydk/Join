@@ -20,12 +20,16 @@ Join: 找夥伴(Finding Partners) is an app that enables you to share your ideas
 
 ## Tables
 - [Features](#features)
+    - Create Personal Profile and Portfolio
+    - Find Ideas
+    - Find Partners
+    - Communicate and Collaborate
 - [Techniques](#techniques)
 - [Setup the Project](#setup-the-project)
 - [Libraries](#libraries)
 - [Credit](#credit)
 - [Version](#version)
-- [Release Note](#release-note)
+- [Release Notes](#release-notes)
 - [Author](#author)
 - [License](#license)
 
@@ -47,7 +51,7 @@ Join: 找夥伴(Finding Partners) is an app that enables you to share your ideas
 - Saved the projects you're interested in, and read them again afterward.
 
 <p align="middle">
-  <image src="https://user-images.githubusercontent.com/63045187/208041274-8c6ffd73-f56c-4e97-bb43-b887957b11f1.png" width="440"/>
+  <image src="https://user-images.githubusercontent.com/63045187/208279156-3abd32c8-fbdb-491d-8a90-c8a2ed8b2c22.png" width="440"/>
 </p>
 
 ### Find Partners
@@ -63,23 +67,25 @@ Join: 找夥伴(Finding Partners) is an app that enables you to share your ideas
 ### Communicate and Collaborate
 - Send, receive and accept friend requests from the community of Join: 找夥伴.
 - Start a one-on-one chat with strangers or your friends.
-- Create a group chatroom with your friends, communicate with a whole team.
+- Create a group chatroom with your friends and communicate with a whole team.
 - Establish a working group chatroom based on your team instantly.
 
 <p align="middle">
-  <image src="https://user-images.githubusercontent.com/63045187/208041471-26bfbcf1-389c-4043-a401-b8b213885207.png" width="440"/>
+  <image src="https://user-images.githubusercontent.com/63045187/208279158-2bcd5973-39d6-4a09-b7ab-7b04b1c23adb.png" width="440"/>
+    <image src="https://user-images.githubusercontent.com/63045187/208279162-a925fb1a-4d24-4a29-85c3-3743e9e761d3.png" width="440"/>
 </p>
 
 ## Techniques
 
 - Fetched web preview images and created rich links through **LinkPresentation**.
 - Scanned documents and converted them into images using **VisionKit**.
+- Created photos uploading feature using **PhotoKit**.
 - Ensured data assembled correctly with **GCD** and prevented race condition with **NSLock**.
 - Achieved flexible UI and easily identifiable data combined with cells using **UICollectionViewDiffableDatasource** and **UITableViewDiffableDatasource**.
 - Managed data with **Firebase SDK** including **Cloud Firestore** and **Storage**, obtained real-time messages by adding listeners to Firestore documents.
 - Implemented **Sign-in with Apple** and **Firebase Authentication** to offer customized service and data management. 
 - Reused views and cells with **Xib** and Storyboard to avoid duplicated code.
-- Manage button state automaically by **UIButtonConfiguration**.
+- Manipulated button state automaically by **UIButtonConfiguration**.
 - Constructed clean project through **MVC** design patterns.
 
 ## Setup Project
@@ -113,7 +119,7 @@ The project didn't include the "GoogleService-Info.plist" file for Firebase serv
 
 ## Libraries
 
-- [Firebase SDK]((https://github.com/firebase/firebase-ios-sdk))
+- [Firebase SDK](https://github.com/firebase/firebase-ios-sdk)
 - [Kingfisher](https://github.com/onevcat/Kingfisher)
 - [SwiftLint](https://github.com/realm/SwiftLint)
 - [SwiftJWT](https://github.com/Kitura/Swift-JWT)
@@ -135,7 +141,7 @@ Some of the icons used in this app was made by authors listed below and was down
 
 > 1.1.3
 
-## Release Note
+## Release Notes
 
 | Version       | Date          | Note          |
 | ------------- |:-------------:| ------------- |
@@ -155,3 +161,5 @@ Riley Lai | <dakimi07@gmail.com>
 ## License
 
 Join: 找夥伴 is released under the MIT license. See [LICENSE](https://github.com/Rileydk/Join/blob/7ddd4a4412fbb4a8b7545e4fe5f91f20c478b4c1/LICENSE) for details.
+
+
