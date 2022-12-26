@@ -173,7 +173,7 @@ extension ChatListViewController: UITableViewDelegate {
             let chatroomID = groupMessageList[indexPath.row].chatroomID
             let chatroomName = groupMessageList[indexPath.row].chatroom.name
             let chatStoryboard = UIStoryboard(name: StoryboardCategory.chat.rawValue, bundle: nil)
-            guard let chatroomVC =  chatStoryboard.instantiateViewController(
+            guard let chatroomVC = chatStoryboard.instantiateViewController(
                 withIdentifier: GroupChatroomViewController.identifier
             ) as? GroupChatroomViewController else {
                 fatalError("Cannot get chatroom vc")
