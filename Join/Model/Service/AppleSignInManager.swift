@@ -28,12 +28,14 @@ class AppleSignInManager {
         case failedToGetUserObject
         case responseError
         case decodeFailed
+        case noValidJWT
 
         var errorDescription: String {
             switch self {
             case .failedToGetUserObject: return "Failed to get user"
             case .responseError: return "Get refresh token response error"
             case .decodeFailed: return "Decode failed"
+            case .noValidJWT: return "No valid JWT"
             }
         }
     }
@@ -168,10 +170,11 @@ class AppleSignInManager {
             by: UserDefaults.AppleSignInKey.authorizationCodeKey),
            let jwtToken = generateJWTToken(),
            let url = URL(string: """
-               https://appleid.apple.com/auth/token?
-               client_id=\(AppleAuthConfig.bundleID.rawValue)&
-               client_secret=\(jwtToken)&
-               code=\(authCode)&grant_type=authorization_code
+               https://appleid.apple.com/auth/token?\
+               client_id=\(AppleAuthConfig.bundleID.rawValue)&\
+               client_secret=\(jwtToken)&\
+               code=\(authCode)&\
+               grant_type=authorization_code
                """) {
 
             var request = URLRequest(url: url)
@@ -233,6 +236,8 @@ class AppleSignInManager {
                 }
                 completion(.success("Success"))
             }.resume()
+        } else {
+            completion(.failure(AppleSignInError.noValidJWT))
         }
     }
 

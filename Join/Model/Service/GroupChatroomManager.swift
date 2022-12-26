@@ -359,6 +359,7 @@ extension FirebaseManager {
                     chatroomIDsBox = chatroomIDs
                     group.leave()
                 case .failure(let err):
+                    shouldContinue = false
                     group.leave()
                     group.notify(queue: .main) {
                         print(err)
@@ -581,19 +582,21 @@ extension FirebaseManager {
             fatalError("Doesn't have user id")
         }
         var messagesItems = messagesItems
+        var errorHappened = false
+
         let group = DispatchGroup()
         for item in messagesItems {
+            if errorHappened { break }
             group.enter()
             let ref = FirestoreEndpoint.groupMembers(item.chatroomID).ref
             ref.document(myID).getDocument { (snapshot, err) in
                 if let err = err {
+                    errorHappened = true
                     group.leave()
                     group.notify(queue: .main) {
                         completion(.failure(err))
                     }
-                    return
-                }
-                if let snapshot = snapshot {
+                } else if let snapshot = snapshot {
                     do {
                         let myMemberInfo = try snapshot.data(as: ChatroomMember.self)
                         for index in 0 ..< messagesItems.count where messagesItems[index].chatroomID == item.chatroomID {
@@ -601,18 +604,18 @@ extension FirebaseManager {
                         }
                         group.leave()
                     } catch {
+                        errorHappened = true
                         group.leave()
                         group.notify(queue: .main) {
                             completion(.failure(error))
                         }
-                        return
                     }
                 } else {
+                    errorHappened = true
                     group.leave()
                     group.notify(queue: .main) {
                         completion(.failure(CommonError.noValidQuerysnapshot))
                     }
-                    return
                 }
             }
         }
