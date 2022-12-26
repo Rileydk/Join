@@ -70,10 +70,31 @@ class GroupChatroomViewController: BaseViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        setNavBarAppearance(to: .dark)
+        if sourceType == .project,
+           let backImage = UIImage(named: JImages.Icon_24px_Back.rawValue) {
+            backImage.withRenderingMode(.alwaysTemplate)
+            navigationItem.leftBarButtonItem = UIBarButtonItem(
+                image: backImage, style: .plain,
+                target: self, action: #selector(backToProjectPage))
+            // navigationController?.interactivePopGestureRecognizer?.delegate = nil
+        } else {
+            setNavBarAppearance(to: .dark)
+        }
+
         guard chatroomID != nil else { return }
         tabBarController?.tabBar.isHidden = true
         getNecessaryInfo()
+    }
+
+    @objc func backToProjectPage() {
+        guard let rootNav = tabBarController?.viewControllers?.last
+                  as? UINavigationController,
+              let projectPage = rootNav.viewControllers[rootNav.viewControllers.count - 3]
+                  as? MyPostsDetailViewController else {
+            navigationController?.popViewController(animated: true)
+            return
+        }
+        rootNav.popToViewController(projectPage, animated: true)
     }
 
     override func viewDidAppear(_ animated: Bool) {
