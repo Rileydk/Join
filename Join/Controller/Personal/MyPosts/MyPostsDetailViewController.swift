@@ -149,7 +149,13 @@ class MyPostsDetailViewController: BaseViewController {
             }
 
             group.wait()
-            guard shouldContinue else { return }
+            guard shouldContinue, !project.applicants.isEmpty else {
+                group.notify(queue: .main) {
+                    self.tableView.endHeaderRefreshing()
+                    self.updateDatasource()
+                }
+                return
+            }
             group.enter()
             self.firebaseManager.getAllMatchedUsersDetail(usersID: project.applicants) { [weak self] result in
                 guard let self = self else { return }

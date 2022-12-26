@@ -50,6 +50,7 @@ class ProjectDetailsViewController: BaseViewController {
     var project: Project?
     var userData: JUser?
     var sourceType: SourceType = .findIdeas
+    var didTapMessageButton = false
 
     @IBOutlet weak var tableView: UITableView! {
         didSet {
@@ -142,6 +143,7 @@ class ProjectDetailsViewController: BaseViewController {
         super.viewWillAppear(animated)
         getContactInfo()
         setNavBarAppearance(to: .dark)
+        didTapMessageButton = false
     }
 
     func getContactInfo() {
@@ -387,26 +389,30 @@ extension ProjectDetailsViewController {
                 self?.navigationController?.pushViewController(profileVC, animated: true)
             }
             cell.messageHandler = { [weak self] in
-                guard let id = self?.userData?.id else { return }
-                self?.firebaseManager.getChatroom(id: id) { [unowned self] result in
-                    switch result {
-                    case .success(let chatroomID):
-                        let chatStoryboard = UIStoryboard(name: StoryboardCategory.chat.rawValue, bundle: nil)
-                        guard let chatVC = chatStoryboard.instantiateViewController(
-                            withIdentifier: ChatroomViewController.identifier
-                        ) as? ChatroomViewController else {
-                            fatalError("Cannot create chatroom vc")
+                guard let self = self else { return }
+                if !self.didTapMessageButton {
+                    guard let id = self.userData?.id else { return }
+                    self.firebaseManager.getChatroom(id: id) { [unowned self] result in
+                        switch result {
+                        case .success(let chatroomID):
+                            let chatStoryboard = UIStoryboard(name: StoryboardCategory.chat.rawValue, bundle: nil)
+                            guard let chatVC = chatStoryboard.instantiateViewController(
+                                withIdentifier: ChatroomViewController.identifier
+                            ) as? ChatroomViewController else {
+                                fatalError("Cannot create chatroom vc")
+                            }
+                            chatVC.userData = self.userData
+                            chatVC.chatroomID = chatroomID
+                            self.hidesBottomBarWhenPushed = true
+                            DispatchQueue.main.async { [unowned self] in
+                                self.hidesBottomBarWhenPushed = false
+                            }
+                            self.navigationController?.pushViewController(chatVC, animated: true)
+                        case .failure(let error):
+                            print(error)
                         }
-                        chatVC.userData = self?.userData
-                        chatVC.chatroomID = chatroomID
-                        self?.hidesBottomBarWhenPushed = true
-                        DispatchQueue.main.async { [unowned self] in
-                            self?.hidesBottomBarWhenPushed = false
-                        }
-                        self?.navigationController?.pushViewController(chatVC, animated: true)
-                    case .failure(let error):
-                        print(error)
                     }
+                    self.didTapMessageButton = true
                 }
             }
             navigationItem.backButtonDisplayMode = .minimal

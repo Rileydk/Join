@@ -208,29 +208,11 @@ class GroupCreationViewController: BaseViewController {
 
                 case .project:
                     chatroomVC.sourceType = .project
-                    guard let rootVC = strongSelf
-                        .navigationController?.viewControllers[0]
-                        as? PersonalEntryViewController else {
-                        fatalError("Cannot create personal entry vc")
-                    }
-                    guard let projectVC = strongSelf
-                        .navigationController?.viewControllers[1]
-                        as? MyPostsViewController else {
-                        fatalError("Cannot create my posts vc")
-                    }
-                    guard let projectDetailVC = strongSelf
-                        .navigationController?.viewControllers[2]
-                        as? MyPostsDetailViewController else {
-                        fatalError("Cannot create my post detail vc")
-                    }
-                    projectDetailVC.project = strongSelf.linkedProject
-
                     strongSelf.hidesBottomBarWhenPushed = true
                     DispatchQueue.main.async {
                         strongSelf.hidesBottomBarWhenPushed = false
                     }
-                    strongSelf.navigationController?
-                        .setViewControllers([rootVC, projectVC, projectDetailVC, chatroomVC], animated: true)
+                    strongSelf.navigationController?.pushViewController(chatroomVC, animated: true)
                 }
             }
         }
@@ -382,7 +364,7 @@ extension GroupCreationViewController {
             id: UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey)!,
             name: UserDefaults.standard.string(forKey: UserDefaults.UserKey.userNameKey)!,
             email: "",
-            thumbnailURL: UserDefaults.standard.string(forKey: UserDefaults.UserKey.userThumbnailURLKey)!)
+            thumbnailURL: UserDefaults.standard.string(forKey: UserDefaults.UserKey.userThumbnailURLKey) ?? "")
         snapshot.appendItems([.member(JUser.mockUser), .member(myUserData)] + selectedFriends.map { .member($0) }, toSection: .members)
 
         datasource.apply(snapshot, animatingDifferences: false)

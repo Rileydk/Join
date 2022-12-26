@@ -28,7 +28,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(windowScene: scene)
 
         let mainStoryboard = UIStoryboard(name: StoryboardCategory.main.rawValue, bundle: nil)
-        if Auth.auth().currentUser == nil {
+        if Auth.auth().currentUser == nil || UserDefaults.standard.string(forKey: UserDefaults.UserKey.uidKey) == nil {
             guard let loginVC = mainStoryboard.instantiateViewController(
                 withIdentifier: LoginViewController.identifier
                 ) as? LoginViewController else {
